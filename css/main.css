@@ -1,0 +1,16 @@
+a img{border:none}
+img{outline:none}
+html,body,table,th,tr,td,p,img,hr,ul,li,h1,h2,h3,h4,h5,div,form,fieldset,button{margin:0;padding:0}
+h1,h2,h3,h4{font-weight:normal}
+table{border-spacing:0}
+textarea,input{font-family:'Arial';font-size:20px;outline:none}
+body{overflow-x:hidden;font-family:'Arial';}
+body .hide{display:none}
+body .button{cursor:pointer;font:18px 'Arial';text-transform:uppercase;padding:3px 0 0 0;border:0;height:28px;color:#fff}
+body header .container{position:relative;width:1265px;margin:0 auto}
+body footer .container{position:relative;width:1265px;margin:0 auto}
+body .sections section{clear:both;position:relative;z-index:3;width:100%;min-width:1265px;}
+body .sections section .container{position:relative;width:1265px;height:50px;margin:0 auto}
+body .sections section#menu .container nav ul{list-style-type:none;padding:10px 0 0 0;float:left;display:inline;}
+body .sections section#menu .container nav ul li{display:inline;}
+body .sections section#menu .container nav ul li a{font:16px 'Arial';text-decoration:none}

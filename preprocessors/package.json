@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-qunit": "*",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-jade": "*",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-stylus": "*",
+    "coffee-script": "*",
+    "stylus": "*",
+    "jade": "*"
+  }
+}

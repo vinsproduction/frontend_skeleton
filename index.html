@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>TPS</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta property="og:title" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:description" content="">
+  <link rel="image_src" href="">
+  <link rel="shortcut icon" type="image/x-icon" href="">
+  <meta name="viewport" content="width=device-width">
+  <script type="text/javascript" src="js/libs/helpers.js"></script><script type="text/javascript">
+(function() {
+  if (!/debug/.test(window.location.search)) {
+    $$.disableConsole();
+    $$.includeJS('js/libs/lib.min.js');
+    $$.includeCSS('css/project.css');
+    $$.includeJS('js/project.min.js');
+  } else {
+    console.debug('DEBUG MODE');
+    $$.includeJS('js/libs/jquery-1.10.2.min.js');
+    $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
+    $$.includeJS('js/libs/jquery.tinyscrollbar.min.js');
+    $$.includeJS('js/libs/jquery.cookie.js');
+    $$.includeJS('js/libs/mustache.js');
+    $$.includeJS('js/libs/underscore-min.js');
+    $$.includeJS('js/libs/popup.js');
+    $$.includeCSS('css/popups.css');
+    $$.includeCSS('css/main.css');
+    $$.includeJS('js/app.js');
+  }
+
+}).call(this);
+</script><script type="text/javascript">
+(function() {
+  window.app = new App;
+
+  app.init();
+
+}).call(this);
+</script>
+  <!--[if lt IE 9]>
+  <script type="text/javascript" src="js/libs/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="background">
+    <header>
+      <div class="container">
+        <h1>HEADER</h1>
+      </div>
+    </header>
+    <div class="sections">
+      <section id="menu">
+        <div class="container">
+          <nav>
+            <ul>
+              <li><a href="#">menu 1</a></li>
+              <li><a href="#">menu 2</a></li>
+              <li><a href="#">menu 3</a></li>
+              <li><a href="#">menu 4</a></li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+      <section id="article">
+        <div class="container">
+          <h1>Hello</h1>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <div class="container">
+        <h1>FOOTER</h1>
+      </div>
+    </footer>
+  </div>
+  <div id="popup">
+    <div id="popup_custom" class="pop">
+      <div data-popup-close="data-popup-close" class="popup_close"></div>
+      <div class="header">
+        <h1></h1>
+      </div>
+      <div class="body"></div>
+      <div class="footer">
+        <input data-popup-button="data-popup-button" type="button" value="Закрыть" class="darksalmon">
+      </div>
+    </div>
+    <div id="popup_login" class="pop">
+      <div data-popup-close="data-popup-close" class="popup_close"></div>
+      <h1>Авторизация</h1>
+      <p>Войти через социальную сеть</p><a href="/login/odnoklassniki"></a><a href="/login/vk-oauth"></a><a href="/login/facebook"></a>
+    </div>
+  </div>
+  <div id="backgroundPopup" data-popup-close></div>
+</body>

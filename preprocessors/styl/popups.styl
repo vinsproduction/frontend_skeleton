@@ -1,0 +1,99 @@
+// Попапы
+
+#popup
+	visibility hidden
+	position absolute
+	left -100000px
+	top -100000px
+	z-index 100000
+	font-size 16px
+
+	.popup_close
+		cursor pointer
+		position absolute
+		right -36px
+		top -33px
+		width 56px
+		height 52px
+		//background-image url('../img/close_popup.png')
+		background-repeat no-repeat
+		background-position left 0px
+		text-decoration none !important
+		z-index 98
+
+
+	.pop
+		background-color: #FFF;
+		border 10px solid rgb(226, 226, 226)
+
+	#popup_custom
+
+		text-align center
+		min-height 274px
+		width 705px
+
+		.header
+			padding 30px 0 50px 0
+			h1
+				text-transform uppercase
+				text-align center
+				font-size 30px
+				color rgb(96, 193, 85)
+				letter-spacing 4px
+
+		.body
+			font 24px CompProLight
+			color rgb(51, 51, 51)
+			padding 0 90px	
+
+		.footer
+			padding 50px 0 30px 0
+			input
+				clear both
+				width 276px
+				height 50px
+				padding 14px
+				text-align center
+				background rgb(207, 132, 102)
+				color #FFF
+				text-transform uppercase
+				letter-spacing 4px
+				border 0
+				font 24px CompProRegular
+				cursor pointer
+
+	#popup_login
+		text-align center
+		height 326px
+		width 466px
+		h1
+			text-transform uppercase
+			text-align center
+			font-size 30px
+			color rgb(96, 193, 85)
+			padding 20px 0 70px 0
+			letter-spacing 4px
+
+		p
+			font 24px CompProLight
+			color rgb(51, 51, 51)
+			padding 0 0 18px 0
+
+		a 
+			margin-right 11px
+			transition(all 0.2s ease)
+			&:last-child
+				margin-right 0
+			&:hover
+				opacity 0.7
+
+#backgroundPopup
+
+	display none
+	position fixed
+	height 100%
+	width 100%
+	top 0
+	left 0
+	background #000000
+	z-index 99999

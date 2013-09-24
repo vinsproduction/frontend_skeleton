@@ -1,0 +1,167 @@
+
+/* MIXins */
+
+vendor(prop, args)
+	-webkit-{prop} args
+	   -moz-{prop} args
+	    -ms-{prop} args
+	     -o-{prop} args
+	        {prop} args
+
+border-radius()
+	vendor('border-radius', arguments)
+
+box-shadow()
+	vendor('box-shadow', arguments)
+
+transition()
+	vendor('transition', arguments)
+
+transform()
+	vendor('transform', arguments)
+
+transform-origin()
+	vendor('transform-origin', arguments)
+
+user-select()
+	vendor('user-select', arguments)
+
+background-linear-gradient(startPoint, startColor, startInterval, endColor, endInterval, deprecatedWebkitStartPoint = false, deprecatedWebkitEndPoint = false)
+	background-color startColor
+	if deprecatedWebkitStartPoint && deprecatedWebkitEndPoint
+		background-image -webkit-gradient(linear, deprecatedWebkitStartPoint, deprecatedWebkitEndPoint, color-stop(startInterval, startColor), color-stop(endInterval, endColor))
+		background-image -webkit-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+		background-image -moz-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+		background-image -ms-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+		background-image -o-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+		background-image linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+
+
+/* FONTS */
+
+// @font-face {
+//   font-family: 'CompProRegular';
+//   src: url('../fonts/pfdintextcomppro-regular.eot');
+//   src: url('../fonts/pfdintextcomppro-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/pfdintextcomppro-regular.svg') format('svg'), url('../fonts/pfdintextcomppro-regular.woff') format('woff'), url('../fonts/pfdintextcomppro-regular.ttf') format('truetype');
+//   font-weight: normal;
+//   font-style: normal;
+// }
+
+
+/* MAIN CONSTANTS */
+
+$mainWidth 		= 1265
+$mainHeight 	= 1000
+$mainFont 		= 'Arial'
+
+// COLORS
+
+$black 	= #000
+$white	= #FFFFFF
+
+/* MAIN STYLES */
+
+a
+	img
+		border none
+
+img
+	outline none
+
+html, body, table, th, tr, td, p, img, hr, ul, li, h1, h2, h3, h4, h5, div, form, fieldset, button
+	margin 0
+	padding 0
+
+h1,h2,h3,h4
+	font-weight normal
+
+table
+	border-spacing 0
+
+textarea, input
+	font-family $mainFont
+	font-size 20px
+	outline none
+
+textarea:focus, input:focus
+	//
+
+body
+
+	overflow-x hidden
+	
+	font-family $mainFont
+
+	// Самый задний фон
+	//background url('../img/body_bg.jpg') rgb(235, 164, 96) center center repeat-y
+
+		
+	// Фон с изображением
+	.background
+
+		&.bg
+			//background url('../img/bg.jpg') rgb(235, 164, 96) top center no-repeat
+
+	.hide 
+		display none
+
+	/* BUTTONS */
+
+	.button
+
+		cursor pointer
+		font 18px $mainFont
+		text-transform uppercase
+		padding 3px 0 0 0
+		border 0
+		height 28px
+		color $white
+
+
+	header
+		.container
+				position relative
+				width  ($mainWidth)px
+				margin 0 auto
+	footer		
+		.container
+				position relative
+				width  ($mainWidth)px
+				margin 0 auto
+
+	.sections
+
+		/* Для всех секций! */
+		section
+
+			clear both
+			position relative
+			z-index 3
+			width 100%
+			min-width ($mainWidth)px
+
+			.container
+				position relative
+				width  ($mainWidth)px
+				height 50px
+				margin 0 auto
+
+		section#menu
+
+			.container
+
+				nav
+					ul
+						list-style-type none
+						padding 10px 0 0 0
+						float left
+						display inline
+						li
+							display inline
+							a 
+								//margin 0 0 0 30px
+								font 16px $mainFont
+								text-decoration none
+
+
+	
