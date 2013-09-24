@@ -3,7 +3,7 @@ class App
 	constructor: ->
 
 		# Имя проекта
-		@name = 'TPS'
+		@name = 'project'
 		
 		# Если хоста нет, значит - локальный просмотр!
 		@localhost = window.location.host is ""
@@ -24,7 +24,7 @@ class App
 		if !$$.browser.msie and @localhost
 			livereloadPort = 35829
 			$$.includeJS "http://localhost:#{livereloadPort}/livereload.js"
-			console.debug "[Livereload::init] port #{livereloadPort}"
+			console.debug "[Livereload] http://localhost:#{livereloadPort}/livereload.js"
 
 		# Если Ie пшелнах!
 		if $$.browser.msie6 or $$.browser.msie7 #or $$.browser.msie8
@@ -140,47 +140,68 @@ class App
 
 			odnoklassniki: (options={}) ->
 				url = options.url || app.social.url
-				window.open "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "width=600,height=380"
+
+				window.open "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "toolbar=0,status=0,width=626,height=436"
 
 		share:
 
-			vkontakte: (purl, ptitle, pimg, text) ->
+			vkontakte: (options={}) ->
+
+				options.url = options.url || app.social.url
+
 				url = "http://vkontakte.ru/share.php?"
-				url += "url=" + encodeURIComponent(purl)
-				url += "&title=" + encodeURIComponent(ptitle)
-				url += "&description=" + encodeURIComponent(text)
-				url += "&image=" + encodeURIComponent(pimg)
+				url += "url=" + encodeURIComponent(options.url)
+				url += "&title=" + encodeURIComponent(options.title)
+				url += "&description=" + encodeURIComponent(options.text)
+				url += "&image=" + encodeURIComponent(options.img)
 				url += "&noparse=true"
+
 				@popup url
 
-			odnoklassniki: (purl, text) ->
+			odnoklassniki: (options={}) ->
+
+				options.url = options.url || app.social.url
+
 				url = "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1"
-				url += "&st.comments=" + encodeURIComponent(text)
-				url += "&st._surl=" + encodeURIComponent(purl)
-				@popup url
+				url += "&st.comments=" + encodeURIComponent(options.text)
+				url += "&st._surl=" + encodeURIComponent(options.url)
 
-			facebook: (purl, ptitle, pimg, text) ->
+				@popup options.url
+
+			facebook: (options={}) ->
+
+				options.url = options.url || app.social.url
+
 				url = "http://www.facebook.com/sharer.php?s=100"
-				url += "&p[title]=" + encodeURIComponent(ptitle)
-				url += "&p[summary]=" + encodeURIComponent(text)
-				url += "&p[url]=" + encodeURIComponent(purl)
-				url += "&p[images][0]=" + encodeURIComponent(pimg)
-				@popup url
+				url += "&p[title]=" + encodeURIComponent(options.title)
+				url += "&p[summary]=" + encodeURIComponent(options.text)
+				url += "&p[url]=" + encodeURIComponent(options.url)
+				url += "&p[images][0]=" + encodeURIComponent(options.img)
 
-			twitter: (purl, ptitle) ->
+				@popup options.url
+
+			twitter: (options={}) ->
+
+				options.url = options.url || app.social.url
+
 				url = "http://twitter.com/share?"
-				url += "text=" + encodeURIComponent(ptitle)
-				url += "&url=" + encodeURIComponent(purl)
-				url += "&counturl=" + encodeURIComponent(purl)
-				@popup url
+				url += "text=" + encodeURIComponent(options.title)
+				url += "&url=" + encodeURIComponent(options.url)
+				url += "&counturl=" + encodeURIComponent(options.url)
 
-			mailru: (purl, ptitle, pimg, text) ->
+				@popup options.url
+
+			mailru: (options={}) ->
+
+				options.url = options.url || app.social.url
+
 				url = "http://connect.mail.ru/share?"
-				url += "url=" + encodeURIComponent(purl)
-				url += "&title=" + encodeURIComponent(ptitle)
-				url += "&description=" + encodeURIComponent(text)
-				url += "&imageurl=" + encodeURIComponent(pimg)
-				@popup url
+				url += "url=" + encodeURIComponent(options.url)
+				url += "&title=" + encodeURIComponent(options.title)
+				url += "&description=" + encodeURIComponent(options.text)
+				url += "&imageurl=" + encodeURIComponent(options.img)
+
+				@popup options.url
 
 			popup: (url) ->
 				window.open url, "", "toolbar=0,status=0,width=626,height=436"

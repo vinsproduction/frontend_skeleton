@@ -4,7 +4,7 @@ App = (function() {
   function App() {
     var livereloadPort,
       _this = this;
-    this.name = 'TPS';
+    this.name = 'project';
     this.localhost = window.location.host === "";
     this.host = this.localhost ? "http://" + this.name : window.location.host;
     this.root = this.localhost ? this.host : "";
@@ -20,7 +20,7 @@ App = (function() {
     if (!$$.browser.msie && this.localhost) {
       livereloadPort = 35829;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
-      console.debug("[Livereload::init] port " + livereloadPort);
+      console.debug("[Livereload] http://localhost:" + livereloadPort + "/livereload.js");
     }
     if ($$.browser.msie6 || $$.browser.msie7) {
       return;
@@ -130,52 +130,72 @@ App = (function() {
           options = {};
         }
         url = options.url || app.social.url;
-        return window.open("http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "width=600,height=380");
+        return window.open("http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "toolbar=0,status=0,width=626,height=436");
       }
     },
     share: {
-      vkontakte: function(purl, ptitle, pimg, text) {
+      vkontakte: function(options) {
         var url;
+        if (options == null) {
+          options = {};
+        }
+        options.url = options.url || app.social.url;
         url = "http://vkontakte.ru/share.php?";
-        url += "url=" + encodeURIComponent(purl);
-        url += "&title=" + encodeURIComponent(ptitle);
-        url += "&description=" + encodeURIComponent(text);
-        url += "&image=" + encodeURIComponent(pimg);
+        url += "url=" + encodeURIComponent(options.url);
+        url += "&title=" + encodeURIComponent(options.title);
+        url += "&description=" + encodeURIComponent(options.text);
+        url += "&image=" + encodeURIComponent(options.img);
         url += "&noparse=true";
         return this.popup(url);
       },
-      odnoklassniki: function(purl, text) {
+      odnoklassniki: function(options) {
         var url;
+        if (options == null) {
+          options = {};
+        }
+        options.url = options.url || app.social.url;
         url = "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1";
-        url += "&st.comments=" + encodeURIComponent(text);
-        url += "&st._surl=" + encodeURIComponent(purl);
-        return this.popup(url);
+        url += "&st.comments=" + encodeURIComponent(options.text);
+        url += "&st._surl=" + encodeURIComponent(options.url);
+        return this.popup(options.url);
       },
-      facebook: function(purl, ptitle, pimg, text) {
+      facebook: function(options) {
         var url;
+        if (options == null) {
+          options = {};
+        }
+        options.url = options.url || app.social.url;
         url = "http://www.facebook.com/sharer.php?s=100";
-        url += "&p[title]=" + encodeURIComponent(ptitle);
-        url += "&p[summary]=" + encodeURIComponent(text);
-        url += "&p[url]=" + encodeURIComponent(purl);
-        url += "&p[images][0]=" + encodeURIComponent(pimg);
-        return this.popup(url);
+        url += "&p[title]=" + encodeURIComponent(options.title);
+        url += "&p[summary]=" + encodeURIComponent(options.text);
+        url += "&p[url]=" + encodeURIComponent(options.url);
+        url += "&p[images][0]=" + encodeURIComponent(options.img);
+        return this.popup(options.url);
       },
-      twitter: function(purl, ptitle) {
+      twitter: function(options) {
         var url;
+        if (options == null) {
+          options = {};
+        }
+        options.url = options.url || app.social.url;
         url = "http://twitter.com/share?";
-        url += "text=" + encodeURIComponent(ptitle);
-        url += "&url=" + encodeURIComponent(purl);
-        url += "&counturl=" + encodeURIComponent(purl);
-        return this.popup(url);
+        url += "text=" + encodeURIComponent(options.title);
+        url += "&url=" + encodeURIComponent(options.url);
+        url += "&counturl=" + encodeURIComponent(options.url);
+        return this.popup(options.url);
       },
-      mailru: function(purl, ptitle, pimg, text) {
+      mailru: function(options) {
         var url;
+        if (options == null) {
+          options = {};
+        }
+        options.url = options.url || app.social.url;
         url = "http://connect.mail.ru/share?";
-        url += "url=" + encodeURIComponent(purl);
-        url += "&title=" + encodeURIComponent(ptitle);
-        url += "&description=" + encodeURIComponent(text);
-        url += "&imageurl=" + encodeURIComponent(pimg);
-        return this.popup(url);
+        url += "url=" + encodeURIComponent(options.url);
+        url += "&title=" + encodeURIComponent(options.title);
+        url += "&description=" + encodeURIComponent(options.text);
+        url += "&imageurl=" + encodeURIComponent(options.img);
+        return this.popup(options.url);
       },
       popup: function(url) {
         return window.open(url, "", "toolbar=0,status=0,width=626,height=436");
