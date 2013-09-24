@@ -2,12 +2,14 @@ class App
 
 	constructor: ->
 
-		# Настоящие константы проекта!
+		# Имя проекта
 		@name = 'TPS'
-		@host = "http://#{@name}"
-
+		
 		# Если хоста нет, значит - локальный просмотр!
 		@localhost = window.location.host is ""
+
+		# Если localhost - проставляем настоящий хост
+		@host = if @localhost then "http://#{@name}" else window.location.host
 
 		# Путь до картинок и прочей статики
 		# Для локалхоста показываем настоящие хочт
@@ -79,7 +81,7 @@ class App
 
 			_init = ->
 
-				app.social.url = if app.localhost then @host else "http://" + window.location.host
+				app.social.url = @host
 
 				if VK
 					VK.init

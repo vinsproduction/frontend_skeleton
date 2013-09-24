@@ -5,8 +5,8 @@ App = (function() {
     var livereloadPort,
       _this = this;
     this.name = 'TPS';
-    this.host = "http://" + this.name;
     this.localhost = window.location.host === "";
+    this.host = this.localhost ? "http://" + this.name : window.location.host;
     this.root = this.localhost ? this.host : "";
     this.debug = (function() {
       var debug;
@@ -53,7 +53,7 @@ App = (function() {
     init: function() {
       var _init;
       return _init = function() {
-        app.social.url = app.localhost ? this.host : "http://" + window.location.host;
+        app.social.url = this.host;
         if (VK) {
           VK.init({
             apiId: app.social.vkontakteApiId
