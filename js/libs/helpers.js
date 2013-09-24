@@ -27,8 +27,6 @@ $$; // SHORT NAMESPACE EDITABLE
 	else if (!window.console.info) 	{ window.console.info = function(){}; }
 
 
-
-
 	$.log = function(obj) { 
 		console.log(obj);
 	};
