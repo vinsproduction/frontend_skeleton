@@ -1,6 +1,6 @@
 class App
 
-	constructor: ->
+	constructor: (options={}) ->
 
 		# Имя проекта
 		@name = 'project'
@@ -12,8 +12,12 @@ class App
 		@host = if @localhost then "http://#{@name}" else window.location.host
 
 		# Путь до картинок и прочей статики
-		# Для локалхоста показываем настоящие хочт
-		@root	= if @localhost then @host else ""
+		
+		if options.root
+			@root = options.root
+		else
+			# Для локалхоста показываем настоящие хост
+			@root	= if @localhost then @host else ""
 	
 		# Возвращает параметры дебага, напр. ?debug=test -> вернет test
 		@debug = do =>
