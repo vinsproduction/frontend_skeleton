@@ -54,34 +54,27 @@ class PrototypeView
 
 		$el.removeAttr('style').html( Mustache.to_html(sourse, vars) )
 
-	resize: (fixed) ->
+	resize: (type) ->
 
 		sections =
 			el 	: $('body > main > .sections')
 
-		$main = $('body > main')
-
-		mainH			= parseInt($main.height())
-		headerH		= parseInt($('header').height())
-		footerH 		= parseInt($('footer').height())
-		sectionsH 	= mainH - headerH - footerH
-
-		if fixed
-
+		headerH		= parseInt($('body > main > header').height())
+		footerH 		= parseInt($('body > main > footer').height())
+		sectionsH 	= parseInt($('body > main > .sections').height())
+		
+		if $(window).height() <= sectionsH + headerH + footerH
 			sections.height = sectionsH
 			sections.el.height sections.height
-			$('body').css('overflow-y':'hidden')
-			$('footer').css('position': 'fixed')
-
+			$('body > main > footer').removeClass 'fixed'
 		else
-
 			sections.height = 'auto'
 			sections.el.height sections.height
-			$('body').css('overflow-y':'auto')
-			$('footer').css('position': 'relative')
+			$('body > main > footer').addClass 'fixed'
 
+				
 		app.debugBox.log "sect", "header: #{headerH}px | sections: #{sectionsH}px | footer: #{footerH}px"
-		app.debugBox.log "res", "#{$main.width()} x #{$main.height()}"
+		app.debugBox.log "res", "#{$(window).width()}px x #{$(window).height()}px"
 	
 class IndexView extends PrototypeView
 
