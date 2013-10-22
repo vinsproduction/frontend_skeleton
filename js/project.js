@@ -7,16 +7,19 @@ PrototypeModel = (function() {
 
 })();
 
-var IndexView, PrototypeView,
+var IndexView, PrototypeView, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 PrototypeView = (function() {
-  function PrototypeView() {}
-
-  PrototypeView.prototype.varconstants = {};
-
-  PrototypeView.prototype.preconstructor = function() {};
+  function PrototypeView() {
+    var _this = this;
+    this.resize();
+    $(window).resize(function() {
+      return _this.resize();
+    });
+    this.init();
+  }
 
   PrototypeView.prototype.generateRenders = function(template) {
     var _this = this;
@@ -80,25 +83,36 @@ PrototypeView = (function() {
     return $el.removeAttr('style').html(Mustache.to_html(sourse, vars));
   };
 
-  PrototypeView.prototype.resize = function(type) {
-    var footerH, headerH, sections, sectionsH;
-    sections = {
+  PrototypeView.prototype.resize = function() {
+    var footerH, headerH, sectionsH;
+    this.sections = {
       el: $('body > main > .sections')
     };
     headerH = parseInt($('body > main > header').height());
     footerH = parseInt($('body > main > footer').height());
     sectionsH = parseInt($('body > main > .sections').height());
     if ($(window).height() <= sectionsH + headerH + footerH) {
-      sections.height = sectionsH;
-      sections.el.height(sections.height);
+      this.sections.height = sectionsH;
+      this.sections.el.height(this.sections.height);
       $('body > main > footer').removeClass('fixed');
     } else {
-      sections.height = 'auto';
-      sections.el.height(sections.height);
+      this.sections.height = 'auto';
+      this.sections.el.height(this.sections.height);
       $('body > main > footer').addClass('fixed');
     }
     app.debugBox.log("sect", "header: " + headerH + "px | sections: " + sectionsH + "px | footer: " + footerH + "px");
-    return app.debugBox.log("res", "" + ($(window).width()) + "px x " + ($(window).height()) + "px");
+    app.debugBox.log("res", "" + ($(window).width()) + "px x " + ($(window).height()) + "px");
+    return this.afterResize();
+  };
+
+  PrototypeView.prototype.afterResize = function() {};
+
+  PrototypeView.prototype.init = function() {};
+
+  PrototypeView.prototype.controller = function(opt) {
+    if (opt == null) {
+      opt = {};
+    }
   };
 
   return PrototypeView;
@@ -109,20 +123,9 @@ IndexView = (function(_super) {
   __extends(IndexView, _super);
 
   function IndexView() {
-    var _this = this;
-    this.preconstructor();
-    this.el = $("section#index");
-    this.resizeit();
-    $(window).resize(function() {
-      return _this.resizeit();
-    });
+    _ref = IndexView.__super__.constructor.apply(this, arguments);
+    return _ref;
   }
-
-  IndexView.prototype.resizeit = function() {
-    return this.resize('fixed');
-  };
-
-  IndexView.prototype.controller = function(params) {};
 
   return IndexView;
 

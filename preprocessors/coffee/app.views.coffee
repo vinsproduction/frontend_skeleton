@@ -2,9 +2,12 @@
 
 class PrototypeView
 
-	varconstants: {} # Varibles для Mustache парсера
+	constructor: ->
 
-	preconstructor: ->
+		do @resize
+		$(window).resize => do @resize
+
+		do @init
 
 	generateRenders: (template =  @template) ->
 
@@ -54,9 +57,9 @@ class PrototypeView
 
 		$el.removeAttr('style').html( Mustache.to_html(sourse, vars) )
 
-	resize: (type) ->
+	resize: ->
 
-		sections =
+		@sections =
 			el 	: $('body > main > .sections')
 
 		headerH		= parseInt($('body > main > header').height())
@@ -64,34 +67,36 @@ class PrototypeView
 		sectionsH 	= parseInt($('body > main > .sections').height())
 		
 		if $(window).height() <= sectionsH + headerH + footerH
-			sections.height = sectionsH
-			sections.el.height sections.height
+			@sections.height = sectionsH
+			@sections.el.height @sections.height
 			$('body > main > footer').removeClass 'fixed'
 		else
-			sections.height = 'auto'
-			sections.el.height sections.height
+			@sections.height = 'auto'
+			@sections.el.height @sections.height
 			$('body > main > footer').addClass 'fixed'
 
 				
 		app.debugBox.log "sect", "header: #{headerH}px | sections: #{sectionsH}px | footer: #{footerH}px"
 		app.debugBox.log "res", "#{$(window).width()}px x #{$(window).height()}px"
-	
+
+		do @afterResize
+
+	afterResize: ->
+
+	init: ->
+
+	controller: (opt={}) ->	
+
 class IndexView extends PrototypeView
 
-	constructor: ->
+	# init: ->
+	# 	@el = $("section#index")
 
-		do @preconstructor
+	# afterResize: ->
 
-		@el =  $("section#index")
+	# controller: (opt={}) ->
 
-		do @resizeit
-		$(window).resize => do @resizeit
 
-	resizeit: ->
-		@resize('fixed')
-		#@resize()
-
-	controller: (params) ->
 
 		
 
