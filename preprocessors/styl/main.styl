@@ -11,6 +11,9 @@ vendor(prop, args)
 border-radius()
 	vendor('border-radius', arguments)
 
+filter()
+	vendor('filter', arguments)
+
 box-shadow()
 	vendor('box-shadow', arguments)
 
@@ -58,110 +61,186 @@ $mainFont 		= 'Arial'
 
 $black 	= #000
 $white	= #FFFFFF
+$red		= #ee2e24
+$redHover= #db2920
+$gray		= #ccc
 
 /* MAIN STYLES */
-
-a
-	img
-		border none
-
-img
-	outline none
-
-html, body, table, th, tr, td, p, img, hr, ul, li, h1, h2, h3, h4, h5, div, form, fieldset, button
-	margin 0
-	padding 0
-
-h1,h2,h3,h4
-	font-weight normal
-
-table
-	border-spacing 0
 
 textarea, input
 	font-family $mainFont
 	font-size 20px
-	outline none
 
 textarea:focus, input:focus
 	//
 
+/* HELPERS STYLES */
+
+.hide 
+	display none
+
+.btn
+	cursor pointer
+	font 20px $mainFont
+	text-transform uppercase
+	padding 5px 10px
+	border 0
+	outline none
+	display inline-block
+	color $white
+	text-decoration none
+
+	transition(all 0.3s)
+
+	&.btn-red
+		background $red
+		&:hover
+			background $redHover
+
+
+/* STYLES */
+
 body
 
 	overflow-x hidden
-	
+	overflow-y auto
 	font-family $mainFont
 
-	// Самый задний фон
-	//background url('../img/body_bg.jpg') rgb(235, 164, 96) center center repeat-y
+	/* Самый задний фон */
+
+	background-color blue
+
+	// background-repeat no-repeat
+	// background-position top center
+	// background-attachment fixed
+
+	// -webkit-background-size cover
+	// -moz-background-size cover
+	// -o-background-size cover
+	// background-size cover
+
+	//background-image url('../img/body_bg.jpg')
 
 		
-	// Фон с изображением
-	.background
+/* Фон с изображением */
 
-		&.bg
-			//background url('../img/bg.jpg') rgb(235, 164, 96) top center no-repeat
+body > main
 
-	.hide 
-		display none
+	height 100%
+	width 100%
+	position absolute
 
-	/* BUTTONS */
+	background-image url('../img/bg.jpg')
 
-	.button
+	background-repeat repeat-x
 
-		cursor pointer
-		font 18px $mainFont
+	// background-position top center
+	// background-attachment fixed
+
+	// -webkit-background-size cover
+	// -moz-background-size cover
+	// -o-background-size cover
+	// background-size cover
+
+	// &.bg
+	// 	background-image url('../img/bg.jpg')
+
+/* HEADER */
+body > main > header
+	z-index 3
+	width 100%
+	height 40px
+	background red
+
+	&.fixed
+		position fixed
+		top 0
+
+	.container
+		width  ($mainWidth)px
+		height (40 - 12*2)px
+		padding 12px 0
+		margin 0 auto
+
+		background yellow
+
+	nav#menu
+		
 		text-transform uppercase
-		padding 3px 0 0 0
-		border 0
-		height 28px
-		color $white
-
-
-	header
-		.container
-				position relative
-				width  ($mainWidth)px
-				margin 0 auto
-	footer		
-		.container
-				position relative
-				width  ($mainWidth)px
-				margin 0 auto
-
-	.sections
-
-		/* Для всех секций! */
-		section
-
-			clear both
+		font-weight bold
+		float none
+		a 
+			text-decoration none
+			display inline-block
 			position relative
-			z-index 3
-			width 100%
-			min-width ($mainWidth)px
 
-			.container
-				position relative
-				width  ($mainWidth)px
-				height 50px
-				margin 0 auto
+		ul
+			list-style-type none
+			float left
+			padding 0
+			li
+				float left
+				margin 0 50px 0 0
+				&:last-child
+					margin 0
 
-		section#menu
+/* FOOTER */
+body > main > footer
+	position relative
+	z-index 3
+	width 100%
+	height 40px
 
-			.container
+	background red
 
-				nav
-					ul
-						list-style-type none
-						padding 10px 0 0 0
-						float left
-						display inline
-						li
-							display inline
-							a 
-								//margin 0 0 0 30px
-								font 16px $mainFont
-								text-decoration none
+	&.fixed
+		position fixed
+		bottom 0
+
+	.container
+		width  ($mainWidth)px
+		height (40 - 12*2)px
+		padding 12px 0
+		margin 0 auto
+
+		background yellow
+
+/* CONTENT */
+body > main > .sections
+
+	clear both
+	width 100%
+
+	/* Для всех секций! */
+	> section
+
+		clear both
+		position relative
+		z-index 3
+		width 100%
+		height 100%
+
+		.container
+			position relative
+			width  ($mainWidth)px
+			height 100%
+			margin 0 auto
+
+			background green
+
+			.content
+				padding 10px 0
+
+	section#index
+
+		.container
+			
+			.content
+				height 500px
 
 
+/* MEDIA */
+@media (max-height: 768px)
 	
+	#debugBox .mediaHeight:after
+		content '@media(max-height: 768px)'

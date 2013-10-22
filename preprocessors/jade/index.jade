@@ -2,16 +2,20 @@ extends layout
 
 block content
 
-	section#menu
-		.container
-			nav
-				ul
-					li: a(href="#") menu 1
-					li: a(href="#") menu 2
-					li: a(href="#") menu 3
-					li: a(href="#") menu 4
+	section#index
 
-	section#article
+		// index js
+		:coffeescript
+
+			$ ->
+
+				index = app.views['index']
+				index.controller()
+
+		/// index js
+
 		.container
-			h1 Hello
-				
+			.content
+				h1 CONTENT
+				p section#index
+					

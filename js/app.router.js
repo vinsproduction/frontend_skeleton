@@ -43,16 +43,6 @@ AppRouter = (function(_super) {
     "": "index",
     "!": "index",
     "!/": "index",
-    "!/profile": "profile",
-    "!/profile/": "profile",
-    "!/profile/:uid": "profile",
-    "!/profile/:uid/": "profile",
-    "!/profile/:uid/:action": "profile",
-    "!/profile/:uid/:action/": "profile",
-    "!/profile/:uid/:action/:sid": "profile",
-    "!/profile/:uid/:action/:sid/": "profile",
-    "!/story/:id": "storyView",
-    "!/story/:id/": "storyView",
     "!/ooops": "ooops",
     "!/ooops/": "ooops",
     "!/ie": "ie",
@@ -61,10 +51,10 @@ AppRouter = (function(_super) {
   };
 
   AppRouter.prototype.before = function(route) {
-    console.debug('[Route]', route);
-    $('body').scrollTop(0);
-    $('section').hide();
-    return $("section#menu a").removeClass('active');
+    if (route !== '') {
+      console.debug('[Route]', route);
+    }
+    return $('body').scrollTop(0);
   };
 
   AppRouter.prototype.after = function() {};
@@ -77,39 +67,19 @@ AppRouter = (function(_super) {
     if (className == null) {
       className = "";
     }
-    $('.background').removeClass('bg-1').removeClass('bg-2').removeClass('bg-3');
+    $('.background').removeClass('bg-1');
     if (className !== "") {
       return $('.background').addClass(className);
     }
   };
 
-  AppRouter.prototype.notFound = function(path) {
-    if (path === '_=_') {
-      app.redirect();
-      return;
-    }
-    $('section#notFound').show();
-    return this.changeBg('bg-1');
-  };
+  AppRouter.prototype.notFound = function(path) {};
 
-  AppRouter.prototype.ooops = function() {
-    $("section").hide();
-    $('section#ooops').show();
-    return this.changeBg('bg-1');
-  };
+  AppRouter.prototype.ooops = function() {};
 
-  AppRouter.prototype.ie = function() {
-    $("section").hide();
-    $('section#ie').show();
-    return this.changeBg('bg-1');
-  };
+  AppRouter.prototype.ie = function() {};
 
-  AppRouter.prototype.index = function() {
-    $("section").hide();
-    $('section#articles').show();
-    this.changeBg();
-    return app.views.articles.controller();
-  };
+  AppRouter.prototype.index = function() {};
 
   return AppRouter;
 

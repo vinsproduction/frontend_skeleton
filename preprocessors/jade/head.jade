@@ -1,5 +1,5 @@
 meta(charset='utf-8')
-title TPS
+title SCELETON
 meta(name='description', content='')
 meta(name='keywords', content='')
 
@@ -11,7 +11,7 @@ meta(property='og:description', content='')
 link(rel='image_src', href='')
 
 link(rel="shortcut icon",type="image/x-icon",href="")
-meta(name='viewport', content='width=device-width, initial-scale=0.1')
+meta(name='viewport', content='width=1265')
 
 script(type='text/javascript', src='js/libs/helpers.js')
 
@@ -22,7 +22,6 @@ script(type='text/javascript', src='js/libs/helpers.js')
 		do $$.disableConsole
 
 		$$.includeJS 'js/libs/lib.min.js'
-
 		$$.includeCSS 'css/project.css'
 		$$.includeJS 'js/project.min.js'
 
@@ -38,17 +37,15 @@ script(type='text/javascript', src='js/libs/helpers.js')
 		$$.includeJS 'js/libs/mustache.js'
 		$$.includeJS 'js/libs/underscore-min.js'
 
-		#$$.includeJS 'js/libs/json2.js'
-		#$$.includeJS 'js/libs/backbone-min.js'
+		$$.includeJS 'js/libs/json2.js'
+		$$.includeJS 'js/libs/backbone-min.js'
 
-		$$.includeJS 'js/libs/popup.js'
-
-		$$.includeCSS 'css/popups.css'
+		$$.includeCSS 'css/normalize.css'
 		$$.includeCSS 'css/main.css'
 		
-		#$$.includeJS 'js/app.models.js'
-		#$$.includeJS 'js/app.views.js'
-		#$$.includeJS 'js/app.router.js'
+		$$.includeJS 'js/app.models.js'
+		$$.includeJS 'js/app.views.js'
+		$$.includeJS 'js/app.router.js'
 		$$.includeJS 'js/app.js'
 
 block css

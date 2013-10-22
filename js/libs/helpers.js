@@ -14,7 +14,8 @@ $$; // SHORT NAMESPACE EDITABLE
 			log: function(){},
 			debug: function(){},
 			warn: function(){},
-			info: function(){}
+			info: function(){},
+			error: function(){}
 		};	
 	};
 
@@ -25,6 +26,7 @@ $$; // SHORT NAMESPACE EDITABLE
 	else if (!window.console.log) 	{ window.console.log = function(){}; }
 	else if (!window.console.warn) 	{ window.console.warn = function(){}; }
 	else if (!window.console.info) 	{ window.console.info = function(){}; }
+	else if (!window.console.error) 	{ window.console.error = function(){}; }
 
 
 	$.log = function(obj) { 

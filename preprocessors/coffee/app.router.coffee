@@ -29,19 +29,6 @@ class AppRouter extends Backbone.Router
 		"!": "index"
 		"!/": "index"
 
-		"!/profile": "profile"
-		"!/profile/": "profile"
-		"!/profile/:uid": "profile"
-		"!/profile/:uid/": "profile"
-
-		"!/profile/:uid/:action": "profile"
-		"!/profile/:uid/:action/": "profile"
-		"!/profile/:uid/:action/:sid": "profile"
-		"!/profile/:uid/:action/:sid/": "profile"
-
-		"!/story/:id": "storyView"
-		"!/story/:id/": "storyView"
-
 		"!/ooops" : "ooops"
 		"!/ooops/" : "ooops"
 
@@ -51,13 +38,10 @@ class AppRouter extends Backbone.Router
 		"*path" : "notFound"
 
 	before: (route) ->
-
-		console.debug '[Route]',route
+		if route isnt ''
+			console.debug '[Route]',route
 
 		$('body').scrollTop(0)
-
-		$('section').hide()
-		$("section#menu a").removeClass 'active'
 
 	after: ->
 
@@ -71,41 +55,15 @@ class AppRouter extends Backbone.Router
 
 		$('.background')
 			.removeClass('bg-1')
-			.removeClass('bg-2')
-			.removeClass('bg-3')
 
 		$('.background').addClass(className) if className isnt ""
 
 	
 	notFound: (path) ->
 
-		if path is '_=_'
-			app.redirect()
-			return
-
-		$('section#notFound').show()
-	
-		@changeBg 'bg-1'
-
 	ooops: ->
-
-		$("section").hide()
-		$('section#ooops').show()
-
-		@changeBg 'bg-1'
 
 	ie: ->
 
-		$("section").hide()
-		$('section#ie').show()
-
-		@changeBg 'bg-1'
-
 	index: ->
 
-		$("section").hide()
-		$('section#articles').show()
-
-		@changeBg()
-
-		app.views.articles.controller()

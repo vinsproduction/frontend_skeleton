@@ -1,5 +1,4 @@
-var ArticlesView, PrototypeView,
-  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+var IndexView, PrototypeView,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -8,16 +7,7 @@ PrototypeView = (function() {
 
   PrototypeView.prototype.varconstants = {};
 
-  PrototypeView.prototype.preconstructor = function() {
-    this.localView = (function() {
-      if (__indexOf.call(app.debug, "localview") >= 0) {
-        return true;
-      } else {
-        return false;
-      }
-    })();
-    return this.varconstants.root = this.localView ? "" : window.app.root;
-  };
+  PrototypeView.prototype.preconstructor = function() {};
 
   PrototypeView.prototype.generateRenders = function(template) {
     var _this = this;
@@ -81,46 +71,62 @@ PrototypeView = (function() {
     return $el.removeAttr('style').html(Mustache.to_html(sourse, vars));
   };
 
+  PrototypeView.prototype.resize = function(fixed) {
+    var $main, footerH, headerH, mainH, sections, sectionsH;
+    sections = {
+      el: $('body > main > .sections')
+    };
+    $main = $('body > main');
+    mainH = parseInt($main.height());
+    headerH = parseInt($('header').height());
+    footerH = parseInt($('footer').height());
+    sectionsH = mainH - headerH - footerH;
+    if (fixed) {
+      sections.height = sectionsH;
+      sections.el.height(sections.height);
+      $('body').css({
+        'overflow-y': 'hidden'
+      });
+      $('footer').css({
+        'position': 'fixed'
+      });
+    } else {
+      sections.height = 'auto';
+      sections.el.height(sections.height);
+      $('body').css({
+        'overflow-y': 'auto'
+      });
+      $('footer').css({
+        'position': 'relative'
+      });
+    }
+    app.debugBox.log("sect", "header: " + headerH + "px | sections: " + sectionsH + "px | footer: " + footerH + "px");
+    return app.debugBox.log("res", "" + ($main.width()) + " x " + ($main.height()));
+  };
+
   return PrototypeView;
 
 })();
 
-ArticlesView = (function(_super) {
-  __extends(ArticlesView, _super);
+IndexView = (function(_super) {
+  __extends(IndexView, _super);
 
-  function ArticlesView() {
+  function IndexView() {
+    var _this = this;
     this.preconstructor();
-    this.el = $("section#articles");
-    this.template = {
-      'new': this.el.find(".new"),
-      'popular': this.el.find(".popular")
-    };
-    this.generateRenders();
+    this.el = $("section#index");
+    this.resizeit();
+    $(window).resize(function() {
+      return _this.resizeit();
+    });
   }
 
-  ArticlesView.prototype.controller = function(params) {
-    var _this = this;
-    this.vars = {};
-    this.preRender['new']();
-    this.preRender['popular']();
-    this.articles = new Articles({
-      localView: this.localView
-    });
-    return this.articles.get(function(data) {
-      return _this.renderResponse(data);
-    });
+  IndexView.prototype.resizeit = function() {
+    return this.resize('fixed');
   };
 
-  ArticlesView.prototype.listeners = function() {};
+  IndexView.prototype.controller = function(params) {};
 
-  ArticlesView.prototype.renderResponse = function(data) {
-    _.extend(this.vars, this.varconstants);
-    _.extend(this.vars, data);
-    this.render['new']();
-    this.render['popular']();
-    return this.listeners();
-  };
-
-  return ArticlesView;
+  return IndexView;
 
 })(PrototypeView);

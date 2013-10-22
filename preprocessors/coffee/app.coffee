@@ -12,12 +12,7 @@ class App
 		@host = if @localhost then "http://#{@name}" else window.location.host
 
 		# Путь до картинок и прочей статики
-		
-		if options.root
-			@root = options.root
-		else
-			# Для локалхоста показываем настоящие хост
-			@root	= if @localhost then @host else ""
+		@root = options.root || ""
 	
 		# Возвращает параметры дебага, напр. ?debug=test -> вернет test
 		@debug = do =>
@@ -26,7 +21,7 @@ class App
 
 		# Только для локальной разработки!
 		if !$$.browser.msie and @localhost
-			livereloadPort = 35829
+			livereloadPort = 777
 			$$.includeJS "http://localhost:#{livereloadPort}/livereload.js"
 			console.debug "[Livereload] http://localhost:#{livereloadPort}/livereload.js"
 
@@ -46,25 +41,65 @@ class App
 
 		$ =>
 
+			# Дебагер
+			if 'box' in @debug then do @debugBox.init
+
 			# Классы - контроллеры/рендеры
-			# @initViews()
+			@initViews()
 
 			# Backbone Router
-			# @router = new AppRouter
-			# Backbone.history.start()
+			@router = new AppRouter
+			Backbone.history.start()
 
 			# Настройки соцсетей
 			do @social.init
 
 			console.debug '[App::init] debug:',@debug, @
 
-	# initViews: ->
+	initViews: ->
 
-	# 	@views =
-	# 		articles: new new ArticlesView
+		@views =
+			index: new IndexView
 
 
-	#redirect: (page = "") -> @router.navigate('!/' + page,true)
+	redirect: (page = "") -> @router.navigate(page,true)
+
+	debugBox:
+
+		init: ->
+
+			$('body').append """
+				<div id="debugBox" style="font-size: 14px;background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;">
+					debug box
+					<pre class="res">resolution: <span></span></pre>
+					<div class="sect"></div>
+					<div class="log"></div>
+					<pre class="mediaHeight" style="color:red;"></pre>
+					<pre class="mediaWidth" style="color:red;"></pre>
+				</div>
+			"""
+
+		color:-> $('#debugBox').find(".log pre:nth-child(2n)").css({color: 'gray'})
+
+		
+		log: (place, log) ->
+
+			if place is 'log'
+
+				$('#debugBox .log').append """
+					<pre>#{log}</pre>
+				"""
+			else if place is 'sect'
+
+				$('#debugBox .sect').html """
+					<pre>#{log}</pre>
+				"""
+			else if place is 'res'
+				$('#debugBox .res span').html """
+					#{log}
+				"""
+
+			app.debugBox.color()
 
 	libs: ->
 
@@ -76,9 +111,9 @@ class App
 	social:
 
 		defaults:
-			vkontakteApiId		: '3819447'
-			facebookApiId		: '228658570618080'
-			odnoklassnikiApiId: '192750592'
+			vkontakteApiId		: ''
+			facebookApiId		: ''
+			odnoklassnikiApiId: ''
 
 
 		init: ->
@@ -170,7 +205,7 @@ class App
 				url += "&st.comments=" + encodeURIComponent(options.text)
 				url += "&st._surl=" + encodeURIComponent(options.url)
 
-				@popup options.url
+				@popup url
 
 			facebook: (options={}) ->
 
@@ -182,7 +217,7 @@ class App
 				url += "&p[url]=" + encodeURIComponent(options.url)
 				url += "&p[images][0]=" + encodeURIComponent(options.img)
 
-				@popup options.url
+				@popup url
 
 			twitter: (options={}) ->
 
@@ -193,7 +228,7 @@ class App
 				url += "&url=" + encodeURIComponent(options.url)
 				url += "&counturl=" + encodeURIComponent(options.url)
 
-				@popup options.url
+				@popup url
 
 			mailru: (options={}) ->
 
@@ -205,7 +240,7 @@ class App
 				url += "&description=" + encodeURIComponent(options.text)
 				url += "&imageurl=" + encodeURIComponent(options.img)
 
-				@popup options.url
+				@popup url
 
 			popup: (url) ->
 				window.open url, "", "toolbar=0,status=0,width=626,height=436"

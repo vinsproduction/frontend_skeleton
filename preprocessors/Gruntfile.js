@@ -9,7 +9,6 @@ module.exports = function(grunt) {
 					paths: ['styl/']
 				},
 				files: {
-					'../css/popups.css': 'styl/popups.styl',
 					'../css/main.css': 'styl/main.styl'
 				}
 			}
@@ -38,10 +37,9 @@ module.exports = function(grunt) {
           	},
 				
           	files: {
-        			//  '../js/app.models.js': 'coffee/app.models.coffee',
-		    		// '../js/app.views.js': 'coffee/app.views.coffee',
-		    		// '../js/app.router.js': 'coffee/app.router.coffee',
-		    		
+        			'../js/app.models.js': 'coffee/app.models.coffee',
+		    		'../js/app.views.js': 'coffee/app.views.coffee',
+		    		'../js/app.router.js': 'coffee/app.router.coffee',
 		    		'../js/app.js': 'coffee/app.coffee'
 		    	}
 			}
@@ -53,6 +51,9 @@ module.exports = function(grunt) {
 			
 			js: {
 				src: [
+					'../js/app.models.js',
+					'../js/app.views.js',
+					'../js/app.router.js',
 					'../js/app.js',
 				],
 				dest: '../js/project.js'
@@ -62,21 +63,19 @@ module.exports = function(grunt) {
 					'../js/libs/jquery-1.10.2.min.js',
 					'../js/libs/jquery-ui-1.10.3.custom.js',
 					'../js/libs/jquery.tinyscrollbar.min.js',
+					'../js/libs/jquery.jcarousel.js',
 					'../js/libs/jquery.cookie.js',
 					'../js/libs/mustache.js',
 					'../js/libs/underscore-min.js',
-
-					// '../js/libs/json2.js',
-					// '../js/libs/backbone-min.js',
-
-					'../js/libs/popups.js'
+					'../js/libs/json2.js',
+					'../js/libs/backbone-min.js',
 				],
 				dest: '../js/libs/lib.js'
 			},
 			css: {
 				src: [
-					'../css/main.css',
-					'../css/popups.css'
+					'../css/normalize.css',
+					'../css/main.css'
 				],
 				dest: '../css/project.css'
 			},
@@ -95,7 +94,7 @@ module.exports = function(grunt) {
 		// Наблюдение за изменениями
 		watch: {
 			options: {
-				livereload: 35829
+				livereload: 777
 			},
 
 			// Перекомпиляция стилей при изменении styl-файлов

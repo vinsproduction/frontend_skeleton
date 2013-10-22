@@ -404,29 +404,3 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-
-textarea,input{font-family:'Arial';font-size:20px}
-.hide{display:none}
-.btn{cursor:pointer;font:20px 'Arial';text-transform:uppercase;padding:5px 10px;border:0;outline:none;display:inline-block;color:#fff;text-decoration:none;-webkit-transition:all .3s;-moz-transition:all .3s;-ms-transition:all .3s;-o-transition:all .3s;transition:all .3s;}
-.btn.btn-red{background:#ee2e24;}
-.btn.btn-red:hover{background:#db2920}
-body{overflow-x:hidden;overflow-y:auto;font-family:'Arial';background-color:#00f}
-body > main{height:100%;width:100%;position:absolute;background-image:url("../img/bg.jpg");background-repeat:repeat-x}
-body > main > header{z-index:3;width:100%;height:40px;background:#f00;}
-body > main > header.fixed{position:fixed;top:0}
-body > main > header .container{width:1265px;height:16px;padding:12px 0;margin:0 auto;background:#ff0}
-body > main > header nav#menu{text-transform:uppercase;font-weight:bold;float:none;}
-body > main > header nav#menu a{text-decoration:none;display:inline-block;position:relative}
-body > main > header nav#menu ul{list-style-type:none;float:left;padding:0;}
-body > main > header nav#menu ul li{float:left;margin:0 50px 0 0;}
-body > main > header nav#menu ul li:last-child{margin:0}
-body > main > footer{position:relative;z-index:3;width:100%;height:40px;background:#f00;}
-body > main > footer.fixed{position:fixed;bottom:0}
-body > main > footer .container{width:1265px;height:16px;padding:12px 0;margin:0 auto;background:#ff0}
-body > main > .sections{clear:both;width:100%;}
-body > main > .sections > section{clear:both;position:relative;z-index:3;width:100%;height:100%;}
-body > main > .sections > section .container{position:relative;width:1265px;height:100%;margin:0 auto;background:#008000;}
-body > main > .sections > section .container .content{padding:10px 0}
-body > main > .sections section#index .container .content{height:500px}
-@media (max-height: 768px){#debugBox .mediaHeight:after{content:'@media(max-height: 768px)'}
-}

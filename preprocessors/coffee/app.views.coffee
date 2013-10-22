@@ -6,20 +6,6 @@ class PrototypeView
 
 	preconstructor: ->
 
-		@localView = do ->
-
-			if "localview" in app.debug
-				# console.warn """
-				# ==================
-				# Warn! [View::local]
-				# ==================
-				# """
-				return true
-			else
-				return false
-
-		@varconstants.root = if @localView then "" else window.app.root
-
 	generateRenders: (template =  @template) ->
 
 		_.each template, (val,key) =>
@@ -68,44 +54,52 @@ class PrototypeView
 
 		$el.removeAttr('style').html( Mustache.to_html(sourse, vars) )
 
+	resize: (fixed) ->
+
+		sections =
+			el 	: $('body > main > .sections')
+
+		$main = $('body > main')
+
+		mainH			= parseInt($main.height())
+		headerH		= parseInt($('header').height())
+		footerH 		= parseInt($('footer').height())
+		sectionsH 	= mainH - headerH - footerH
+
+		if fixed
+
+			sections.height = sectionsH
+			sections.el.height sections.height
+			$('body').css('overflow-y':'hidden')
+			$('footer').css('position': 'fixed')
+
+		else
+
+			sections.height = 'auto'
+			sections.el.height sections.height
+			$('body').css('overflow-y':'auto')
+			$('footer').css('position': 'relative')
+
+		app.debugBox.log "sect", "header: #{headerH}px | sections: #{sectionsH}px | footer: #{footerH}px"
+		app.debugBox.log "res", "#{$main.width()} x #{$main.height()}"
 	
-class ArticlesView extends PrototypeView
+class IndexView extends PrototypeView
 
 	constructor: ->
 
 		do @preconstructor
 
-		@el =  $("section#articles")
+		@el =  $("section#index")
 
-		@template = 
+		do @resizeit
+		$(window).resize => do @resizeit
 
-			'new'		: @el.find(".new")
-			'popular': @el.find(".popular")
-
-		do @generateRenders
-
+	resizeit: ->
+		@resize('fixed')
+		#@resize()
 
 	controller: (params) ->
 
-		@vars = {} #reset vars
-
-		@preRender['new']()
-		@preRender['popular']()
-
-		# Models
-		@articles = new Articles {@localView}
-
-		@articles.get (data) => @renderResponse data
-
-	listeners: ->
-
-	renderResponse: (data) ->
-
-		_.extend @vars, @varconstants	
-		_.extend @vars, data
 		
-		do @render['new']
-		do @render['popular']
 
-		do @listeners
 

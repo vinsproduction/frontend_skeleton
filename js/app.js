@@ -1,13 +1,17 @@
-var App;
+var App,
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 App = (function() {
-  function App() {
+  function App(options) {
     var livereloadPort,
       _this = this;
+    if (options == null) {
+      options = {};
+    }
     this.name = 'project';
     this.localhost = window.location.host === "";
     this.host = this.localhost ? "http://" + this.name : window.location.host;
-    this.root = this.localhost ? this.host : "";
+    this.root = options.root || "";
     this.debug = (function() {
       var debug;
       debug = $$.urlParam('debug');
@@ -18,7 +22,7 @@ App = (function() {
       }
     })();
     if (!$$.browser.msie && this.localhost) {
-      livereloadPort = 35829;
+      livereloadPort = 777;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
       console.debug("[Livereload] http://localhost:" + livereloadPort + "/livereload.js");
     }
@@ -31,9 +35,49 @@ App = (function() {
   App.prototype.init = function() {
     var _this = this;
     return $(function() {
+      if (__indexOf.call(_this.debug, 'box') >= 0) {
+        _this.debugBox.init();
+      }
+      _this.initViews();
+      _this.router = new AppRouter;
+      Backbone.history.start();
       _this.social.init();
       return console.debug('[App::init] debug:', _this.debug, _this);
     });
+  };
+
+  App.prototype.initViews = function() {
+    return this.views = {
+      index: new IndexView
+    };
+  };
+
+  App.prototype.redirect = function(page) {
+    if (page == null) {
+      page = "";
+    }
+    return this.router.navigate(page, true);
+  };
+
+  App.prototype.debugBox = {
+    init: function() {
+      return $('body').append("<div id=\"debugBox\" style=\"font-size: 14px;background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;\">\n	debug box\n	<pre class=\"res\">resolution: <span></span></pre>\n	<div class=\"sect\"></div>\n	<div class=\"log\"></div>\n	<pre class=\"mediaHeight\" style=\"color:red;\"></pre>\n	<pre class=\"mediaWidth\" style=\"color:red;\"></pre>\n</div>");
+    },
+    color: function() {
+      return $('#debugBox').find(".log pre:nth-child(2n)").css({
+        color: 'gray'
+      });
+    },
+    log: function(place, log) {
+      if (place === 'log') {
+        $('#debugBox .log').append("<pre>" + log + "</pre>");
+      } else if (place === 'sect') {
+        $('#debugBox .sect').html("<pre>" + log + "</pre>");
+      } else if (place === 'res') {
+        $('#debugBox .res span').html("" + log);
+      }
+      return app.debugBox.color();
+    }
   };
 
   App.prototype.libs = function() {
@@ -46,9 +90,9 @@ App = (function() {
 
   App.prototype.social = {
     defaults: {
-      vkontakteApiId: '3819447',
-      facebookApiId: '228658570618080',
-      odnoklassnikiApiId: '192750592'
+      vkontakteApiId: '',
+      facebookApiId: '',
+      odnoklassnikiApiId: ''
     },
     init: function() {
       var _init;
@@ -157,7 +201,7 @@ App = (function() {
         url = "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1";
         url += "&st.comments=" + encodeURIComponent(options.text);
         url += "&st._surl=" + encodeURIComponent(options.url);
-        return this.popup(options.url);
+        return this.popup(url);
       },
       facebook: function(options) {
         var url;
@@ -170,7 +214,7 @@ App = (function() {
         url += "&p[summary]=" + encodeURIComponent(options.text);
         url += "&p[url]=" + encodeURIComponent(options.url);
         url += "&p[images][0]=" + encodeURIComponent(options.img);
-        return this.popup(options.url);
+        return this.popup(url);
       },
       twitter: function(options) {
         var url;
@@ -182,7 +226,7 @@ App = (function() {
         url += "text=" + encodeURIComponent(options.title);
         url += "&url=" + encodeURIComponent(options.url);
         url += "&counturl=" + encodeURIComponent(options.url);
-        return this.popup(options.url);
+        return this.popup(url);
       },
       mailru: function(options) {
         var url;
@@ -195,7 +239,7 @@ App = (function() {
         url += "&title=" + encodeURIComponent(options.title);
         url += "&description=" + encodeURIComponent(options.text);
         url += "&imageurl=" + encodeURIComponent(options.img);
-        return this.popup(options.url);
+        return this.popup(url);
       },
       popup: function(url) {
         return window.open(url, "", "toolbar=0,status=0,width=626,height=436");
