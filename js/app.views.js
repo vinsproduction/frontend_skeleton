@@ -76,21 +76,13 @@ PrototypeView = (function() {
 
   PrototypeView.prototype.resize = function() {
     var footerH, headerH, sectionsH;
+    return;
     this.sections = {
       el: $('body > main > .sections')
     };
     headerH = parseInt($('body > main > header').height());
     footerH = parseInt($('body > main > footer').height());
     sectionsH = parseInt($('body > main > .sections').height());
-    if ($(window).height() <= sectionsH + headerH + footerH) {
-      this.sections.height = sectionsH;
-      this.sections.el.height(this.sections.height);
-      $('body > main > footer').removeClass('fixed');
-    } else {
-      this.sections.height = 'auto';
-      this.sections.el.height(this.sections.height);
-      $('body > main > footer').addClass('fixed');
-    }
     app.debugBox.log("sect", "header: " + headerH + "px | sections: " + sectionsH + "px | footer: " + footerH + "px");
     app.debugBox.log("res", "" + ($(window).width()) + "px x " + ($(window).height()) + "px");
     return this.afterResize();

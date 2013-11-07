@@ -59,6 +59,8 @@ class PrototypeView
 
 	resize: ->
 
+		return
+
 		@sections =
 			el 	: $('body > main > .sections')
 
@@ -66,14 +68,14 @@ class PrototypeView
 		footerH 		= parseInt($('body > main > footer').height())
 		sectionsH 	= parseInt($('body > main > .sections').height())
 		
-		if $(window).height() <= sectionsH + headerH + footerH
-			@sections.height = sectionsH
-			@sections.el.height @sections.height
-			$('body > main > footer').removeClass 'fixed'
-		else
-			@sections.height = 'auto'
-			@sections.el.height @sections.height
-			$('body > main > footer').addClass 'fixed'
+		# if $(window).height() <= sectionsH + headerH + footerH
+		# 	@sections.height = sectionsH
+		# 	@sections.el.height @sections.height
+		# 	$('body > main > footer').removeClass 'fixed'
+		# else
+		# 	@sections.height = 'auto'
+		# 	@sections.el.height @sections.height
+		# 	$('body > main > footer').addClass 'fixed'
 
 				
 		app.debugBox.log "sect", "header: #{headerH}px | sections: #{sectionsH}px | footer: #{footerH}px"
