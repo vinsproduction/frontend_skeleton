@@ -4,16 +4,6 @@ block content
 
 	section#index
 
-		// index js
-		:coffeescript
-
-			$ ->
-
-				index = app.views['index']
-				index.controller()
-
-		/// index js
-
 		.container
 			.content
 				h1 section#index
@@ -22,11 +12,72 @@ block content
 				p Mauris eu justo sodales purus mollis auctor vitae eget diam. Nulla interdum nisl et tellus dictum molestie. Pellentesque nunc elit, sollicitudin at tincidunt ut, sollicitudin a quam. Vivamus consectetur ac risus eget bibendum. Quisque posuere vitae nisl eu gravida. Etiam eros nunc, euismod eu consequat quis, luctus venenatis dolor. Duis vestibulum iaculis tempus. Suspendisse urna lectus, faucibus non libero vel, vestibulum malesuada ante. Sed ornare, velit nec sodales euismod, nisi orci placerat felis, in volutpat ligula sapien eget metus. Sed malesuada purus tempus ante varius pellentesque. Mauris ut tincidunt purus. Mauris at nulla eu mi sagittis viverra. Cras in tempor quam. Quisque porta venenatis est, eu adipiscing ligula tristique ut. Nam a neque vel mi adipiscing bibendum. Sed vitae dui velit.
 				p Donec nec leo at tellus mattis faucibus. Suspendisse a orci consequat, mattis sem sit amet, convallis enim. Morbi iaculis blandit enim, id pretium nisl molestie sit amet. Mauris convallis diam nec mauris condimentum, ac dignissim nulla elementum. Ut eget nulla quam. Morbi sollicitudin nunc sit amet mi adipiscing, in aliquam est eleifend. Nam rhoncus metus risus, eu tincidunt metus accumsan in. Etiam adipiscing tortor et urna semper, et aliquet elit pulvinar. Phasellus suscipit urna nec malesuada pulvinar. In hac habitasse platea dictumst. Aliquam sed gravida tortor, ac elementum augue. Morbi porta pharetra nibh a vulputate. Morbi non vehicula arcu. Nullam tristique, mauris convallis congue tincidunt, mi justo dapibus ligula, at placerat est ligula eu erat. Quisque mauris magna, vulputate vel lacinia nec, venenatis quis mi. Cras non ultrices mauris.
 
+	section#test-render
 
-	section#index-2
+		// test-render js
+		:coffeescript
+
+			$ ->
+
+				indexView = app.views['index']
+				indexView.controller()
+
+		/// test-render js
 
 		.container
 			.content
-				h1 section#index-2
-				p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis tempus nisl. Nulla magna metus, imperdiet gravida facilisis ut, porttitor sed sapien. Pellentesque consectetur erat felis, non lobortis est faucibus non. Donec placerat augue in justo fermentum facilisis. Curabitur fringilla neque ut leo scelerisque facilisis. Vivamus vel justo vitae nibh imperdiet interdum id ac neque. Etiam ac massa pellentesque, dictum justo quis, dignissim est. Phasellus sit amet rutrum odio. In mollis dictum dolor vehicula imperdiet. Vestibulum et odio egestas, cursus dui vel, semper mi.
-				p Sed non egestas quam. Pellentesque ac enim turpis. Maecenas ac libero bibendum, venenatis arcu sed, fringilla purus. Morbi ac purus ultricies, sagittis lacus id, molestie felis. Sed eget mi lectus. Etiam rutrum sollicitudin neque a ornare. Nullam blandit mauris orci, luctus porttitor mi porttitor eu. Donec sed lobortis justo. Ut et varius sem. Fusce porttitor rutrum tellus vel faucibus. Donec gravida sapien sapien, ac eleifend diam consequat ut. Donec sodales erat porttitor porttitor volutpat. Donec rutrum lectus a ligula bibendum facilisis. Sed vehicula viverra semper.
+				h1 {{test}}
+
+
+	section#grid-2
+
+		.container
+			.content
+
+				h1 Grid 2 columns
+
+				article 1
+				article.last-col 2
+
+				article 3
+				article.last-col 4
+
+	section#grid-3
+
+		.container
+			.content
+
+				h1 Grid 3 columns
+
+				article 1
+				article 2
+				article.last-col 3
+
+				article 4
+				article 5
+				article.last-col 6
+
+	section#grid-6
+
+		.container
+			.content
+
+				h1 Grid 6 columns
+
+				article 1
+				article 2
+				article 3
+				article 4
+				article 5
+				article.last-col 6
+
+				article 7
+				article 8
+				article 9
+				article 10
+				article 11
+				article.last-col 12
+
+
+
+

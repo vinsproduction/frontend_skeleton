@@ -3,11 +3,14 @@ var IndexView, PrototypeView, _ref,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 PrototypeView = (function() {
+  var error;
+
   function PrototypeView() {
     var _this = this;
-    this.resize();
+    this.varconstants = {};
+    this.doResize();
     $(window).resize(function() {
-      return _this.resize();
+      return _this.doResize();
     });
     this.init();
   }
@@ -46,25 +49,28 @@ PrototypeView = (function() {
   };
 
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
-    var error, height, loadtext, width, _ref;
-    try {
-      loadtext = (_ref = options.t) != null ? _ref : "Загрузка...";
-      width = parseInt(options.w) + "px" || "100%";
-      height = parseInt(options.h) + "px" || "100px";
-      console.log("[preRender " + templateName + "] loadtext:", loadtext);
-      if (loadtext) {
-        return $el.css({
-          'background-color': '#FFF'
-        }).html("<div style=\"padding:10px;height:" + height + ";width:" + width + ";\"><center>" + loadtext + "</center></div>");
-      } else {
-        return $el.empty();
-      }
-    } catch (_error) {
-      error = _error;
-      console.error('template undefined');
-      return console.error(error);
+    var height, loadtext, margin, width;
+    loadtext = options && options.t ? options.t : "Load...";
+    width = options && options.w ? parseInt(options.w) + "px" : "auto";
+    height = options && options.h ? parseInt(options.h) + "px" : "100px";
+    margin = options && options.m ? parseInt(options.m) + "px" : (parseInt(height) / 2 - 10) + "px";
+    console.log("[preRender " + templateName + "] loadtext:", loadtext);
+    if (loadtext) {
+      return $el.css({
+        'background-color': '#FFF'
+      }).html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + ";\">" + loadtext + "</p>\n</div>");
+    } else {
+      return $el.empty();
     }
   };
+
+  try {
+    /(?:)/;
+  } catch (_error) {
+    error = _error;
+    console.error('template undefined');
+    console.error(error);
+  }
 
   PrototypeView.prototype.doRender = function(templateName, $el, sourse, vars) {
     if (vars == null) {
@@ -74,9 +80,8 @@ PrototypeView = (function() {
     return $el.removeAttr('style').html(Mustache.to_html(sourse, vars));
   };
 
-  PrototypeView.prototype.resize = function() {
+  PrototypeView.prototype.doResize = function(callback) {
     var footerH, headerH, sectionsH;
-    return;
     this.sections = {
       el: $('body > main > .sections')
     };
@@ -85,17 +90,15 @@ PrototypeView = (function() {
     sectionsH = parseInt($('body > main > .sections').height());
     app.debugBox.log("sect", "header: " + headerH + "px | sections: " + sectionsH + "px | footer: " + footerH + "px");
     app.debugBox.log("res", "" + ($(window).width()) + "px x " + ($(window).height()) + "px");
-    return this.afterResize();
+    return this.resize();
   };
 
-  PrototypeView.prototype.afterResize = function() {};
+  PrototypeView.prototype.resize = function() {};
 
   PrototypeView.prototype.init = function() {};
 
   PrototypeView.prototype.controller = function(opt) {
-    if (opt == null) {
-      opt = {};
-    }
+    this.opt = opt != null ? opt : {};
   };
 
   return PrototypeView;
@@ -109,6 +112,46 @@ IndexView = (function(_super) {
     _ref = IndexView.__super__.constructor.apply(this, arguments);
     return _ref;
   }
+
+  IndexView.prototype.init = function() {
+    this.el = $("section#test-render");
+    this.template = {
+      'content': this.el.find('.content')
+    };
+    return this.generateRenders();
+  };
+
+  IndexView.prototype.resize = function() {};
+
+  IndexView.prototype.controller = function(opt) {
+    var _this = this;
+    this.opt = opt != null ? opt : {};
+    this.vars = {};
+    this.preRender['content']({
+      t: 'Load...',
+      h: 130
+    });
+    return setTimeout(function() {
+      var data;
+      data = {
+        test: 'Mustache rendered'
+      };
+      return _this.renderResponse(data);
+    }, 2000);
+  };
+
+  IndexView.prototype.renderResponse = function(data) {
+    _.extend(this.vars, this.varconstants);
+    _.extend(this.vars, data);
+    this.render['content']();
+    return this.listener();
+  };
+
+  IndexView.prototype.listener = function() {
+    return this.template['content'].find('h1').css({
+      'color': 'green'
+    });
+  };
 
   return IndexView;
 

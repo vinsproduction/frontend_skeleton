@@ -4,8 +4,10 @@ class PrototypeView
 
 	constructor: ->
 
-		do @resize
-		$(window).resize => do @resize
+		@varconstants = {}
+
+		do @doResize
+		$(window).resize => do @doResize
 
 		do @init
 
@@ -32,21 +34,25 @@ class PrototypeView
 
 	doPreRender: (templateName, $el, options) ->
 
-		try
+		
 
-			loadtext = options.t ? "Загрузка..."
-			width 	= parseInt(options.w) + "px" || "100%"
-			height 	= parseInt(options.h) + "px" || "100px"
+			loadtext = if options and options.t then options.t else "Load..."
+			width 	= if options and options.w then parseInt(options.w) + "px" else "auto"
+			height 	= if options and options.h then parseInt(options.h) + "px" else "100px"
+			margin  	= if options and options.m then parseInt(options.m) + "px" else (parseInt(height)/2 - 10) + "px" # 10 - погрешность от размера шрифта
 
 			console.log "[preRender #{templateName}] loadtext:",loadtext
 
 			if loadtext
 				$el.css({'background-color':'#FFF'}).html """
-					<div style="padding:10px;height:#{height};width:#{width};"><center>#{loadtext}</center></div>
+					<div class="prerender" style="position:relative;height:#{height};width:#{width};text-align:center;">
+						<p style="position: relative; top:#{margin};">#{loadtext}</p>
+					</div>
 				"""
 			else
 				$el.empty()
-	
+		try
+			//
 		catch error
 			console.error 'template undefined'
 			console.error error
@@ -57,9 +63,7 @@ class PrototypeView
 
 		$el.removeAttr('style').html( Mustache.to_html(sourse, vars) )
 
-	resize: ->
-
-		return
+	doResize: (callback) ->
 
 		@sections =
 			el 	: $('body > main > .sections')
@@ -67,37 +71,56 @@ class PrototypeView
 		headerH		= parseInt($('body > main > header').height())
 		footerH 		= parseInt($('body > main > footer').height())
 		sectionsH 	= parseInt($('body > main > .sections').height())
-		
-		# if $(window).height() <= sectionsH + headerH + footerH
-		# 	@sections.height = sectionsH
-		# 	@sections.el.height @sections.height
-		# 	$('body > main > footer').removeClass 'fixed'
-		# else
-		# 	@sections.height = 'auto'
-		# 	@sections.el.height @sections.height
-		# 	$('body > main > footer').addClass 'fixed'
-
-				
+			
 		app.debugBox.log "sect", "header: #{headerH}px | sections: #{sectionsH}px | footer: #{footerH}px"
 		app.debugBox.log "res", "#{$(window).width()}px x #{$(window).height()}px"
 
-		do @afterResize
+		do @resize
 
-	afterResize: ->
+	resize: ->
 
 	init: ->
 
-	controller: (opt={}) ->	
+	controller: (@opt={}) ->
 
 class IndexView extends PrototypeView
 
-	# init: ->
-	# 	@el = $("section#index")
+	init: ->
 
-	# afterResize: ->
+		@el = $("section#test-render")
 
-	# controller: (opt={}) ->
+		@template = 
+			'content' : @el.find('.content')
 
+		do @generateRenders
+
+	resize: -> 
+		# do resize
+	
+	controller: (@opt={}) ->
+
+		@vars = {} #reset vars
+
+		@preRender['content'](t: 'Load...',h:130)
+
+		setTimeout(=>
+			data = 
+				test: 'Mustache rendered'
+
+			@renderResponse(data)
+		,2000)
+		
+	renderResponse: (data) ->
+	
+		_.extend @vars, @varconstants
+		_.extend @vars, data
+
+		do @render['content']
+		do @listener
+
+	listener: ->
+		
+		@template['content'].find('h1').css('color':'green')
 
 
 		

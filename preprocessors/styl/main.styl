@@ -1,5 +1,5 @@
 
-/* MIXins */
+// MIXins
 
 vendor(prop, args)
 	-webkit-{prop} args
@@ -40,7 +40,25 @@ background-linear-gradient(startPoint, startColor, startInterval, endColor, endI
 		background-image linear-gradient(startPoint, startColor startInterval, endColor endInterval)
 
 
-/* FONTS */
+block()
+	display block
+
+block-inline()
+	display -moz-inline-stack
+	display inline-block
+	vertical-align top
+	zoom 1
+	*display inline
+
+block-left()
+	float left
+	block-inline()
+
+block-right()
+	float right
+	block-inline()
+
+// FONTS
 
 // @font-face {
 //   font-family: 'CompProRegular';
@@ -51,7 +69,7 @@ background-linear-gradient(startPoint, startColor, startInterval, endColor, endI
 // }
 
 
-/* MAIN CONSTANTS */
+// MAIN CONSTANTS
 
 $mainWidth 		= 1265
 $mainHeight 	= 1000
@@ -59,13 +77,18 @@ $mainFont 		= 'Arial'
 
 // COLORS
 
-$black 	= #000
-$white	= #FFFFFF
 $red		= #ee2e24
 $redHover= #db2920
 $gray		= #ccc
 
-/* MAIN STYLES */
+/* STYLES FOR ALL */ //REMOVE THIS
+
+h1 
+	font-size 24px
+	color #736B68
+p  //REMOVE THIS
+	margin 5px 0
+	color #736B68
 
 textarea, input
 	font-family $mainFont
@@ -74,7 +97,7 @@ textarea, input
 textarea:focus, input:focus
 	//
 
-/* HELPERS STYLES */
+/* STYLES - HELPERS */
 
 .hide 
 	display none
@@ -86,8 +109,8 @@ textarea:focus, input:focus
 	padding 5px 10px
 	border 0
 	outline none
-	display inline-block
-	color $white
+	block-inline()
+	color #FFF
 	text-decoration none
 
 	transition(all 0.3s)
@@ -98,7 +121,7 @@ textarea:focus, input:focus
 			background $redHover
 
 
-/* STYLES */
+/* STYLES - MAIN */
 
 html
 	height 100%
@@ -149,7 +172,7 @@ body > main
 
 /* HEADER */
 body > main > header
-	z-index 3
+	z-index 2
 	width 100%
 	height 40px
 
@@ -169,35 +192,39 @@ body > main > header
 
 		.content
 			padding 0 5px
+			block-inline()
+			width  ($mainWidth - 5*2)px
 
+			nav#menu
+				block-right()
+				text-transform uppercase
+				font-weight bold
+				a 
+					text-decoration none
+					block-inline()
+					position relative
+					color #FFF
 
-	nav#menu
-		
-		text-transform uppercase
-		font-weight bold
-		float none
-		a 
-			text-decoration none
-			display inline-block
-			position relative
+				ul
+					list-style-type none
+					float left
+					padding 0
+					li
+						float left
+						margin 0 50px 0 0
+						&:last-child
+							margin 0
 
-			color #FFF
+			.logo
+				block-left()
+				margin-top -6px
 
-		ul
-			list-style-type none
-			float left
-			padding 0
-			li
-				float left
-				margin 0 50px 0 0
-				&:last-child
-					margin 0
 
 /* FOOTER */
 body > main > footer
 	position absolute
 	bottom 0
-	z-index 3
+	z-index 2
 	width 100%
 	height 40px
 
@@ -209,36 +236,32 @@ body > main > footer
 
 	.container
 		width  ($mainWidth)px
-		height (40 - 12*2)px
-		padding 12px 0
+		height (40 - 7*2)px
+		padding 7px 0
 		margin 0 auto
 
 		background #C1B0A3
 
 		.content
 			padding 0 5px
-
-			//REMOVE THIS
-			h1
-				font-weight bold
-				color #FFF
+			block-inline()
 
 
-/* CONTENT */
+/* SECTIONS */
 body > main > .sections
 
 	clear both
 	width 100%
-	padding-bottom 40px /* Height of the footer */
+	padding-bottom 40px // Height of the footer
 
-	/* Для всех секций! */
+	// Для всех секций!
 	> section
 
 		clear both
 		position relative
-		z-index 3
+		z-index 1
 		width 100%
-		display inline-block
+		block-inline()
 
 		.container
 			position relative
@@ -249,31 +272,101 @@ body > main > .sections
 			background #F2E5D5
 
 			.content
-				padding 10px 5px	
-
-				//REMOVE THIS
-				h1
-					font-size 24px
-					color #736B68
-				p 
-					margin 5px 0
-					color #736B68
-
-	// с фиксированной высотой
-	section#index
-		.container
-			min-height 450px
-			.content
-				//
-
-	// обычная секция
-	section#index-2
-		.container
-			.content
-				//
+				block-inline()
 
 
-/* MEDIA */
+/* -------------------- Let's go -------------------- */
+
+section#index
+	.container
+		.content
+			padding 10px 5px
+			width ($mainWidth - 5*2)px
+
+//TUTORIALS (REMOVE THIS)
+
+section#test-render
+	margin 5px 0
+	.content
+		block()
+		border 1px solid rgb(193, 176, 163)
+		h1
+			padding 50px 0
+
+section#grid-2
+	.content
+		padding 10px 5px
+		width ($mainWidth - 5*2)px
+		article
+			
+			gridcolcount = 2 // кол-во колонок
+
+			gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
+			gridmarginbetween = 5 // отступ в px между колонками
+			contentWidth = $mainWidth - 5*2 // внутренняя ширина блока-контейнера
+
+			block-left()
+			position relative
+			margin-top 5px
+			margin-right (gridmarginbetween)px
+			width ( (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount )px
+			height 150px
+			background #CCC
+			&.last-col // Стиль для последней колонки в ряду
+				margin-right 0
+
+section#grid-3
+	.content
+		padding 10px 5px
+		width ($mainWidth - 5*2)px
+		article
+			
+			gridcolcount = 3 // кол-во колонок
+
+			gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
+			gridmarginbetween = 5 // отступ в px между колонками
+			contentWidth = $mainWidth - 5*2 // внутренняя ширина блока-контейнера
+
+			block-left()
+			position relative
+			margin-top 5px
+			margin-right (gridmarginbetween)px
+			width ( (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount )px
+			height 150px
+			background #CCC
+			&.last-col // Стиль для последней колонки в ряду
+				margin-right 0
+
+
+section#grid-6
+	.content
+		padding 10px 5px
+		width ($mainWidth - 5*2)px
+		article
+
+			gridcolcount = 6 // кол-во колонок
+
+			gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
+			gridmarginbetween = 5 // отступ в px между колонками
+			contentWidth = $mainWidth - 5*2 // внутренняя ширина блока-контейнера
+
+			block-left()
+			position relative
+			margin-top 5px
+			margin-right (gridmarginbetween)px
+			width ( (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount )px
+			height 150px
+			background #CCC
+			&.last-col // Стиль для последней колонки в ряду
+				margin-right 0
+
+
+
+					
+
+
+/* -------------------- MEDIA -------------------- */
+
 @media (max-height: 768px)
 	
 	#debugBox .mediaHeight:after

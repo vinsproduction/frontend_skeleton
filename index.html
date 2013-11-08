@@ -58,15 +58,18 @@
 </head>
 <body>
   <main>
-    <header>
+    <header class="fixed">
       <div class="container">
         <div class="content">
+          <div class="logo">
+            <h1>HEADER (fixed)</h1>
+          </div>
           <nav id="menu">
             <ul>
-              <li><a href="#">menu 1</a></li>
-              <li><a href="#">menu 2</a></li>
-              <li><a href="#">menu 3</a></li>
-              <li><a href="#">menu 4</a></li>
+              <li><a href="#">link 1</a></li>
+              <li><a href="#">link 2</a></li>
+              <li><a href="#">link 3</a></li>
+              <li><a href="#">link 4</a></li>
             </ul>
           </nav>
         </div>
@@ -74,17 +77,6 @@
     </header>
     <div class="sections">
       <section id="index">
-        <!-- index js--><script type="text/javascript">
-(function() {
-  $(function() {
-    var index;
-    index = app.views['index'];
-    return index.controller();
-  });
-
-}).call(this);
-</script>
-        <!--/ index js-->
         <div class="container">
           <div class="content">
             <h1>section#index</h1>
@@ -95,12 +87,64 @@
           </div>
         </div>
       </section>
-      <section id="index-2">
+      <section id="test-render">
+        <!-- test-render js--><script type="text/javascript">
+(function() {
+  $(function() {
+    var indexView;
+    indexView = app.views['index'];
+    return indexView.controller();
+  });
+
+}).call(this);
+</script>
+        <!--/ test-render js-->
         <div class="container">
           <div class="content">
-            <h1>section#index-2</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis tempus nisl. Nulla magna metus, imperdiet gravida facilisis ut, porttitor sed sapien. Pellentesque consectetur erat felis, non lobortis est faucibus non. Donec placerat augue in justo fermentum facilisis. Curabitur fringilla neque ut leo scelerisque facilisis. Vivamus vel justo vitae nibh imperdiet interdum id ac neque. Etiam ac massa pellentesque, dictum justo quis, dignissim est. Phasellus sit amet rutrum odio. In mollis dictum dolor vehicula imperdiet. Vestibulum et odio egestas, cursus dui vel, semper mi.</p>
-            <p>Sed non egestas quam. Pellentesque ac enim turpis. Maecenas ac libero bibendum, venenatis arcu sed, fringilla purus. Morbi ac purus ultricies, sagittis lacus id, molestie felis. Sed eget mi lectus. Etiam rutrum sollicitudin neque a ornare. Nullam blandit mauris orci, luctus porttitor mi porttitor eu. Donec sed lobortis justo. Ut et varius sem. Fusce porttitor rutrum tellus vel faucibus. Donec gravida sapien sapien, ac eleifend diam consequat ut. Donec sodales erat porttitor porttitor volutpat. Donec rutrum lectus a ligula bibendum facilisis. Sed vehicula viverra semper.</p>
+            <h1>{{test}}</h1>
+          </div>
+        </div>
+      </section>
+      <section id="grid-2">
+        <div class="container">
+          <div class="content">
+            <h1>Grid 2 columns</h1>
+            <article>1</article>
+            <article class="last-col">2</article>
+            <article>3</article>
+            <article class="last-col">4</article>
+          </div>
+        </div>
+      </section>
+      <section id="grid-3">
+        <div class="container">
+          <div class="content">
+            <h1>Grid 3 columns</h1>
+            <article>1</article>
+            <article>2</article>
+            <article class="last-col">3</article>
+            <article>4</article>
+            <article>5</article>
+            <article class="last-col">6</article>
+          </div>
+        </div>
+      </section>
+      <section id="grid-6">
+        <div class="container">
+          <div class="content">
+            <h1>Grid 6 columns</h1>
+            <article>1</article>
+            <article>2</article>
+            <article>3</article>
+            <article>4</article>
+            <article>5</article>
+            <article class="last-col">6</article>
+            <article>7</article>
+            <article>8</article>
+            <article>9</article>
+            <article>10</article>
+            <article>11</article>
+            <article class="last-col">12</article>
           </div>
         </div>
       </section>
@@ -108,7 +152,7 @@
     <footer>
       <div class="container">
         <div class="content">
-          <h1>FOOTER</h1>
+          <h1>FOOTER (always at the bottom)</h1>
         </div>
       </div>
     </footer>
