@@ -1,3 +1,3 @@
 Запуск Грант с серваком:
 
-node app & grunt
+node server & grunt

@@ -196,7 +196,7 @@ section#index .container .content {
 }
 section#test-render .content {
   display: block;
-  width: 100%;
+  width: auto;
   height: 130px;
   border: 1px solid #c1b0a3;
 }
