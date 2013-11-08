@@ -40,23 +40,39 @@ background-linear-gradient(startPoint, startColor, startInterval, endColor, endI
 		background-image linear-gradient(startPoint, startColor startInterval, endColor endInterval)
 
 
-block()
+block(w = false,h = false)
 	display block
-
-block-inline()
+	if w
+		width w
+	if h
+		height h
+	
+block-inline(w = false,h = false)
 	display -moz-inline-stack
 	display inline-block
 	vertical-align top
 	zoom 1
 	*display inline
+	if w
+		width w
+	if h
+		height h
 
-block-left()
+block-left(w = false,h = false)
 	float left
 	block-inline()
+	if w
+		width w
+	if h
+		height h
 
-block-right()
+block-right(w = false,h = false)
 	float right
 	block-inline()
+	if w
+		width w
+	if h
+		height h
 
 // FONTS
 
@@ -286,9 +302,8 @@ section#index
 //TUTORIALS (REMOVE THIS)
 
 section#test-render
-	margin 5px 0
 	.content
-		block()
+		block(100%,130px)
 		border 1px solid rgb(193, 176, 163)
 		h1
 			padding 50px 0
