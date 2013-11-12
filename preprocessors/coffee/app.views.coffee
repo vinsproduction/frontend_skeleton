@@ -34,7 +34,7 @@ class PrototypeView
 
 	doPreRender: (templateName, $el, options) ->
 
-		
+		try
 
 			loadtext = if options and options.t then options.t else "Load..."
 			width 	= if options and options.w then parseInt(options.w) + "px" else "auto"
@@ -51,8 +51,7 @@ class PrototypeView
 				"""
 			else
 				$el.empty()
-		try
-			//
+	
 		catch error
 			console.error 'template undefined'
 			console.error error

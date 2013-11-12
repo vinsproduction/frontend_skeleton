@@ -3,8 +3,6 @@ var IndexView, PrototypeView, _ref,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 PrototypeView = (function() {
-  var error;
-
   function PrototypeView() {
     var _this = this;
     this.varconstants = {};
@@ -49,28 +47,26 @@ PrototypeView = (function() {
   };
 
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
-    var height, loadtext, margin, width;
-    loadtext = options && options.t ? options.t : "Load...";
-    width = options && options.w ? parseInt(options.w) + "px" : "auto";
-    height = options && options.h ? parseInt(options.h) + "px" : "100px";
-    margin = options && options.m ? parseInt(options.m) + "px" : (parseInt(height) / 2 - 10) + "px";
-    console.log("[preRender " + templateName + "] loadtext:", loadtext);
-    if (loadtext) {
-      return $el.css({
-        'background-color': '#FFF'
-      }).html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + ";\">" + loadtext + "</p>\n</div>");
-    } else {
-      return $el.empty();
+    var error, height, loadtext, margin, width;
+    try {
+      loadtext = options && options.t ? options.t : "Load...";
+      width = options && options.w ? parseInt(options.w) + "px" : "auto";
+      height = options && options.h ? parseInt(options.h) + "px" : "100px";
+      margin = options && options.m ? parseInt(options.m) + "px" : (parseInt(height) / 2 - 10) + "px";
+      console.log("[preRender " + templateName + "] loadtext:", loadtext);
+      if (loadtext) {
+        return $el.css({
+          'background-color': '#FFF'
+        }).html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + ";\">" + loadtext + "</p>\n</div>");
+      } else {
+        return $el.empty();
+      }
+    } catch (_error) {
+      error = _error;
+      console.error('template undefined');
+      return console.error(error);
     }
   };
-
-  try {
-    /(?:)/;
-  } catch (_error) {
-    error = _error;
-    console.error('template undefined');
-    console.error(error);
-  }
 
   PrototypeView.prototype.doRender = function(templateName, $el, sourse, vars) {
     if (vars == null) {

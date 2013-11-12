@@ -97,7 +97,7 @@ $red		= #ee2e24
 $redHover= #db2920
 $gray		= #ccc
 
-/* STYLES FOR ALL */ //REMOVE THIS
+/* STYLES FOR ALL */
 
 h1 
 	font-size 24px
@@ -311,69 +311,132 @@ section#test-render
 section#grid-2
 	.content
 		padding 10px 5px
-		width ($mainWidth - 5*2)px
-		article
-			
+		contentWidth = $mainWidth - 5*2
+		width (contentWidth)px
+		overflow hidden
+
+		.articles
+
 			gridcolcount = 2 // кол-во колонок
+			gridmarginbetween = 7 // отступ в px между колонками
 
-			gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
-			gridmarginbetween = 5 // отступ в px между колонками
-			contentWidth = $mainWidth - 5*2 // внутренняя ширина блока-контейнера
+			// Таким образом можно не давать последнему итему margin-right: 0
+			width ($mainWidth + gridmarginbetween*2)px
 
-			block-left()
-			position relative
-			margin-top 5px
-			margin-right (gridmarginbetween)px
-			width ( (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount )px
-			height 150px
-			background #CCC
-			&.last-col // Стиль для последней колонки в ряду
-				margin-right 0
+			article
+
+				gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
+				articlewidth = (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount
+
+				block-left()
+				position relative
+				margin-top 5px
+				margin-right (gridmarginbetween)px
+				width (articlewidth)px
+				height 150px
+				background #CCC
+
+				&.last-col // Стиль для последней колонки в ряду
+					margin-right 0
+
+				// for row in 2 4 6 8 10 // Или так например!
+				// 	&:nth-child({row})
+				// 		margin-right 0
 
 section#grid-3
 	.content
 		padding 10px 5px
-		width ($mainWidth - 5*2)px
-		article
-			
+		contentWidth = $mainWidth - 5*2
+		width (contentWidth)px
+		overflow hidden
+
+		.articles
+
 			gridcolcount = 3 // кол-во колонок
+			gridmarginbetween = 7 // отступ в px между колонками
 
-			gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
-			gridmarginbetween = 5 // отступ в px между колонками
-			contentWidth = $mainWidth - 5*2 // внутренняя ширина блока-контейнера
+			// Таким образом можно не давать последнему итему margin-right: 0
+			width ($mainWidth + gridmarginbetween*2)px
 
-			block-left()
-			position relative
-			margin-top 5px
-			margin-right (gridmarginbetween)px
-			width ( (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount )px
-			height 150px
-			background #CCC
-			&.last-col // Стиль для последней колонки в ряду
-				margin-right 0
+			article
+				
+				gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
+				articlewidth = (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount
+
+				block-left()
+				position relative
+				margin-top 5px
+				margin-right (gridmarginbetween)px
+				width (articlewidth)px
+				height 150px
+				background #CCC
+				&.last-col // Стиль для последней колонки в ряду
+					margin-right 0
 
 
 section#grid-6
+
 	.content
 		padding 10px 5px
-		width ($mainWidth - 5*2)px
-		article
+		contentWidth = $mainWidth - 5*2
+		width (contentWidth)px
+		overflow hidden
+
+		.articles
 
 			gridcolcount = 6 // кол-во колонок
+			gridmarginbetween = 7 // отступ в px между колонками
 
-			gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
-			gridmarginbetween = 5 // отступ в px между колонками
-			contentWidth = $mainWidth - 5*2 // внутренняя ширина блока-контейнера
+			// Таким образом можно не давать последнему итему margin-right: 0
+			width ($mainWidth + gridmarginbetween*2)px
 
-			block-left()
-			position relative
-			margin-top 5px
-			margin-right (gridmarginbetween)px
-			width ( (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount )px
-			height 150px
-			background #CCC
-			&.last-col // Стиль для последней колонки в ряду
-				margin-right 0
+			article
+
+				gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
+				articlewidth = (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount
+
+				block-left()
+				position relative
+				margin-top 5px
+				margin-right (gridmarginbetween)px
+				width (articlewidth)px
+				height 150px
+				background #CCC
+				&.last-col // Стиль для последней колонки в ряду
+					margin-right 0
+
+
+section#grid-12
+
+	.content
+		padding 10px 5px
+		contentWidth = $mainWidth - 5*2
+		width (contentWidth)px
+		overflow hidden
+
+		.articles
+
+			gridcolcount = 12 // кол-во колонок
+			gridmarginbetween = 7 // отступ в px между колонками
+
+			// Таким образом можно не давать последнему итему margin-right: 0
+			width ($mainWidth + gridmarginbetween*2)px
+			
+			article
+
+				gridmargincount = gridcolcount - 1 // кол-во отступов между колонок
+				articlewidth = (contentWidth - gridmarginbetween*gridmargincount)/gridcolcount
+
+				block-left()
+				position relative
+				margin-top 5px
+				margin-right (gridmarginbetween)px
+				width (articlewidth)px
+				height 150px
+				background #CCC
+				&.last-col // Стиль для последней колонки в ряду
+					margin-right 0
+
 
 
 

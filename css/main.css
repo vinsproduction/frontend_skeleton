@@ -206,8 +206,12 @@ section#test-render .content h1 {
 section#grid-2 .content {
   padding: 10px 5px;
   width: 1255px;
+  overflow: hidden;
 }
-section#grid-2 .content article {
+section#grid-2 .content .articles {
+  width: 1279px;
+}
+section#grid-2 .content .articles article {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
@@ -216,19 +220,23 @@ section#grid-2 .content article {
   *display: inline;
   position: relative;
   margin-top: 5px;
-  margin-right: 5px;
-  width: 625px;
+  margin-right: 7px;
+  width: 624px;
   height: 150px;
   background: #ccc;
 }
-section#grid-2 .content article.last-col {
+section#grid-2 .content .articles article.last-col {
   margin-right: 0;
 }
 section#grid-3 .content {
   padding: 10px 5px;
   width: 1255px;
+  overflow: hidden;
 }
-section#grid-3 .content article {
+section#grid-3 .content .articles {
+  width: 1279px;
+}
+section#grid-3 .content .articles article {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
@@ -237,19 +245,23 @@ section#grid-3 .content article {
   *display: inline;
   position: relative;
   margin-top: 5px;
-  margin-right: 5px;
-  width: 415px;
+  margin-right: 7px;
+  width: 413.6666666666667px;
   height: 150px;
   background: #ccc;
 }
-section#grid-3 .content article.last-col {
+section#grid-3 .content .articles article.last-col {
   margin-right: 0;
 }
 section#grid-6 .content {
   padding: 10px 5px;
   width: 1255px;
+  overflow: hidden;
 }
-section#grid-6 .content article {
+section#grid-6 .content .articles {
+  width: 1279px;
+}
+section#grid-6 .content .articles article {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
@@ -258,12 +270,37 @@ section#grid-6 .content article {
   *display: inline;
   position: relative;
   margin-top: 5px;
-  margin-right: 5px;
-  width: 205px;
+  margin-right: 7px;
+  width: 203.33333333333334px;
   height: 150px;
   background: #ccc;
 }
-section#grid-6 .content article.last-col {
+section#grid-6 .content .articles article.last-col {
+  margin-right: 0;
+}
+section#grid-12 .content {
+  padding: 10px 5px;
+  width: 1255px;
+  overflow: hidden;
+}
+section#grid-12 .content .articles {
+  width: 1279px;
+}
+section#grid-12 .content .articles article {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  position: relative;
+  margin-top: 5px;
+  margin-right: 7px;
+  width: 98.16666666666667px;
+  height: 150px;
+  background: #ccc;
+}
+section#grid-12 .content .articles article.last-col {
   margin-right: 0;
 }
 /* -------------------- MEDIA -------------------- */
