@@ -5,6 +5,9 @@
 	===============
 */
 
+/* RESET STYLES */
+@import 'normalize.css' 
+
 // MIXins
 
 vendor(prop, args)
@@ -48,9 +51,9 @@ background-linear-gradient(startPoint, startColor, startInterval, endColor, endI
 block(w = false,h = false)
 	display block
 	if w
-		width w
+		width (w)px
 	if h
-		height h
+		height (h)px
 	
 block-inline(w = false,h = false)
 	display -moz-inline-stack
@@ -59,25 +62,25 @@ block-inline(w = false,h = false)
 	zoom 1
 	*display inline
 	if w
-		width w
+		width (w)px
 	if h
-		height h
+		height (h)px
 
 block-left(w = false,h = false)
 	float left
 	block-inline()
 	if w
-		width w
+		width (w)px
 	if h
-		height h
+		height (h)px
 
 block-right(w = false,h = false)
 	float right
 	block-inline()
 	if w
-		width w
+		width (w)px
 	if h
-		height h
+		height (h)px
 
 /* FONTS */
 
@@ -107,12 +110,8 @@ $gray		= #ccc
 
 /* STYLES FOR ALL */
 
-h1 
-	font-size 24px
-	color #736B68
-p  //REMOVE THIS
+p 
 	margin 5px 0
-	color #736B68
 
 textarea, input
 	font-family $mainFont
@@ -131,13 +130,18 @@ textarea:focus, input:focus
 
 /* BUTTONS */
 
-btn()
+btn(w = false,h = false)
+	if w
+		width (w)px
+	if h
+		height (h)px
 	cursor pointer
+	text-align center
 	border 0
 	outline none
 	block-inline()
 	text-decoration none
-	transition(all 0.3s)
+	transition(background 0.3s)
 	font 11px $mainFont
 	padding 5px 10px
 	border-radius(5px)
@@ -312,7 +316,7 @@ body > main > .sections
 section#index
 	.container
 		.content
-			padding 10px 5px
+			padding 50px 5px
 			width ($mainWidth - 5*2)px
 
 //TUTORIALS (REMOVE THIS)

@@ -260,7 +260,7 @@ App = (function() {
       options = {};
     }
     this.name = 'project';
-    this.localhost = window.location.host === "";
+    this.localhost = window.location.host === "" || /localhost/.test(window.location.host);
     this.host = this.localhost ? "http://" + this.name : window.location.host;
     this.root = options.root || "";
     this.debug = (function() {

@@ -6,7 +6,7 @@ class App
 		@name = 'project'
 		
 		# Если хоста нет, значит - локальный просмотр!
-		@localhost = window.location.host is ""
+		@localhost = window.location.host is "" or /localhost/.test window.location.host
 
 		# Если localhost - проставляем настоящий хост
 		@host = if @localhost then "http://#{@name}" else window.location.host

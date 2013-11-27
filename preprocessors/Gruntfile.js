@@ -74,7 +74,6 @@ module.exports = function(grunt) {
 			},
 			css: {
 				src: [
-					'../css/normalize.css',
 					'../css/main.css'
 				],
 				dest: '../css/project.css'
