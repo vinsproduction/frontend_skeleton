@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 					paths: ['styl/']
 				},
 				files: {
-					'../css/main.css': 'styl/main.styl'
+					'../css/app.css': 'styl/app.styl'
 				}
 			}
 		},
@@ -74,7 +74,7 @@ module.exports = function(grunt) {
 			},
 			css: {
 				src: [
-					'../css/main.css'
+					'../css/app.css'
 				],
 				dest: '../css/project.css'
 			},

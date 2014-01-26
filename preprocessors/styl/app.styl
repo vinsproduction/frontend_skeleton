@@ -1,0 +1,288 @@
+
+/* 
+	===============
+	=== PROJECT ===
+	===============
+*/
+
+@import 'normalize.css'
+@import 'mixins'
+
+/* FONTS */
+
+import-font('ubuntu-r-webfont','Ubuntu')
+
+// UNIQ MIXINS */
+
+bg(filename)
+	background url('../img/' + filename) no-repeat
+
+// MAIN CONSTANTS
+
+$mainWidth 		= 1265
+$mainHeight 	= 1000
+
+// COLORS
+
+$red		= #ee2e24
+$gray		= #ccc
+
+/* STYLES FOR ALL */
+
+textarea:focus, input:focus, input:focus
+	outline none
+
+ul
+	list-style-type none
+
+/* CLASS - HELPERS */
+
+.hide 
+	visibility hidden
+
+.none
+	display none
+
+.clearfix
+	clear both
+
+.row
+	block-inline()
+	clear both
+	width 100%
+
+
+.pull-left
+	block-left()
+
+
+.pull-right
+	block-right()
+
+/* BUTTONS */
+
+btn(w = false,h = false)
+	if w
+		width (w)px
+	if h
+		height (h)px
+
+	display block
+	position relative
+	cursor pointer
+	text-align center
+	border 0
+	outline none
+	text-decoration none
+	
+
+/* Для ссылок */
+.btn-1
+	font 18px "Ubuntu"
+	btn(200,50)
+	border-radius(10px)
+	text-transform uppercase
+	color #FFF
+	background $red
+	transition all 0.2s
+	&:hover
+		background $gray
+	span
+		position relative
+		top 15px
+
+/* Для buttons */
+.btn-2
+	font 18px "Ubuntu"
+	btn(200,50)
+	border-radius(10px)
+	text-transform uppercase
+	color #FFF
+	background $red
+	transition all 0.2s
+	&:hover
+		background $gray
+
+
+
+/* STYLES - MAIN */
+
+html
+	height 100%
+
+body
+	height 100%
+	overflow-x hidden
+	overflow-y auto
+	font-family $mainFont
+	
+	/* Самый задний фон */
+
+	background-color #0A1018
+
+	// background-repeat no-repeat
+	// background-position top center
+	// background-attachment fixed
+
+	// -webkit-background-size cover
+	// -moz-background-size cover
+	// -o-background-size cover
+	// background-size cover
+
+	//bg url('../img/body_bg.jpg')
+
+		
+/* Фон с изображением */
+
+body > main
+	
+	position relative
+	min-height 100%
+	width 100%
+	
+	bg 'bg.jpg'
+	background-repeat repeat-x
+
+	// background-position top center
+	// background-attachment fixed
+
+	// -webkit-background-size cover
+	// -moz-background-size cover
+	// -o-background-size cover
+	// background-size cover
+
+	// &.bg
+	// 	bg 'bg.jpg'
+
+/* HEADER */
+body > main > header
+	z-index 2
+	width 100%
+	height 40px
+
+	background #736B68
+
+	&.fixed
+		position fixed
+		top 0
+
+	.container
+		width  ($mainWidth)px
+		height (40 - 12*2)px
+		padding 12px 0
+		margin 0 auto
+
+		background #C1B0A3
+
+		.content
+			padding 0 5px
+			block-inline()
+			width  ($mainWidth - 5*2)px
+
+			nav#menu
+				block-right()
+				text-transform uppercase
+				
+				a 
+					text-decoration none
+					block-inline()
+					position relative
+					color #FFF
+
+				ul
+					float left
+					padding 0
+					li
+						float left
+						margin 0 0 0 50px
+					
+
+			.logo
+				block-left()
+
+
+
+/* FOOTER */
+body > main > footer
+	position absolute
+	bottom 0
+	z-index 2
+	width 100%
+	height 40px
+
+	background #736B68
+
+	&.fixed
+		position fixed
+		bottom 0
+
+	.container
+		width  ($mainWidth)px
+		height (40 - 7*2)px
+		padding 7px 0
+		margin 0 auto
+
+		background #C1B0A3
+
+		.content
+			padding 0 5px
+			block-inline()
+
+
+/* SECTIONS */
+body > main > .sections
+
+	clear both
+	width 100%
+	padding-bottom 40px // Height of the footer
+
+	// Для всех секций!
+	> section
+
+		clear both
+		position relative
+		z-index 1
+		width 100%
+		block-inline()
+
+		.container
+			position relative
+			width  ($mainWidth)px
+			height 100%
+			margin 0 auto
+
+			background #F2E5D5
+
+			.content
+				block-inline()
+
+
+/* -------------------- Let's go -------------------- */
+
+section#index
+	.container
+		.content
+			padding 50px 5px
+			width ($mainWidth - 5*2)px
+
+			p
+				margin 10px 0
+
+
+//TUTORIALS (REMOVE THIS)
+
+section#test-render
+	.content
+		height 130px
+		width 100%
+		h1
+			padding 50px 0
+			text-align center
+
+
+/* -------------------- MEDIA -------------------- */
+
+@media (max-height: 768px)
+	
+	#debugBox .mediaHeight:after
+		content '@media(max-height: 768px)'

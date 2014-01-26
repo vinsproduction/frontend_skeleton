@@ -11,8 +11,8 @@
   <link rel="image_src" href="">
   <link rel="shortcut icon" type="image/x-icon" href="">
   <meta name="viewport" content="width=1265">
-  <script type="text/javascript" src="js/libs/helpers.js"></script><script type="text/javascript">
-(function() {
+  <script type="text/javascript" src="js/libs/helpers.js"></script>
+  <script>(function() {
   if (!/debug/.test(window.location.search)) {
     $$.disableConsole();
     $$.includeJS('js/libs/lib.min.js');
@@ -36,24 +36,23 @@
   }
 
 }).call(this);
-</script><script type="text/javascript">
-(function() {
+
+  </script>
+  <script>(function() {
   window.app = new App;
 
   app.init();
 
 }).call(this);
-</script>
-  <!--[if lt IE 7]>
+
+  </script><!--[if lt IE 7]>
   <style>
     body > main {
      height: 100%;
     }
-  </style>
-  <![endif]-->
+  </style><![endif]-->
   <!--[if lt IE 9]>
-  <script type="text/javascript" src="js/libs/html5shiv.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
 </head>
 <body>
   <main>
@@ -83,13 +82,18 @@
             <p>Sed non egestas quam. Pellentesque ac enim turpis. Maecenas ac libero bibendum, venenatis arcu sed, fringilla purus. Morbi ac purus ultricies, sagittis lacus id, molestie felis. Sed eget mi lectus. Etiam rutrum sollicitudin neque a ornare. Nullam blandit mauris orci, luctus porttitor mi porttitor eu. Donec sed lobortis justo. Ut et varius sem. Fusce porttitor rutrum tellus vel faucibus. Donec gravida sapien sapien, ac eleifend diam consequat ut. Donec sodales erat porttitor porttitor volutpat. Donec rutrum lectus a ligula bibendum facilisis. Sed vehicula viverra semper.</p>
             <p>Mauris eu justo sodales purus mollis auctor vitae eget diam. Nulla interdum nisl et tellus dictum molestie. Pellentesque nunc elit, sollicitudin at tincidunt ut, sollicitudin a quam. Vivamus consectetur ac risus eget bibendum. Quisque posuere vitae nisl eu gravida. Etiam eros nunc, euismod eu consequat quis, luctus venenatis dolor. Duis vestibulum iaculis tempus. Suspendisse urna lectus, faucibus non libero vel, vestibulum malesuada ante. Sed ornare, velit nec sodales euismod, nisi orci placerat felis, in volutpat ligula sapien eget metus. Sed malesuada purus tempus ante varius pellentesque. Mauris ut tincidunt purus. Mauris at nulla eu mi sagittis viverra. Cras in tempor quam. Quisque porta venenatis est, eu adipiscing ligula tristique ut. Nam a neque vel mi adipiscing bibendum. Sed vitae dui velit.</p>
             <p>Donec nec leo at tellus mattis faucibus. Suspendisse a orci consequat, mattis sem sit amet, convallis enim. Morbi iaculis blandit enim, id pretium nisl molestie sit amet. Mauris convallis diam nec mauris condimentum, ac dignissim nulla elementum. Ut eget nulla quam. Morbi sollicitudin nunc sit amet mi adipiscing, in aliquam est eleifend. Nam rhoncus metus risus, eu tincidunt metus accumsan in. Etiam adipiscing tortor et urna semper, et aliquet elit pulvinar. Phasellus suscipit urna nec malesuada pulvinar. In hac habitasse platea dictumst. Aliquam sed gravida tortor, ac elementum augue. Morbi porta pharetra nibh a vulputate. Morbi non vehicula arcu. Nullam tristique, mauris convallis congue tincidunt, mi justo dapibus ligula, at placerat est ligula eu erat. Quisque mauris magna, vulputate vel lacinia nec, venenatis quis mi. Cras non ultrices mauris.</p>
-            <button class="btn">button</button>
+            <div class="row"><a href="#" class="btn-1 pull-left"><span>link</span></a>
+              <button href="#" class="btn-2 pull-right"><span>button</span></button>
+            </div>
+            <div class="row">
+              <p>This row</p>
+            </div>
           </div>
         </div>
       </section>
       <section id="test-render">
-        <!-- test-render js--><script type="text/javascript">
-(function() {
+        <!-- test-render js-->
+        <script>(function() {
   $(function() {
     var indexView;
     indexView = app.views['index'];
@@ -97,93 +101,12 @@
   });
 
 }).call(this);
-</script>
+
+        </script>
         <!--/ test-render js-->
         <div class="container">
           <div class="content">
             <h1>{{test}}</h1>
-          </div>
-        </div>
-      </section>
-      <section id="grid-2">
-        <div class="container">
-          <div class="content">
-            <h1>Grid 2 columns</h1>
-            <div class="articles">
-              <article>1</article>
-              <article>2</article>
-              <article>3</article>
-              <article>4</article>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section id="grid-3">
-        <div class="container">
-          <div class="content">
-            <h1>Grid 3 columns</h1>
-            <div class="articles">
-              <article>1</article>
-              <article>2</article>
-              <article>3</article>
-              <article>4</article>
-              <article>5</article>
-              <article>6</article>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section id="grid-6">
-        <div class="container">
-          <div class="content">
-            <h1>Grid 6 columns</h1>
-            <div class="articles">
-              <article>1</article>
-              <article>2</article>
-              <article>3</article>
-              <article>4</article>
-              <article>5</article>
-              <article>6</article>
-              <article>7</article>
-              <article>8</article>
-              <article>9</article>
-              <article>10</article>
-              <article>11</article>
-              <article>12</article>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section id="grid-12">
-        <div class="container">
-          <div class="content">
-            <h1>Grid 12 columns</h1>
-            <div class="articles">
-              <article>1</article>
-              <article>2</article>
-              <article>3</article>
-              <article>4</article>
-              <article>5</article>
-              <article>6</article>
-              <article>7</article>
-              <article>8</article>
-              <article>9</article>
-              <article>10</article>
-              <article>11</article>
-              <article>12</article>
-              <article>13</article>
-              <article>14</article>
-              <article>15</article>
-              <article>16</article>
-              <article>17</article>
-              <article>18</article>
-              <article>19</article>
-              <article>20</article>
-              <article>21</article>
-              <article>22</article>
-              <article>23</article>
-              <article>24</article>
-            </div>
           </div>
         </div>
       </section>

@@ -1,0 +1,89 @@
+// Mixins
+
+vendor(prop, args)
+	-webkit-{prop} args
+	   -moz-{prop} args
+	    -ms-{prop} args
+	     -o-{prop} args
+	        {prop} args
+
+border-radius()
+	vendor('border-radius', arguments)
+
+filter()
+	vendor('filter', arguments)
+
+box-shadow()
+	vendor('box-shadow', arguments)
+
+transition()
+	vendor('transition', arguments)
+
+transform()
+	vendor('transform', arguments)
+
+transform-origin()
+	vendor('transform-origin', arguments)
+
+user-select()
+	vendor('user-select', arguments)
+
+background-linear-gradient(startPoint, startColor, startInterval, endColor, endInterval)
+	background-color startColor
+	background-image -webkit-gradient(linear, deprecatedWebkitStartPoint, deprecatedWebkitEndPoint, color-stop(startInterval, startColor), color-stop(endInterval, endColor))
+	background-image -webkit-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+	background-image -moz-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+	background-image -ms-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+	background-image -o-linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+	background-image linear-gradient(startPoint, startColor startInterval, endColor endInterval)
+
+
+import-font(originalname, newname)
+
+	@font-face
+		font-family newname
+		src url('../fonts/'+ originalname +'.eot'), url('../fonts/'+ originalname +'.eot?#iefix') format('embedded-opentype'), url('../fonts/'+ originalname +'.svg') format('svg'), url('../fonts/'+ originalname +'.woff') format('woff'), url('../fonts/'+ originalname +'.ttf') format('truetype')
+		font-weight normal
+		font-style normal
+
+
+block(w = false,h = false)
+	display block
+	if w
+		width (w)px
+	if h
+		height (h)px
+	
+block-inline(w = false,h = false)
+	display -moz-inline-stack
+	display inline-block
+	//vertical-align top
+	zoom 1
+	*display inline
+	if w
+		width (w)px
+	if h
+		height (h)px
+
+block-left(w = false,h = false)
+	float left
+	block-inline()
+	if w
+		width (w)px
+	if h
+		height (h)px
+
+block-right(w = false,h = false)
+	float right
+	block-inline()
+	if w
+		width (w)px
+	if h
+		height (h)px
+
+font(size,name,lh=false)
+	font-size size
+	font-family name, helvetica,verdana,arial,tahoma
+
+	if lh
+		line-height lh
