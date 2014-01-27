@@ -124,7 +124,7 @@ body {
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  font-family: $mainFont;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 /* Самый задний фон */
   background-color: #0a1018;
 }
@@ -209,8 +209,8 @@ body > main > footer.fixed {
 }
 body > main > footer .container {
   width: 1265px;
-  height: 26px;
-  padding: 7px 0;
+  height: 16px;
+  padding: 12px 0;
   margin: 0 auto;
   background: #c1b0a3;
 }

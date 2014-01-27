@@ -14,6 +14,15 @@ import-font('ubuntu-r-webfont','Ubuntu')
 
 // UNIQ MIXINS */
 
+
+font-family(name)
+	//line-height 1.2 // fix diff font rendering
+	font-family name, helvetica,verdana,arial,tahoma
+
+font(size,name)
+	font-size size
+	font-family name
+
 bg(filename)
 	background url('../img/' + filename) no-repeat
 
@@ -114,7 +123,7 @@ body
 	height 100%
 	overflow-x hidden
 	overflow-y auto
-	font-family $mainFont
+	font-family 'Ubuntu'
 	
 	/* Самый задний фон */
 
@@ -200,8 +209,6 @@ body > main > header
 			.logo
 				block-left()
 
-
-
 /* FOOTER */
 body > main > footer
 	position absolute
@@ -218,8 +225,8 @@ body > main > footer
 
 	.container
 		width  ($mainWidth)px
-		height (40 - 7*2)px
-		padding 7px 0
+		height (40 - 12*2)px
+		padding 12px 0
 		margin 0 auto
 
 		background #C1B0A3
