@@ -45,10 +45,12 @@ class App
 			if 'box' in @debug then do @debugBox.init
 
 			# Классы - модели/api
-			@models 	= new Models
+			if Models
+				@models 	= new Models
 
 			# Классы - контроллеры/рендеры
-			@views 	= new Views
+			if Views
+				@views 	= new Views
 
 			# Backbone Router
 			@router = new AppRouter
@@ -299,7 +301,7 @@ class App
 		popup: (error) ->
 
 			text = @get(error) 
-			customPopup 'Ошибка!', text, true
+			popup.custom 'Ошибка!', text, true
 		
 		get: (error) ->
 

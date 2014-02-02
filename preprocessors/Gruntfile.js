@@ -154,11 +154,7 @@ module.exports = function(grunt) {
 
 		port = 8888
 		grunt.log.writeln('SERVER started on port ' + port);
-		require('./server.js')(port).listen(port, function(){
-	 		 //grunt.log.writeln('SERVER listening on port ' + port);
-		});;
-		
-
+		require('./server.js')(port)
 		grunt.task.run(['coffee', 'stylus', 'jade', 'concat', 'uglify', 'watch']);
 		
 	});

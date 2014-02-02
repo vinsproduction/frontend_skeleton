@@ -16,7 +16,6 @@ app = module.exports = function (port){
 	app.use(express.favicon());
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(app.router);
 
 	app.use(express.static(path.join( '../')));
 
@@ -35,6 +34,11 @@ app = module.exports = function (port){
 	app.all('/remove', function(req, res){
   		res.json({ success: 'удалилось с сервака' });
 	});
+
+	http.createServer(app).listen(port, function(){
+		console.log('\nSERVER listening on port ' + port + '\n');
+	});
+
 
 	return app;
 

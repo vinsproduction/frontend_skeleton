@@ -38,8 +38,12 @@ App = (function() {
       if (__indexOf.call(_this.debug, 'box') >= 0) {
         _this.debugBox.init();
       }
-      _this.models = new Models;
-      _this.views = new Views;
+      if (Models) {
+        _this.models = new Models;
+      }
+      if (Views) {
+        _this.views = new Views;
+      }
       _this.router = new AppRouter;
       Backbone.history.start();
       _this.social.init();
@@ -300,7 +304,7 @@ App = (function() {
     popup: function(error) {
       var text;
       text = this.get(error);
-      return customPopup('Ошибка!', text, true);
+      return popup.custom('Ошибка!', text, true);
     },
     get: function(error) {
       var list,
