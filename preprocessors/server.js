@@ -5,7 +5,6 @@
 app = module.exports = function (port){
 
 	var express = require('express')
-	  , routes = require('./routes')
 	  , http = require('http')
 	  , path = require('path');
 
@@ -21,13 +20,21 @@ app = module.exports = function (port){
 
 	app.use(express.static(path.join( '../')));
 
-	app.use(express.logger('dev'));
+	//app.use(express.logger('dev'));
 	app.use(express.errorHandler());
 
 
-	app.all('/', routes.index);
-	app.all('/upload', routes.upload);
-	app.all('/remove', routes.remove);
+	app.all('/', function(req, res){
+  		res.render('jade/index', { title: 'Express' });
+  	});
+
+	app.all('/upload', function(req, res){
+  		res.json({ success: 'загрузилось на сервак' });
+	});
+
+	app.all('/remove', function(req, res){
+  		res.json({ success: 'удалилось с сервака' });
+	});
 
 	return app;
 

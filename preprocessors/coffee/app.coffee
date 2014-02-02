@@ -21,7 +21,7 @@ class App
 
 		# Только для локальной разработки!
 		if !$$.browser.msie and @localhost
-			livereloadPort = 777
+			livereloadPort = 777 # Порт должен совпадать с портом в Gruntfile.js
 			$$.includeJS "http://localhost:#{livereloadPort}/livereload.js"
 			console.debug "[Livereload] http://localhost:#{livereloadPort}/livereload.js"
 
