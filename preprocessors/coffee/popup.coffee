@@ -132,7 +132,7 @@ class Popup
 
     popup = $("[data-popup-name='#{name}']")
 
-    if !popup.size() then return console.error "popup #{name} not found"
+    if !popup.size() then return console.warn "popup #{name} not found"
 
     @center(popup)
     @load(popup)
@@ -162,7 +162,7 @@ class Popup
 
     popup = $("[data-popup-name='#{name}']")
 
-    if !popup.size() then return console.error "popup #{name} not found"
+    if !popup.size() then return console.warn "popup #{name} not found"
    
     popup.find(".header h1").html title
     popup.find(".body").html text

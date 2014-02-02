@@ -17358,7 +17358,7 @@ Popup = (function() {
     this.close();
     popup = $("[data-popup-name='" + name + "']");
     if (!popup.size()) {
-      return console.error("popup " + name + " not found");
+      return console.warn("popup " + name + " not found");
     }
     this.center(popup);
     this.load(popup);
@@ -17386,7 +17386,7 @@ Popup = (function() {
     name = "custom";
     popup = $("[data-popup-name='" + name + "']");
     if (!popup.size()) {
-      return console.error("popup " + name + " not found");
+      return console.warn("popup " + name + " not found");
     }
     popup.find(".header h1").html(title);
     popup.find(".body").html(text);
