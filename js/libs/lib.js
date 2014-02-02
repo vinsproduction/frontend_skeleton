@@ -17226,12 +17226,28 @@ Popup = (function() {
 
   Popup.prototype.scroll = true;
 
+  /* Вызов и закрытие определенной группы попапов 
+  Если необходимо отделить одни попапы от других, то в конструктор передается пераметр group
+  window.popup2 = new Popup({group: 'type-2'})
+  И соответсвенно запускаем их через popup2.open('popup_name')
+  !!! Обязатльное условие, у попапов с группой должен быть обязательный атрибут [data-popup-group]
+  */
+
+
+  Popup.prototype.group = "";
+
   function Popup(opt) {
     var _this = this;
     if (opt == null) {
       opt = {};
     }
     this.status = 0;
+    if (opt.scroll != null) {
+      this.scroll = opt.scroll;
+    }
+    if (opt.group) {
+      this.group = opt.group;
+    }
     if (opt.top) {
       this.top = opt.top;
     }
@@ -17242,7 +17258,7 @@ Popup = (function() {
       _this.el = $("#popups");
       _this.bg = _this.el.find(".background");
       _this.elClose = _this.el.find("[data-popup-close]");
-      _this.popups = _this.el.find('[data-popup-name]');
+      _this.popups = _this.group !== "" ? _this.el.find("[data-popup-group='" + _this.group + "'][data-popup-name]") : _this.el.find("[data-popup-name]");
       _this.elClose.click(function() {
         _this.disable();
         return false;
@@ -17253,10 +17269,14 @@ Popup = (function() {
         }
       });
       $(window).scroll(function() {
-        return _this.center();
+        if (_this.status === 1) {
+          return _this.center();
+        }
       });
       return $(window).resize(function() {
-        return _this.center();
+        if (_this.status === 1) {
+          return _this.center();
+        }
       });
     });
   }
@@ -17305,7 +17325,7 @@ Popup = (function() {
   Popup.prototype.center = function(popup) {
     var l, popupHeight, popupWidth, t, windowHeight, windowScroll, windowWidth;
     if (!popup) {
-      popup = this.el.find('.open[data-popup-name]');
+      popup = this.group !== "" ? this.el.find(".open[data-popup-group='" + this.group + "'][data-popup-name]") : this.el.find(".open[data-popup-name]");
     }
     if (!popup.size()) {
       return console.error("popup not found");
@@ -17375,4 +17395,14 @@ Popup = (function() {
 
 })();
 
+/* ============ Объявляем Попапы! ===========*/
+
+
 window.popup = new Popup;
+
+window.popup2 = new Popup({
+  group: 'group_name',
+  top: 50,
+  left: 150,
+  scroll: false
+});
