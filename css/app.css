@@ -87,7 +87,9 @@ ul {
   top: 15px;
 }
 /* Для buttons */
-.btn-2 {
+.btn-2,
+#popups .popup[data-popup-name="custom"] .footer button,
+#popups .popup[data-popup-name="unique"] .footer button {
   font-size: 18px;
   font-family: "Ubuntu", helvetica, verdana, arial, tahoma;
   width: 200px;
@@ -113,7 +115,9 @@ ul {
   -o-transition: all 0.2s;
   transition: all 0.2s;
 }
-.btn-2:hover {
+.btn-2:hover,
+#popups .popup[data-popup-name="custom"] .footer button:hover,
+#popups .popup[data-popup-name="unique"] .footer button:hover {
   background: #ccc;
 }
 /* STYLES - MAIN */
@@ -252,19 +256,103 @@ body > main > .sections > section .container .content {
 }
 /* -------------------- Let's go -------------------- */
 section#index .container .content {
-  padding: 50px 5px;
-  width: 1255px;
+  padding: 50px 20px;
 }
 section#index .container .content p {
   margin: 10px 0;
 }
 section#test-render .content {
-  height: 130px;
-  width: 100%;
+  padding: 50px 20px;
 }
 section#test-render .content h1 {
-  padding: 50px 0;
+  padding: 0 0 10px 0;
+}
+/* -------------------- Popups -------------------- */
+#popups .background {
+  display: none;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 88888;
+  background: #000;
+  opacity: 0.6;
+  -webkit-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  -moz-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  -o-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+}
+#popups .popup {
+  z-index: 99999;
+  position: absolute;
+  display: none;
+  background-color: #fff;
+  border: 10px solid #e2e2e2;
+}
+#popups .popup .close {
+  cursor: pointer;
+  position: absolute;
+  right: -36px;
+  top: -33px;
+  width: 56px;
+  height: 52px;
+  background-image: url("../img/close_popup.png");
+  background-repeat: no-repeat;
+  background-position: left 0px;
+  text-decoration: none !important;
+  z-index: 98;
+}
+#popups .popup[data-popup-name="custom"] {
   text-align: center;
+  min-height: 274px;
+  width: 705px;
+}
+#popups .popup[data-popup-name="custom"] .header {
+  padding: 30px 0 50px 0;
+}
+#popups .popup[data-popup-name="custom"] .header h1 {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 30px;
+}
+#popups .popup[data-popup-name="custom"] .body {
+  font-size: 24px;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  color: #333;
+  padding: 0 90px;
+}
+#popups .popup[data-popup-name="custom"] .footer {
+  padding: 50px 0 30px 0;
+}
+#popups .popup[data-popup-name="custom"] .footer button {
+  margin: 0 auto;
+}
+#popups .popup[data-popup-name="unique"] {
+  text-align: center;
+  min-height: 274px;
+  width: 705px;
+}
+#popups .popup[data-popup-name="unique"] .header {
+  padding: 30px 0 50px 0;
+}
+#popups .popup[data-popup-name="unique"] .header h1 {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 30px;
+}
+#popups .popup[data-popup-name="unique"] .body {
+  font-size: 24px;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  color: #333;
+  padding: 0 90px;
+}
+#popups .popup[data-popup-name="unique"] .footer {
+  padding: 50px 0 30px 0;
+}
+#popups .popup[data-popup-name="unique"] .footer button {
+  margin: 0 auto;
 }
 /* -------------------- MEDIA -------------------- */
 @media (max-height: 768px) {

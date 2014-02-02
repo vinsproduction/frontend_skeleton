@@ -4,7 +4,7 @@
  */
 
 exports.index = function(req, res){
-  res.render('views/index', { title: 'Express' });
+  res.render('jade/index', { title: 'Express' });
 };
 
 

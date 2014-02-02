@@ -15,34 +15,17 @@ block content
 				
 				.row
 
-					a.btn-1.pull-left(href="#")
+					a.btn-1.pull-left(href="#",onclick="popup.custom('Custom','Popup');return false;")
 						span link
 
-					button.btn-2.pull-right(href="#")
+					button.btn-2.pull-right(href="#",onclick="popup.open('unique',function(){popup.close()});return false;")
 						span button
-				.row
 
-					p This row
 
 	section#test-render
 
-		// test-render js
-		script
-
-			:coffee
-
-				$ ->
-
-					indexView = app.views['index']
-					indexView.controller()
-
-		/// test-render js
-
 		.container
 			.content
-				h1 {{test}}
-
-
-
-
-
+				h1 Test render Mustache
+				h2 {{firstname}} {{lastname}}
+				{{{avatar}}}

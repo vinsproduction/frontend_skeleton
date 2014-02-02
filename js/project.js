@@ -1,17 +1,88 @@
-var PrototypeModel;
+var Models, PrototypeModel, UserModel, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 PrototypeModel = (function() {
-  function PrototypeModel() {}
+  function PrototypeModel() {
+    this.fish = window.location.host === "" || /localhost/.test(window.location.host);
+  }
+
+  PrototypeModel.prototype.getFish = function(url, data, res, callback) {
+    var json, obj, response;
+    json = JSON.stringify(res);
+    obj = $.parseJSON(json);
+    response = obj.data || [];
+    console.warn('[WARNING Api FISH!]', url, '| request:', data, '| response:', response);
+    return callback(response);
+  };
 
   return PrototypeModel;
 
 })();
 
-var IndexView, PrototypeView, _ref,
+UserModel = (function(_super) {
+  __extends(UserModel, _super);
+
+  function UserModel() {
+    _ref = UserModel.__super__.constructor.apply(this, arguments);
+    return _ref;
+  }
+
+  UserModel.prototype.getRes = {
+    "data": {
+      "age": 31,
+      "avatar": "http://cs5474.vk.me/u1748598/-14/x_97fe02f9.jpg",
+      "birthday": "1983-01-19",
+      "city": "Москва",
+      "country": "Россия",
+      "firstname": "Vins",
+      "gender": "male",
+      "id": 1,
+      "lastname": "Production"
+    },
+    "status": "success"
+  };
+
+  /*
+  	Описание: Отдает данные пользователя
+  */
+
+
+  UserModel.prototype.get = function(data, callback) {
+    var url,
+      _this = this;
+    url = 'user/details';
+    if (this.fish) {
+      return this.getFish(url, data, this.getRes, callback);
+    }
+    return app.api(url, 'GET', data, function(res) {
+      return callback(res);
+    });
+  };
+
+  return UserModel;
+
+})(PrototypeModel);
+
+/* ============ Объявляем классы! ===========*/
+
+
+Models = (function() {
+  function Models() {
+    this.user = new UserModel;
+  }
+
+  return Models;
+
+})();
+
+var IndexView, PrototypeView, Views, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 PrototypeView = (function() {
+  PrototypeView.prototype.render_debug = true;
+
   function PrototypeView() {
     var _this = this;
     this.varconstants = {};
@@ -58,21 +129,21 @@ PrototypeView = (function() {
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
     var error, height, loadtext, margin, width;
     try {
-      loadtext = options && options.t ? options.t : "Load...";
+      loadtext = options && options.t ? options.t : false;
       width = options && options.w ? parseInt(options.w) + "px" : "auto";
       height = options && options.h ? parseInt(options.h) + "px" : "100px";
       margin = options && options.m ? parseInt(options.m) + "px" : (parseInt(height) / 2 - 10) + "px";
-      console.log("[preRender " + templateName + "] loadtext:", loadtext);
+      if (this.render_debug) {
+        console.log("[preRender " + templateName + "] loadtext:", loadtext);
+      }
       if (loadtext) {
-        return $el.css({
-          'background-color': '#FFF'
-        }).html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + ";\">" + loadtext + "</p>\n</div>");
+        return $el.html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + "; color:#FFF\">" + loadtext + "</p>\n</div>");
       } else {
         return $el.empty();
       }
     } catch (_error) {
       error = _error;
-      console.error('template undefined');
+      console.error('[preRender] template undefined');
       return console.error(error);
     }
   };
@@ -81,7 +152,9 @@ PrototypeView = (function() {
     if (vars == null) {
       vars = this.vars;
     }
-    console.log("[Render " + templateName + "] @vars:", this.vars);
+    if (this.render_debug) {
+      console.log("[Render " + templateName + "]", '| @vars:', vars);
+    }
     return $el.removeAttr('style').html(Mustache.to_html(sourse, vars));
   };
 
@@ -106,6 +179,8 @@ PrototypeView = (function() {
     this.opt = opt != null ? opt : {};
   };
 
+  PrototypeView.prototype.actions = function() {};
+
   return PrototypeView;
 
 })();
@@ -126,8 +201,6 @@ IndexView = (function(_super) {
     return this.generateRenders();
   };
 
-  IndexView.prototype.resize = function() {};
-
   IndexView.prototype.controller = function(opt) {
     var _this = this;
     this.opt = opt != null ? opt : {};
@@ -136,31 +209,38 @@ IndexView = (function(_super) {
       t: 'Load...',
       h: 130
     });
-    return setTimeout(function() {
-      var data;
-      data = {
-        test: 'Mustache rendered'
-      };
-      return _this.renderResponse(data);
-    }, 2000);
+    return app.models.user.get({}, function(res) {
+      if (res.error) {
+        return app.errors.popup(res.error);
+      } else {
+        return _this.renderResponse(res);
+      }
+    });
   };
 
   IndexView.prototype.renderResponse = function(data) {
     _.extend(this.vars, this.varconstants);
     _.extend(this.vars, data);
+    this.vars.avatar = this.vars.avatar ? "<img src=\"" + this.vars.avatar + "\"\" class=\"ava\">" : "";
     this.render['content']();
-    return this.listener();
-  };
-
-  IndexView.prototype.listener = function() {
-    return this.template['content'].find('h1').css({
-      'color': 'green'
-    });
+    return this.actions();
   };
 
   return IndexView;
 
 })(PrototypeView);
+
+/* ============ Объявляем классы! ===========*/
+
+
+Views = (function() {
+  function Views() {
+    this.index = new IndexView;
+  }
+
+  return Views;
+
+})();
 
 var AppRouter, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -209,8 +289,6 @@ AppRouter = (function(_super) {
     "!/": "index",
     "!/ooops": "ooops",
     "!/ooops/": "ooops",
-    "!/ie": "ie",
-    "!/ie/": "ie",
     "*path": "notFound"
   };
 
@@ -227,23 +305,18 @@ AppRouter = (function(_super) {
     return this.bind("all", function(route, router) {});
   };
 
-  AppRouter.prototype.changeBg = function(className) {
-    if (className == null) {
-      className = "";
-    }
-    $('.background').removeClass('bg-1');
-    if (className !== "") {
-      return $('.background').addClass(className);
-    }
+  AppRouter.prototype.notFound = function(path) {
+    return $('section#notFound').show();
   };
 
-  AppRouter.prototype.notFound = function(path) {};
+  AppRouter.prototype.ooops = function() {
+    return $('section#ooops').show();
+  };
 
-  AppRouter.prototype.ooops = function() {};
-
-  AppRouter.prototype.ie = function() {};
-
-  AppRouter.prototype.index = function() {};
+  AppRouter.prototype.index = function() {
+    $('section#index').show();
+    return app.views['index'].controller();
+  };
 
   return AppRouter;
 
@@ -259,9 +332,9 @@ App = (function() {
     if (options == null) {
       options = {};
     }
-    this.name = 'project';
+    this.name = 'Frontend Skeleton';
     this.localhost = window.location.host === "" || /localhost/.test(window.location.host);
-    this.host = this.localhost ? "http://" + this.name : window.location.host;
+    this.host = this.localhost ? "http://vinsproduction.com" : "http://" + window.location.host;
     this.root = options.root || "";
     this.debug = (function() {
       var debug;
@@ -289,7 +362,8 @@ App = (function() {
       if (__indexOf.call(_this.debug, 'box') >= 0) {
         _this.debugBox.init();
       }
-      _this.initViews();
+      _this.models = new Models;
+      _this.views = new Views;
       _this.router = new AppRouter;
       Backbone.history.start();
       _this.social.init();
@@ -297,17 +371,65 @@ App = (function() {
     });
   };
 
-  App.prototype.initViews = function() {
-    return this.views = {
-      index: new IndexView
-    };
-  };
-
   App.prototype.redirect = function(page) {
     if (page == null) {
       page = "";
     }
-    return this.router.navigate(page, true);
+    return this.router.navigate("!" + page, true);
+  };
+
+  /* @API
+  	Пример запроса: app.api.request 'user/details', 'GET', {}, (res) =>
+  		if res.error
+  				return app.errors.popup res.error
+  			else
+  				console.log res
+  */
+
+
+  App.prototype.api = function(url, type, data, callback) {
+    var prefix;
+    if (type == null) {
+      type = "GET";
+    }
+    if (data == null) {
+      data = {};
+    }
+    prefix = '/api/v1/';
+    url = app.host + prefix + url;
+    return $.ajax({
+      type: type,
+      url: url,
+      data: data
+    }).done(function(res) {
+      var response;
+      response = $$.browser.msie ? JSON.stringify(res) : res;
+      if (res.status === 'success') {
+        if (!res.data) {
+          res.data = [];
+        }
+        console.debug("[Api] " + url + " | " + type + ":", data, "| success: ", response);
+        if (callback) {
+          return callback(res.data);
+        }
+      } else if (res.status === 'error') {
+        console.error("[Api] " + url + " | " + type + ":", data, "| error: ", response);
+        if (callback) {
+          return callback({
+            error: res.error
+          });
+        }
+      }
+    }).fail(function(res) {
+      var response;
+      response = $$.browser.msie ? JSON.stringify(res) : res;
+      console.error("[Api] " + url + " | " + type + ":", data, "| fail: ", response);
+      if (res.readyState === 4 && res.status === 404) {
+        return app.redirect('/404');
+      } else {
+        return app.redirect('/ooops');
+      }
+    });
   };
 
   App.prototype.debugBox = {
@@ -498,30 +620,29 @@ App = (function() {
     }
   };
 
-  App.prototype.erros = {
+  App.prototype.errors = {
     popup: function(error) {
       var text;
-      text = this.getError(error);
+      text = this.get(error);
       return customPopup('Ошибка!', text, true);
     },
     get: function(error) {
-      var errors, list;
-      errors = this.errors_ru();
+      var list,
+        _this = this;
       if ($$.isObject(error)) {
         list = "";
         _.each(error, function(text) {
-          text = errors[text] || text;
+          text = _this.rus[text] || text;
           return list += text + "<br/><br/>";
         });
       } else {
-        list = errors[error];
+        list = this.rus[error];
       }
       return list || "Неизвестная ошибка";
     },
-    ru: function() {
-      return {
-        "Error_1": "Первая ошибка"
-      };
+    rus: {
+      "Story doesn't exist": "Истории не существует",
+      "User is not authenticated": "Юзер не авторизован"
     }
   };
 

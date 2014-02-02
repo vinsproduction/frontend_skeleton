@@ -2,6 +2,8 @@
 
 class PrototypeView
 
+	render_debug: true # отображать название темплейтов и передаваемых в них переменных
+
 	constructor: ->
 
 		@varconstants = {}
@@ -36,29 +38,29 @@ class PrototypeView
 
 		try
 
-			loadtext = if options and options.t then options.t else "Load..."
+			loadtext = if options and options.t then options.t else false
 			width 	= if options and options.w then parseInt(options.w) + "px" else "auto"
 			height 	= if options and options.h then parseInt(options.h) + "px" else "100px"
 			margin  	= if options and options.m then parseInt(options.m) + "px" else (parseInt(height)/2 - 10) + "px" # 10 - погрешность от размера шрифта
 
-			console.log "[preRender #{templateName}] loadtext:",loadtext
+			if @render_debug then console.log "[preRender #{templateName}] loadtext:",loadtext
 
 			if loadtext
-				$el.css({'background-color':'#FFF'}).html """
+				$el.html """
 					<div class="prerender" style="position:relative;height:#{height};width:#{width};text-align:center;">
-						<p style="position: relative; top:#{margin};">#{loadtext}</p>
+						<p style="position: relative; top:#{margin}; color:#FFF">#{loadtext}</p>
 					</div>
 				"""
 			else
 				$el.empty()
 	
 		catch error
-			console.error 'template undefined'
+			console.error '[preRender] template undefined'
 			console.error error
 
 	doRender: (templateName, $el, sourse, vars = @vars) ->
 
-		console.log "[Render #{templateName}] @vars:",@vars
+		if @render_debug then console.log "[Render #{templateName}]", '| @vars:', vars
 
 		$el.removeAttr('style').html( Mustache.to_html(sourse, vars) )
 
@@ -82,6 +84,8 @@ class PrototypeView
 
 	controller: (@opt={}) ->
 
+	actions: ->
+
 class IndexView extends PrototypeView
 
 	init: ->
@@ -93,35 +97,37 @@ class IndexView extends PrototypeView
 
 		do @generateRenders
 
-	resize: -> 
-		# do resize
-	
+
 	controller: (@opt={}) ->
 
 		@vars = {} #reset vars
 
 		@preRender['content'](t: 'Load...',h:130)
 
-		setTimeout(=>
-			data = 
-				test: 'Mustache rendered'
+		app.models.user.get {}, (res) =>
 
-			@renderResponse(data)
-		,2000)
+			if res.error
+				return app.errors.popup res.error
+			else
+				@renderResponse(res)
 		
 	renderResponse: (data) ->
 	
 		_.extend @vars, @varconstants
 		_.extend @vars, data
 
+		@vars.avatar = if @vars.avatar then  """<img src="#{@vars.avatar}"" class="ava">""" else ""
+
 		do @render['content']
-		do @listener
-
-	listener: ->
-		
-		@template['content'].find('h1').css('color':'green')
+		do @actions
 
 
 		
+### ============ Объявляем классы! =========== ###
 
+class Views
+
+	constructor: ->
+
+		@index 			= new IndexView
 

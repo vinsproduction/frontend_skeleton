@@ -32,9 +32,6 @@ class AppRouter extends Backbone.Router
 		"!/ooops" : "ooops"
 		"!/ooops/" : "ooops"
 
-		"!/ie" : "ie"
-		"!/ie/" : "ie"
-
 		"*path" : "notFound"
 
 	before: (route) ->
@@ -51,19 +48,17 @@ class AppRouter extends Backbone.Router
 		@bind "all",  (route,router) ->
 			#if route is 'route'
 
-	changeBg: (className="") ->
-
-		$('.background')
-			.removeClass('bg-1')
-
-		$('.background').addClass(className) if className isnt ""
-
-	
+	# 404 страница
 	notFound: (path) ->
+		$('section#notFound').show()
 
+	# Серверная ошибка
 	ooops: ->
-
-	ie: ->
+		$('section#ooops').show()
 
 	index: ->
+
+		$('section#index').show()
+
+		app.views['index'].controller()
 

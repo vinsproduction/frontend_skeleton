@@ -20,6 +20,7 @@ font-family(name)
 	font-family name, helvetica,verdana,arial,tahoma
 
 font(size,name)
+	//font-size unit(size*6.5, '%') convert px to percents
 	font-size size
 	font-family name
 
@@ -269,9 +270,7 @@ body > main > .sections
 section#index
 	.container
 		.content
-			padding 50px 5px
-			width ($mainWidth - 5*2)px
-
+			padding 50px 20px	
 			p
 				margin 10px 0
 
@@ -280,11 +279,95 @@ section#index
 
 section#test-render
 	.content
-		height 130px
-		width 100%
+		padding 50px 20px
 		h1
-			padding 50px 0
+			padding 0 0 10px 0
+
+
+/* -------------------- Popups -------------------- */
+			
+#popups
+	
+	.background
+
+		display none
+		position fixed
+		height 100%
+		width 100%
+		top 0
+		left 0
+		z-index 88888
+		background #000
+		opacity 0.6
+
+
+	.popup
+		z-index 99999
+		position absolute
+		display none
+		background-color: #FFF;
+		border 10px solid rgb(226, 226, 226)
+
+		.close
+			cursor pointer
+			position absolute
+			right -36px
+			top -33px
+			width 56px
+			height 52px
+			background-image url('../img/close_popup.png')
+			background-repeat no-repeat
+			background-position left 0px
+			text-decoration none !important
+			z-index 98
+
+		&[data-popup-name="custom"]
+			
 			text-align center
+			min-height 274px
+			width 705px
+
+			.header
+				padding 30px 0 50px 0
+				h1
+					text-transform uppercase
+					text-align center
+					font-size 30px
+				
+			.body
+				font 24px Ubuntu
+				color rgb(51, 51, 51)
+				padding 0 90px	
+
+			.footer
+				padding 50px 0 30px 0
+				button
+					@extends .btn-2
+					margin 0 auto
+
+		&[data-popup-name="unique"]
+
+			text-align center
+			min-height 274px
+			width 705px
+
+			.header
+				padding 30px 0 50px 0
+				h1
+					text-transform uppercase
+					text-align center
+					font-size 30px
+				
+			.body
+				font 24px Ubuntu
+				color rgb(51, 51, 51)
+				padding 0 90px	
+
+			.footer
+				padding 50px 0 30px 0
+				button
+					@extends .btn-2
+					margin 0 auto
 
 
 /* -------------------- MEDIA -------------------- */

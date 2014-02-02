@@ -45,8 +45,6 @@ AppRouter = (function(_super) {
     "!/": "index",
     "!/ooops": "ooops",
     "!/ooops/": "ooops",
-    "!/ie": "ie",
-    "!/ie/": "ie",
     "*path": "notFound"
   };
 
@@ -63,23 +61,18 @@ AppRouter = (function(_super) {
     return this.bind("all", function(route, router) {});
   };
 
-  AppRouter.prototype.changeBg = function(className) {
-    if (className == null) {
-      className = "";
-    }
-    $('.background').removeClass('bg-1');
-    if (className !== "") {
-      return $('.background').addClass(className);
-    }
+  AppRouter.prototype.notFound = function(path) {
+    return $('section#notFound').show();
   };
 
-  AppRouter.prototype.notFound = function(path) {};
+  AppRouter.prototype.ooops = function() {
+    return $('section#ooops').show();
+  };
 
-  AppRouter.prototype.ooops = function() {};
-
-  AppRouter.prototype.ie = function() {};
-
-  AppRouter.prototype.index = function() {};
+  AppRouter.prototype.index = function() {
+    $('section#index').show();
+    return app.views['index'].controller();
+  };
 
   return AppRouter;
 

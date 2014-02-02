@@ -3,13 +3,13 @@ class App
 	constructor: (options={}) ->
 
 		# Имя проекта
-		@name = 'project'
+		@name = 'Frontend Skeleton'
 		
 		# Если хоста нет, значит - локальный просмотр!
 		@localhost = window.location.host is "" or /localhost/.test window.location.host
 
 		# Если localhost - проставляем настоящий хост
-		@host = if @localhost then "http://#{@name}" else window.location.host
+		@host = if @localhost then "http://vinsproduction.com" else "http://" + window.location.host
 
 		# Путь до картинок и прочей статики
 		@root = options.root || ""
@@ -44,8 +44,11 @@ class App
 			# Дебагер
 			if 'box' in @debug then do @debugBox.init
 
+			# Классы - модели/api
+			@models 	= new Models
+
 			# Классы - контроллеры/рендеры
-			@initViews()
+			@views 	= new Views
 
 			# Backbone Router
 			@router = new AppRouter
@@ -56,13 +59,55 @@ class App
 
 			console.debug '[App::init] debug:',@debug, @
 
-	initViews: ->
 
-		@views =
-			index: new IndexView
+	redirect: (page = "") -> @router.navigate("!" + page,true)
 
 
-	redirect: (page = "") -> @router.navigate(page,true)
+	### @API
+	Пример запроса: app.api.request 'user/details', 'GET', {}, (res) =>
+		if res.error
+				return app.errors.popup res.error
+			else
+				console.log res
+	###
+
+	api: (url,type="GET",data={},callback) ->
+
+		prefix = '/api/v1/'
+
+		url =  app.host + prefix + url
+
+		$.ajax({ type, url, data })
+
+		.done( (res) ->
+
+			response = if $$.browser.msie then JSON.stringify res else res
+
+			if res.status is 'success'
+
+				if !res.data then res.data = []
+
+				console.debug "[Api] #{url} | #{type}:", data, "| success: ", response
+
+				callback res.data if callback
+
+			else if res.status is 'error'
+
+				console.error "[Api] #{url} | #{type}:", data, "| error: ", response
+
+				callback {error: res.error} if callback
+
+		).fail( (res) ->
+
+			response = if $$.browser.msie then JSON.stringify res else res
+
+			console.error "[Api] #{url} | #{type}:", data, "| fail: ", response
+
+			if res.readyState is 4 and res.status is 404
+				app.redirect '/404'
+			else
+				app.redirect '/ooops'
+		)
 
 	debugBox:
 
@@ -106,7 +151,6 @@ class App
 		# Крайне важная штука для ajax запросов в рамках разных доменов, в IE!  
 		jQuery.support.cors = true
 		jQuery.ajaxSetup({ cache: false, crossDomain: true})
-
 
 	social:
 
@@ -245,30 +289,33 @@ class App
 			popup: (url) ->
 				window.open url, "", "toolbar=0,status=0,width=626,height=436"
 
+	
+	# Примеры вызова ошибок из вьюх
+	# app.errors.get res.error
+	# app.errors.popup res.error
 
-	erros:
+	errors:
 
 		popup: (error) ->
 
-			text = @getError(error) 
+			text = @get(error) 
 			customPopup 'Ошибка!', text, true
 		
 		get: (error) ->
 
-			errors = @errors_ru()
-
 			if $$.isObject(error)
 
 				list 	= ""
-				_.each error, (text) ->
-					text = errors[text] or text
+				_.each error, (text) =>
+					text = @rus[text] or text
 					list += text + "<br/><br/>"
 			else
 
-				list = errors[error]
+				list = @rus[error]
 
 			return list or "Неизвестная ошибка"
 
-		ru: () ->
+		rus: 
 
-			"Error_1": "Первая ошибка"
+			"Story doesn't exist": "Истории не существует"
+			"User is not authenticated": "Юзер не авторизован"

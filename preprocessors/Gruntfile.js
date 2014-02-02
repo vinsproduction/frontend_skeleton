@@ -1,4 +1,5 @@
 module.exports = function(grunt) {
+
 	grunt.initConfig({
 
 		// Компиляция Stylus в CSS
@@ -37,6 +38,7 @@ module.exports = function(grunt) {
           	},
 				
           	files: {
+        			'../js/libs/popup.js': 'coffee/popup.coffee',
         			'../js/app.models.js': 'coffee/app.models.coffee',
 		    		'../js/app.views.js': 'coffee/app.views.coffee',
 		    		'../js/app.router.js': 'coffee/app.router.coffee',
@@ -69,6 +71,7 @@ module.exports = function(grunt) {
 					'../js/libs/underscore-min.js',
 					'../js/libs/json2.js',
 					'../js/libs/backbone-min.js',
+					'../js/libs/popup.js',
 				],
 				dest: '../js/libs/lib.js'
 			},
@@ -89,6 +92,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+
 
 		// Наблюдение за изменениями
 		watch: {
@@ -133,7 +137,7 @@ module.exports = function(grunt) {
 				tasks: ['concat:js','concat:libs', 'uglify']
 			}
 			
-		}
+		},
 	});
 	
 	// Загрузка библиотек
@@ -145,6 +149,21 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jade');
 	grunt.loadNpmTasks('grunt-contrib-coffee');
 
+	// Сервер
+	grunt.registerTask('server', 'Start web server', function() {
+
+		port = 8888
+		grunt.log.writeln('SERVER started on port ' + port);
+		require('./server.js')(port).listen(port, function(){
+	 		 //grunt.log.writeln('SERVER listening on port ' + port);
+		});;
+		
+
+		grunt.task.run(['coffee', 'stylus', 'jade', 'concat', 'uglify', 'watch']);
+		
+	});
+
 	// Объявление тасков
 	grunt.registerTask('default', ['coffee', 'stylus', 'jade', 'concat', 'uglify', 'watch']);
+
 };

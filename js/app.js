@@ -8,9 +8,9 @@ App = (function() {
     if (options == null) {
       options = {};
     }
-    this.name = 'project';
+    this.name = 'Frontend Skeleton';
     this.localhost = window.location.host === "" || /localhost/.test(window.location.host);
-    this.host = this.localhost ? "http://" + this.name : window.location.host;
+    this.host = this.localhost ? "http://vinsproduction.com" : "http://" + window.location.host;
     this.root = options.root || "";
     this.debug = (function() {
       var debug;
@@ -38,7 +38,8 @@ App = (function() {
       if (__indexOf.call(_this.debug, 'box') >= 0) {
         _this.debugBox.init();
       }
-      _this.initViews();
+      _this.models = new Models;
+      _this.views = new Views;
       _this.router = new AppRouter;
       Backbone.history.start();
       _this.social.init();
@@ -46,17 +47,65 @@ App = (function() {
     });
   };
 
-  App.prototype.initViews = function() {
-    return this.views = {
-      index: new IndexView
-    };
-  };
-
   App.prototype.redirect = function(page) {
     if (page == null) {
       page = "";
     }
-    return this.router.navigate(page, true);
+    return this.router.navigate("!" + page, true);
+  };
+
+  /* @API
+  	Пример запроса: app.api.request 'user/details', 'GET', {}, (res) =>
+  		if res.error
+  				return app.errors.popup res.error
+  			else
+  				console.log res
+  */
+
+
+  App.prototype.api = function(url, type, data, callback) {
+    var prefix;
+    if (type == null) {
+      type = "GET";
+    }
+    if (data == null) {
+      data = {};
+    }
+    prefix = '/api/v1/';
+    url = app.host + prefix + url;
+    return $.ajax({
+      type: type,
+      url: url,
+      data: data
+    }).done(function(res) {
+      var response;
+      response = $$.browser.msie ? JSON.stringify(res) : res;
+      if (res.status === 'success') {
+        if (!res.data) {
+          res.data = [];
+        }
+        console.debug("[Api] " + url + " | " + type + ":", data, "| success: ", response);
+        if (callback) {
+          return callback(res.data);
+        }
+      } else if (res.status === 'error') {
+        console.error("[Api] " + url + " | " + type + ":", data, "| error: ", response);
+        if (callback) {
+          return callback({
+            error: res.error
+          });
+        }
+      }
+    }).fail(function(res) {
+      var response;
+      response = $$.browser.msie ? JSON.stringify(res) : res;
+      console.error("[Api] " + url + " | " + type + ":", data, "| fail: ", response);
+      if (res.readyState === 4 && res.status === 404) {
+        return app.redirect('/404');
+      } else {
+        return app.redirect('/ooops');
+      }
+    });
   };
 
   App.prototype.debugBox = {
@@ -247,30 +296,29 @@ App = (function() {
     }
   };
 
-  App.prototype.erros = {
+  App.prototype.errors = {
     popup: function(error) {
       var text;
-      text = this.getError(error);
+      text = this.get(error);
       return customPopup('Ошибка!', text, true);
     },
     get: function(error) {
-      var errors, list;
-      errors = this.errors_ru();
+      var list,
+        _this = this;
       if ($$.isObject(error)) {
         list = "";
         _.each(error, function(text) {
-          text = errors[text] || text;
+          text = _this.rus[text] || text;
           return list += text + "<br/><br/>";
         });
       } else {
-        list = errors[error];
+        list = this.rus[error];
       }
       return list || "Неизвестная ошибка";
     },
-    ru: function() {
-      return {
-        "Error_1": "Первая ошибка"
-      };
+    rus: {
+      "Story doesn't exist": "Истории не существует",
+      "User is not authenticated": "Юзер не авторизован"
     }
   };
 

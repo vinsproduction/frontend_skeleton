@@ -1,8 +1,10 @@
-var IndexView, PrototypeView, _ref,
+var IndexView, PrototypeView, Views, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 PrototypeView = (function() {
+  PrototypeView.prototype.render_debug = true;
+
   function PrototypeView() {
     var _this = this;
     this.varconstants = {};
@@ -49,21 +51,21 @@ PrototypeView = (function() {
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
     var error, height, loadtext, margin, width;
     try {
-      loadtext = options && options.t ? options.t : "Load...";
+      loadtext = options && options.t ? options.t : false;
       width = options && options.w ? parseInt(options.w) + "px" : "auto";
       height = options && options.h ? parseInt(options.h) + "px" : "100px";
       margin = options && options.m ? parseInt(options.m) + "px" : (parseInt(height) / 2 - 10) + "px";
-      console.log("[preRender " + templateName + "] loadtext:", loadtext);
+      if (this.render_debug) {
+        console.log("[preRender " + templateName + "] loadtext:", loadtext);
+      }
       if (loadtext) {
-        return $el.css({
-          'background-color': '#FFF'
-        }).html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + ";\">" + loadtext + "</p>\n</div>");
+        return $el.html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + "; color:#FFF\">" + loadtext + "</p>\n</div>");
       } else {
         return $el.empty();
       }
     } catch (_error) {
       error = _error;
-      console.error('template undefined');
+      console.error('[preRender] template undefined');
       return console.error(error);
     }
   };
@@ -72,7 +74,9 @@ PrototypeView = (function() {
     if (vars == null) {
       vars = this.vars;
     }
-    console.log("[Render " + templateName + "] @vars:", this.vars);
+    if (this.render_debug) {
+      console.log("[Render " + templateName + "]", '| @vars:', vars);
+    }
     return $el.removeAttr('style').html(Mustache.to_html(sourse, vars));
   };
 
@@ -97,6 +101,8 @@ PrototypeView = (function() {
     this.opt = opt != null ? opt : {};
   };
 
+  PrototypeView.prototype.actions = function() {};
+
   return PrototypeView;
 
 })();
@@ -117,8 +123,6 @@ IndexView = (function(_super) {
     return this.generateRenders();
   };
 
-  IndexView.prototype.resize = function() {};
-
   IndexView.prototype.controller = function(opt) {
     var _this = this;
     this.opt = opt != null ? opt : {};
@@ -127,28 +131,35 @@ IndexView = (function(_super) {
       t: 'Load...',
       h: 130
     });
-    return setTimeout(function() {
-      var data;
-      data = {
-        test: 'Mustache rendered'
-      };
-      return _this.renderResponse(data);
-    }, 2000);
+    return app.models.user.get({}, function(res) {
+      if (res.error) {
+        return app.errors.popup(res.error);
+      } else {
+        return _this.renderResponse(res);
+      }
+    });
   };
 
   IndexView.prototype.renderResponse = function(data) {
     _.extend(this.vars, this.varconstants);
     _.extend(this.vars, data);
+    this.vars.avatar = this.vars.avatar ? "<img src=\"" + this.vars.avatar + "\"\" class=\"ava\">" : "";
     this.render['content']();
-    return this.listener();
-  };
-
-  IndexView.prototype.listener = function() {
-    return this.template['content'].find('h1').css({
-      'color': 'green'
-    });
+    return this.actions();
   };
 
   return IndexView;
 
 })(PrototypeView);
+
+/* ============ Объявляем классы! ===========*/
+
+
+Views = (function() {
+  function Views() {
+    this.index = new IndexView;
+  }
+
+  return Views;
+
+})();
