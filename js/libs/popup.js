@@ -58,7 +58,8 @@ Popup = (function() {
       _this.el = $("#popups");
       _this.bg = _this.el.find(".background");
       _this.elClose = _this.el.find("[data-popup-close]");
-      _this.popups = _this.group !== "" ? _this.el.find("[data-popup-group='" + _this.group + "'][data-popup-name]") : _this.el.find("[data-popup-name]");
+      _this.popupsAll = _this.el.find("[data-popup-name]");
+      _this.popups = _this.group !== "" ? _this.el.find("[data-popup-group='" + _this.group + "'][data-popup-name]") : _this.popupsAll;
       _this.elClose.click(function() {
         _this.disable();
         return false;
@@ -106,11 +107,11 @@ Popup = (function() {
 
   Popup.prototype.disable = function() {
     if (this.status === 1) {
-      this.popups.removeClass('open');
+      this.popupsAll.removeClass('open');
       if (this.fade) {
-        this.popups.fadeOut(this.fade);
+        this.popupsAll.fadeOut(this.fade);
       } else {
-        this.popups.hide();
+        this.popupsAll.hide();
       }
       this.bg.hide();
       return this.status = 0;
@@ -154,6 +155,7 @@ Popup = (function() {
   Popup.prototype.open = function(name, button, closeDisable, callback) {
     var $button, popup,
       _this = this;
+    this.close();
     popup = $("[data-popup-name='" + name + "']");
     if (!popup.size()) {
       return console.error("popup " + name + " not found");

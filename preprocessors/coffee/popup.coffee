@@ -44,13 +44,14 @@ class Popup
       
     $ =>
 
-      @el       = $("#popups")
-      @bg       = @el.find(".background")
-      @elClose  = @el.find("[data-popup-close]")
+      @el         = $("#popups")
+      @bg         = @el.find(".background")
+      @elClose    = @el.find("[data-popup-close]")
+      @popupsAll  = @el.find("[data-popup-name]")
       @popups   = if @group isnt ""
           @el.find("[data-popup-group='#{@group}'][data-popup-name]")
         else
-          @el.find("[data-popup-name]")
+          @popupsAll
 
 
       @elClose.click =>
@@ -84,17 +85,14 @@ class Popup
 
   disable: ->
     if @status is 1
-
-      @popups.removeClass 'open'
-
+      @popupsAll.removeClass 'open'
       if @fade
-        @popups.fadeOut(@fade)
+        @popupsAll.fadeOut(@fade)
       else
-        @popups.hide()
-
+        @popupsAll.hide()
       @bg.hide()
-
       @status = 0
+
 
   close: ->
     @status = 1
@@ -129,6 +127,8 @@ class Popup
   # Функиця открытия конкретного попапа
   # closeDisable -- true, если надо блокировать закрытие
   open: (name, button, closeDisable, callback) ->
+
+    @close()
 
     popup = $("[data-popup-name='#{name}']")
 
