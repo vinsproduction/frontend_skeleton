@@ -3,7 +3,7 @@
 
 1. popup.open('popup_name')
 2. popup.custom('title','body')
-3. popup.custom('Необходимо авторизоваться', function() { popup.open('popup_name'); });
+3. popup.custom('Ошибка','Необходима авторизация',{button: function(){popup.open('popup_name')}});
     при этом у кнопки должен быть обязательный атрибут [data-popup-button]
 ###
 
@@ -65,23 +65,46 @@ class Popup
 
       $(window).resize => @center() if @status is 1
 
+  ### Список всех попапов ###
   list: ->
     @popups.each ->
       console.log 'Popup', $(@).data()
 
-  load: (popup) ->
+
+
+  load: (popup,callback) ->
+
     if @status is 0
+      @doCallback popup
       @popups.hide().removeClass 'open'
       popup.css width: popup.width() + parseInt(popup.css("paddingLeft")) + parseInt(popup.css("paddingRight")) + parseInt(popup.css("border-right-width")) + parseInt(popup.css("border-right-width"))
-      popup.addClass 'open'  
+      popup.addClass 'open'
+      
       if @fade
-        popup.fadeIn(@fade)
+        popup.fadeIn @fade, =>
+          callback() if callback
+          @loadCallback popup
+       
       else
         popup.show()
+        callback() if callback
+        @loadCallback popup
+       
 
       @bg.show()
-      
       @status = 1
+
+
+  ### Если надо отловить callback ДО открытия попапа: ###
+  doCallback: (popup) ->
+
+  ### Если надо отловить callback после появления попапа:
+  popup.loadCallback = function(popup){
+    console.log('this loadCallback. and this popup:',popup);
+  }
+  ###
+
+  loadCallback: (popup) ->
 
   disable: ->
     if @status is 1
@@ -92,7 +115,6 @@ class Popup
         @popupsAll.hide()
       @bg.hide()
       @status = 0
-
 
   close: ->
     @status = 1
@@ -123,10 +145,15 @@ class Popup
 
     if @scroll and @top then popup.css(top:@top+windowScroll)
 
-
-  # Функиця открытия конкретного попапа
-  # closeDisable -- true, если надо блокировать закрытие
-  open: (name, button, closeDisable, callback) ->
+  ### Функция открытия конкретного попапа
+  popup.open('unique',{button: function(){popup.close()}});
+  opt = {
+    button: bool or function. Если надо навешать функцию на кнопку. При этом у кнопки должен быть обязательный атрибут [data-popup-button]
+    closeDisable: bool Если надо блокировать закрытие
+    callback: function
+  }
+  ###
+  open: (name, opt={}) ->
 
     @close()
 
@@ -134,29 +161,27 @@ class Popup
 
     if !popup.size() then return console.warn "popup #{name} not found"
 
-    @center(popup)
-    @load(popup)
+    @center popup
+    @load popup, opt.callback ? false
 
     $button = popup.find("[data-popup-button]")
 
-    if button and $button.size()
+    if opt.button and $button.size()
       $button.unbind("click").click =>
         if typeof button is "function"
-          button()
+          opt.button()
         else
           @close()
-        false
 
-    if closeDisable
+    if opt.closeDisable
       @status = 0
 
-    callback() if callback
 
-    
-  # кастомный попап для вывода любой	информации
-  # button -- передается функция пост обработки нажатия или bool
-  # Например: popup.custom('Необходимо авторизоваться', function() { popup.open('popup_name'); });
-  custom: (title, text, button, callback, closeDisable) ->
+  ### Функция открытия конкретного попапа  
+  кастомный попап для вывода любой	информации
+  popup.custom('Ошибка','Необходима авторизация',{button: function(){popup.open('popup_name')}});
+  ###
+  custom: (title, text, opt={}) ->
 
     name = "custom"
 
@@ -167,7 +192,7 @@ class Popup
     popup.find(".header h1").html title
     popup.find(".body").html text
   
-    @open name, button, callback, closeDisable
+    @open name, opt
 
 
 ### ============ Объявляем Попапы! =========== ###

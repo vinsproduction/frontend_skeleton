@@ -17203,7 +17203,7 @@ if (typeof JSON !== 'object') {
 
 1. popup.open('popup_name')
 2. popup.custom('title','body')
-3. popup.custom('Необходимо авторизоваться', function() { popup.open('popup_name'); });
+3. popup.custom('Ошибка','Необходима авторизация',{button: function(){popup.open('popup_name')}});
     при этом у кнопки должен быть обязательный атрибут [data-popup-button]
 */
 
@@ -17282,28 +17282,56 @@ Popup = (function() {
     });
   }
 
+  /* Список всех попапов*/
+
+
   Popup.prototype.list = function() {
     return this.popups.each(function() {
       return console.log('Popup', $(this).data());
     });
   };
 
-  Popup.prototype.load = function(popup) {
+  Popup.prototype.load = function(popup, callback) {
+    var _this = this;
     if (this.status === 0) {
+      this.doCallback(popup);
       this.popups.hide().removeClass('open');
       popup.css({
         width: popup.width() + parseInt(popup.css("paddingLeft")) + parseInt(popup.css("paddingRight")) + parseInt(popup.css("border-right-width")) + parseInt(popup.css("border-right-width"))
       });
       popup.addClass('open');
       if (this.fade) {
-        popup.fadeIn(this.fade);
+        popup.fadeIn(this.fade, function() {
+          if (callback) {
+            callback();
+          }
+          return _this.loadCallback(popup);
+        });
       } else {
         popup.show();
+        if (callback) {
+          callback();
+        }
+        this.loadCallback(popup);
       }
       this.bg.show();
       return this.status = 1;
     }
   };
+
+  /* Если надо отловить callback ДО открытия попапа:*/
+
+
+  Popup.prototype.doCallback = function(popup) {};
+
+  /* Если надо отловить callback после появления попапа:
+  popup.loadCallback = function(popup){
+    console.log('this loadCallback. and this popup:',popup);
+  }
+  */
+
+
+  Popup.prototype.loadCallback = function(popup) {};
 
   Popup.prototype.disable = function() {
     if (this.status === 1) {
@@ -17352,37 +17380,55 @@ Popup = (function() {
     }
   };
 
-  Popup.prototype.open = function(name, button, closeDisable, callback) {
-    var $button, popup,
+  /* Функция открытия конкретного попапа
+  popup.open('unique',{button: function(){popup.close()}});
+  opt = {
+    button: bool or function. Если надо навешать функцию на кнопку. При этом у кнопки должен быть обязательный атрибут [data-popup-button]
+    closeDisable: bool Если надо блокировать закрытие
+    callback: function
+  }
+  */
+
+
+  Popup.prototype.open = function(name, opt) {
+    var $button, popup, _ref,
       _this = this;
+    if (opt == null) {
+      opt = {};
+    }
     this.close();
     popup = $("[data-popup-name='" + name + "']");
     if (!popup.size()) {
       return console.warn("popup " + name + " not found");
     }
     this.center(popup);
-    this.load(popup);
+    this.load(popup, (_ref = opt.callback) != null ? _ref : false);
     $button = popup.find("[data-popup-button]");
-    if (button && $button.size()) {
+    if (opt.button && $button.size()) {
       $button.unbind("click").click(function() {
         if (typeof button === "function") {
-          button();
+          return opt.button();
         } else {
-          _this.close();
+          return _this.close();
         }
-        return false;
       });
     }
-    if (closeDisable) {
-      this.status = 0;
-    }
-    if (callback) {
-      return callback();
+    if (opt.closeDisable) {
+      return this.status = 0;
     }
   };
 
-  Popup.prototype.custom = function(title, text, button, callback, closeDisable) {
+  /* Функция открытия конкретного попапа  
+  кастомный попап для вывода любой	информации
+  popup.custom('Ошибка','Необходима авторизация',{button: function(){popup.open('popup_name')}});
+  */
+
+
+  Popup.prototype.custom = function(title, text, opt) {
     var name, popup;
+    if (opt == null) {
+      opt = {};
+    }
     name = "custom";
     popup = $("[data-popup-name='" + name + "']");
     if (!popup.size()) {
@@ -17390,7 +17436,7 @@ Popup = (function() {
     }
     popup.find(".header h1").html(title);
     popup.find(".body").html(text);
-    return this.open(name, button, callback, closeDisable);
+    return this.open(name, opt);
   };
 
   return Popup;

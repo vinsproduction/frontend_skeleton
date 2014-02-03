@@ -49,9 +49,16 @@ import-font(originalname, newname)
 		font-weight normal
 		font-style normal
 
+box(w = false,h = false)
+	display block
+	if w
+		width (w)px
+	if h
+		height (h)px
+
 
 block(w = false,h = false)
-	//display block
+	display block
 	if w
 		width (w)px
 	if h

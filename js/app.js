@@ -304,7 +304,7 @@ App = (function() {
     popup: function(error) {
       var text;
       text = this.get(error);
-      return popup.custom('Ошибка!', text, true);
+      return popup.custom('Ошибка!', text);
     },
     get: function(error) {
       var list,

@@ -38,6 +38,7 @@ class PrototypeView
 
 		try
 
+			color 	= if options and options.c then options.c else "#000"
 			loadtext = if options and options.t then options.t else false
 			width 	= if options and options.w then parseInt(options.w) + "px" else "auto"
 			height 	= if options and options.h then parseInt(options.h) + "px" else "100px"
@@ -48,7 +49,7 @@ class PrototypeView
 			if loadtext
 				$el.html """
 					<div class="prerender" style="position:relative;height:#{height};width:#{width};text-align:center;">
-						<p style="position: relative; top:#{margin}; color:#FFF">#{loadtext}</p>
+						<p style="position: relative; top:#{margin}; color:#{color}">#{loadtext}</p>
 					</div>
 				"""
 			else

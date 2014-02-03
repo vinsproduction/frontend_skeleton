@@ -15,11 +15,22 @@ block content
 				
 				.row
 
-					a.btn-1.pull-left(href="#",onclick="popup.custom('Custom','Popup');return false;")
+					a.btn-1.pull-left(href="#",onclick="popup.custom('Custom','Popup',{callback:function(){console.log('this callback')}});return false;")
 						span link
 
-					button.btn-2.pull-right(href="#",onclick="popup2.open('unique',function(){popup2.close()});return false;")
+					button.btn-2.pull-right(href="#",onclick="popup2.open('unique',{button: function(){popup2.close()}});return false;")
 						span button
+
+
+					script.
+						$(document).ready(function(){
+							popup.doCallback = function(popup){
+								console.log('this doCallback. and this popup name:',popup.attr('data-popup-name'));
+							}
+							popup.loadCallback = function(popup){
+								console.log('this loadCallback. and this popup name:',popup.attr('data-popup-name'));
+							}
+						})
 
 
 	section#test-render

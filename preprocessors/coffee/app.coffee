@@ -301,7 +301,7 @@ class App
 		popup: (error) ->
 
 			text = @get(error) 
-			popup.custom 'Ошибка!', text, true
+			popup.custom 'Ошибка!', text
 		
 		get: (error) ->
 
