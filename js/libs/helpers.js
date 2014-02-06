@@ -153,30 +153,118 @@ $$; // SHORT NAMESPACE EDITABLE
 	    }
   	};
 
+
+
 	/* Масштабирование изображения по центру внутри элемента */
-	$.imageScale = function($el, w, h) {
-	  if ($el.width() > $el.height()) {
-	    $el.height(h);
-	    return $el.css({
-	      marginLeft: -(($el.width() - w) / 2) + 'px'
-	    });
-	  } else {
-	    $el.width(w);
-	    return $el.css({
-	      marginTop: -(($el.height() - h) / 2) + 'px'
-	    });
-	  }
+
+	$.imageCenter = function(el,zoom,w,h,wrapper) {
+
+		$el = jQuery(el)
+
+		$wrapper = $el.parent();
+
+		if ($wrapper.css('position') != 'relative' && $wrapper.css('position') != 'absolute'){
+			$wrapper.css({
+				'position': 'relative',
+			});
+		}
+	
+		$wrapper.css({
+			'overflow': 'hidden'
+		});
+		
+		$el.css({'position': 'absolute'});
+
+		if(!w){
+			w = parseInt($wrapper.css('width')); 
+		}else{
+			if(wrapper){ $wrapper.width(w); }
+		}
+
+		if(!h){
+			h = parseInt($wrapper.css('height'));
+		}else{
+			if(wrapper){ $wrapper.height(h); }
+		}
+
+		// Если нужен Zoom (замостить всю область фрейма картинкой!)
+		if(zoom) {
+
+			// Если фрейм горизонтальный
+			if (w > h) {
+
+				$el.width(w);
+			   $el.css({
+			   	left: 0,
+					top: h/2 - $el.height()/2,
+				});
+			// Если фрейм квадратный
+			}else if (w == h) {
+				 // Если картинка горизонтальная
+				if ($el.width() > $el.height()) {
+
+				   $el.height(h);
+				   $el.css({
+				   	top: 0,
+						left: w/2 - $el.width()/2,
+					});			  
+				 // Если картинка квадратная
+				}else if($el.width() == $el.height()){
+					$el.width(w);
+					$el.height(h);
+					$el.css({
+						left: 0,
+						top: 0
+					});			   
+			  	} else {
+			  		$el.width(w);
+			    	$el.css({
+			    		left: 0,
+				      top: h/2 - $el.height()/2.5,
+				   });
+			  	}
+			// Если фрейм вертикальный
+			}else{
+				$el.height(h);
+				$el.css({
+		     		left: w/2 - $el.width()/2,
+		     		top: 0
+		    	});
+			}
+			return
+		}
+
+
+	    // Если картинка горизонтальная
+		if ($el.width() > $el.height()) {
+			// Если ширина картинки больше чем фрейм, то фиксируем
+			if($el.width() > w) $el.width(w);
+		// Если картинка квадратная
+		}else if ($el.width() == $el.height()){
+			// Если фрейм горизонтальный
+			if (w > h) {
+				// Если высота картинки больше чем фрейм, то фиксируем
+				if($el.height() > h) $el.height(h);
+			// Если фрейм квадратный
+			}else if (w == h) {
+				if($el.width() > w) $el.width(w);
+				if($el.height() > h) $el.height(h);
+			// Если фрейм вертикальный
+			}else{
+				// Если ширина картинки больше чем фрейм, то фиксируем
+				if($el.width() > w) $el.width(w);
+			}
+		// Если картинка вертикальная
+		}else{
+			// Если высота картинки больше чем фрейм, то фиксируем
+			if($el.height() > h) $el.height(h);
+		}
+		return $el.css({
+     		top: (h/2 - $el.height()/2),
+     		left: (w/2 - $el.width()/2)
+    	});
 	};
 
-	/* Масштабирование по ширине */
-	$.imageScaleW = function($el, w, h) {
-
-    $el.width(w);
-    return $el.css({
-      marginTop: -(($el.height() - h) / 3) + 'px'
-    });
-	  
-	};
 
 
 	/* Блокирование инпутов

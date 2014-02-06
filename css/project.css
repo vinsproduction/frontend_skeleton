@@ -7,7 +7,7 @@
 /* FONTS */
 @font-face {
   font-family: 'Ubuntu';
-  src: url("../fonts/ubuntu-r-webfont.eot"), url("../fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/ubuntu-r-webfont.svg") format('svg'), url("../fonts/ubuntu-r-webfont.woff") format('woff'), url("../fonts/ubuntu-r-webfont.ttf") format('truetype');
+  src: url("../fonts/ubuntu-r-webfont.eot"), url("../fonts/../fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/../fonts/ubuntu-r-webfont.svg") format('svg'), url("../fonts/../fonts/ubuntu-r-webfont.woff") format('woff'), url("../fonts/../fonts/ubuntu-r-webfont.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -20,31 +20,30 @@ ul {
   list-style-type: none;
 }
 /* CLASS - HELPERS */
-.hide {
-  visibility: hidden;
-}
-.none {
-  display: none;
-}
 .clearfix {
   clear: both;
 }
-.row {
+.hide {
+  display: none;
+}
+.none {
+  visibility: hidden;
+}
+.block-inline {
+  vertical-align: top;
   display: -moz-inline-stack;
   display: inline-block;
   zoom: 1;
   *display: inline;
-  clear: both;
-  width: 100%;
 }
-.pull-left {
+.block-left {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
   zoom: 1;
   *display: inline;
 }
-.pull-right {
+.block-right {
   float: right;
   display: -moz-inline-stack;
   display: inline-block;
@@ -261,12 +260,6 @@ section#index .container .content {
 section#index .container .content p {
   margin: 10px 0;
 }
-section#test-render .content {
-  padding: 50px 20px;
-}
-section#test-render .content h1 {
-  padding: 0 0 10px 0;
-}
 /* -------------------- Popups -------------------- */
 #popups .background {
   display: none;
@@ -298,8 +291,7 @@ section#test-render .content h1 {
   top: -33px;
   width: 56px;
   height: 52px;
-  background-image: url("../img/close_popup.png");
-  background-repeat: no-repeat;
+  background: url("../img/close_popup.png") no-repeat;
   background-position: left 0px;
   text-decoration: none !important;
   z-index: 98;

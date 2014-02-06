@@ -1,4 +1,4 @@
-# Prototype View
+### Prototype View ###
 
 class PrototypeView
 
@@ -87,40 +87,9 @@ class PrototypeView
 
 	actions: ->
 
+### Views ###
+
 class IndexView extends PrototypeView
-
-	init: ->
-
-		@el = $("section#test-render")
-
-		@template = 
-			'content' : @el.find('.content')
-
-		do @generateRenders
-
-
-	controller: (@opt={}) ->
-
-		@vars = {} #reset vars
-
-		@preRender['content'](t: 'Load...',h:130)
-
-		app.models.user.get {}, (res) =>
-
-			if res.error
-				return app.errors.popup res.error
-			else
-				@renderResponse(res)
-		
-	renderResponse: (data) ->
-	
-		_.extend @vars, @varconstants
-		_.extend @vars, data
-
-		@vars.avatar = if @vars.avatar then  """<img src="#{@vars.avatar}"" class="ava">""" else ""
-
-		do @render['content']
-		do @actions
 
 
 		
@@ -130,5 +99,5 @@ class Views
 
 	constructor: ->
 
-		@index 			= new IndexView
+		@index = new IndexView
 

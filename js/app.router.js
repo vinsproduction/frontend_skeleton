@@ -1,79 +1,150 @@
-var AppRouter, _ref,
+/* Router*/
+
+var Router, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-Backbone.Router.prototype.before = function() {};
+Router = (function(_super) {
+  __extends(Router, _super);
 
-Backbone.Router.prototype.after = function() {};
-
-Backbone.Router.prototype.route = function(route, name, callback) {
-  var router;
-  if (!_.isRegExp(route)) {
-    route = this._routeToRegExp(route);
-  }
-  if (_.isFunction(name)) {
-    callback = name;
-    name = "";
-  }
-  if (!callback) {
-    callback = this[name];
-  }
-  router = this;
-  return Backbone.history.route(route, function(fragment) {
-    var args;
-    args = router._extractParameters(route, fragment);
-    router.before.apply(router, arguments);
-    callback && callback.apply(router, args);
-    router.after.apply(router, arguments);
-    router.trigger.apply(router, ["route:" + name].concat(args));
-    router.trigger("route", name, args);
-    return Backbone.history.trigger("route", router, name, args);
-  });
-};
-
-AppRouter = (function(_super) {
-  __extends(AppRouter, _super);
-
-  function AppRouter() {
-    _ref = AppRouter.__super__.constructor.apply(this, arguments);
+  function Router() {
+    _ref = Router.__super__.constructor.apply(this, arguments);
     return _ref;
   }
 
-  AppRouter.prototype.routes = {
+  /* маршруты*/
+
+
+  Router.prototype.routes = {
     "": "index",
     "!": "index",
     "!/": "index",
+    "!/page/:id": "page",
+    "!/page/:id/": "page",
     "!/ooops": "ooops",
     "!/ooops/": "ooops",
     "*path": "notFound"
   };
 
-  AppRouter.prototype.before = function(route) {
+  /* инициализация*/
+
+
+  Router.prototype.initialize = function() {
+    var _this = this;
+    this.bind("all", function(route, router) {});
+    if (typeof VK !== "undefined" && VK !== null) {
+      return VK.init(function() {
+        /* следить за изменениями хеша вконтакте*/
+
+        VK.addCallback('onLocationChanged', function(location) {
+          console.debug('[VKONTAKTE > onLocationChanged]', location);
+          return app.redirect(location.replace("!", ""));
+        });
+        /* следить за скроллом*/
+
+        VK.callMethod('scrollSubscribe', true);
+        /* событие после скролла*/
+
+        return VK.addCallback('onScroll', function(scroll, heigh) {
+          return console.log('[VKONTAKTE > onScroll]', scroll, heigh);
+        });
+      });
+    }
+  };
+
+  /* до перехода*/
+
+
+  Router.prototype.before = function(route) {
     if (route !== '') {
       console.debug('[Route]', route);
     }
-    return $('body').scrollTop(0);
+    if (typeof VK !== "undefined" && VK !== null) {
+      /* выставить хеш*/
+
+      return VK.callMethod('setLocation', route);
+    }
   };
 
-  AppRouter.prototype.after = function() {};
+  /* после перехода*/
 
-  AppRouter.prototype.initialize = function() {
-    return this.bind("all", function(route, router) {});
+
+  Router.prototype.after = function() {};
+
+  Router.prototype.scrollTop = function(speed) {
+    if (speed == null) {
+      speed = 400;
+    }
+    if (speed) {
+      $('html,body').animate({
+        scrollTop: 0
+      }, speed);
+      if (typeof VK !== "undefined" && VK !== null) {
+        return VK.callMethod('scrollWindow', 0, speed);
+      }
+    } else {
+      $('body').scrollTop(0);
+      if (typeof VK !== "undefined" && VK !== null) {
+        return VK.callMethod('scrollWindow', 0);
+      }
+    }
   };
 
-  AppRouter.prototype.notFound = function(path) {
-    return $('section#notFound').show();
+  Router.prototype.resize = function(el) {
+    if (typeof VK !== "undefined" && VK !== null) {
+      /* ресайз окна Вконтакте*/
+
+      return window.onload = function() {
+        return setTimeout(function() {
+          var diff, elH, h;
+          diff = 530;
+          elH = $(el).height();
+          h = elH + diff;
+          console.debug("[VKONTAKTE > resizeWindow] '" + el + "' height:", h, '| elHeight:', elH, '| diff:', diff);
+          return VK.callMethod("resizeWindow", 1000, h);
+        }, 1000);
+      };
+    }
   };
 
-  AppRouter.prototype.ooops = function() {
-    return $('section#ooops').show();
+  /*  404 страница*/
+
+
+  Router.prototype.notFound = function(path) {
+    var el;
+    el = $('section#notFound');
+    this.scrollTop();
+    el.show();
+    return this.resize(el);
   };
 
-  AppRouter.prototype.index = function() {
-    $('section#index').show();
-    return app.views['index'].controller();
+  /* Серверная ошибка*/
+
+
+  Router.prototype.ooops = function() {
+    var el;
+    el = $('section#notFound');
+    this.scrollTop();
+    el.show();
+    return this.resize(el);
   };
 
-  return AppRouter;
+  Router.prototype.index = function() {
+    var el;
+    el = $('section#index');
+    this.scrollTop();
+    el.show();
+    return this.resize(el);
+  };
+
+  Router.prototype.page = function(id) {
+    var el;
+    el = $('section#page');
+    this.scrollTop();
+    el.show();
+    return this.resize(el);
+  };
+
+  return Router;
 
 })(Backbone.Router);

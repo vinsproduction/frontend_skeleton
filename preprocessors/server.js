@@ -27,6 +27,10 @@ app = module.exports = function (port){
   		res.render('jade/index', { title: 'Express' });
   	});
 
+	app.all('/tutorials', function(req, res){
+  		res.render('jade/tutorials/index', { title: 'Express' });
+  	});
+
 	app.all('/upload', function(req, res){
   		res.json({ success: 'загрузилось на сервак' });
 	});

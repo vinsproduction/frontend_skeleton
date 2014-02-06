@@ -1,4 +1,6 @@
-var Models, PrototypeModel, UserModel, _ref,
+/* Prototype Model*/
+
+var Models, PrototypeModel, User, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -20,47 +22,18 @@ PrototypeModel = (function() {
 
 })();
 
-UserModel = (function(_super) {
-  __extends(UserModel, _super);
+/* Models*/
 
-  function UserModel() {
-    _ref = UserModel.__super__.constructor.apply(this, arguments);
+
+User = (function(_super) {
+  __extends(User, _super);
+
+  function User() {
+    _ref = User.__super__.constructor.apply(this, arguments);
     return _ref;
   }
 
-  UserModel.prototype.getRes = {
-    "data": {
-      "age": 31,
-      "avatar": "http://cs5474.vk.me/u1748598/-14/x_97fe02f9.jpg",
-      "birthday": "1983-01-19",
-      "city": "Москва",
-      "country": "Россия",
-      "firstname": "Vins",
-      "gender": "male",
-      "id": 1,
-      "lastname": "Production"
-    },
-    "status": "success"
-  };
-
-  /*
-  	Описание: Отдает данные пользователя
-  */
-
-
-  UserModel.prototype.get = function(data, callback) {
-    var url,
-      _this = this;
-    url = 'user/details';
-    if (this.fish) {
-      return this.getFish(url, data, this.getRes, callback);
-    }
-    return app.api(url, 'GET', data, function(res) {
-      return callback(res);
-    });
-  };
-
-  return UserModel;
+  return User;
 
 })(PrototypeModel);
 
@@ -69,12 +42,14 @@ UserModel = (function(_super) {
 
 Models = (function() {
   function Models() {
-    this.user = new UserModel;
+    this.user = new User;
   }
 
   return Models;
 
 })();
+
+/* Prototype View*/
 
 var IndexView, PrototypeView, Views, _ref,
   __hasProp = {}.hasOwnProperty,
@@ -127,8 +102,9 @@ PrototypeView = (function() {
   };
 
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
-    var error, height, loadtext, margin, width;
+    var color, error, height, loadtext, margin, width;
     try {
+      color = options && options.c ? options.c : "#000";
       loadtext = options && options.t ? options.t : false;
       width = options && options.w ? parseInt(options.w) + "px" : "auto";
       height = options && options.h ? parseInt(options.h) + "px" : "100px";
@@ -137,7 +113,7 @@ PrototypeView = (function() {
         console.log("[preRender " + templateName + "] loadtext:", loadtext);
       }
       if (loadtext) {
-        return $el.html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + "; color:#FFF\">" + loadtext + "</p>\n</div>");
+        return $el.html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + "; color:" + color + "\">" + loadtext + "</p>\n</div>");
       } else {
         return $el.empty();
       }
@@ -185,6 +161,9 @@ PrototypeView = (function() {
 
 })();
 
+/* Views*/
+
+
 IndexView = (function(_super) {
   __extends(IndexView, _super);
 
@@ -192,39 +171,6 @@ IndexView = (function(_super) {
     _ref = IndexView.__super__.constructor.apply(this, arguments);
     return _ref;
   }
-
-  IndexView.prototype.init = function() {
-    this.el = $("section#test-render");
-    this.template = {
-      'content': this.el.find('.content')
-    };
-    return this.generateRenders();
-  };
-
-  IndexView.prototype.controller = function(opt) {
-    var _this = this;
-    this.opt = opt != null ? opt : {};
-    this.vars = {};
-    this.preRender['content']({
-      t: 'Load...',
-      h: 130
-    });
-    return app.models.user.get({}, function(res) {
-      if (res.error) {
-        return app.errors.popup(res.error);
-      } else {
-        return _this.renderResponse(res);
-      }
-    });
-  };
-
-  IndexView.prototype.renderResponse = function(data) {
-    _.extend(this.vars, this.varconstants);
-    _.extend(this.vars, data);
-    this.vars.avatar = this.vars.avatar ? "<img src=\"" + this.vars.avatar + "\"\" class=\"ava\">" : "";
-    this.render['content']();
-    return this.actions();
-  };
 
   return IndexView;
 
@@ -242,83 +188,154 @@ Views = (function() {
 
 })();
 
-var AppRouter, _ref,
+/* Router*/
+
+var Router, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-Backbone.Router.prototype.before = function() {};
+Router = (function(_super) {
+  __extends(Router, _super);
 
-Backbone.Router.prototype.after = function() {};
-
-Backbone.Router.prototype.route = function(route, name, callback) {
-  var router;
-  if (!_.isRegExp(route)) {
-    route = this._routeToRegExp(route);
-  }
-  if (_.isFunction(name)) {
-    callback = name;
-    name = "";
-  }
-  if (!callback) {
-    callback = this[name];
-  }
-  router = this;
-  return Backbone.history.route(route, function(fragment) {
-    var args;
-    args = router._extractParameters(route, fragment);
-    router.before.apply(router, arguments);
-    callback && callback.apply(router, args);
-    router.after.apply(router, arguments);
-    router.trigger.apply(router, ["route:" + name].concat(args));
-    router.trigger("route", name, args);
-    return Backbone.history.trigger("route", router, name, args);
-  });
-};
-
-AppRouter = (function(_super) {
-  __extends(AppRouter, _super);
-
-  function AppRouter() {
-    _ref = AppRouter.__super__.constructor.apply(this, arguments);
+  function Router() {
+    _ref = Router.__super__.constructor.apply(this, arguments);
     return _ref;
   }
 
-  AppRouter.prototype.routes = {
+  /* маршруты*/
+
+
+  Router.prototype.routes = {
     "": "index",
     "!": "index",
     "!/": "index",
+    "!/page/:id": "page",
+    "!/page/:id/": "page",
     "!/ooops": "ooops",
     "!/ooops/": "ooops",
     "*path": "notFound"
   };
 
-  AppRouter.prototype.before = function(route) {
+  /* инициализация*/
+
+
+  Router.prototype.initialize = function() {
+    var _this = this;
+    this.bind("all", function(route, router) {});
+    if (typeof VK !== "undefined" && VK !== null) {
+      return VK.init(function() {
+        /* следить за изменениями хеша вконтакте*/
+
+        VK.addCallback('onLocationChanged', function(location) {
+          console.debug('[VKONTAKTE > onLocationChanged]', location);
+          return app.redirect(location.replace("!", ""));
+        });
+        /* следить за скроллом*/
+
+        VK.callMethod('scrollSubscribe', true);
+        /* событие после скролла*/
+
+        return VK.addCallback('onScroll', function(scroll, heigh) {
+          return console.log('[VKONTAKTE > onScroll]', scroll, heigh);
+        });
+      });
+    }
+  };
+
+  /* до перехода*/
+
+
+  Router.prototype.before = function(route) {
     if (route !== '') {
       console.debug('[Route]', route);
     }
-    return $('body').scrollTop(0);
+    if (typeof VK !== "undefined" && VK !== null) {
+      /* выставить хеш*/
+
+      return VK.callMethod('setLocation', route);
+    }
   };
 
-  AppRouter.prototype.after = function() {};
+  /* после перехода*/
 
-  AppRouter.prototype.initialize = function() {
-    return this.bind("all", function(route, router) {});
+
+  Router.prototype.after = function() {};
+
+  Router.prototype.scrollTop = function(speed) {
+    if (speed == null) {
+      speed = 400;
+    }
+    if (speed) {
+      $('html,body').animate({
+        scrollTop: 0
+      }, speed);
+      if (typeof VK !== "undefined" && VK !== null) {
+        return VK.callMethod('scrollWindow', 0, speed);
+      }
+    } else {
+      $('body').scrollTop(0);
+      if (typeof VK !== "undefined" && VK !== null) {
+        return VK.callMethod('scrollWindow', 0);
+      }
+    }
   };
 
-  AppRouter.prototype.notFound = function(path) {
-    return $('section#notFound').show();
+  Router.prototype.resize = function(el) {
+    if (typeof VK !== "undefined" && VK !== null) {
+      /* ресайз окна Вконтакте*/
+
+      return window.onload = function() {
+        return setTimeout(function() {
+          var diff, elH, h;
+          diff = 530;
+          elH = $(el).height();
+          h = elH + diff;
+          console.debug("[VKONTAKTE > resizeWindow] '" + el + "' height:", h, '| elHeight:', elH, '| diff:', diff);
+          return VK.callMethod("resizeWindow", 1000, h);
+        }, 1000);
+      };
+    }
   };
 
-  AppRouter.prototype.ooops = function() {
-    return $('section#ooops').show();
+  /*  404 страница*/
+
+
+  Router.prototype.notFound = function(path) {
+    var el;
+    el = $('section#notFound');
+    this.scrollTop();
+    el.show();
+    return this.resize(el);
   };
 
-  AppRouter.prototype.index = function() {
-    $('section#index').show();
-    return app.views['index'].controller();
+  /* Серверная ошибка*/
+
+
+  Router.prototype.ooops = function() {
+    var el;
+    el = $('section#notFound');
+    this.scrollTop();
+    el.show();
+    return this.resize(el);
   };
 
-  return AppRouter;
+  Router.prototype.index = function() {
+    var el;
+    el = $('section#index');
+    this.scrollTop();
+    el.show();
+    return this.resize(el);
+  };
+
+  Router.prototype.page = function(id) {
+    var el;
+    el = $('section#page');
+    this.scrollTop();
+    el.show();
+    return this.resize(el);
+  };
+
+  return Router;
 
 })(Backbone.Router);
 
@@ -326,16 +343,26 @@ var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 App = (function() {
-  function App(options) {
+  function App() {
+    /* Имя проекта*/
+
     var livereloadPort,
       _this = this;
-    if (options == null) {
-      options = {};
-    }
     this.name = 'Frontend Skeleton';
+    /* Хеш навигация в проекте*/
+
+    this.hashNavigate = false;
+    /* Если хоста нет, значит - локальный просмотр!*/
+
     this.localhost = window.location.host === "" || /localhost/.test(window.location.host);
+    /* Если localhost - проставляем настоящий хост*/
+
     this.host = this.localhost ? "http://vinsproduction.com" : "http://" + window.location.host;
-    this.root = options.root || "";
+    /* Путь до картинок и прочей статики*/
+
+    this.root = "";
+    /* Возвращает параметры дебага, напр. ?debug=test -> вернет test*/
+
     this.debug = (function() {
       var debug;
       debug = $$.urlParam('debug');
@@ -345,41 +372,69 @@ App = (function() {
         return [];
       }
     })();
+    /* Только для локальной разработки!*/
+
     if (!$$.browser.msie && this.localhost) {
       livereloadPort = 777;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
       console.debug("[Livereload] http://localhost:" + livereloadPort + "/livereload.js");
     }
+    /* Если Ie!*/
+
     if ($$.browser.msie6 || $$.browser.msie7) {
       return;
     }
+    /* Настройки библиотек*/
+
     this.libs();
   }
+
+  /* основная инизиализация*/
+
 
   App.prototype.init = function() {
     var _this = this;
     return $(function() {
+      /* Дебагер*/
+
       if (__indexOf.call(_this.debug, 'box') >= 0) {
         _this.debugBox.init();
       }
+      /* модели/api*/
+
       if (Models) {
         _this.models = new Models;
       }
+      /* контроллеры/рендеры*/
+
       if (Views) {
         _this.views = new Views;
       }
-      _this.router = new AppRouter;
-      Backbone.history.start();
+      /* Роутер/хеш навигация*/
+
+      if (_this.hashNavigate) {
+        _this.router = new Router;
+        Backbone.history.start();
+      }
+      /* Настройки соцсетей*/
+
       _this.social.init();
       return console.debug('[App::init] debug:', _this.debug, _this);
     });
   };
 
+  /* Hash навигация*/
+
+
   App.prototype.redirect = function(page) {
     if (page == null) {
       page = "";
     }
-    return this.router.navigate("!" + page, true);
+    if (window.location.hash === "#!" + page) {
+      return window.location.reload();
+    } else {
+      return this.router.navigate("!" + page, true);
+    }
   };
 
   /* @API
@@ -391,16 +446,20 @@ App = (function() {
   */
 
 
+  /* API pefix, например номер версии серверного api /api/v1/*/
+
+
+  App.prototype.api_prefix = "";
+
   App.prototype.api = function(url, type, data, callback) {
-    var prefix;
+    var _this = this;
     if (type == null) {
       type = "GET";
     }
     if (data == null) {
       data = {};
     }
-    prefix = '/api/v1/';
-    url = app.host + prefix + url;
+    url = app.host + this.api_prefix + url;
     return $.ajax({
       type: type,
       url: url,
@@ -429,12 +488,23 @@ App = (function() {
       response = $$.browser.msie ? JSON.stringify(res) : res;
       console.error("[Api] " + url + " | " + type + ":", data, "| fail: ", response);
       if (res.readyState === 4 && res.status === 404) {
-        return app.redirect('/404');
+        /* запрос в никуда*/
+
+        if (_this.hashNavigate) {
+          return app.redirect('/404');
+        }
       } else {
-        return app.redirect('/ooops');
+        /* серверная ошибка*/
+
+        if (_this.hashNavigate) {
+          return app.redirect('/ooops');
+        }
       }
     });
   };
+
+  /* Debug monitor*/
+
 
   App.prototype.debugBox = {
     init: function() {
@@ -457,13 +527,21 @@ App = (function() {
     }
   };
 
+  /* Всякие библиотеки для общего пользования*/
+
+
   App.prototype.libs = function() {
+    /* Крайне важная штука для ajax запросов в рамках разных доменов, в IE!*/
+
     jQuery.support.cors = true;
     return jQuery.ajaxSetup({
       cache: false,
       crossDomain: true
     });
   };
+
+  /* Социальные настройки*/
+
 
   App.prototype.social = {
     defaults: {
@@ -472,41 +550,40 @@ App = (function() {
       odnoklassnikiApiId: ''
     },
     init: function() {
-      var _init;
-      return _init = function() {
-        app.social.url = this.host;
-        if (VK) {
-          VK.init({
-            apiId: app.social.vkontakteApiId
-          });
-        }
-        if (FB) {
-          return FB.init({
-            appId: app.social.facebookApiId,
-            status: true,
-            cookie: true,
-            xfbml: true,
-            oauth: true
-          });
-        }
-      };
+      return app.social.url = this.host;
     },
+    /* Пост на стенку в соц. сети*/
+
     wallPost: {
       vkontakte: function(options) {
         if (options == null) {
           options = {};
         }
+        if (typeof VK === "undefined" || VK === null) {
+          return console.warn('[App > social > wallPost] VK is not defined');
+        }
+        /*
+        				в attachments должна быть только 1 ссылка! Если надо прекрепить фото, 
+        				оно должно быть залито в сам ВКонтакте
+        */
+
         return VK.api("wall.post", {
           owner_id: options.owner_id,
-          message: options.message
+          message: options.message,
+          attachments: "photo131380871_321439116,http://vk.com/app4132371_1748598"
         }, function(r) {
           if (!r || r.error) {
-            console.error('[socWallPost Vkontakte] error', r);
+            console.error('[VKONTAKTE > wall.post]', r);
             if (options.error) {
-              options.error();
+              options.error(r.error);
+            }
+            if (popup && r.error && r.error.error_msg && r.error.error_code) {
+              if (r.error.error_code === 214) {
+                app.errors.popup("Стенка закрыта", false);
+              }
             }
           } else {
-            console.debug('[socWallPost Vkontakte] success');
+            console.debug('[VKONTAKTE > wall.post] success');
             if (options.success) {
               options.success();
             }
@@ -519,6 +596,9 @@ App = (function() {
       facebook: function(options) {
         if (options == null) {
           options = {};
+        }
+        if (typeof FB === "undefined" || FB === null) {
+          return console.warn('[FB > social > wallPost] FB is not defined');
         }
         return FB.ui({
           to: options.to,
@@ -554,7 +634,22 @@ App = (function() {
         return window.open("http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "toolbar=0,status=0,width=626,height=436");
       }
     },
+    /* Шаринг в сосетях*/
+
     share: {
+      /* 
+      			просто хелпер для всего приложения для навешивания на ссылки, например:
+      			app.social.share.it()
+      */
+
+      itVk: function() {
+        var options;
+        options = {};
+        options.title = "Выигрывай призы вместе с подругой!";
+        options.description = "Clean&Clear дарит подарки тем, кто умеет по-настоящему дружить! Расскажи историю о том, как вы с подружкой преодолеваете сложности, добавь вашу совместную фотку и подключи к голосованию всех знакомых. Каждый голос – шаг к победе!";
+        options.url = "http://vk.com/app4132371_1748598";
+        return options.image = "" + app.host + "/img/for_post.png";
+      },
       vkontakte: function(options) {
         var url;
         if (options == null) {
@@ -564,8 +659,8 @@ App = (function() {
         url = "http://vkontakte.ru/share.php?";
         url += "url=" + encodeURIComponent(options.url);
         url += "&title=" + encodeURIComponent(options.title);
-        url += "&description=" + encodeURIComponent(options.text);
-        url += "&image=" + encodeURIComponent(options.img);
+        url += "&description=" + encodeURIComponent(options.description);
+        url += "&image=" + encodeURIComponent(options.image);
         url += "&noparse=true";
         return this.popup(url);
       },
@@ -576,7 +671,7 @@ App = (function() {
         }
         options.url = options.url || app.social.url;
         url = "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1";
-        url += "&st.comments=" + encodeURIComponent(options.text);
+        url += "&st.comments=" + encodeURIComponent(options.description);
         url += "&st._surl=" + encodeURIComponent(options.url);
         return this.popup(url);
       },
@@ -588,9 +683,9 @@ App = (function() {
         options.url = options.url || app.social.url;
         url = "http://www.facebook.com/sharer.php?s=100";
         url += "&p[title]=" + encodeURIComponent(options.title);
-        url += "&p[summary]=" + encodeURIComponent(options.text);
+        url += "&p[summary]=" + encodeURIComponent(options.description);
         url += "&p[url]=" + encodeURIComponent(options.url);
-        url += "&p[images][0]=" + encodeURIComponent(options.img);
+        url += "&p[images][0]=" + encodeURIComponent(options.image);
         return this.popup(url);
       },
       twitter: function(options) {
@@ -614,8 +709,8 @@ App = (function() {
         url = "http://connect.mail.ru/share?";
         url += "url=" + encodeURIComponent(options.url);
         url += "&title=" + encodeURIComponent(options.title);
-        url += "&description=" + encodeURIComponent(options.text);
-        url += "&imageurl=" + encodeURIComponent(options.img);
+        url += "&description=" + encodeURIComponent(options.description);
+        url += "&imageurl=" + encodeURIComponent(options.image);
         return this.popup(url);
       },
       popup: function(url) {
@@ -625,9 +720,12 @@ App = (function() {
   };
 
   App.prototype.errors = {
-    popup: function(error) {
+    popup: function(error, ru) {
       var text;
-      text = this.get(error);
+      if (ru == null) {
+        ru = true;
+      }
+      text = ru ? this.get(error) : error;
       return popup.custom('Ошибка!', text);
     },
     get: function(error) {
@@ -644,6 +742,8 @@ App = (function() {
       }
       return list || "Неизвестная ошибка";
     },
+    /* Русификатор*/
+
     rus: {
       "Story doesn't exist": "Истории не существует",
       "User is not authenticated": "Юзер не авторизован"

@@ -1,10 +1,17 @@
-/*
-Примеры вызова попапа
+/* Примеры вызова попапа
 
-1. popup.open('popup_name')
-2. popup.custom('title','body')
-3. popup.custom('Ошибка','Необходима авторизация',{button: function(){popup.open('popup_name')}});
-    при этом у кнопки должен быть обязательный атрибут [data-popup-button]
+1.  popup.open('popup_name')
+
+2.  popup.custom('title','body')
+
+3.  popup.custom('Ошибка','Необходима авторизация',{button: function(){popup.open('popup_name')}})
+      при этом у кнопки должен быть обязательный атрибут [data-popup-button]
+
+4.  popup.custom('title','body',{top: 325, left: 344})
+
+5.  Если необходимо отделить одни попапы от других
+      window.popup2 = new Popup()
+      И соответсвенно запускаем их через popup2.open('popup_name')
 */
 
 var Popup;
@@ -26,16 +33,6 @@ Popup = (function() {
 
   Popup.prototype.scroll = true;
 
-  /* Вызов и закрытие определенной группы попапов 
-  Если необходимо отделить одни попапы от других, то в конструктор передается пераметр group
-  window.popup2 = new Popup({group: 'type-2'})
-  И соответсвенно запускаем их через popup2.open('popup_name')
-  !!! Обязатльное условие, у попапов с группой должен быть обязательный атрибут [data-popup-group]
-  */
-
-
-  Popup.prototype.group = "";
-
   function Popup(opt) {
     var _this = this;
     if (opt == null) {
@@ -45,8 +42,8 @@ Popup = (function() {
     if (opt.scroll != null) {
       this.scroll = opt.scroll;
     }
-    if (opt.group) {
-      this.group = opt.group;
+    if (opt.fade != null) {
+      this.fade = opt.fade;
     }
     if (opt.top) {
       this.top = opt.top;
@@ -58,8 +55,7 @@ Popup = (function() {
       _this.el = $("#popups");
       _this.bg = _this.el.find(".background");
       _this.elClose = _this.el.find("[data-popup-close]");
-      _this.popupsAll = _this.el.find("[data-popup-name]");
-      _this.popups = _this.group !== "" ? _this.el.find("[data-popup-group='" + _this.group + "'][data-popup-name]") : _this.popupsAll;
+      _this.popups = _this.el.find("[data-popup-name]");
       _this.elClose.click(function() {
         _this.disable();
         return false;
@@ -91,8 +87,11 @@ Popup = (function() {
     });
   };
 
-  Popup.prototype.load = function(popup, callback) {
+  Popup.prototype.load = function(popup, opt) {
     var _this = this;
+    if (opt == null) {
+      opt = {};
+    }
     if (this.status === 0) {
       this.doCallback(popup);
       this.popups.hide().removeClass('open');
@@ -102,15 +101,15 @@ Popup = (function() {
       popup.addClass('open');
       if (this.fade) {
         popup.fadeIn(this.fade, function() {
-          if (callback) {
-            callback();
+          if (opt.callback) {
+            opt.callback();
           }
           return _this.loadCallback(popup);
         });
       } else {
         popup.show();
-        if (callback) {
-          callback();
+        if (opt.callback) {
+          opt.callback();
         }
         this.loadCallback(popup);
       }
@@ -135,11 +134,11 @@ Popup = (function() {
 
   Popup.prototype.disable = function() {
     if (this.status === 1) {
-      this.popupsAll.removeClass('open');
+      this.popups.removeClass('open');
       if (this.fade) {
-        this.popupsAll.fadeOut(this.fade);
+        this.popups.fadeOut(this.fade);
       } else {
-        this.popupsAll.hide();
+        this.popups.hide();
       }
       this.bg.hide();
       return this.status = 0;
@@ -151,10 +150,13 @@ Popup = (function() {
     return this.disable();
   };
 
-  Popup.prototype.center = function(popup) {
+  Popup.prototype.center = function(popup, opt) {
     var l, popupHeight, popupWidth, t, windowHeight, windowScroll, windowWidth;
+    if (opt == null) {
+      opt = {};
+    }
     if (!popup) {
-      popup = this.group !== "" ? this.el.find(".open[data-popup-group='" + this.group + "'][data-popup-name]") : this.el.find(".open[data-popup-name]");
+      popup = this.el.find(".open[data-popup-name]");
     }
     if (!popup.size()) {
       return console.error("popup not found");
@@ -169,13 +171,42 @@ Popup = (function() {
       t = 0;
     }
     l = $(window).width() / 2 - popupWidth / 2;
-    popup.css({
-      top: this.top === 'auto' ? t : this.top,
-      left: this.left === 'auto' ? l : this.left
-    });
-    if (this.scroll && this.top) {
+    if (opt.top) {
+      if (this.scroll) {
+        popup.css({
+          top: opt.top + windowScroll
+        });
+      } else {
+        popup.css({
+          top: opt.top
+        });
+      }
+    } else if (this.top !== 'auto') {
+      if (this.scroll) {
+        popup.css({
+          top: this.top + windowScroll
+        });
+      } else {
+        popup.css({
+          top: this.top
+        });
+      }
+    } else {
+      popup.css({
+        top: t
+      });
+    }
+    if (opt.left) {
       return popup.css({
-        top: this.top + windowScroll
+        left: opt.left
+      });
+    } else if (this.left !== 'auto') {
+      return popup.css({
+        left: this.left
+      });
+    } else {
+      return popup.css({
+        left: l
       });
     }
   };
@@ -191,7 +222,7 @@ Popup = (function() {
 
 
   Popup.prototype.open = function(name, opt) {
-    var $button, popup, _ref,
+    var $button, popup,
       _this = this;
     if (opt == null) {
       opt = {};
@@ -201,8 +232,8 @@ Popup = (function() {
     if (!popup.size()) {
       return console.warn("popup " + name + " not found");
     }
-    this.center(popup);
-    this.load(popup, (_ref = opt.callback) != null ? _ref : false);
+    this.center(popup, opt);
+    this.load(popup, opt);
     $button = popup.find("[data-popup-button]");
     if (opt.button && $button.size()) {
       $button.unbind("click").click(function() {
@@ -247,10 +278,3 @@ Popup = (function() {
 
 
 window.popup = new Popup;
-
-window.popup2 = new Popup({
-  group: 'group_name',
-  top: 50,
-  left: 150,
-  scroll: false
-});

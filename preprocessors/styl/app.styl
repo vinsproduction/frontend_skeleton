@@ -10,7 +10,7 @@
 
 /* FONTS */
 
-import-font('ubuntu-r-webfont','Ubuntu')
+import-font('../fonts/ubuntu-r-webfont','Ubuntu')
 
 // UNIQ MIXINS */
 
@@ -47,26 +47,23 @@ ul
 
 /* CLASS - HELPERS */
 
-.hide 
-	visibility hidden
-
-.none
-	display none
-
 .clearfix
 	clear both
 
-.row
+.hide
+	display none
+
+.none
+	visibility hidden
+
+.block-inline
+	vertical-align top
 	block-inline()
-	clear both
-	width 100%
 
-
-.pull-left
+.block-left
 	block-left()
 
-
-.pull-right
+.block-right
 	block-right()
 
 /* BUTTONS */
@@ -275,15 +272,6 @@ section#index
 				margin 10px 0
 
 
-//TUTORIALS (REMOVE THIS)
-
-section#test-render
-	.content
-		padding 50px 20px
-		h1
-			padding 0 0 10px 0
-
-
 /* -------------------- Popups -------------------- */
 			
 #popups
@@ -305,7 +293,7 @@ section#test-render
 		z-index 99999
 		position absolute
 		display none
-		background-color: #FFF;
+		background-color #FFF
 		border 10px solid rgb(226, 226, 226)
 
 		.close
@@ -315,8 +303,7 @@ section#test-render
 			top -33px
 			width 56px
 			height 52px
-			background-image url('../img/close_popup.png')
-			background-repeat no-repeat
+			bg 'close_popup.png'
 			background-position left 0px
 			text-decoration none !important
 			z-index 98

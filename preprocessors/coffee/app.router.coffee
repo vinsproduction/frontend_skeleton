@@ -1,64 +1,117 @@
 
-# Router
+### Router ###
 
-Backbone.Router::before = ->
+class Router extends Backbone.Router
 
-Backbone.Router::after = ->
-
-Backbone.Router::route = (route, name, callback) ->
-	route = @_routeToRegExp(route)  unless _.isRegExp(route)
-	if _.isFunction(name)
-		callback = name
-		name = ""
-	callback = this[name]  unless callback
-	router = this
-	Backbone.history.route route, (fragment) ->
-		args = router._extractParameters(route, fragment)
-		router.before.apply router, arguments
-		callback and callback.apply(router, args)
-		router.after.apply router, arguments
-		router.trigger.apply router, ["route:" + name].concat(args)
-		router.trigger "route", name, args
-		Backbone.history.trigger "route", router, name, args
-
-class AppRouter extends Backbone.Router
-
+	### маршруты ###
 	routes:
 
 		"": "index"
 		"!": "index"
 		"!/": "index"
 
+		"!/page/:id": "page"
+		"!/page/:id/": "page"
+
 		"!/ooops" : "ooops"
 		"!/ooops/" : "ooops"
 
 		"*path" : "notFound"
 
-	before: (route) ->
-		if route isnt ''
-			console.debug '[Route]',route
-
-		$('body').scrollTop(0)
-
-	after: ->
-
-	
+	### инициализация ###
 	initialize: ->
 
 		@bind "all",  (route,router) ->
 			#if route is 'route'
 
-	# 404 страница
-	notFound: (path) ->
-		$('section#notFound').show()
+		if VK?
 
-	# Серверная ошибка
+			VK.init =>
+
+				### следить за изменениями хеша вконтакте ###
+				VK.addCallback 'onLocationChanged', (location) ->
+					console.debug '[VKONTAKTE > onLocationChanged]', location
+					app.redirect location.replace("!","")
+
+				### следить за скроллом ###
+				VK.callMethod 'scrollSubscribe',true
+
+				### событие после скролла ###
+				VK.addCallback 'onScroll', (scroll, heigh) ->
+					console.log '[VKONTAKTE > onScroll]', scroll, heigh
+
+	### до перехода ###
+	before: (route) ->
+
+		if route isnt ''
+			console.debug '[Route]',route
+
+		if VK?
+			### выставить хеш ###
+			VK.callMethod('setLocation',route)
+
+	
+	### после перехода ###
+	after: ->
+
+
+	scrollTop: (speed=400) ->
+
+		if speed
+			$('html,body').animate({scrollTop: 0},speed)
+			if VK? then VK.callMethod('scrollWindow', 0, speed)
+		else
+			$('body').scrollTop(0)
+			if VK? then VK.callMethod('scrollWindow', 0)
+
+	resize: (el) ->
+
+		if VK?
+			### ресайз окна Вконтакте ###
+			window.onload = ->
+				setTimeout(->
+					diff 	= 530 # хардкодное число
+					elH 	= $(el).height()
+					h = elH + diff
+					console.debug "[VKONTAKTE > resizeWindow] '#{el}' height:",h,'| elHeight:',elH, '| diff:',diff
+					VK.callMethod "resizeWindow", 1000, h
+				,1000)
+
+	###  404 страница ###
+	notFound: (path) ->
+
+		el = $('section#notFound')
+
+		@scrollTop()
+		el.show()
+		@resize(el)
+
+	### Серверная ошибка ###
 	ooops: ->
-		$('section#ooops').show()
+
+		el = $('section#notFound')
+
+		@scrollTop()
+		el.show()
+		@resize(el)
 
 	index: ->
+		
+		el = $('section#index')
 
-		$('section#index').show()
+		@scrollTop()
+		el.show()
+		@resize(el)
 
-		app.views['index'].controller()
+		#app.views['index'].controller()
+
+	page: (id) ->
+
+		el = $('section#page')
+
+		@scrollTop()
+		el.show()
+		@resize(el)
+
+		#app.views['index'].controller({id})
 

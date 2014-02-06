@@ -2,16 +2,26 @@ var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 App = (function() {
-  function App(options) {
+  function App() {
+    /* Имя проекта*/
+
     var livereloadPort,
       _this = this;
-    if (options == null) {
-      options = {};
-    }
     this.name = 'Frontend Skeleton';
+    /* Хеш навигация в проекте*/
+
+    this.hashNavigate = false;
+    /* Если хоста нет, значит - локальный просмотр!*/
+
     this.localhost = window.location.host === "" || /localhost/.test(window.location.host);
+    /* Если localhost - проставляем настоящий хост*/
+
     this.host = this.localhost ? "http://vinsproduction.com" : "http://" + window.location.host;
-    this.root = options.root || "";
+    /* Путь до картинок и прочей статики*/
+
+    this.root = "";
+    /* Возвращает параметры дебага, напр. ?debug=test -> вернет test*/
+
     this.debug = (function() {
       var debug;
       debug = $$.urlParam('debug');
@@ -21,41 +31,69 @@ App = (function() {
         return [];
       }
     })();
+    /* Только для локальной разработки!*/
+
     if (!$$.browser.msie && this.localhost) {
       livereloadPort = 777;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
       console.debug("[Livereload] http://localhost:" + livereloadPort + "/livereload.js");
     }
+    /* Если Ie!*/
+
     if ($$.browser.msie6 || $$.browser.msie7) {
       return;
     }
+    /* Настройки библиотек*/
+
     this.libs();
   }
+
+  /* основная инизиализация*/
+
 
   App.prototype.init = function() {
     var _this = this;
     return $(function() {
+      /* Дебагер*/
+
       if (__indexOf.call(_this.debug, 'box') >= 0) {
         _this.debugBox.init();
       }
+      /* модели/api*/
+
       if (Models) {
         _this.models = new Models;
       }
+      /* контроллеры/рендеры*/
+
       if (Views) {
         _this.views = new Views;
       }
-      _this.router = new AppRouter;
-      Backbone.history.start();
+      /* Роутер/хеш навигация*/
+
+      if (_this.hashNavigate) {
+        _this.router = new Router;
+        Backbone.history.start();
+      }
+      /* Настройки соцсетей*/
+
       _this.social.init();
       return console.debug('[App::init] debug:', _this.debug, _this);
     });
   };
 
+  /* Hash навигация*/
+
+
   App.prototype.redirect = function(page) {
     if (page == null) {
       page = "";
     }
-    return this.router.navigate("!" + page, true);
+    if (window.location.hash === "#!" + page) {
+      return window.location.reload();
+    } else {
+      return this.router.navigate("!" + page, true);
+    }
   };
 
   /* @API
@@ -67,16 +105,20 @@ App = (function() {
   */
 
 
+  /* API pefix, например номер версии серверного api /api/v1/*/
+
+
+  App.prototype.api_prefix = "";
+
   App.prototype.api = function(url, type, data, callback) {
-    var prefix;
+    var _this = this;
     if (type == null) {
       type = "GET";
     }
     if (data == null) {
       data = {};
     }
-    prefix = '/api/v1/';
-    url = app.host + prefix + url;
+    url = app.host + this.api_prefix + url;
     return $.ajax({
       type: type,
       url: url,
@@ -105,12 +147,23 @@ App = (function() {
       response = $$.browser.msie ? JSON.stringify(res) : res;
       console.error("[Api] " + url + " | " + type + ":", data, "| fail: ", response);
       if (res.readyState === 4 && res.status === 404) {
-        return app.redirect('/404');
+        /* запрос в никуда*/
+
+        if (_this.hashNavigate) {
+          return app.redirect('/404');
+        }
       } else {
-        return app.redirect('/ooops');
+        /* серверная ошибка*/
+
+        if (_this.hashNavigate) {
+          return app.redirect('/ooops');
+        }
       }
     });
   };
+
+  /* Debug monitor*/
+
 
   App.prototype.debugBox = {
     init: function() {
@@ -133,13 +186,21 @@ App = (function() {
     }
   };
 
+  /* Всякие библиотеки для общего пользования*/
+
+
   App.prototype.libs = function() {
+    /* Крайне важная штука для ajax запросов в рамках разных доменов, в IE!*/
+
     jQuery.support.cors = true;
     return jQuery.ajaxSetup({
       cache: false,
       crossDomain: true
     });
   };
+
+  /* Социальные настройки*/
+
 
   App.prototype.social = {
     defaults: {
@@ -148,41 +209,40 @@ App = (function() {
       odnoklassnikiApiId: ''
     },
     init: function() {
-      var _init;
-      return _init = function() {
-        app.social.url = this.host;
-        if (VK) {
-          VK.init({
-            apiId: app.social.vkontakteApiId
-          });
-        }
-        if (FB) {
-          return FB.init({
-            appId: app.social.facebookApiId,
-            status: true,
-            cookie: true,
-            xfbml: true,
-            oauth: true
-          });
-        }
-      };
+      return app.social.url = this.host;
     },
+    /* Пост на стенку в соц. сети*/
+
     wallPost: {
       vkontakte: function(options) {
         if (options == null) {
           options = {};
         }
+        if (typeof VK === "undefined" || VK === null) {
+          return console.warn('[App > social > wallPost] VK is not defined');
+        }
+        /*
+        				в attachments должна быть только 1 ссылка! Если надо прекрепить фото, 
+        				оно должно быть залито в сам ВКонтакте
+        */
+
         return VK.api("wall.post", {
           owner_id: options.owner_id,
-          message: options.message
+          message: options.message,
+          attachments: "photo131380871_321439116,http://vk.com/app4132371_1748598"
         }, function(r) {
           if (!r || r.error) {
-            console.error('[socWallPost Vkontakte] error', r);
+            console.error('[VKONTAKTE > wall.post]', r);
             if (options.error) {
-              options.error();
+              options.error(r.error);
+            }
+            if (popup && r.error && r.error.error_msg && r.error.error_code) {
+              if (r.error.error_code === 214) {
+                app.errors.popup("Стенка закрыта", false);
+              }
             }
           } else {
-            console.debug('[socWallPost Vkontakte] success');
+            console.debug('[VKONTAKTE > wall.post] success');
             if (options.success) {
               options.success();
             }
@@ -195,6 +255,9 @@ App = (function() {
       facebook: function(options) {
         if (options == null) {
           options = {};
+        }
+        if (typeof FB === "undefined" || FB === null) {
+          return console.warn('[FB > social > wallPost] FB is not defined');
         }
         return FB.ui({
           to: options.to,
@@ -230,7 +293,22 @@ App = (function() {
         return window.open("http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "toolbar=0,status=0,width=626,height=436");
       }
     },
+    /* Шаринг в сосетях*/
+
     share: {
+      /* 
+      			просто хелпер для всего приложения для навешивания на ссылки, например:
+      			app.social.share.it()
+      */
+
+      itVk: function() {
+        var options;
+        options = {};
+        options.title = "Выигрывай призы вместе с подругой!";
+        options.description = "Clean&Clear дарит подарки тем, кто умеет по-настоящему дружить! Расскажи историю о том, как вы с подружкой преодолеваете сложности, добавь вашу совместную фотку и подключи к голосованию всех знакомых. Каждый голос – шаг к победе!";
+        options.url = "http://vk.com/app4132371_1748598";
+        return options.image = "" + app.host + "/img/for_post.png";
+      },
       vkontakte: function(options) {
         var url;
         if (options == null) {
@@ -240,8 +318,8 @@ App = (function() {
         url = "http://vkontakte.ru/share.php?";
         url += "url=" + encodeURIComponent(options.url);
         url += "&title=" + encodeURIComponent(options.title);
-        url += "&description=" + encodeURIComponent(options.text);
-        url += "&image=" + encodeURIComponent(options.img);
+        url += "&description=" + encodeURIComponent(options.description);
+        url += "&image=" + encodeURIComponent(options.image);
         url += "&noparse=true";
         return this.popup(url);
       },
@@ -252,7 +330,7 @@ App = (function() {
         }
         options.url = options.url || app.social.url;
         url = "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1";
-        url += "&st.comments=" + encodeURIComponent(options.text);
+        url += "&st.comments=" + encodeURIComponent(options.description);
         url += "&st._surl=" + encodeURIComponent(options.url);
         return this.popup(url);
       },
@@ -264,9 +342,9 @@ App = (function() {
         options.url = options.url || app.social.url;
         url = "http://www.facebook.com/sharer.php?s=100";
         url += "&p[title]=" + encodeURIComponent(options.title);
-        url += "&p[summary]=" + encodeURIComponent(options.text);
+        url += "&p[summary]=" + encodeURIComponent(options.description);
         url += "&p[url]=" + encodeURIComponent(options.url);
-        url += "&p[images][0]=" + encodeURIComponent(options.img);
+        url += "&p[images][0]=" + encodeURIComponent(options.image);
         return this.popup(url);
       },
       twitter: function(options) {
@@ -290,8 +368,8 @@ App = (function() {
         url = "http://connect.mail.ru/share?";
         url += "url=" + encodeURIComponent(options.url);
         url += "&title=" + encodeURIComponent(options.title);
-        url += "&description=" + encodeURIComponent(options.text);
-        url += "&imageurl=" + encodeURIComponent(options.img);
+        url += "&description=" + encodeURIComponent(options.description);
+        url += "&imageurl=" + encodeURIComponent(options.image);
         return this.popup(url);
       },
       popup: function(url) {
@@ -301,9 +379,12 @@ App = (function() {
   };
 
   App.prototype.errors = {
-    popup: function(error) {
+    popup: function(error, ru) {
       var text;
-      text = this.get(error);
+      if (ru == null) {
+        ru = true;
+      }
+      text = ru ? this.get(error) : error;
       return popup.custom('Ошибка!', text);
     },
     get: function(error) {
@@ -320,6 +401,8 @@ App = (function() {
       }
       return list || "Неизвестная ошибка";
     },
+    /* Русификатор*/
+
     rus: {
       "Story doesn't exist": "Истории не существует",
       "User is not authenticated": "Юзер не авторизован"

@@ -1,68 +1,76 @@
 class App
 
-	constructor: (options={}) ->
+	constructor: ->
 
-		# Имя проекта
+		### Имя проекта ###
 		@name = 'Frontend Skeleton'
+
+		### Хеш навигация в проекте ###
+		@hashNavigate = false
 		
-		# Если хоста нет, значит - локальный просмотр!
+		### Если хоста нет, значит - локальный просмотр! ###
 		@localhost = window.location.host is "" or /localhost/.test window.location.host
 
-		# Если localhost - проставляем настоящий хост
+		### Если localhost - проставляем настоящий хост ###
 		@host = if @localhost then "http://vinsproduction.com" else "http://" + window.location.host
 
-		# Путь до картинок и прочей статики
-		@root = options.root || ""
+		### Путь до картинок и прочей статики ###
+		@root = ""
 	
-		# Возвращает параметры дебага, напр. ?debug=test -> вернет test
+		### Возвращает параметры дебага, напр. ?debug=test -> вернет test ###
 		@debug = do =>
 			debug = $$.urlParam('debug')
 			return if debug then debug.split(',') else []
 
-		# Только для локальной разработки!
+		### Только для локальной разработки! ###
 		if !$$.browser.msie and @localhost
 			livereloadPort = 777 # Порт должен совпадать с портом в Gruntfile.js
 			$$.includeJS "http://localhost:#{livereloadPort}/livereload.js"
 			console.debug "[Livereload] http://localhost:#{livereloadPort}/livereload.js"
 
-		# Если Ie пшелнах!
+		### Если Ie! ###
 		if $$.browser.msie6 or $$.browser.msie7 #or $$.browser.msie8
 
 			#@redirect 'ie'
 			return
 
-		# Настройки библиотек
+		### Настройки библиотек ###
 		do @libs
 
 
-	# основная инизиализация
+	### основная инизиализация ###
 
 	init: ->
 
 		$ =>
 
-			# Дебагер
+			### Дебагер ###
 			if 'box' in @debug then do @debugBox.init
 
-			# Классы - модели/api
+			### модели/api ###
 			if Models
 				@models 	= new Models
 
-			# Классы - контроллеры/рендеры
+			### контроллеры/рендеры ###
 			if Views
 				@views 	= new Views
 
-			# Backbone Router
-			@router = new AppRouter
-			Backbone.history.start()
+			### Роутер/хеш навигация ###
+			if @hashNavigate
+				@router = new Router
+				Backbone.history.start()
 
-			# Настройки соцсетей
+			### Настройки соцсетей ###
 			do @social.init
 
 			console.debug '[App::init] debug:',@debug, @
 
-
-	redirect: (page = "") -> @router.navigate("!" + page,true)
+	### Hash навигация ###
+	redirect: (page = "") ->
+		if window.location.hash is "#!" + page
+			window.location.reload()
+		else
+			@router.navigate("!" + page,true)
 
 
 	### @API
@@ -73,15 +81,16 @@ class App
 				console.log res
 	###
 
+	### API pefix, например номер версии серверного api /api/v1/ ###
+	api_prefix: ""
+
 	api: (url,type="GET",data={},callback) ->
 
-		prefix = '/api/v1/'
-
-		url =  app.host + prefix + url
+		url =  app.host + @api_prefix + url
 
 		$.ajax({ type, url, data })
 
-		.done( (res) ->
+		.done( (res) =>
 
 			response = if $$.browser.msie then JSON.stringify res else res
 
@@ -99,18 +108,21 @@ class App
 
 				callback {error: res.error} if callback
 
-		).fail( (res) ->
+		).fail( (res) =>
 
 			response = if $$.browser.msie then JSON.stringify res else res
 
 			console.error "[Api] #{url} | #{type}:", data, "| fail: ", response
 
 			if res.readyState is 4 and res.status is 404
-				app.redirect '/404'
+				### запрос в никуда ###
+				app.redirect '/404' if @hashNavigate
 			else
-				app.redirect '/ooops'
+				### серверная ошибка ###
+				app.redirect '/ooops' if @hashNavigate
 		)
 
+	### Debug monitor ###
 	debugBox:
 
 		init: ->
@@ -148,12 +160,14 @@ class App
 
 			app.debugBox.color()
 
+	### Всякие библиотеки для общего пользования ###
 	libs: ->
 
-		# Крайне важная штука для ajax запросов в рамках разных доменов, в IE!  
+		### Крайне важная штука для ajax запросов в рамках разных доменов, в IE!   ###
 		jQuery.support.cors = true
 		jQuery.ajaxSetup({ cache: false, crossDomain: true})
 
+	### Социальные настройки ###
 	social:
 
 		defaults:
@@ -164,43 +178,61 @@ class App
 
 		init: ->
 
-			_init = ->
+			app.social.url = @host
 
-				app.social.url = @host
+			# if VK?
+			# 	VK.init
+			# 		apiId: app.social.vkontakteApiId
 
-				if VK
-					VK.init
-						apiId: app.social.vkontakteApiId
+			# if FB?
+			# 	FB.init
+			# 		appId: app.social.facebookApiId
+			# 		status: true
+			# 		cookie: true
+			# 		xfbml: true
+			# 		oauth: true
 
-				if FB
-					FB.init
-						appId: app.social.facebookApiId
-						status: true
-						cookie: true
-						xfbml: true
-						oauth: true
-
+		
+		### Пост на стенку в соц. сети ###
 		wallPost:
 
 			vkontakte: (options={}) ->
 
+
+				if !VK? then return console.warn '[App > social > wallPost] VK is not defined'
+
+				###
+				в attachments должна быть только 1 ссылка! Если надо прекрепить фото, 
+				оно должно быть залито в сам ВКонтакте
+				###
+
 				VK.api "wall.post",
 					owner_id	: options.owner_id
 					message	: options.message
+					attachments: "photo131380871_321439116,http://vk.com/app4132371_1748598"
+
+						
 				, (r) ->
 
+					# ответ после отправки приходит в любом случае, даже если закрыли попап!
+
 					if not r or r.error
-						console.error '[socWallPost Vkontakte] error', r
-						if options.error then options.error()
+						console.error '[VKONTAKTE > wall.post]', r
+						if options.error
+							options.error(r.error)
+
+						if popup and r.error and r.error.error_msg and r.error.error_code
+							if r.error.error_code is 214
+								app.errors.popup "Стенка закрыта", false
 					else
-						console.debug '[socWallPost Vkontakte] success'
+						console.debug '[VKONTAKTE > wall.post] success'
 						if options.success then options.success()
 
 					if options.allways then options.allways()
 
-
-
 			facebook: (options={}) ->
+
+				if !FB? then return console.warn '[FB > social > wallPost] FB is not defined'
 
 				FB.ui
 					to: options.to
@@ -221,14 +253,24 @@ class App
 
 					if options.allways then options.allways()
 
-					
-
 			odnoklassniki: (options={}) ->
 				url = options.url || app.social.url
 
 				window.open "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "toolbar=0,status=0,width=626,height=436"
 
+		### Шаринг в сосетях ###
 		share:
+
+			### 
+			просто хелпер для всего приложения для навешивания на ссылки, например:
+			app.social.share.it()
+			###
+			itVk: -> 
+				options = {}
+				options.title 	= "Выигрывай призы вместе с подругой!"
+				options.description 	= "Clean&Clear дарит подарки тем, кто умеет по-настоящему дружить! Расскажи историю о том, как вы с подружкой преодолеваете сложности, добавь вашу совместную фотку и подключи к голосованию всех знакомых. Каждый голос – шаг к победе!"
+				options.url 	= "http://vk.com/app4132371_1748598"
+				options.image 	= "#{app.host}/img/for_post.png"
 
 			vkontakte: (options={}) ->
 
@@ -237,8 +279,8 @@ class App
 				url = "http://vkontakte.ru/share.php?"
 				url += "url=" + encodeURIComponent(options.url)
 				url += "&title=" + encodeURIComponent(options.title)
-				url += "&description=" + encodeURIComponent(options.text)
-				url += "&image=" + encodeURIComponent(options.img)
+				url += "&description=" + encodeURIComponent(options.description)
+				url += "&image=" + encodeURIComponent(options.image)
 				url += "&noparse=true"
 
 				@popup url
@@ -248,7 +290,7 @@ class App
 				options.url = options.url || app.social.url
 
 				url = "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1"
-				url += "&st.comments=" + encodeURIComponent(options.text)
+				url += "&st.comments=" + encodeURIComponent(options.description)
 				url += "&st._surl=" + encodeURIComponent(options.url)
 
 				@popup url
@@ -259,9 +301,9 @@ class App
 
 				url = "http://www.facebook.com/sharer.php?s=100"
 				url += "&p[title]=" + encodeURIComponent(options.title)
-				url += "&p[summary]=" + encodeURIComponent(options.text)
+				url += "&p[summary]=" + encodeURIComponent(options.description)
 				url += "&p[url]=" + encodeURIComponent(options.url)
-				url += "&p[images][0]=" + encodeURIComponent(options.img)
+				url += "&p[images][0]=" + encodeURIComponent(options.image)
 
 				@popup url
 
@@ -283,24 +325,23 @@ class App
 				url = "http://connect.mail.ru/share?"
 				url += "url=" + encodeURIComponent(options.url)
 				url += "&title=" + encodeURIComponent(options.title)
-				url += "&description=" + encodeURIComponent(options.text)
-				url += "&imageurl=" + encodeURIComponent(options.img)
+				url += "&description=" + encodeURIComponent(options.description)
+				url += "&imageurl=" + encodeURIComponent(options.image)
 
 				@popup url
 
 			popup: (url) ->
 				window.open url, "", "toolbar=0,status=0,width=626,height=436"
 
-	
-	# Примеры вызова ошибок из вьюх
+	# Примеры вызова ошибок из вьюх, с русификатором
 	# app.errors.get res.error
 	# app.errors.popup res.error
 
 	errors:
 
-		popup: (error) ->
+		popup: (error,ru=true) ->
 
-			text = @get(error) 
+			text = if ru then @get(error) else error
 			popup.custom 'Ошибка!', text
 		
 		get: (error) ->
@@ -317,6 +358,7 @@ class App
 
 			return list or "Неизвестная ошибка"
 
+		### Русификатор ###
 		rus: 
 
 			"Story doesn't exist": "Истории не существует"

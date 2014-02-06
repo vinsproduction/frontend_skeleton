@@ -1,4 +1,4 @@
-# Prototype Model
+### Prototype Model ###
 
 class PrototypeModel
 
@@ -23,40 +23,9 @@ class PrototypeModel
 
 		callback response
 
+### Models ###
 
-class UserModel extends PrototypeModel
-
-	# Ответ с серевера
-	getRes:
-		{
-		  "data": {
-		    "age": 31,
-		    "avatar": "http://cs5474.vk.me/u1748598/-14/x_97fe02f9.jpg",
-		    "birthday": "1983-01-19",
-		    "city": "Москва",
-		    "country": "Россия",
-		    "firstname": "Vins",
-		    "gender": "male",
-		    "id": 1,
-		    "lastname": "Production",
-		    
-		  },
-		  "status": "success"
-		}
-
-	###
-	Описание: Отдает данные пользователя
-	###
-	get: (data,callback) ->
-
-		url = 'user/details'
-
-		return @getFish url,data,@getRes,callback if @fish
-
-		app.api url, 'GET', data, (res) => callback res
-
-
-
+class User extends PrototypeModel
 
 
 
@@ -66,4 +35,4 @@ class Models
 
 	constructor: ->
 
-		@user = new UserModel
+		@user = new User

@@ -1,3 +1,5 @@
+/* Prototype View*/
+
 var IndexView, PrototypeView, Views, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -49,8 +51,9 @@ PrototypeView = (function() {
   };
 
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
-    var error, height, loadtext, margin, width;
+    var color, error, height, loadtext, margin, width;
     try {
+      color = options && options.c ? options.c : "#000";
       loadtext = options && options.t ? options.t : false;
       width = options && options.w ? parseInt(options.w) + "px" : "auto";
       height = options && options.h ? parseInt(options.h) + "px" : "100px";
@@ -59,7 +62,7 @@ PrototypeView = (function() {
         console.log("[preRender " + templateName + "] loadtext:", loadtext);
       }
       if (loadtext) {
-        return $el.html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + "; color:#FFF\">" + loadtext + "</p>\n</div>");
+        return $el.html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + "; color:" + color + "\">" + loadtext + "</p>\n</div>");
       } else {
         return $el.empty();
       }
@@ -107,6 +110,9 @@ PrototypeView = (function() {
 
 })();
 
+/* Views*/
+
+
 IndexView = (function(_super) {
   __extends(IndexView, _super);
 
@@ -114,39 +120,6 @@ IndexView = (function(_super) {
     _ref = IndexView.__super__.constructor.apply(this, arguments);
     return _ref;
   }
-
-  IndexView.prototype.init = function() {
-    this.el = $("section#test-render");
-    this.template = {
-      'content': this.el.find('.content')
-    };
-    return this.generateRenders();
-  };
-
-  IndexView.prototype.controller = function(opt) {
-    var _this = this;
-    this.opt = opt != null ? opt : {};
-    this.vars = {};
-    this.preRender['content']({
-      t: 'Load...',
-      h: 130
-    });
-    return app.models.user.get({}, function(res) {
-      if (res.error) {
-        return app.errors.popup(res.error);
-      } else {
-        return _this.renderResponse(res);
-      }
-    });
-  };
-
-  IndexView.prototype.renderResponse = function(data) {
-    _.extend(this.vars, this.varconstants);
-    _.extend(this.vars, data);
-    this.vars.avatar = this.vars.avatar ? "<img src=\"" + this.vars.avatar + "\"\" class=\"ava\">" : "";
-    this.render['content']();
-    return this.actions();
-  };
 
   return IndexView;
 
