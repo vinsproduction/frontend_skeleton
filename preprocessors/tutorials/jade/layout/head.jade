@@ -1,0 +1,75 @@
+meta(charset='utf-8')
+title SCELETON - tutorials
+meta(name='description', content='')
+meta(name='keywords', content='')
+
+meta(property='og:title', content='')
+meta(property='og:url', content='')
+meta(property='og:image', content='')
+meta(property='og:description', content='')
+
+link(rel='image_src', href='')
+
+link(rel="shortcut icon",type="image/x-icon",href="")
+meta(name='viewport', content='width=1265')
+
+script(type='text/javascript', src='../js/libs/helpers.js')
+
+
+script(src="../tutorials/js/prettify.js")
+script(src="../tutorials/js/lang-css.js")
+link(rel="stylesheet",href="../tutorials/css/sons-of-obsidian.css")
+
+
+script
+
+	:coffee
+
+		console.debug 'TUTORIALS'
+		
+		$$.includeJS '../js/libs/jquery-1.10.2.min.js'
+		$$.includeJS '../js/libs/jquery-ui-1.10.3.custom.js'
+		$$.includeJS '../js/libs/jquery.tinyscrollbar.js'
+		$$.includeJS '../js/libs/jquery.cookie.js'
+
+		$$.includeJS '../js/libs/mustache.js'
+		$$.includeJS '../js/libs/underscore-min.js'
+		$$.includeJS '../js/libs/json2.js'
+		$$.includeJS '../js/libs/backbone.router.js'
+		
+		$$.includeJS '../js/libs/popup.js'
+
+		$$.includeCSS '../tutorials/css/app.css'
+		
+		$$.includeJS '../tutorials/js/app.models.js'
+		$$.includeJS '../tutorials/js/app.views.js'
+		$$.includeJS '../tutorials/js/app.router.js'
+		$$.includeJS '../js/app.js'
+
+block css
+	//-
+
+block js
+
+	script
+
+		:coffee
+
+			window.app = new App
+
+			app.hashNavigate = true
+
+			do app.init
+
+
+<!--[if lt IE 7]>
+style.
+	body > main {
+		height: 100%;
+	}
+<![endif]-->
+			
+<!--[if lt IE 9]>
+script(type='text/javascript', src='js/libs/html5shiv.js')
+<![endif]-->
+

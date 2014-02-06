@@ -1,0 +1,465 @@
+
+/* 
+	=================
+	=== TUTORIALS ===
+	=================
+*/
+
+@import '../../css/normalize.css'
+@import '../../styl/mixins'
+
+/* FONTS */
+
+import-font('../../fonts/ubuntu-r-webfont','Ubuntu')
+import-font('../../fonts/consola-webfont','consola')
+
+// UNIQ MIXINS */
+
+font-family(name)
+	//line-height 1.2 // fix diff font rendering
+	font-family name, helvetica,verdana,arial,tahoma
+
+font(size,name)
+	//font-size unit(size*6.5, '%') convert px to percents
+	font-size size
+	font-family name
+
+bg(filename)
+	background url('../../img/' + filename) no-repeat
+
+// MAIN CONSTANTS
+
+$mainWidth 		= 1265
+$mainHeight 	= 1000
+
+// COLORS
+
+$red		= #ee2e24
+$gray		= #ccc
+
+/* STYLES FOR ALL */
+
+textarea:focus, input:focus, input:focus
+	outline none
+
+ul
+	list-style-type none
+
+
+/* CLASS - HELPERS */
+
+.row
+	block-inline()
+	clear both
+	width 100%
+	margin 0 0 20px 0
+
+.clearfix
+	clear both
+
+.hide
+	display none
+
+.none
+	visibility hidden
+
+.block-inline
+	vertical-align top
+	block-inline()
+
+.block-left
+	block-left()
+
+.block-right
+	block-right()
+
+
+
+/* BUTTONS */
+
+btn(w = false,h = false)
+	if w
+		width (w)px
+	if h
+		height (h)px
+
+	display block
+	position relative
+	cursor pointer
+	text-align center
+	border 0
+	outline none
+	text-decoration none
+	
+
+/* Для ссылок */
+.btn-1
+	font 18px "Ubuntu"
+	btn(200,50)
+	border-radius(10px)
+	text-transform uppercase
+	color #FFF
+	background $red
+	transition all 0.2s
+	&:hover
+		background $gray
+	span
+		position relative
+		top 15px
+
+/* Для buttons */
+.btn-2
+	font 18px "Ubuntu"
+	btn(200,50)
+	border-radius(10px)
+	text-transform uppercase
+	color #FFF
+	background $red
+	transition all 0.2s
+	&:hover
+		background $gray
+
+
+
+/* STYLES - MAIN */
+
+html
+	height 100%
+
+body
+	height 100%
+	overflow-x hidden
+	overflow-y auto
+	font-family 'Ubuntu'
+	
+	/* Самый задний фон */
+
+	background-color #0A1018
+
+	// background-repeat no-repeat
+	// background-position top center
+	// background-attachment fixed
+
+	// -webkit-background-size cover
+	// -moz-background-size cover
+	// -o-background-size cover
+	// background-size cover
+
+	//bg url('../img/body_bg.jpg')
+
+		
+/* Фон с изображением */
+
+body > main
+	
+	position relative
+	min-height 100%
+	width 100%
+	
+	bg 'bg2.jpg'
+	background-repeat repeat-y
+	background-position center center
+	// background-attachment fixed
+
+	// -webkit-background-size cover
+	// -moz-background-size cover
+	// -o-background-size cover
+	// background-size cover
+
+	// &.bg
+	// 	bg 'bg.jpg'
+
+/* HEADER */
+body > main > header
+	z-index 2
+	width 100%
+	height 40px
+
+	background #736B68
+
+	&.fixed
+		position fixed
+		top 0
+
+	.container
+		width  ($mainWidth)px
+		height (40 - 12*2)px
+		padding 12px 0
+		margin 0 auto
+
+		background #C1B0A3
+
+		.content
+			padding 0 5px
+			block-inline()
+			width  ($mainWidth - 5*2)px
+
+			nav#menu
+				block-right()
+				text-transform uppercase
+				
+				a 
+					text-decoration none
+					block-inline()
+					position relative
+					color #FFF
+
+				ul
+					float left
+					padding 0
+					li
+						float left
+						margin 0 0 0 50px
+					
+
+			.logo
+				block-left()
+
+/* FOOTER */
+body > main > footer
+	position absolute
+	bottom 0
+	z-index 2
+	width 100%
+	height 40px
+
+	background #736B68
+
+	&.fixed
+		position fixed
+		bottom 0
+
+	.container
+		width  ($mainWidth)px
+		height (40 - 12*2)px
+		padding 12px 0
+		margin 0 auto
+
+		background #C1B0A3
+
+		.content
+			padding 0 5px
+			block-inline()
+
+
+/* SECTIONS */
+body > main > .sections
+
+	clear both
+	width 100%
+	padding-bottom 40px // Height of the footer
+
+	// Для всех секций!
+	> section
+
+		clear both
+		position relative
+		z-index 1
+		width 100%
+		block-inline()
+
+		.container
+			position relative
+			width  ($mainWidth)px
+			height 100%
+			margin 0 auto
+
+			background #F2E5D5
+
+			.content
+				block-inline()
+
+				padding 50px 20px
+
+				h1
+					font-size 24px
+					margin 30px 0 30px 0
+					text-align center
+					font-family Ubuntu
+					clear both
+				h2 
+					font-size 18px
+					text-transform uppercase
+					margin 30px 0 15px 0
+					font-family Ubuntu
+					clear both
+					span
+						background rgb(193, 176, 163)
+						padding 5px 10px
+
+				span.note
+					background rgb(193, 176, 163)
+					padding 5px 10px
+					display table
+					
+					
+				p
+					margin 10px 0
+
+				pre
+					display table
+					font-family consola
+					padding 5px 15px 5px 15px
+					margin 10px 0
+					// background #141414
+					// color rgb(216, 208, 134)
+
+
+
+/* -------------------- Let's go -------------------- */
+
+section#index
+	.container
+		.content
+			//
+
+section#page-render
+	
+	.container
+		.content
+			
+			.clarification
+				block-left 580
+				font-family consola
+				text-align right
+				padding 0 10px
+				h2 + p
+					margin-bottom 95px
+
+			
+			.example
+				block-left 580
+				
+				padding 0 10px
+
+
+
+section#page-popup
+	
+	.container
+		.content
+
+			.example
+				block-left 260
+
+			.clarification
+				block-left 900
+				font-family consola
+
+
+section#page-helpers-images
+	
+	.container
+		.content
+			
+			.block-inline
+				box 400
+	
+			.frame	
+				overflow hidden
+				border 2px solid red
+				img
+					//
+				&.frame-horizontal
+					block 200 100
+				&.frame-vertical
+					block 100 200
+				&.frame-square
+					block 200 200
+
+	
+
+
+
+
+/* -------------------- Popups -------------------- */
+			
+#popups
+	
+	.background
+
+		display none
+		position fixed
+		height 100%
+		width 100%
+		top 0
+		left 0
+		z-index 88888
+		background #000
+		opacity 0.6
+
+
+	.popup
+		z-index 99999
+		position absolute
+		display none
+		background-color: #FFF;
+		border 10px solid rgb(226, 226, 226)
+
+		.close
+			cursor pointer
+			position absolute
+			right -36px
+			top -33px
+			width 56px
+			height 52px
+			bg 'close_popup.png'
+			background-position left 0px
+			text-decoration none !important
+			z-index 98
+
+		&[data-popup-name="custom"]
+			
+			text-align center
+			min-height 274px
+			width 705px
+
+			.header
+				padding 30px 0 50px 0
+				h1
+					text-transform uppercase
+					text-align center
+					font-size 30px
+				
+			.body
+				font 24px Ubuntu
+				color rgb(51, 51, 51)
+				padding 0 90px	
+
+			.footer
+				padding 50px 0 30px 0
+				button
+					@extends .btn-2
+					margin 0 auto
+
+		&[data-popup-name="unique"]
+
+			text-align center
+			min-height 274px
+			width 705px
+
+			.header
+				padding 30px 0 50px 0
+				h1
+					text-transform uppercase
+					text-align center
+					font-size 30px
+				
+			.body
+				font 24px Ubuntu
+				color rgb(51, 51, 51)
+				padding 0 90px	
+
+			.footer
+				padding 50px 0 30px 0
+				button
+					@extends .btn-2
+					margin 0 auto
+
+
+/* -------------------- MEDIA -------------------- */
+
+@media (max-height: 768px)
+	
+	#debugBox .mediaHeight:after
+		content '@media(max-height: 768px)'

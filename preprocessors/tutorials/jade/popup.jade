@@ -1,0 +1,101 @@
+
+section#page-popup
+
+	script.
+
+		$(document).ready(function(){
+
+			window.popup2 = new Popup({
+
+				top: 50,
+				left: 150,
+			});
+
+			window.popup3 = new Popup({
+				fade:false,
+			});
+
+			popup2.doCallback = function(popup){
+				console.log('this doCallback. and this popup2 name:',popup.attr('data-popup-name'));
+			}
+			popup2.loadCallback = function(popup){
+				console.log('this loadCallback. and this popup2 name:',popup.attr('data-popup-name'));
+			}
+			
+		
+			popup.doCallback = function(popup){
+				console.log('this doCallback. and this popup name:',popup.attr('data-popup-name'));
+			}
+			popup.loadCallback = function(popup){
+				console.log('this loadCallback. and this popup name:',popup.attr('data-popup-name'));
+			}
+		})
+
+
+	.container
+		.content
+
+			h1 Модальные окна (Popups)
+
+			.row
+
+				h2: span Инициализация (js)
+
+				pre(class="prettyprint lang-js linenums").
+				
+					$(document).ready(function() {
+						window.popup2 = new Popup({
+							group: 'group_name',
+							top: 50,
+							left: 150,
+							scroll: false,
+						});
+						window.popup3 = new Popup({
+							fade: false,
+						});
+						popup2.doCallback = function(popup) {
+							console.log('this doCallback. and this popup2 name:', popup.attr('data-popup-name'));
+						}
+						popup2.loadCallback = function(popup) {
+							console.log('this loadCallback. and this popup2 name:', popup.attr('data-popup-name'));
+						}
+						popup.doCallback = function(popup) {
+							console.log('this doCallback. and this popup name:', popup.attr('data-popup-name'));
+						}
+						popup.loadCallback = function(popup) {
+							console.log('this loadCallback. and this popup name:', popup.attr('data-popup-name'));
+						}
+					})
+				
+
+
+
+			.row
+
+				h2: span Примеры
+
+				.example
+
+					a.btn-1(href="#",onclick="popup.custom('Custom','Popup',{callback:function(){console.log('this callback')}});return false;")
+						span link
+
+				.clarification: pre(class="prettyprint lang-html linenums").
+					&lt;a href=&quot;#&quot; onclick=&quot;popup.custom('Custom','Popup',{callback:function(){console.log('this callback')}});return false;&quot; class=&quot;btn-1&quot;&gt;&lt;span&gt;link&lt;/span&gt;&lt;/a&gt;
+
+			.row
+
+				.example
+
+					button.btn-2(href="#",onclick="popup2.open('unique',{button: function(){popup2.close()}});return false;")
+						span button
+
+				.clarification: pre(class="prettyprint lang-html linenums").
+					&lt;button href=&quot;#&quot; onclick=&quot;popup2.open('unique',{button: function(){popup2.close()}});return false;&quot; class=&quot;btn-2&quot;&gt;&lt;span&gt;button&lt;/span&gt;&lt;/button&gt;
+
+			.row
+				.example
+					a(href="#",onclick="popup3.custom('Custom','Popup 3',{top: 325, left: 344});return false;")
+						| Click me
+
+				.clarification: pre(class="prettyprint lang-html linenums").
+					&lt;a href=&quot;#&quot; onclick=&quot;popup3.custom('Custom','Popup 3',{top: 325, left: 344});return false;&quot;&gt;Click me&lt;/a&gt;

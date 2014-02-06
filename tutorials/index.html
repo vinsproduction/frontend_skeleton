@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>SCELETON - tutorials</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta property="og:title" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:description" content="">
+  <link rel="image_src" href="">
+  <link rel="shortcut icon" type="image/x-icon" href="">
+  <meta name="viewport" content="width=1265">
+  <script type="text/javascript" src="../js/libs/helpers.js"></script>
+  <script src="../tutorials/js/prettify.js"></script>
+  <script src="../tutorials/js/lang-css.js"></script>
+  <link rel="stylesheet" href="../tutorials/css/sons-of-obsidian.css">
+  <script>(function() {
+  console.debug('TUTORIALS');
+
+  $$.includeJS('../js/libs/jquery-1.10.2.min.js');
+
+  $$.includeJS('../js/libs/jquery-ui-1.10.3.custom.js');
+
+  $$.includeJS('../js/libs/jquery.tinyscrollbar.js');
+
+  $$.includeJS('../js/libs/jquery.cookie.js');
+
+  $$.includeJS('../js/libs/mustache.js');
+
+  $$.includeJS('../js/libs/underscore-min.js');
+
+  $$.includeJS('../js/libs/json2.js');
+
+  $$.includeJS('../js/libs/backbone.router.js');
+
+  $$.includeJS('../js/libs/popup.js');
+
+  $$.includeCSS('../tutorials/css/app.css');
+
+  $$.includeJS('../tutorials/js/app.models.js');
+
+  $$.includeJS('../tutorials/js/app.views.js');
+
+  $$.includeJS('../tutorials/js/app.router.js');
+
+  $$.includeJS('../js/app.js');
+
+}).call(this);
+
+  </script>
+  <script>(function() {
+  window.app = new App;
+
+  app.hashNavigate = true;
+
+  app.init();
+
+}).call(this);
+
+  </script><!--[if lt IE 7]>
+  <style>
+    body > main {
+     height: 100%;
+    }
+  </style><![endif]-->
+  <!--[if lt IE 9]>
+  <script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
+</head>
+<body onload="prettyPrint()">
+  <div id="popups">
+    <div data-popup-name="custom" class="popup">
+      <div data-popup-close class="close"></div>
+      <div class="header">
+        <h1></h1>
+      </div>
+      <div class="body"></div>
+      <div class="footer">
+        <button data-popup-close><span>закрыть</span></button>
+      </div>
+    </div>
+    <div data-popup-name="unique" class="popup">
+      <div data-popup-close class="close"></div>
+      <div class="header">
+        <h1>unique</h1>
+      </div>
+      <div class="body">
+        <p>popup</p>
+      </div>
+      <div class="footer">
+        <button data-popup-button><span>закрыть</span></button>
+      </div>
+    </div>
+    <div data-popup-close class="background"></div>
+  </div>
+  <main>
+    <header class="fixed">
+      <div class="container">
+        <div class="content">
+          <div class="logo">
+            <h1>Tutorials</h1>
+          </div>
+          <nav id="menu">
+            <ul>
+              <li><a href="index.html">index</a></li>
+              <li><a href="#!/helpers-images">images</a></li>
+              <li><a href="#!/popup">popup</a></li>
+              <li><a href="#!/render">render</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <div class="sections">
+      <section id="page-popup">
+        <script>
+          $(document).ready(function(){
+          
+           window.popup2 = new Popup({
+           
+            top: 50,
+            left: 150,
+           });
+           
+           window.popup3 = new Popup({
+            fade:false,
+           });
+           
+           popup2.doCallback = function(popup){
+            console.log('this doCallback. and this popup2 name:',popup.attr('data-popup-name'));
+           }
+           popup2.loadCallback = function(popup){
+            console.log('this loadCallback. and this popup2 name:',popup.attr('data-popup-name'));
+           }
+           popup.doCallback = function(popup){
+            console.log('this doCallback. and this popup name:',popup.attr('data-popup-name'));
+           }
+           popup.loadCallback = function(popup){
+            console.log('this loadCallback. and this popup name:',popup.attr('data-popup-name'));
+           }
+          })
+          
+          
+        </script>
+        <div class="container">
+          <div class="content">
+            <h1>Модальные окна (Popups)</h1>
+            <div class="row">
+              <h2><span>Инициализация (js)</span></h2>
+              <pre class="prettyprint lang-js linenums">$(document).ready(function() {
+ window.popup2 = new Popup({
+  group: 'group_name',
+  top: 50,
+  left: 150,
+  scroll: false,
+ });
+ window.popup3 = new Popup({
+  fade: false,
+ });
+ popup2.doCallback = function(popup) {
+  console.log('this doCallback. and this popup2 name:', popup.attr('data-popup-name'));
+ }
+ popup2.loadCallback = function(popup) {
+  console.log('this loadCallback. and this popup2 name:', popup.attr('data-popup-name'));
+ }
+ popup.doCallback = function(popup) {
+  console.log('this doCallback. and this popup name:', popup.attr('data-popup-name'));
+ }
+ popup.loadCallback = function(popup) {
+  console.log('this loadCallback. and this popup name:', popup.attr('data-popup-name'));
+ }
+})
+
+
+</pre>
+            </div>
+            <div class="row">
+              <h2><span>Примеры</span></h2>
+              <div class="example"><a href="#" onclick="popup.custom('Custom','Popup',{callback:function(){console.log('this callback')}});return false;" class="btn-1"><span>link</span></a></div>
+              <div class="clarification">
+                <pre class="prettyprint lang-html linenums">&lt;a href=&quot;#&quot; onclick=&quot;popup.custom('Custom','Popup',{callback:function(){console.log('this callback')}});return false;&quot; class=&quot;btn-1&quot;&gt;&lt;span&gt;link&lt;/span&gt;&lt;/a&gt;
+</pre>
+              </div>
+            </div>
+            <div class="row">
+              <div class="example">
+                <button href="#" onclick="popup2.open('unique',{button: function(){popup2.close()}});return false;" class="btn-2"><span>button</span></button>
+              </div>
+              <div class="clarification">
+                <pre class="prettyprint lang-html linenums">&lt;button href=&quot;#&quot; onclick=&quot;popup2.open('unique',{button: function(){popup2.close()}});return false;&quot; class=&quot;btn-2&quot;&gt;&lt;span&gt;button&lt;/span&gt;&lt;/button&gt;
+</pre>
+              </div>
+            </div>
+            <div class="row">
+              <div class="example"><a href="#" onclick="popup3.custom('Custom','Popup 3',{top: 325, left: 344});return false;">Click me</a></div>
+              <div class="clarification">
+                <pre class="prettyprint lang-html linenums">&lt;a href=&quot;#&quot; onclick=&quot;popup3.custom('Custom','Popup 3',{top: 325, left: 344});return false;&quot;&gt;Click me&lt;/a&gt;</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="page-helpers-images">
+        <div class="container">
+          <div class="content">
+            <h1>Позиционирование картинки по центру внутри родительского элемента</h1>
+            <div class="clarification"><span class="note">style</span>
+              <pre class="prettyprint linenums">.frame {
+ overflow: hidden;
+ border: 2px solid #f00;
+ width: 200px;
+ height: 100px;
+}
+.frame img{}
+</pre><span class="note">html</span>
+              <pre class="prettyprint linenums">&lt;img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this)"&gt;</pre>
+            </div>
+            <h2><span>Оригинальные размеры картинок</span></h2>
+            <div class="row">
+              <p>горизонтальная картинка</p><img src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg">
+            </div>
+            <div class="block-inline">
+              <p>вертикальная картинка</p><img src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg">
+            </div>
+            <div class="block-inline">
+              <p>квадратная картинка</p><img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg">
+            </div>
+            <h2><span>Простое центрирование</span></h2>
+            <div class="block-inline">
+              <p>горизонтальный фрейм - квадратная картинка</p>
+              <div class="frame frame-horizontal"><img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this)"></div>
+            </div>
+            <div class="block-inline">
+              <p>вертикальный фрейм - квадратная картинка</p>
+              <div class="frame frame-vertical"><img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this)"></div>
+            </div>
+            <div class="block-inline">
+              <p>квадратный фрейм - квадратная картинка</p>
+              <div class="frame frame-square"><img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this)"></div>
+            </div>
+            <div class="block-inline">
+              <p>горизонтальный фрейм - горизонтальная картинка</p>
+              <div class="frame frame-horizontal"><img src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this)"></div>
+            </div>
+            <div class="block-inline">
+              <p>вертикальный фрейм - вертикальная картинка</p>
+              <div class="frame frame-vertical"><img src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this)"></div>
+            </div>
+            <div class="block-inline">
+              <p>вертикальный фрейм - горизонтальная картинка</p>
+              <div class="frame frame-vertical"><img src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this)"></div>
+            </div>
+            <div class="block-inline">
+              <p>горизонтальный фрейм - вертикальная картинка</p>
+              <div class="frame frame-horizontal"><img src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this)"></div>
+            </div>
+            <div class="block-inline">
+              <p>квадратный фрейм - горизонтальная картинка</p>
+              <div class="frame frame-square"><img src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this)"></div>
+            </div>
+            <div class="block-inline">
+              <p>квадратный фрейм - вертикальная картинка</p>
+              <div class="frame frame-square"><img src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this)"></div>
+            </div>
+            <h2><span>Центрирование и масштабирование до рамок родителя</span></h2>
+            <div class="block-inline">
+              <p>горизонтальный фрейм - квадратная картинка</p>
+              <div class="frame frame-horizontal"><img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+            <div class="block-inline">
+              <p>вертикальный фрейм - квадратная картинка</p>
+              <div class="frame frame-vertical"><img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+            <div class="block-inline">
+              <p>квадратный фрейм - квадратная картинка</p>
+              <div class="frame frame-square"><img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+            <div class="block-inline">
+              <p>горизонтальный фрейм - горизонтальная картинка</p>
+              <div class="frame frame-horizontal"><img src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+            <div class="block-inline">
+              <p>вертикальный фрейм - вертикальная картинка</p>
+              <div class="frame frame-vertical"><img src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+            <div class="block-inline">
+              <p>вертикальный фрейм - горизонтальная картинка</p>
+              <div class="frame frame-vertical"><img src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+            <div class="block-inline">
+              <p>горизонтальный фрейм - вертикальная картинка</p>
+              <div class="frame frame-horizontal"><img src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+            <div class="block-inline">
+              <p>квадратный фрейм - горизонтальная картинка</p>
+              <div class="frame frame-square"><img src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+            <div class="block-inline">
+              <p>квадратный фрейм - вертикальная картинка</p>
+              <div class="frame frame-square"><img src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+            <div class="block-inline">
+              <p>квадратный фрейм - квадратная картинка</p>
+              <div class="frame frame-square"><img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this,true)"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="page-render">
+        <script>
+          $(document).ready(function(){
+           app.views['page-render'].controller()
+          })
+          
+        </script>
+        <div class="container">
+          <div class="content">
+            <h1>Mustache</h1>
+            <div class="row">
+              <div class="clarification">
+                <h2><span>html</span></h2>
+                <p>{{{avatar}}}</p>
+                <p>&lt;p&gt;{{firstname}} {{lastname}}&lt;/p&gt;</p>
+                <p>&lt;p&gt;{{uid}}&lt;/p&gt;</p>
+                <p>&lt;p&gt;{{age}}&lt;/p&gt;</p>
+                <p>&lt;p&gt;{{gender}}&lt;/p&gt;</p>
+                <p>&lt;p&gt;{{birthday}}&lt;/p&gt;</p>
+                <p>&lt;p&gt;{{city}}&lt;/p&gt;</p>
+                <p>&lt;p&gt;{{country}}&lt;/p&gt;</p>
+              </div>
+              <div class="example">
+                <h2><span>RENDER html</span></h2>{{{avatar}}}
+                <p>{{firstname}} {{lastname}}</p>
+                <p>{{uid}}</p>
+                <p>{{age}}</p>
+                <p>{{gender}}</p>
+                <p>{{birthday}}</p>
+                <p>{{city}}</p>
+                <p>{{country}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <div class="container">
+        <div class="content">
+          <h1></h1>
+        </div>
+      </div>
+    </footer>
+  </main>
+</body>

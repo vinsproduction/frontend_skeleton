@@ -1,0 +1,144 @@
+
+section#page-helpers-images
+	.container
+		.content
+
+			h1 Позиционирование картинки по центру внутри родительского элемента
+
+			.clarification
+
+				span.note style
+
+				pre(class="prettyprint linenums").
+
+					.frame {
+						overflow: hidden;
+						border: 2px solid #f00;
+						width: 200px;
+						height: 100px;
+					}
+					.frame img{}
+
+				span.note html
+
+				pre(class="prettyprint linenums") &lt;img src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this)"&gt;
+
+
+			h2: span Оригинальные размеры картинок
+		
+			.row
+				p горизонтальная картинка
+				img(src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg")
+				
+			.block-inline
+				p вертикальная картинка
+				img(src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg")
+						
+			.block-inline
+				p квадратная картинка
+				img(src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg")
+
+
+			h2: span Простое центрирование
+
+			
+			.block-inline
+				p горизонтальный фрейм - квадратная картинка
+				.frame.frame-horizontal
+					img(src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this)")
+			
+			.block-inline
+				p вертикальный фрейм - квадратная картинка
+				.frame.frame-vertical
+					img(src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this)")
+			
+			.block-inline
+				p квадратный фрейм - квадратная картинка
+				.frame.frame-square
+					img(src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this)")
+
+
+			
+			.block-inline
+				p горизонтальный фрейм - горизонтальная картинка
+				.frame.frame-horizontal
+					img(src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this)")
+			
+			.block-inline
+				p вертикальный фрейм - вертикальная картинка
+				.frame.frame-vertical
+					img(src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this)")
+			
+			.block-inline
+				p вертикальный фрейм - горизонтальная картинка
+				.frame.frame-vertical
+					img(src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this)")
+			
+			.block-inline
+				p горизонтальный фрейм - вертикальная картинка
+				.frame.frame-horizontal
+					img(src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this)")
+			
+			.block-inline
+				p квадратный фрейм - горизонтальная картинка
+				.frame.frame-square
+					img(src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this)")
+			
+			.block-inline
+				p квадратный фрейм - вертикальная картинка
+				.frame.frame-square
+					img(src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this)")
+
+			h2: span Центрирование и масштабирование до рамок родителя
+
+			
+			.block-inline
+				p горизонтальный фрейм - квадратная картинка
+				.frame.frame-horizontal
+					img(src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this,true)")
+			
+			.block-inline
+				p вертикальный фрейм - квадратная картинка
+				.frame.frame-vertical
+					img(src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this,true)")
+			
+			.block-inline
+				p квадратный фрейм - квадратная картинка
+				.frame.frame-square
+					img(src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this,true)")
+
+
+			.block-inline
+				p горизонтальный фрейм - горизонтальная картинка
+				.frame.frame-horizontal
+					img(src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this,true)")
+			
+			.block-inline
+				p вертикальный фрейм - вертикальная картинка
+				.frame.frame-vertical
+					img(src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this,true)")
+			
+			.block-inline
+				p вертикальный фрейм - горизонтальная картинка
+				.frame.frame-vertical
+					img(src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this,true)")
+			
+			.block-inline
+				p горизонтальный фрейм - вертикальная картинка
+				.frame.frame-horizontal
+					img(src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this,true)")
+			
+			.block-inline
+				p квадратный фрейм - горизонтальная картинка
+				.frame.frame-square
+					img(src="http://cs413026.vk.me/v413026598/8c58/oyinFvwRYLo.jpg" onload="$$.imageCenter(this,true)")
+			
+			.block-inline
+				p квадратный фрейм - вертикальная картинка
+				.frame.frame-square
+					img(src="http://cs413026.vk.me/v413026598/8c4f/wgYPWu9LfdI.jpg" onload="$$.imageCenter(this,true)")
+			
+			.block-inline
+				p квадратный фрейм - квадратная картинка
+				.frame.frame-square
+					img(src="http://cs413026.vk.me/v413026598/8c0f/yGY7KlWY7FY.jpg" onload="$$.imageCenter(this,true)")
