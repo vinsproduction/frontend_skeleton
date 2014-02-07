@@ -115,7 +115,7 @@ class IndexView extends PrototypeView
 		@preRender['example'](t: 'Load...',h:130)
 		app.models.user.get {}, (res) =>
 			if res.error
-				return app.errors.popup res.error
+				return app.errors.popup(res.error)
 			else
 				@renderResponse(res)
 		
