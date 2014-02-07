@@ -87,9 +87,46 @@ class PrototypeView
 
 	actions: ->
 
+	doImage: (src,classes="") ->
+		return if !src or src is ""
+		if !/http:\/\//.test(src) then src = app.host + src
+		photo =
+			"""
+				<img src="#{src}" class="#{classes}" >
+			"""
+		return photo
+
 ### Views ###
 
 class IndexView extends PrototypeView
+
+	init: ->
+
+		@el = $("index")
+
+		@template = 
+			'example' : @el.find('.example')
+
+		do @generateRenders
+
+	controller: (@opt={}) ->
+
+		@vars = {} #reset vars
+		@preRender['example'](t: 'Load...',h:130)
+		app.models.user.get {}, (res) =>
+			if res.error
+				return app.errors.popup res.error
+			else
+				@renderResponse(res)
+		
+	renderResponse: (data) ->
+		_.extend @vars, @varconstants
+		_.extend @vars, data
+
+		@doImage(@vars.avatar) if @vars.avatar
+
+		do @render['example']
+		do @actions
 
 
 		

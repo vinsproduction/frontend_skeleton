@@ -25,8 +25,36 @@ class PrototypeModel
 
 ### Models ###
 
-class User extends PrototypeModel
+class UserModel extends PrototypeModel
 
+	# Ответ с серевера
+	getRes:
+		{
+		  "data": {
+		    "age": 31,
+		    "avatar": "http://cs607518.vk.me/v607518871/1b51/MLpE9yqMzOg.jpg",
+		    "birthday": "1983-01-19",
+		    "city": "Москва",
+		    "country": "Россия",
+		    "firstname": "Vins",
+		    "gender": "male",
+		    "uid": 131380871,
+		    "lastname": "Surfer",
+		    
+		  },
+		  "status": "success"
+		}
+
+	###
+	Описание: Отдает данные пользователя
+	###
+	get: (data,callback) ->
+
+		url = 'user/details'
+
+		return @getFish url,data,@getRes,callback if @fish
+
+		app.api url, 'GET', data, (res) => callback res
 
 
 ### ============ Объявляем классы! =========== ###
@@ -35,4 +63,4 @@ class Models
 
 	constructor: ->
 
-		@user = new User
+		@user = new UserModel

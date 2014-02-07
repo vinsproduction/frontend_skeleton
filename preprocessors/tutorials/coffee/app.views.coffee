@@ -87,6 +87,15 @@ class PrototypeView
 
 	actions: ->
 
+	doImage: (src,classes="") ->
+		return if !src or src is ""
+		if !/http:\/\//.test(src) then src = app.host + src
+		photo =
+			"""
+				<img src="#{src}" class="#{classes}" >
+			"""
+		return photo
+
 ### Views ###
 
 class PageRenderView extends PrototypeView
@@ -119,7 +128,7 @@ class PageRenderView extends PrototypeView
 		_.extend @vars, @varconstants
 		_.extend @vars, data
 
-		@vars.avatar = if @vars.avatar then  """<img src="#{@vars.avatar}"" class="ava">""" else ""
+		@vars.avatar = @doImage(@vars.avatar)
 
 		do @render['example']
 		do @actions
