@@ -1,6 +1,6 @@
 /* Prototype Model*/
 
-var Models, PrototypeModel, User, _ref,
+var Models, PrototypeModel, UserModel, _ref,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -25,15 +25,47 @@ PrototypeModel = (function() {
 /* Models*/
 
 
-User = (function(_super) {
-  __extends(User, _super);
+UserModel = (function(_super) {
+  __extends(UserModel, _super);
 
-  function User() {
-    _ref = User.__super__.constructor.apply(this, arguments);
+  function UserModel() {
+    _ref = UserModel.__super__.constructor.apply(this, arguments);
     return _ref;
   }
 
-  return User;
+  UserModel.prototype.getRes = {
+    "data": {
+      "age": 31,
+      "avatar": "http://cs607518.vk.me/v607518871/1b51/MLpE9yqMzOg.jpg",
+      "birthday": "1983-01-19",
+      "city": "Москва",
+      "country": "Россия",
+      "firstname": "Vins",
+      "gender": "male",
+      "uid": 131380871,
+      "lastname": "Surfer"
+    },
+    "status": "success"
+  };
+
+  /*
+  	Описание: Отдает данные пользователя
+  */
+
+
+  UserModel.prototype.get = function(data, callback) {
+    var url,
+      _this = this;
+    url = 'user/details';
+    if (this.fish) {
+      return this.getFish(url, data, this.getRes, callback);
+    }
+    return app.api(url, 'GET', data, function(res) {
+      return callback(res);
+    });
+  };
+
+  return UserModel;
 
 })(PrototypeModel);
 
@@ -42,7 +74,7 @@ User = (function(_super) {
 
 Models = (function() {
   function Models() {
-    this.user = new User;
+    this.user = new UserModel;
   }
 
   return Models;
@@ -157,6 +189,21 @@ PrototypeView = (function() {
 
   PrototypeView.prototype.actions = function() {};
 
+  PrototypeView.prototype.doImage = function(src, classes) {
+    var photo;
+    if (classes == null) {
+      classes = "";
+    }
+    if (!src || src === "") {
+      return;
+    }
+    if (!/http:\/\//.test(src)) {
+      src = app.host + src;
+    }
+    photo = "<img src=\"" + src + "\" class=\"" + classes + "\" >";
+    return photo;
+  };
+
   return PrototypeView;
 
 })();
@@ -171,6 +218,41 @@ IndexView = (function(_super) {
     _ref = IndexView.__super__.constructor.apply(this, arguments);
     return _ref;
   }
+
+  IndexView.prototype.init = function() {
+    this.el = $("index");
+    this.template = {
+      'example': this.el.find('.example')
+    };
+    return this.generateRenders();
+  };
+
+  IndexView.prototype.controller = function(opt) {
+    var _this = this;
+    this.opt = opt != null ? opt : {};
+    this.vars = {};
+    this.preRender['example']({
+      t: 'Load...',
+      h: 130
+    });
+    return app.models.user.get({}, function(res) {
+      if (res.error) {
+        return app.errors.popup(res.error);
+      } else {
+        return _this.renderResponse(res);
+      }
+    });
+  };
+
+  IndexView.prototype.renderResponse = function(data) {
+    _.extend(this.vars, this.varconstants);
+    _.extend(this.vars, data);
+    if (this.vars.avatar) {
+      this.doImage(this.vars.avatar);
+    }
+    this.render['example']();
+    return this.actions();
+  };
 
   return IndexView;
 

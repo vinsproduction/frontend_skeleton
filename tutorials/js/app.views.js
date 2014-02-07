@@ -106,6 +106,21 @@ PrototypeView = (function() {
 
   PrototypeView.prototype.actions = function() {};
 
+  PrototypeView.prototype.doImage = function(src, classes) {
+    var photo;
+    if (classes == null) {
+      classes = "";
+    }
+    if (!src || src === "") {
+      return;
+    }
+    if (!/http:\/\//.test(src)) {
+      src = app.host + src;
+    }
+    photo = "<img src=\"" + src + "\" class=\"" + classes + "\" >";
+    return photo;
+  };
+
   return PrototypeView;
 
 })();
@@ -149,7 +164,7 @@ PageRenderView = (function(_super) {
   PageRenderView.prototype.renderResponse = function(data) {
     _.extend(this.vars, this.varconstants);
     _.extend(this.vars, data);
-    this.vars.avatar = this.vars.avatar ? "<img src=\"" + this.vars.avatar + "\"\" class=\"ava\">" : "";
+    this.vars.avatar = this.doImage(this.vars.avatar);
     this.render['example']();
     return this.actions();
   };

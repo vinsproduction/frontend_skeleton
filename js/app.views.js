@@ -106,6 +106,21 @@ PrototypeView = (function() {
 
   PrototypeView.prototype.actions = function() {};
 
+  PrototypeView.prototype.doImage = function(src, classes) {
+    var photo;
+    if (classes == null) {
+      classes = "";
+    }
+    if (!src || src === "") {
+      return;
+    }
+    if (!/http:\/\//.test(src)) {
+      src = app.host + src;
+    }
+    photo = "<img src=\"" + src + "\" class=\"" + classes + "\" >";
+    return photo;
+  };
+
   return PrototypeView;
 
 })();
@@ -120,6 +135,41 @@ IndexView = (function(_super) {
     _ref = IndexView.__super__.constructor.apply(this, arguments);
     return _ref;
   }
+
+  IndexView.prototype.init = function() {
+    this.el = $("index");
+    this.template = {
+      'example': this.el.find('.example')
+    };
+    return this.generateRenders();
+  };
+
+  IndexView.prototype.controller = function(opt) {
+    var _this = this;
+    this.opt = opt != null ? opt : {};
+    this.vars = {};
+    this.preRender['example']({
+      t: 'Load...',
+      h: 130
+    });
+    return app.models.user.get({}, function(res) {
+      if (res.error) {
+        return app.errors.popup(res.error);
+      } else {
+        return _this.renderResponse(res);
+      }
+    });
+  };
+
+  IndexView.prototype.renderResponse = function(data) {
+    _.extend(this.vars, this.varconstants);
+    _.extend(this.vars, data);
+    if (this.vars.avatar) {
+      this.doImage(this.vars.avatar);
+    }
+    this.render['example']();
+    return this.actions();
+  };
 
   return IndexView;
 
