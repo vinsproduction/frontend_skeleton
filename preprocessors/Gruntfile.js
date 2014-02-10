@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 
+
 		// Компиляция Stylus в CSS
 		stylus: {
 			compile: {
@@ -172,13 +173,7 @@ module.exports = function(grunt) {
 	// Сервер + preprocessors
 	grunt.registerTask('server', ['_server','coffee', 'stylus', 'jade', 'concat', 'uglify', 'watch']);
 
-	// tutorials + cервер + preprocessors
-	grunt.registerTask('tutorials','Tutorials tasks', function() {
-		require('./Gruntfile_tutorials.js')(grunt)
-		grunt.log.writeln('Tutorials tasks run!');
-		grunt.task.run(['_server','coffee', 'stylus', 'jade', 'concat', 'uglify', 'watch']);
-	});
-
+	
 	// Объявление тасков
 	grunt.registerTask('default', ['coffee', 'stylus', 'jade', 'concat', 'uglify', 'watch']);
 
