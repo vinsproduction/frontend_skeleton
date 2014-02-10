@@ -24,21 +24,6 @@ class Router extends Backbone.Router
 		@bind "all",  (route,router) ->
 			#if route is 'route'
 
-		if VK?
-
-			VK.init =>
-
-				### следить за изменениями хеша вконтакте ###
-				VK.addCallback 'onLocationChanged', (location) ->
-					console.debug '[VKONTAKTE > onLocationChanged]', location
-					app.redirect location.replace("!","")
-
-				### следить за скроллом ###
-				VK.callMethod 'scrollSubscribe',true
-
-				### событие после скролла ###
-				VK.addCallback 'onScroll', (scroll, heigh) ->
-					console.log '[VKONTAKTE > onScroll]', scroll, heigh
 
 	### до перехода ###
 	before: (route) ->
@@ -46,13 +31,25 @@ class Router extends Backbone.Router
 		if route isnt ''
 			console.debug '[Route]',route
 
+		@hide()
+
 		if VK?
 			### выставить хеш ###
-			VK.callMethod('setLocation',route)
+			VK.callMethod('setLocation',route.replace("!",""))
 
 	
 	### после перехода ###
-	after: ->
+	after: (route) ->
+		#console.debug '[Route > after]'
+
+
+	hide: ->
+
+		$('body > main > .sections section').removeClass('current').hide()
+
+	show: (el)  ->
+
+		el.addClass('current').show()
 
 
 	scrollTop: (speed=400) ->
@@ -64,18 +61,6 @@ class Router extends Backbone.Router
 			$('body').scrollTop(0)
 			if VK? then VK.callMethod('scrollWindow', 0)
 
-	resize: (el) ->
-
-		if VK?
-			### ресайз окна Вконтакте ###
-			window.onload = ->
-				setTimeout(->
-					diff 	= 530 # хардкодное число
-					elH 	= $(el).height()
-					h = elH + diff
-					console.debug "[VKONTAKTE > resizeWindow] '#{el}' height:",h,'| elHeight:',elH, '| diff:',diff
-					VK.callMethod "resizeWindow", 1000, h
-				,1000)
 
 	###  404 страница ###
 	notFound: (path) ->
@@ -83,8 +68,8 @@ class Router extends Backbone.Router
 		el = $('section#notFound')
 
 		@scrollTop()
-		el.show()
-		@resize(el)
+		@show(el)
+		
 
 	### Серверная ошибка ###
 	ooops: ->
@@ -92,16 +77,23 @@ class Router extends Backbone.Router
 		el = $('section#notFound')
 
 		@scrollTop()
-		el.show()
-		@resize(el)
+		@show(el)
+		
 
 	index: ->
+
+		# авто переход по переданному уру, на случай шаринга
+		# if window.vkredirect and window.vkredirect not in ["","/"]
+		# 	console.debug '[VKONTAKTE > hash detected!] Redirect to', window.vkredirect
+		# 	app.redirect(window.vkredirect)
+		# 	window.vkredirect = false
+		# 	return
 		
 		el = $('section#index')
 
 		@scrollTop()
-		el.show()
-		@resize(el)
+		@show(el)
+		
 
 		#app.views['index'].controller()
 
@@ -110,8 +102,8 @@ class Router extends Backbone.Router
 		el = $('section#page')
 
 		@scrollTop()
-		el.show()
-		@resize(el)
+		@show(el)
+		
 
 		#app.views['index'].controller({id})
 

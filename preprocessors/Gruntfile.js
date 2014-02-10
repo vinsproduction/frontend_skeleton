@@ -4,48 +4,53 @@ module.exports = function(grunt) {
 
 		// Компиляция Stylus в CSS
 		stylus: {
-			
-			options: {
-				compress: false,
-				paths: ['styl/']
-			},
-			files: {
-				'../css/app.css': 'styl/app.styl',
+			compile: {
+				options: {
+					compress: false,
+					paths: ['styl/']
+				},
+				files: {
+					'../css/app.css': 'styl/app.styl',
+				}
 			}
-			
 		},
 
 		// Компиляция Jade в HTML
 		jade: {
-			options: {
-				pretty: true,
-				data: {
-					debug: false
+			compile: {
+				options: {
+					pretty: true,
+					data: {
+						debug: false
+					}
+				},
+				files: {
+					"../index.html": "jade/index.jade",
+					"../layout/head.html": "jade/layout/head.jade",
+					"../layout/header.html": "jade/layout/header.jade",
+					"../layout/layout.html": "jade/layout/layout.jade",
+					"../layout/footer.html": "jade/layout/footer.jade",
 				}
-			},
-			files: {
-				"../index.html": "jade/index.jade",
-				"../layout/head.html": "jade/layout/head.jade",
-				"../layout/header.html": "jade/layout/header.jade",
-				"../layout/layout.html": "jade/layout/layout.jade",
-				"../layout/footer.html": "jade/layout/footer.jade",
 			}
 		},
 
 		// Компиляция coffee-скриптов в js
 		coffee: {
-			
-			options: {
-       		bare: true
-       	},
-			
-       	files: {
-     			'../js/libs/popup.js': 'coffee/libs/popup.coffee',
 
-     			'../js/app.models.js': 'coffee/app.models.coffee',
-	    		'../js/app.views.js': 'coffee/app.views.coffee',
-	    		'../js/app.router.js': 'coffee/app.router.coffee',
-	    		'../js/app.js': 'coffee/app.coffee'
+			compileBare: {
+			
+				options: {
+	       		bare: true
+	       	},
+				
+	       	files: {
+	     			'../js/libs/popup.js': 'coffee/libs/popup.coffee',
+
+	     			'../js/app.models.js': 'coffee/app.models.coffee',
+		    		'../js/app.views.js': 'coffee/app.views.coffee',
+		    		'../js/app.router.js': 'coffee/app.router.coffee',
+		    		'../js/app.js': 'coffee/app.coffee'
+		    	}
 	    	}
 		},
 

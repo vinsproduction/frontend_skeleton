@@ -30,26 +30,7 @@ Router = (function(_super) {
 
 
   Router.prototype.initialize = function() {
-    var _this = this;
-    this.bind("all", function(route, router) {});
-    if (typeof VK !== "undefined" && VK !== null) {
-      return VK.init(function() {
-        /* следить за изменениями хеша вконтакте*/
-
-        VK.addCallback('onLocationChanged', function(location) {
-          console.debug('[VKONTAKTE > onLocationChanged]', location);
-          return app.redirect(location.replace("!", ""));
-        });
-        /* следить за скроллом*/
-
-        VK.callMethod('scrollSubscribe', true);
-        /* событие после скролла*/
-
-        return VK.addCallback('onScroll', function(scroll, heigh) {
-          return console.log('[VKONTAKTE > onScroll]', scroll, heigh);
-        });
-      });
-    }
+    return this.bind("all", function(route, router) {});
   };
 
   /* до перехода*/
@@ -59,17 +40,26 @@ Router = (function(_super) {
     if (route !== '') {
       console.debug('[Route]', route);
     }
+    this.hide();
     if (typeof VK !== "undefined" && VK !== null) {
       /* выставить хеш*/
 
-      return VK.callMethod('setLocation', route);
+      return VK.callMethod('setLocation', route.replace("!", ""));
     }
   };
 
   /* после перехода*/
 
 
-  Router.prototype.after = function() {};
+  Router.prototype.after = function(route) {};
+
+  Router.prototype.hide = function() {
+    return $('body > main > .sections section').removeClass('current').hide();
+  };
+
+  Router.prototype.show = function(el) {
+    return el.addClass('current').show();
+  };
 
   Router.prototype.scrollTop = function(speed) {
     if (speed == null) {
@@ -90,23 +80,6 @@ Router = (function(_super) {
     }
   };
 
-  Router.prototype.resize = function(el) {
-    if (typeof VK !== "undefined" && VK !== null) {
-      /* ресайз окна Вконтакте*/
-
-      return window.onload = function() {
-        return setTimeout(function() {
-          var diff, elH, h;
-          diff = 530;
-          elH = $(el).height();
-          h = elH + diff;
-          console.debug("[VKONTAKTE > resizeWindow] '" + el + "' height:", h, '| elHeight:', elH, '| diff:', diff);
-          return VK.callMethod("resizeWindow", 1000, h);
-        }, 1000);
-      };
-    }
-  };
-
   /*  404 страница*/
 
 
@@ -114,8 +87,7 @@ Router = (function(_super) {
     var el;
     el = $('section#notFound');
     this.scrollTop();
-    el.show();
-    return this.resize(el);
+    return this.show(el);
   };
 
   /* Серверная ошибка*/
@@ -125,24 +97,21 @@ Router = (function(_super) {
     var el;
     el = $('section#notFound');
     this.scrollTop();
-    el.show();
-    return this.resize(el);
+    return this.show(el);
   };
 
   Router.prototype.index = function() {
     var el;
     el = $('section#index');
     this.scrollTop();
-    el.show();
-    return this.resize(el);
+    return this.show(el);
   };
 
   Router.prototype.page = function(id) {
     var el;
     el = $('section#page');
     this.scrollTop();
-    el.show();
-    return this.resize(el);
+    return this.show(el);
   };
 
   return Router;
