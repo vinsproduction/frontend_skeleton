@@ -111,7 +111,7 @@ App = (function() {
   /* API pefix, например номер версии серверного api /api/v1/*/
 
 
-  App.prototype.api_prefix = "";
+  App.prototype.api_prefix = "/";
 
   App.prototype.api = function(url, type, data, callback) {
     var _this = this;

@@ -86,7 +86,7 @@ class App
 	###
 
 	### API pefix, например номер версии серверного api /api/v1/ ###
-	api_prefix: ""
+	api_prefix: "/"
 
 	api: (url,type="GET",data={},callback) ->
 
