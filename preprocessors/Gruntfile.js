@@ -4,86 +4,49 @@ module.exports = function(grunt) {
 
 		// Компиляция Stylus в CSS
 		stylus: {
-			tutorials: {
-				options: {
-					compress: false,
-					paths: ['styl/']
-				},
-				files: {
-					'../tutorials/css/app.css': 'tutorials/styl/app.styl'
-				}
+			
+			options: {
+				compress: false,
+				paths: ['styl/']
 			},
-			default: {
-				options: {
-					compress: false,
-					paths: ['styl/']
-				},
-				files: {
-					'../css/app.css': 'styl/app.styl',
-				}
+			files: {
+				'../css/app.css': 'styl/app.styl',
 			}
+			
 		},
 
 		// Компиляция Jade в HTML
 		jade: {
-			tutorials: {
-				options: {
-					pretty: true,
-					data: {
-						debug: false
-					}
-				},
-				files: {
-					"../tutorials/index.html": "tutorials/jade/index.jade",
-					"../tutorials/popup.html": "tutorials/jade/popup.jade",
-					"../tutorials/render.html": "tutorials/jade/render.jade",
-					"../tutorials/helpers-images.html": "tutorials/jade/helpers-images.jade",
+			options: {
+				pretty: true,
+				data: {
+					debug: false
 				}
 			},
-			default: {
-				options: {
-					pretty: true,
-					data: {
-						debug: false
-					}
-				},
-				files: {
-					"../index.html": "jade/index.jade",
-					"../layout/head.html": "jade/layout/head.jade",
-					"../layout/header.html": "jade/layout/header.jade",
-					"../layout/layout.html": "jade/layout/layout.jade",
-					"../layout/footer.html": "jade/layout/footer.jade",
-				}
-			},
+			files: {
+				"../index.html": "jade/index.jade",
+				"../layout/head.html": "jade/layout/head.jade",
+				"../layout/header.html": "jade/layout/header.jade",
+				"../layout/layout.html": "jade/layout/layout.jade",
+				"../layout/footer.html": "jade/layout/footer.jade",
+			}
 		},
 
 		// Компиляция coffee-скриптов в js
 		coffee: {
-			tutorials: {
-				options: {
-          		bare: true
-          	},	
-          	files: {
-          		'../tutorials/js/app.models.js': 'tutorials/coffee/app.models.coffee',
-		    		'../tutorials/js/app.views.js': 'tutorials/coffee/app.views.coffee',
-          		'../tutorials/js/app.router.js': 'tutorials/coffee/app.router.coffee',
-        		} 
-			},
-			default: {
-				options: {
-          		bare: true
-          	},
-				
-          	files: {
-        			'../js/libs/popup.js': 'coffee/libs/popup.coffee',
+			
+			options: {
+       		bare: true
+       	},
+			
+       	files: {
+     			'../js/libs/popup.js': 'coffee/libs/popup.coffee',
 
-        			'../js/app.models.js': 'coffee/app.models.coffee',
-		    		'../js/app.views.js': 'coffee/app.views.coffee',
-		    		'../js/app.router.js': 'coffee/app.router.coffee',
-		    		'../js/app.js': 'coffee/app.coffee'
-		    	}
-			}
-
+     			'../js/app.models.js': 'coffee/app.models.coffee',
+	    		'../js/app.views.js': 'coffee/app.views.coffee',
+	    		'../js/app.router.js': 'coffee/app.router.coffee',
+	    		'../js/app.js': 'coffee/app.coffee'
+	    	}
 		},
 
 		// Склеивание js-файлов
@@ -143,7 +106,6 @@ module.exports = function(grunt) {
 
 				files: [
 					'styl/*.styl',
-					'tutorials/styl/*.styl',
 				],
 				tasks: 'stylus'
 			},
@@ -152,8 +114,6 @@ module.exports = function(grunt) {
 				files: [
 					'jade/*.jade',
 					'jade/layout/*.jade',
-					'tutorials/jade/*.jade',
-					'tutorials/jade/layout/*.jade',
 				],
 				tasks: 'jade'
 			},
@@ -162,7 +122,6 @@ module.exports = function(grunt) {
 				files: [
 					'coffee/*.coffee',
 					'coffee/libs/*.coffee',
-					'tutorials/coffee/*.coffee'
 				],
 				tasks: 'coffee'
 			},
@@ -206,12 +165,16 @@ module.exports = function(grunt) {
 	});
 
 	// Сервер + preprocessors
-	grunt.registerTask('server', ['_server','coffee:default', 'stylus:default', 'jade:default', 'concat', 'uglify', 'watch']);
+	grunt.registerTask('server', ['_server','coffee', 'stylus', 'jade', 'concat', 'uglify', 'watch']);
 
 	// tutorials + cервер + preprocessors
-	grunt.registerTask('tutorials', ['_server','coffee','stylus', 'jade', 'watch']);
+	grunt.registerTask('tutorials','Tutorials tasks', function() {
+		require('./Gruntfile_tutorials.js')(grunt)
+		grunt.log.writeln('Tutorials tasks run!');
+		grunt.task.run(['_server','coffee', 'stylus', 'jade', 'concat', 'uglify', 'watch']);
+	});
 
 	// Объявление тасков
-	grunt.registerTask('default', ['coffee:default', 'stylus:default', 'jade:default', 'concat', 'uglify', 'watch']);
+	grunt.registerTask('default', ['coffee', 'stylus', 'jade', 'concat', 'uglify', 'watch']);
 
 };

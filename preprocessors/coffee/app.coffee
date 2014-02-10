@@ -1,13 +1,15 @@
 class App
 
+	ver: '3.0'
+
+	## Имя проекта ###
+	name: 'Frontend Skeleton'
+
+	### Хеш навигация в проекте ###
+	hashNavigate: false
+
 	constructor: ->
 
-		### Имя проекта ###
-		@name = 'Frontend Skeleton'
-
-		### Хеш навигация в проекте ###
-		@hashNavigate = false
-		
 		### Если хоста нет, значит - локальный просмотр! ###
 		@localhost = window.location.host is "" or /localhost/.test window.location.host
 
@@ -67,10 +69,12 @@ class App
 
 	### Hash навигация ###
 	redirect: (page = "") ->
+		console.debug '[app > redirect]', page
+
 		if window.location.hash is "#!" + page
-			window.location.reload()
-		else
-			@router.navigate("!" + page,true)
+			@router.navigate("!/redirect")
+		
+		@router.navigate("!" + page,true)
 
 
 	### @API
@@ -170,10 +174,11 @@ class App
 	### Социальные настройки ###
 	social:
 
-		defaults:
-			vkontakteApiId		: ''
-			facebookApiId		: ''
-			odnoklassnikiApiId: ''
+		url: ""
+
+		vkontakteApiId		: ''
+		facebookApiId		: ''
+		odnoklassnikiApiId: ''
 
 
 		init: ->
@@ -206,10 +211,13 @@ class App
 				оно должно быть залито в сам ВКонтакте
 				###
 
+				options.attachLink = if options.attachLink then "#{app.social.url}#" + options.attachLink else app.social.url
+				options.attachPhoto = if options.attachPhoto then options.attachPhoto else "photo131380871_321439116"
+
 				VK.api "wall.post",
 					owner_id	: options.owner_id
 					message	: options.message
-					attachments: "photo131380871_321439116,http://vk.com/app4132371_1748598"
+					attachments: "#{options.attachPhoto},#{options.attachLink}"
 
 						
 				, (r) ->
@@ -267,9 +275,9 @@ class App
 			###
 			itVk: -> 
 				options = {}
-				options.title 	= "Выигрывай призы вместе с подругой!"
-				options.description 	= "Clean&Clear дарит подарки тем, кто умеет по-настоящему дружить! Расскажи историю о том, как вы с подружкой преодолеваете сложности, добавь вашу совместную фотку и подключи к голосованию всех знакомых. Каждый голос – шаг к победе!"
-				options.url 	= "http://vk.com/app4132371_1748598"
+				options.title 	= "title"
+				options.description 	= "description"
+				options.url 	= app.social.url
 				options.image 	= "#{app.host}/img/for_post.png"
 
 			vkontakte: (options={}) ->

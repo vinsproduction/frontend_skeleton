@@ -2,17 +2,20 @@ var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 App = (function() {
+  App.prototype.ver = '3.0';
+
+  App.prototype.name = 'Frontend Skeleton';
+
+  /* Хеш навигация в проекте*/
+
+
+  App.prototype.hashNavigate = false;
+
   function App() {
-    /* Имя проекта*/
+    /* Если хоста нет, значит - локальный просмотр!*/
 
     var livereloadPort,
       _this = this;
-    this.name = 'Frontend Skeleton';
-    /* Хеш навигация в проекте*/
-
-    this.hashNavigate = false;
-    /* Если хоста нет, значит - локальный просмотр!*/
-
     this.localhost = window.location.host === "" || /localhost/.test(window.location.host);
     /* Если localhost - проставляем настоящий хост*/
 
@@ -89,11 +92,11 @@ App = (function() {
     if (page == null) {
       page = "";
     }
+    console.debug('[app > redirect]', page);
     if (window.location.hash === "#!" + page) {
-      return window.location.reload();
-    } else {
-      return this.router.navigate("!" + page, true);
+      this.router.navigate("!/redirect");
     }
+    return this.router.navigate("!" + page, true);
   };
 
   /* @API
@@ -203,11 +206,10 @@ App = (function() {
 
 
   App.prototype.social = {
-    defaults: {
-      vkontakteApiId: '',
-      facebookApiId: '',
-      odnoklassnikiApiId: ''
-    },
+    url: "",
+    vkontakteApiId: '',
+    facebookApiId: '',
+    odnoklassnikiApiId: '',
     init: function() {
       return app.social.url = this.host;
     },
@@ -226,10 +228,12 @@ App = (function() {
         				оно должно быть залито в сам ВКонтакте
         */
 
+        options.attachLink = options.attachLink ? ("" + app.social.url + "#") + options.attachLink : app.social.url;
+        options.attachPhoto = options.attachPhoto ? options.attachPhoto : "photo131380871_321439116";
         return VK.api("wall.post", {
           owner_id: options.owner_id,
           message: options.message,
-          attachments: "photo131380871_321439116,http://vk.com/app4132371_1748598"
+          attachments: "" + options.attachPhoto + "," + options.attachLink
         }, function(r) {
           if (!r || r.error) {
             console.error('[VKONTAKTE > wall.post]', r);
@@ -304,9 +308,9 @@ App = (function() {
       itVk: function() {
         var options;
         options = {};
-        options.title = "Выигрывай призы вместе с подругой!";
-        options.description = "Clean&Clear дарит подарки тем, кто умеет по-настоящему дружить! Расскажи историю о том, как вы с подружкой преодолеваете сложности, добавь вашу совместную фотку и подключи к голосованию всех знакомых. Каждый голос – шаг к победе!";
-        options.url = "http://vk.com/app4132371_1748598";
+        options.title = "title";
+        options.description = "description";
+        options.url = app.social.url;
         return options.image = "" + app.host + "/img/for_post.png";
       },
       vkontakte: function(options) {

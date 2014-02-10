@@ -80,7 +80,7 @@ PrototypeView = (function() {
     if (this.render_debug) {
       console.log("[Render " + templateName + "]", '| @vars:', vars);
     }
-    return $el.removeAttr('style').html(Mustache.to_html(sourse, vars));
+    return $el.html(Mustache.to_html(sourse, vars));
   };
 
   PrototypeView.prototype.doResize = function(callback) {

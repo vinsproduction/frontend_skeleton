@@ -63,7 +63,7 @@ class PrototypeView
 
 		if @render_debug then console.log "[Render #{templateName}]", '| @vars:', vars
 
-		$el.removeAttr('style').html( Mustache.to_html(sourse, vars) )
+		$el.html( Mustache.to_html(sourse, vars) )
 
 	doResize: (callback) ->
 
