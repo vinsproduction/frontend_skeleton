@@ -159,110 +159,145 @@ $$; // SHORT NAMESPACE EDITABLE
 
 	$.imageCenter = function(el,zoom,w,h,wrapper) {
 
-		$el = jQuery(el)
+		var $el = jQuery(el);
 
-		$wrapper = $el.parent();
+		var image = new Image();
+		image.src = $el.attr('src');
 
-		if ($wrapper.css('position') != 'relative' && $wrapper.css('position') != 'absolute'){
-			$wrapper.css({
-				'position': 'relative',
-			});
-		}
-	
-		$wrapper.css({
-			'overflow': 'hidden'
-		});
-		
-		$el.css({'position': 'absolute'});
+		image.onload = function(){
 
-		if(!w){
-			w = parseInt($wrapper.css('width')); 
-		}else{
-			if(wrapper){ $wrapper.width(w); }
-		}
+			var $wrapper = $el.parent();
 
-		if(!h){
-			h = parseInt($wrapper.css('height'));
-		}else{
-			if(wrapper){ $wrapper.height(h); }
-		}
-
-		// Если нужен Zoom (замостить всю область фрейма картинкой!)
-		if(zoom) {
-
-			// Если фрейм горизонтальный
-			if (w > h) {
-
-				$el.width(w);
-			   $el.css({
-			   	left: 0,
-					top: h/2 - $el.height()/2,
+			if ($wrapper.css('position') != 'relative' && $wrapper.css('position') != 'absolute'){
+				$wrapper.css({
+					'position': 'relative',
 				});
-			// Если фрейм квадратный
-			}else if (w == h) {
-				 // Если картинка горизонтальная
-				if ($el.width() > $el.height()) {
+			}
+		
+			$wrapper.css({
+				'overflow': 'hidden'
+			});
+			
+			$el.css({'position': 'absolute'});
 
-				   $el.height(h);
-				   $el.css({
-				   	top: 0,
-						left: w/2 - $el.width()/2,
-					});			  
-				 // Если картинка квадратная
-				}else if($el.width() == $el.height()){
+			if(!w){
+				w = parseInt($wrapper.css('width')); 
+			}else{
+				if(wrapper){ $wrapper.width(w); }
+			}
+
+			if(!h){
+				h = parseInt($wrapper.css('height'));
+			}else{
+				if(wrapper){ $wrapper.height(h); }
+			}
+
+			// Если нужен Zoom (замостить всю область фрейма картинкой!)
+			if(zoom) {
+
+				// Если фрейм горизонтальный
+				if (w > h) {
+
 					$el.width(w);
+					$el.height( image.height*$el.width()/image.width );
+				   $el.css({
+				   	left: 0,
+						top: h/2 - $el.height()/2,
+					});
+				// Если фрейм квадратный
+				}else if (w == h) {
+					 // Если картинка горизонтальная
+					if (image.width > image.height) {
+
+					   $el.height(h);
+					   $el.width( image.width*$el.height()/image.height );
+					   $el.css({
+					   	top: 0,
+							left: w/2 - $el.width()/2,
+						});			  
+					 // Если картинка квадратная
+					}else if(image.width == image.height){
+						$el.width(w);
+						$el.height(h);
+						$el.css({
+							left: 0,
+							top: 0
+						});			   
+				  	} else {
+				  		$el.width(w);
+				  		$el.height( image.height*$el.width()/image.width );
+				    	$el.css({
+				    		left: 0,
+					      top: h/2 - $el.height()/2.5,
+					   });
+				  	}
+				// Если фрейм вертикальный
+				}else{
 					$el.height(h);
+					$el.width( image.width*$el.height()/image.height );
 					$el.css({
-						left: 0,
-						top: 0
-					});			   
-			  	} else {
-			  		$el.width(w);
-			    	$el.css({
-			    		left: 0,
-				      top: h/2 - $el.height()/2.5,
-				   });
-			  	}
-			// Если фрейм вертикальный
-			}else{
-				$el.height(h);
-				$el.css({
-		     		left: w/2 - $el.width()/2,
-		     		top: 0
-		    	});
+			     		left: w/2 - $el.width()/2,
+			     		top: 0
+			    	});
+				}
+				return
 			}
-			return
-		}
 
 
-	    // Если картинка горизонтальная
-		if ($el.width() > $el.height()) {
-			// Если ширина картинки больше чем фрейм, то фиксируем
-			if($el.width() > w) $el.width(w);
-		// Если картинка квадратная
-		}else if ($el.width() == $el.height()){
-			// Если фрейм горизонтальный
-			if (w > h) {
-				// Если высота картинки больше чем фрейм, то фиксируем
-				if($el.height() > h) $el.height(h);
-			// Если фрейм квадратный
-			}else if (w == h) {
-				if($el.width() > w) $el.width(w);
-				if($el.height() > h) $el.height(h);
-			// Если фрейм вертикальный
-			}else{
+		    // Если картинка горизонтальная
+			if (image.width > image.height) {
 				// Если ширина картинки больше чем фрейм, то фиксируем
-				if($el.width() > w) $el.width(w);
+				if(image.width > w){
+					$el.width(w);
+					$el.height( image.height*$el.width()/image.width );
+				}
+
+
+			// Если картинка квадратная
+			}else if (image.width == image.height){
+				// Если фрейм горизонтальный
+				if (w > h) {
+					// Если высота картинки больше чем фрейм, то фиксируем
+					if(image.height > h){
+						$el.height(h);
+						$el.width( image.width*$el.height()/image.height );
+					}
+
+
+				// Если фрейм квадратный
+				}else if (w == h) {
+					if(image.width > w){
+						$el.width(w);
+						$el.height( image.height*$el.width()/image.width );
+					}
+					if(image.height > h){
+						$el.height(h);
+						$el.width( image.width*$el.height()/image.height );
+					}
+
+				// Если фрейм вертикальный
+				}else{
+					// Если ширина картинки больше чем фрейм, то фиксируем
+					if(image.width > w){
+						$el.width(w);
+						$el.height( image.height*$el.width()/image.width );
+					}
+				}
+			// Если картинка вертикальная
+			}else{
+				// Если высота картинки больше чем фрейм, то фиксируем
+				if(image.height > h){
+					$el.height(h);
+					$el.width( image.width*$el.height()/image.height );
+				}
 			}
-		// Если картинка вертикальная
-		}else{
-			// Если высота картинки больше чем фрейм, то фиксируем
-			if($el.height() > h) $el.height(h);
-		}
-		return $el.css({
-     		top: (h/2 - $el.height()/2),
-     		left: (w/2 - $el.width()/2)
-    	});
+
+			return $el.css({
+	     		top: (h/2 - $el.height()/2),
+	     		left: (w/2 - $el.width()/2)
+	    	});
+	    };
+
 	};
 
 
