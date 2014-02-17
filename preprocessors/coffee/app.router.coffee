@@ -45,7 +45,7 @@ class Router extends Backbone.Router
 
 	hide: ->
 
-		$('body > main > .sections section').removeClass('current').hide()
+		$('body > main > .sections > section').removeClass('current').hide()
 
 	show: (el)  ->
 

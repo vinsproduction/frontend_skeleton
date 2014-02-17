@@ -326,7 +326,7 @@ Router = (function(_super) {
   Router.prototype.after = function(route) {};
 
   Router.prototype.hide = function() {
-    return $('body > main > .sections section').removeClass('current').hide();
+    return $('body > main > .sections > section').removeClass('current').hide();
   };
 
   Router.prototype.show = function(el) {
