@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>SCELETON</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta property="og:title" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:description" content="">
+  <link rel="image_src" href="">
+  <link rel="shortcut icon" type="image/x-icon" href="">
+  <meta name="viewport" content="width=1265">
+  <script type="text/javascript" src="js/libs/helpers.js"></script>
+  <script>(function() {
+  if (!/debug/.test(window.location.search)) {
+    $$.disableConsole();
+    $$.includeJS('js/libs/lib.min.js');
+    $$.includeCSS('css/project.css');
+    $$.includeJS('js/project.min.js');
+  } else {
+    console.debug('DEBUG MODE');
+    $$.includeJS('js/libs/jquery-1.10.2.min.js');
+    $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
+    $$.includeJS('js/libs/jquery.tinyscrollbar.js');
+    $$.includeJS('js/libs/jquery.cookie.js');
+    $$.includeJS('js/libs/mustache.js');
+    $$.includeJS('js/libs/underscore-min.js');
+    $$.includeJS('js/libs/json2.js');
+    $$.includeJS('js/libs/backbone.router.js');
+    $$.includeJS('js/libs/popup.js');
+    $$.includeCSS('css/app.css');
+    $$.includeJS('js/app.models.js');
+    $$.includeJS('js/app.views.js');
+    $$.includeJS('js/app.router.js');
+    $$.includeJS('js/app.js');
+  }
+
+}).call(this);
+
+  </script>
+  <script>(function() {
+  window.app = new App;
+
+  app.init();
+
+}).call(this);
+
+  </script><!--[if lt IE 7]>
+  <style>
+    body > main {
+     height: 100%;
+    }
+  </style><![endif]-->
+  <!--[if lt IE 9]>
+  <script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
+</head>
+<body>
+  <div id="popups">
+    <div data-popup-name="custom" class="popup">
+      <div data-popup-close class="close"></div>
+      <div class="header">
+        <h1></h1>
+      </div>
+      <div class="body"></div>
+      <div class="footer">
+        <button data-popup-close><span>закрыть</span></button>
+      </div>
+    </div>
+    <div data-popup-name="unique" class="popup">
+      <div data-popup-close class="close"></div>
+      <div class="header">
+        <h1>unique</h1>
+      </div>
+      <div class="body">
+        <p>popup</p>
+      </div>
+      <div class="footer">
+        <button data-popup-button><span>закрыть</span></button>
+      </div>
+    </div>
+    <div data-popup-close class="background"></div>
+  </div>
+  <main>
+    <header class="fixed">
+      <div class="container">
+        <div class="content">
+          <div class="logo">
+            <h1>HEADER (fixed)</h1>
+          </div>
+          <nav id="menu">
+            <ul>
+              <li><a href="tutorials/">Tutorials</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <div class="sections">
+      <style>@font-face {
+  font-family: 'Ubuntu';
+  src: url("fonts/ubuntu-r-webfont.eot"), url("fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/ubuntu-r-webfont.svg") format('svg'), url("fonts/ubuntu-r-webfont.woff") format('woff'), url("fonts/ubuntu-r-webfont.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'consola';
+  src: url("fonts/consola-webfont.eot"), url("fonts/consola-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/consola-webfont.svg") format('svg'), url("fonts/consola-webfont.woff") format('woff'), url("fonts/consola-webfont.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'pfplayskoolpro';
+  src: url("fonts/pfplayskoolpro-regular-webfont.eot"), url("fonts/pfplayskoolpro-regular-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/pfplayskoolpro-regular-webfont.svg") format('svg'), url("fonts/pfplayskoolpro-regular-webfont.woff") format('woff'), url("fonts/pfplayskoolpro-regular-webfont.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+section#fonts .container .content {
+  padding: 50px 20px;
+}
+section#fonts .container .content h1 {
+  margin: 30px 0;
+  font-size: 24px;
+}
+section#fonts .container .content h2 {
+  margin: 30px 0;
+  font-size: 47px;
+}
+section#fonts .container .content .fonts {
+  width: 1225px;
+  overflow: hidden;
+}
+section#fonts .container .content .fonts p {
+  margin: 15px 0;
+  background: #fff;
+  padding: 0 10px;
+  border: 1px solid #808080;
+}
+section#fonts .container .content .fonts p .lowercase {
+  text-transform: lowercase;
+}
+section#fonts .container .content .fonts p .uppercase {
+  text-transform: uppercase;
+}
+
+      </style>
+      <script>(function() {
+  window.Fonts = (function() {
+    Fonts.prototype.fontFamily = 'Arial';
+
+    Fonts.prototype.minFontSize = 8;
+
+    function Fonts() {
+      var _this = this;
+      $(function() {
+        return _this.init();
+      });
+    }
+
+    Fonts.prototype.init = function() {
+      var fontsEl, i, _i, _ref, _ref1, _results;
+      this.el = $('section#fonts');
+      fontsEl = $("<div style='font-family: " + this.fontFamily + ";''><h2>" + this.fontFamily + "</h2></div>");
+      this.el.find('.fonts').append(fontsEl);
+      _results = [];
+      for (i = _i = _ref = this.minFontSize, _ref1 = this.maxFontSize; _ref <= _ref1 ? _i <= _ref1 : _i >= _ref1; i = _ref <= _ref1 ? ++_i : --_i) {
+        _results.push(fontsEl.append("<p style=\"font-size:" + i + "px\"><span>" + i + "px - </span><span class=\"lowercase\">абвгдеёжзийклмнопрстуфхцчшщъыьэюя</span></p>\n<p style=\"font-size:" + i + "px\"><span>" + i + "px - </span><span class=\"lowercase\">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></p>\n<p style=\"font-size:" + i + "px\"><span>" + i + "px - </span><span class=\"uppercase\">абвгдеёжзийклмнопрстуфхцчшщъыьэюя</span></p>\n<p style=\"font-size:" + i + "px\"><span>" + i + "px - </span><span class=\"uppercase\">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></p>"));
+      }
+      return _results;
+    };
+
+    return Fonts;
+
+  })();
+
+}).call(this);
+
+      </script>
+      <script>(function() {
+  var fonts;
+
+  fonts = new Fonts;
+
+  fonts.fontFamily = 'pfplayskoolpro';
+
+  fonts.minFontSize = 10;
+
+  fonts.maxFontSize = 40;
+
+  fonts = new Fonts;
+
+  fonts.fontFamily = 'Ubuntu';
+
+  fonts.minFontSize = 10;
+
+  fonts.maxFontSize = 40;
+
+  fonts = new Fonts;
+
+  fonts.fontFamily = 'consola';
+
+  fonts.minFontSize = 10;
+
+  fonts.maxFontSize = 40;
+
+}).call(this);
+
+      </script>
+      <section id="fonts">
+        <div class="container">
+          <div class="content">
+            <h1>Fonts Viewer</h1>
+            <div class="fonts"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <div class="container">
+        <div class="content">
+          <h1>FOOTER (always at the bottom)</h1>
+        </div>
+      </div>
+    </footer>
+  </main>
+</body>

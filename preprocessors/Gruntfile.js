@@ -31,6 +31,8 @@ module.exports = function(grunt) {
 					"../layout/header.html": "jade/layout/header.jade",
 					"../layout/layout.html": "jade/layout/layout.jade",
 					"../layout/footer.html": "jade/layout/footer.jade",
+
+					"../fonts.html": "jade/fonts.jade",
 				}
 			}
 		},

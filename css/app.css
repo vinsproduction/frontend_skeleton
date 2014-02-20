@@ -7,7 +7,7 @@
 /* FONTS */
 @font-face {
   font-family: 'Ubuntu';
-  src: url("../fonts/ubuntu-r-webfont.eot"), url("../fonts/../fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/../fonts/ubuntu-r-webfont.svg") format('svg'), url("../fonts/../fonts/ubuntu-r-webfont.woff") format('woff'), url("../fonts/../fonts/ubuntu-r-webfont.ttf") format('truetype');
+  src: url("../fonts/ubuntu-r-webfont.eot"), url("../fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/ubuntu-r-webfont.svg") format('svg'), url("../fonts/ubuntu-r-webfont.woff") format('woff'), url("../fonts/ubuntu-r-webfont.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }

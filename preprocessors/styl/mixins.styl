@@ -39,13 +39,20 @@ background-linear-gradient(startPoint, startColor, startInterval, endColor, endI
 opacity(n)
 	opacity n
 	filter unquote('progid:DXImageTransform.Microsoft.Alpha(Opacity=' + round(n * 100) + ')')
-	
+
+//opacity_bg(#000000,'000000',0.5)
+background_rgba(color,colorms,a)
+
+	background transparent
+	filter unquote('progid:DXImageTransform.Microsoft.gradient(startColorstr=#' + round(a * 100) + replace('#','',colorms) + ',endColorstr=#' + round(a * 100) + replace('#','',colorms)  + ')')
+	background rgba(color,a)
+
 
 import-font(originalname, newname)
 
 	@font-face
 		font-family newname
-		src url(originalname +'.eot'), url('../fonts/'+ originalname +'.eot?#iefix') format('embedded-opentype'), url('../fonts/'+ originalname +'.svg') format('svg'), url('../fonts/'+ originalname +'.woff') format('woff'), url('../fonts/'+ originalname +'.ttf') format('truetype')
+		src url(originalname +'.eot'), url(originalname +'.eot?#iefix') format('embedded-opentype'), url(originalname +'.svg') format('svg'), url(originalname +'.woff') format('woff'), url(originalname +'.ttf') format('truetype')
 		font-weight normal
 		font-style normal
 

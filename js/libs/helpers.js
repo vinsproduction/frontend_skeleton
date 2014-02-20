@@ -170,7 +170,7 @@ $$; // SHORT NAMESPACE EDITABLE
 
 			if ($wrapper.css('position') != 'relative' && $wrapper.css('position') != 'absolute'){
 				$wrapper.css({
-					'position': 'relative',
+					'position': 'relative'
 				});
 			}
 		
@@ -202,7 +202,7 @@ $$; // SHORT NAMESPACE EDITABLE
 					$el.height( image.height*$el.width()/image.width );
 				   $el.css({
 				   	left: 0,
-						top: h/2 - $el.height()/2,
+						top: h/2 - $el.height()/2
 					});
 				// Если фрейм квадратный
 				}else if (w == h) {
@@ -213,7 +213,7 @@ $$; // SHORT NAMESPACE EDITABLE
 					   $el.width( image.width*$el.height()/image.height );
 					   $el.css({
 					   	top: 0,
-							left: w/2 - $el.width()/2,
+							left: w/2 - $el.width()/2
 						});			  
 					 // Если картинка квадратная
 					}else if(image.width == image.height){
@@ -228,7 +228,7 @@ $$; // SHORT NAMESPACE EDITABLE
 				  		$el.height( image.height*$el.width()/image.width );
 				    	$el.css({
 				    		left: 0,
-					      top: h/2 - $el.height()/2.5,
+					      top: h/2 - $el.height()/2.5
 					   });
 				  	}
 				// Если фрейм вертикальный
