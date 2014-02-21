@@ -1,24 +1,28 @@
 class App
 
-	ver: '3.0'
+	## Версия проекта (опционально) ###
+	ver: '1.0'
 
-	## Имя проекта ###
+	## Имя проекта (опционально) ###
 	name: 'Frontend Skeleton'
 
 	### Хеш навигация в проекте ###
 	hashNavigate: false
+
+	### Хост ддя локальной разработки ###
+	host: "http://vinsproction.com"
+
+	### Путь до картинок и прочей статики ###
+	@root = ""
 
 	constructor: ->
 
 		### Если хоста нет, значит - локальный просмотр! ###
 		@localhost = window.location.host is "" or /localhost/.test window.location.host
 
-		### Если localhost - проставляем настоящий хост ###
-		@host = if @localhost then "http://vinsproduction.com" else "http://" + window.location.host
+		### Если не localhost - проставляем настоящий хост ###
+		if !@localhost then @host = window.location.protocol + "//" + window.location.host
 
-		### Путь до картинок и прочей статики ###
-		@root = ""
-	
 		### Возвращает параметры дебага, напр. ?debug=test -> вернет test ###
 		@debug = do =>
 			debug = $$.urlParam('debug')
@@ -65,7 +69,7 @@ class App
 			### Настройки соцсетей ###
 			do @social.init
 
-			console.debug '[App::init] debug:',@debug, @
+			console.debug "[App > init] #{@name} ver. #{@ver}",@
 
 	### Hash навигация ###
 	redirect: (page = "") ->
@@ -174,8 +178,6 @@ class App
 	### Социальные настройки ###
 	social:
 
-		url: ""
-
 		vkontakteApiId		: ''
 		facebookApiId		: ''
 		odnoklassnikiApiId: ''
@@ -183,7 +185,7 @@ class App
 
 		init: ->
 
-			app.social.url = @host
+			@url = app.host
 
 			# if VK?
 			# 	VK.init
@@ -279,6 +281,8 @@ class App
 				options.description 	= "description"
 				options.url 	= app.social.url
 				options.image 	= "#{app.host}/img/for_post.png"
+
+				@vkontakte options
 
 			vkontakte: (options={}) ->
 

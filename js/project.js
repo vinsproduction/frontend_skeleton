@@ -394,7 +394,7 @@ var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 App = (function() {
-  App.prototype.ver = '3.0';
+  App.prototype.ver = '1.0';
 
   App.prototype.name = 'Frontend Skeleton';
 
@@ -403,18 +403,27 @@ App = (function() {
 
   App.prototype.hashNavigate = false;
 
+  /* Хост ддя локальной разработки*/
+
+
+  App.prototype.host = "http://vinsproction.com";
+
+  /* Путь до картинок и прочей статики*/
+
+
+  App.root = "";
+
   function App() {
     /* Если хоста нет, значит - локальный просмотр!*/
 
     var livereloadPort,
       _this = this;
     this.localhost = window.location.host === "" || /localhost/.test(window.location.host);
-    /* Если localhost - проставляем настоящий хост*/
+    /* Если не localhost - проставляем настоящий хост*/
 
-    this.host = this.localhost ? "http://vinsproduction.com" : "http://" + window.location.host;
-    /* Путь до картинок и прочей статики*/
-
-    this.root = "";
+    if (!this.localhost) {
+      this.host = window.location.protocol + "//" + window.location.host;
+    }
     /* Возвращает параметры дебага, напр. ?debug=test -> вернет test*/
 
     this.debug = (function() {
@@ -473,7 +482,7 @@ App = (function() {
       /* Настройки соцсетей*/
 
       _this.social.init();
-      return console.debug('[App::init] debug:', _this.debug, _this);
+      return console.debug("[App > init] " + _this.name + " ver. " + _this.ver, _this);
     });
   };
 
@@ -598,12 +607,11 @@ App = (function() {
 
 
   App.prototype.social = {
-    url: "",
     vkontakteApiId: '',
     facebookApiId: '',
     odnoklassnikiApiId: '',
     init: function() {
-      return app.social.url = this.host;
+      return this.url = app.host;
     },
     /* Пост на стенку в соц. сети*/
 
@@ -703,7 +711,8 @@ App = (function() {
         options.title = "title";
         options.description = "description";
         options.url = app.social.url;
-        return options.image = "" + app.host + "/img/for_post.png";
+        options.image = "" + app.host + "/img/for_post.png";
+        return this.vkontakte(options);
       },
       vkontakte: function(options) {
         var url;

@@ -150,14 +150,14 @@ body > main > header.fixed {
   position: fixed;
   top: 0;
 }
-body > main > header .container {
+body > main > header > .container {
   width: 1265px;
   height: 16px;
   padding: 12px 0;
   margin: 0 auto;
   background: #c1b0a3;
 }
-body > main > header .container .content {
+body > main > header > .container > .content {
   padding: 0 5px;
   display: -moz-inline-stack;
   display: inline-block;
@@ -165,7 +165,7 @@ body > main > header .container .content {
   *display: inline;
   width: 1255px;
 }
-body > main > header .container .content nav#menu {
+body > main > header > .container > .content nav#menu {
   float: right;
   display: -moz-inline-stack;
   display: inline-block;
@@ -173,7 +173,7 @@ body > main > header .container .content nav#menu {
   *display: inline;
   text-transform: uppercase;
 }
-body > main > header .container .content nav#menu a {
+body > main > header > .container > .content nav#menu a {
   text-decoration: none;
   display: -moz-inline-stack;
   display: inline-block;
@@ -182,15 +182,15 @@ body > main > header .container .content nav#menu a {
   position: relative;
   color: #fff;
 }
-body > main > header .container .content nav#menu ul {
+body > main > header > .container > .content nav#menu ul {
   float: left;
   padding: 0;
 }
-body > main > header .container .content nav#menu ul li {
+body > main > header > .container > .content nav#menu ul li {
   float: left;
   margin: 0 0 0 50px;
 }
-body > main > header .container .content .logo {
+body > main > header > .container > .content .logo {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
@@ -210,14 +210,14 @@ body > main > footer.fixed {
   position: fixed;
   bottom: 0;
 }
-body > main > footer .container {
+body > main > footer > .container {
   width: 1265px;
   height: 16px;
   padding: 12px 0;
   margin: 0 auto;
   background: #c1b0a3;
 }
-body > main > footer .container .content {
+body > main > footer > .container > .content {
   padding: 0 5px;
   display: -moz-inline-stack;
   display: inline-block;
@@ -240,14 +240,14 @@ body > main > .sections > section {
   zoom: 1;
   *display: inline;
 }
-body > main > .sections > section .container {
+body > main > .sections > section > .container {
   position: relative;
   width: 1265px;
   height: 100%;
   margin: 0 auto;
   background: #f2e5d5;
 }
-body > main > .sections > section .container .content {
+body > main > .sections > section > .container > .content {
   display: -moz-inline-stack;
   display: inline-block;
   zoom: 1;
