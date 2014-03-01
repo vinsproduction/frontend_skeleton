@@ -17,26 +17,6 @@ script(type='text/javascript', src='js/libs/helpers.js')
 
 script
 
-	//- :coffee
-	//- 	if VK?
-	//- 		window.vkredirect = "/"
-	//- 		VK.init =>
-	//- 			VK.addCallback 'onLocationChanged', (location) ->
-	//- 				console.debug '[VKONTAKTE > onLocationChanged]', location
-	//- 				### разрешается только один переход! ###
-	//- 				if window.vkredirect
-	//- 					window.vkredirect = location
-	//- 				else if app?
-	//- 					app.redirect(location)
-	//- 			setInterval(->
-	//- 				el 	= $('body > main > .sections section.current')
-	//- 				diff 	= 530
-	//- 				elH 	= el .height()
-	//- 				h = elH + diff
-	//- 				#console.log "[VKONTAKTE > resizeWindow] '#{el.attr('id')}' height:",h,'| elHeight:',elH, '| diff:',diff
-	//- 				VK.callMethod "resizeWindow", 1000, h
-	//- 			,500)
-
 	:coffee
 
 		if !/debug/.test(window.location.search)
@@ -76,12 +56,14 @@ block css
 
 block js
 
-	script
+	script.
 
-		:coffee
-
-			window.app = new App
-			do app.init
+		window.app = new App({
+			name: "Frontend Skeleton",
+			hashNavigate: false,
+			remoteHost: "",
+			root: ""
+		});
 
 
 <!--[if lt IE 7]>

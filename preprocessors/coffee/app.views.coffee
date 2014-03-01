@@ -89,7 +89,7 @@ class PrototypeView
 
 	doImage: (src,classes="") ->
 		return if !src or src is ""
-		if !/http:\/\//.test(src) then src = app.host + src
+		if !/http:\/\//.test(src) then src = app.root + src
 		photo =
 			"""
 				<img src="#{src}" class="#{classes}" >

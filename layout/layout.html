@@ -39,13 +39,15 @@
 }).call(this);
 
   </script>
-  <script>(function() {
-  window.app = new App;
-
-  app.init();
-
-}).call(this);
-
+  <script>
+    window.app = new App({
+     name: "Frontend Skeleton",
+     hashNavigate: false,
+     remoteHost: "",
+     root: ""
+    });
+    
+    
   </script><!--[if lt IE 7]>
   <style>
     body > main {
@@ -90,7 +92,7 @@
           </div>
           <nav id="menu">
             <ul>
-              <li><a href="tutorials/">Tutorials</a></li>
+              <li><a href="http://vinsproduction.com/skeleton/tutorials/" target="_blank">Tutorials</a></li>
             </ul>
           </nav>
         </div>

@@ -11,27 +11,32 @@ App = (function() {
 
   App.prototype.hashNavigate = false;
 
-  /* Хост ддя локальной разработки*/
+  /* Удаленный хост для локальной разработки с api*/
 
 
-  App.prototype.host = "http://vinsproction.com";
+  App.prototype.remoteHost = "http://vinsproduction.com";
 
   /* Путь до картинок и прочей статики*/
 
 
-  App.root = "";
+  App.prototype.root = "";
 
-  function App() {
+  function App(opt) {
+    var k, livereloadPort, v,
+      _this = this;
+    if (opt == null) {
+      opt = {};
+    }
+    for (k in opt) {
+      v = opt[k];
+      this[k] = v;
+    }
     /* Если хоста нет, значит - локальный просмотр!*/
 
-    var livereloadPort,
-      _this = this;
-    this.localhost = window.location.host === "" || /localhost/.test(window.location.host);
-    /* Если не localhost - проставляем настоящий хост*/
+    this.localview = window.location.host === "" || /localhost/.test(window.location.host);
+    /* HOST!*/
 
-    if (!this.localhost) {
-      this.host = window.location.protocol + "//" + window.location.host;
-    }
+    this.host = window.location.protocol + "//" + window.location.host;
     /* Возвращает параметры дебага, напр. ?debug=test -> вернет test*/
 
     this.debug = (function() {
@@ -45,7 +50,7 @@ App = (function() {
     })();
     /* Только для локальной разработки!*/
 
-    if (!$$.browser.msie && this.localhost) {
+    if (!$$.browser.msie && this.localview) {
       livereloadPort = 777;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
       console.debug("[Livereload] http://localhost:" + livereloadPort + "/livereload.js");
@@ -58,10 +63,10 @@ App = (function() {
     /* Настройки библиотек*/
 
     this.libs();
+    /* основная инизиализация*/
+
+    this.init();
   }
-
-  /* основная инизиализация*/
-
 
   App.prototype.init = function() {
     var _this = this;
@@ -120,19 +125,22 @@ App = (function() {
   /* API pefix, например номер версии серверного api /api/v1/*/
 
 
-  App.prototype.api_prefix = "/";
+  App.prototype.apiPrefix = "/";
 
   App.prototype.api = function(url, type, data, callback) {
-    var _this = this;
+    var host,
+      _this = this;
     if (type == null) {
       type = "GET";
     }
     if (data == null) {
       data = {};
     }
-    url = app.host + this.api_prefix + url;
+    host = this.localview ? this.remoteHost : this.host;
+    url = host + this.apiPrefix + url;
     return $.ajax({
       type: type,
+      dataType: 'json',
       url: url,
       data: data
     }).done(function(res) {
@@ -204,8 +212,8 @@ App = (function() {
   App.prototype.libs = function() {
     /* Крайне важная штука для ajax запросов в рамках разных доменов, в IE!*/
 
-    jQuery.support.cors = true;
-    return jQuery.ajaxSetup({
+    $.support.cors = true;
+    return $.ajaxSetup({
       cache: false,
       crossDomain: true
     });
@@ -219,7 +227,7 @@ App = (function() {
     facebookApiId: '',
     odnoklassnikiApiId: '',
     init: function() {
-      return this.url = app.host;
+      return this.url = app.localview ? app.remoteHost : app.host;
     },
     /* Пост на стенку в соц. сети*/
 

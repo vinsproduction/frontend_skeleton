@@ -9,19 +9,22 @@ class App
 	### Хеш навигация в проекте ###
 	hashNavigate: false
 
-	### Хост ддя локальной разработки ###
-	host: "http://vinsproction.com"
+	### Удаленный хост для локальной разработки с api ###
+	remoteHost: "http://vinsproduction.com"
 
 	### Путь до картинок и прочей статики ###
-	@root = ""
+	root: ""
 
-	constructor: ->
+	constructor: (opt={}) ->
+
+		for k,v of opt
+			@[k] = v
 
 		### Если хоста нет, значит - локальный просмотр! ###
-		@localhost = window.location.host is "" or /localhost/.test window.location.host
+		@localview = window.location.host is "" or /localhost/.test window.location.host
 
-		### Если не localhost - проставляем настоящий хост ###
-		if !@localhost then @host = window.location.protocol + "//" + window.location.host
+		### HOST! ###
+		@host = window.location.protocol + "//" + window.location.host
 
 		### Возвращает параметры дебага, напр. ?debug=test -> вернет test ###
 		@debug = do =>
@@ -29,7 +32,7 @@ class App
 			return if debug then debug.split(',') else []
 
 		### Только для локальной разработки! ###
-		if !$$.browser.msie and @localhost
+		if !$$.browser.msie and @localview
 			livereloadPort = 777 # Порт должен совпадать с портом в Gruntfile.js
 			$$.includeJS "http://localhost:#{livereloadPort}/livereload.js"
 			console.debug "[Livereload] http://localhost:#{livereloadPort}/livereload.js"
@@ -43,8 +46,8 @@ class App
 		### Настройки библиотек ###
 		do @libs
 
-
-	### основная инизиализация ###
+		### основная инизиализация ###
+		do @init
 
 	init: ->
 
@@ -90,13 +93,15 @@ class App
 	###
 
 	### API pefix, например номер версии серверного api /api/v1/ ###
-	api_prefix: "/"
+	apiPrefix: "/"
 
 	api: (url,type="GET",data={},callback) ->
 
-		url =  app.host + @api_prefix + url
+		host = if @localview then @remoteHost else @host
 
-		$.ajax({ type, url, data })
+		url =  host + @apiPrefix + url
+
+		$.ajax({ type, dataType:'json', url, data })
 
 		.done( (res) =>
 
@@ -172,8 +177,8 @@ class App
 	libs: ->
 
 		### Крайне важная штука для ajax запросов в рамках разных доменов, в IE!   ###
-		jQuery.support.cors = true
-		jQuery.ajaxSetup({ cache: false, crossDomain: true})
+		$.support.cors = true
+		$.ajaxSetup({ cache: false, crossDomain: true})
 
 	### Социальные настройки ###
 	social:
@@ -185,7 +190,7 @@ class App
 
 		init: ->
 
-			@url = app.host
+			@url = if app.localview then app.remoteHost else app.host
 
 			# if VK?
 			# 	VK.init

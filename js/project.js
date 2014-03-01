@@ -5,25 +5,23 @@ var Models, PrototypeModel, UserModel, _ref,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 PrototypeModel = (function() {
-  function PrototypeModel() {
-    this.fish = window.location.host === "" || /localhost/.test(window.location.host);
-  }
+  function PrototypeModel() {}
 
-  PrototypeModel.prototype.getFish = function(url, data, res, callback) {
-    var json, obj, response;
-    json = JSON.stringify(res);
-    obj = $.parseJSON(json);
-    response = obj.data || [];
-    console.warn('[WARNING Api FISH!]', url, '| request:', data, '| response:', response);
-    return callback(response);
+  PrototypeModel.prototype.get = function(url, data, callback) {
+    return app.api(url, 'GET', data, function(res) {
+      return callback(res);
+    });
+  };
+
+  PrototypeModel.prototype.post = function(url, data, callback) {
+    return app.api(url, 'POST', data, function(res) {
+      return callback(res);
+    });
   };
 
   return PrototypeModel;
 
 })();
-
-/* Models*/
-
 
 UserModel = (function(_super) {
   __extends(UserModel, _super);
@@ -33,34 +31,14 @@ UserModel = (function(_super) {
     return _ref;
   }
 
-  UserModel.prototype.getRes = {
-    "data": {
-      "age": 31,
-      "avatar": "http://cs607518.vk.me/v607518871/1b51/MLpE9yqMzOg.jpg",
-      "birthday": "1983-01-19",
-      "city": "Москва",
-      "country": "Россия",
-      "firstname": "Vins",
-      "gender": "male",
-      "uid": 131380871,
-      "lastname": "Surfer"
-    },
-    "status": "success"
-  };
-
   /*
   	Описание: Отдает данные пользователя
   */
 
 
-  UserModel.prototype.get = function(data, callback) {
-    var url,
-      _this = this;
-    url = 'user/details';
-    if (this.fish) {
-      return this.getFish(url, data, this.getRes, callback);
-    }
-    return app.api(url, 'GET', data, function(res) {
+  UserModel.prototype.getDetails = function(data, callback) {
+    var _this = this;
+    return this.get('api/user/details', data, function(res) {
       return callback(res);
     });
   };
@@ -198,7 +176,7 @@ PrototypeView = (function() {
       return;
     }
     if (!/http:\/\//.test(src)) {
-      src = app.host + src;
+      src = app.root + src;
     }
     photo = "<img src=\"" + src + "\" class=\"" + classes + "\" >";
     return photo;
@@ -403,27 +381,32 @@ App = (function() {
 
   App.prototype.hashNavigate = false;
 
-  /* Хост ддя локальной разработки*/
+  /* Удаленный хост для локальной разработки с api*/
 
 
-  App.prototype.host = "http://vinsproction.com";
+  App.prototype.remoteHost = "http://vinsproduction.com";
 
   /* Путь до картинок и прочей статики*/
 
 
-  App.root = "";
+  App.prototype.root = "";
 
-  function App() {
+  function App(opt) {
+    var k, livereloadPort, v,
+      _this = this;
+    if (opt == null) {
+      opt = {};
+    }
+    for (k in opt) {
+      v = opt[k];
+      this[k] = v;
+    }
     /* Если хоста нет, значит - локальный просмотр!*/
 
-    var livereloadPort,
-      _this = this;
-    this.localhost = window.location.host === "" || /localhost/.test(window.location.host);
-    /* Если не localhost - проставляем настоящий хост*/
+    this.localview = window.location.host === "" || /localhost/.test(window.location.host);
+    /* HOST!*/
 
-    if (!this.localhost) {
-      this.host = window.location.protocol + "//" + window.location.host;
-    }
+    this.host = window.location.protocol + "//" + window.location.host;
     /* Возвращает параметры дебага, напр. ?debug=test -> вернет test*/
 
     this.debug = (function() {
@@ -437,7 +420,7 @@ App = (function() {
     })();
     /* Только для локальной разработки!*/
 
-    if (!$$.browser.msie && this.localhost) {
+    if (!$$.browser.msie && this.localview) {
       livereloadPort = 777;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
       console.debug("[Livereload] http://localhost:" + livereloadPort + "/livereload.js");
@@ -450,10 +433,10 @@ App = (function() {
     /* Настройки библиотек*/
 
     this.libs();
+    /* основная инизиализация*/
+
+    this.init();
   }
-
-  /* основная инизиализация*/
-
 
   App.prototype.init = function() {
     var _this = this;
@@ -512,19 +495,22 @@ App = (function() {
   /* API pefix, например номер версии серверного api /api/v1/*/
 
 
-  App.prototype.api_prefix = "/";
+  App.prototype.apiPrefix = "/";
 
   App.prototype.api = function(url, type, data, callback) {
-    var _this = this;
+    var host,
+      _this = this;
     if (type == null) {
       type = "GET";
     }
     if (data == null) {
       data = {};
     }
-    url = app.host + this.api_prefix + url;
+    host = this.localview ? this.remoteHost : this.host;
+    url = host + this.apiPrefix + url;
     return $.ajax({
       type: type,
+      dataType: 'json',
       url: url,
       data: data
     }).done(function(res) {
@@ -596,8 +582,8 @@ App = (function() {
   App.prototype.libs = function() {
     /* Крайне важная штука для ajax запросов в рамках разных доменов, в IE!*/
 
-    jQuery.support.cors = true;
-    return jQuery.ajaxSetup({
+    $.support.cors = true;
+    return $.ajaxSetup({
       cache: false,
       crossDomain: true
     });
@@ -611,7 +597,7 @@ App = (function() {
     facebookApiId: '',
     odnoklassnikiApiId: '',
     init: function() {
-      return this.url = app.host;
+      return this.url = app.localview ? app.remoteHost : app.host;
     },
     /* Пост на стенку в соц. сети*/
 

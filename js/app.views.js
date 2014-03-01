@@ -115,7 +115,7 @@ PrototypeView = (function() {
       return;
     }
     if (!/http:\/\//.test(src)) {
-      src = app.host + src;
+      src = app.root + src;
     }
     photo = "<img src=\"" + src + "\" class=\"" + classes + "\" >";
     return photo;
