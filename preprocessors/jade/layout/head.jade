@@ -51,19 +51,15 @@ script
 			$$.includeJS 'js/app.router.js'
 			$$.includeJS 'js/app.js'
 
-block css
-	//-
 
-block js
+script.
 
-	script.
-
-		window.app = new App({
-			name: "Frontend Skeleton",
-			hashNavigate: false,
-			remoteHost: "",
-			root: ""
-		});
+	window.app = new App({
+		name: "Frontend Skeleton",
+		hashNavigate: false,
+		remoteHost: "",
+		root: ""
+	});
 
 
 <!--[if lt IE 7]>
@@ -77,3 +73,8 @@ style.
 script(type='text/javascript', src='js/libs/html5shiv.js')
 <![endif]-->
 
+block css
+	//-
+
+block js
+	//-

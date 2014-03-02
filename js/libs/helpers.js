@@ -2,12 +2,12 @@
 
 var
 __helpers__ = {}, // ORIGINAL NAMESPACE
-$$; // SHORT NAMESPACE EDITABLE
+$$; // SHORT NAMESPACE
 
 
 (function($){
 	
-	$$ = __helpers__; // SHORT NAMESPACE
+	$$ = __helpers__;
 
 	$.disableConsole = function(){
 		window.console = {
