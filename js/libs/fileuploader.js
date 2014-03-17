@@ -270,6 +270,9 @@ qq.FileUploaderBasic = function(o){
     var that = this;
     this._options = {
         // set to true to see the server response
+
+        XhrMode: true, // Включить/выключить режим передачи Xhr!
+
         debug: false,
         action: '/server/upload',
         params: {},
@@ -358,22 +361,11 @@ qq.FileUploaderBasic.prototype = {
         var self = this,
             handlerClass;
 
-        // MY //
-
-        handlerClass = 'UploadHandlerForm';
-
-        /*
-
-        if(qq.UploadHandlerXhr.isSupported()){
+        if(self._options.XhrMode && qq.UploadHandlerXhr.isSupported()){
             handlerClass = 'UploadHandlerXhr';
         } else {
             handlerClass = 'UploadHandlerForm';
         }
-        */
-
-        //
-
-
 
         var handler = new qq[handlerClass]({
             debug: this._options.debug,
@@ -415,11 +407,14 @@ qq.FileUploaderBasic.prototype = {
         this._attach(window, 'beforeunload', function(e){
             if (!self._filesInProgress){return;}
 
+            /* FUCK THIS ALERT!
             var e = e || window.event;
             // for ie, ff
             e.returnValue = self._options.messages.onLeave;
             // for webkit
-            return self._options.messages.onLeave;
+            self._options.messages.onLeave;
+            */
+            return;
         });
     },
     _onSubmit: function(id, fileName){
@@ -448,6 +443,7 @@ qq.FileUploaderBasic.prototype = {
     _onUpload: function(id, fileName, xhr){
     },
     _onInputChange: function(input){
+
         if (this._handler instanceof qq.UploadHandlerXhr){
             this._uploadFileList(input.files);
         } else {
@@ -458,6 +454,7 @@ qq.FileUploaderBasic.prototype = {
         this._button.reset();
     },
     _uploadFileList: function(files){
+
         if (files.length > 0) {
             for (var i=0; i<files.length; i++){
                 if ( !this._validateFile(files[i])){
@@ -708,7 +705,7 @@ qq.extend(qq.FileUploader.prototype, {
                 qq.removeClass(dropArea, self._classes.dropActive);
             },
             onDrop: function(e){
-                dropArea.style.display = 'none';
+                //dropArea.style.display = 'none';
                 qq.removeClass(dropArea, self._classes.dropActive);
                 if (e.dataTransfer.files.length > 1 && !self._options.multiple) {
                     self._error('tooManyFilesError', "");
@@ -721,7 +718,8 @@ qq.extend(qq.FileUploader.prototype, {
 
         this.addDisposer(function() { dz.dispose(); });
 
-        dropArea.style.display = 'none';
+        // В режиме НЕ XhrMode - дроп ареа работать не будет!
+        if(!self._options.XhrMode || !qq.UploadHandlerXhr.isSupported()) dropArea.style.display = 'none';
     },
     _setupDragDrop: function(){
         var dropArea = this._find(this._element, 'drop');
@@ -748,12 +746,12 @@ qq.extend(qq.FileUploader.prototype, {
         this._attach(document, 'dragleave', function(e){
             var relatedTarget = document.elementFromPoint(e.clientX, e.clientY);
             // only fire when leaving document out
-            if (qq.FileUploader.prototype._leaving_document_out(e)) {
-                for (i=0; i < dropzones.length; i++){ dropzones[i].style.display = 'none'; }
-            }
+            // if (qq.FileUploader.prototype._leaving_document_out(e)) {
+            //     for (i=0; i < dropzones.length; i++){ dropzones[i].style.display = 'none'; }
+            // }
         });
         qq.attach(document, 'drop', function(e){
-            for (i=0; i < dropzones.length; i++){ dropzones[i].style.display = 'none'; }
+            //for (i=0; i < dropzones.length; i++){ dropzones[i].style.display = 'none'; }
             e.preventDefault();
         });
     },
@@ -802,11 +800,13 @@ qq.extend(qq.FileUploader.prototype, {
         qq.remove(this._find(item, 'spinner'));
 
         if (result.success){
+
             qq.addClass(item, this._classes.success);
             if (this._classes.successIcon) {
                 this._find(item, 'finished').style.display = "inline-block";
                 qq.addClass(item, this._classes.successIcon)
             }
+
         } else {
             var errorReason = result.reason ? result.reason : "Unknown error";
             qq.addClass(item, this._classes.fail);
@@ -999,7 +999,6 @@ qq.UploadButton = function(o){
 
     // make button suitable container for input
     qq.css(this._element, {
-        position: 'relative',
         overflow: 'hidden',
         // Make sure browse button is in the right side
         // in Internet Explorer
@@ -1302,29 +1301,20 @@ qq.extend(qq.UploadHandlerForm.prototype, {
          var doc = iframe.contentDocument ? iframe.contentDocument: iframe.contentWindow.document,
                 response;
 
-        //var innerHTML = $(doc.body.innerText).text();
-
         var innerText  = doc.body.textContent || doc.body.innerText || "fuck shit"
 
-        response = eval("(" + innerText + ")");
+        try {
+            response = eval("(" + innerText + ")");
+            response.success = true;
+            response.error = false;
+            console.log('[Fileuploader] uploaded! response: ', response);
+        } catch(err){
 
-        //IE may throw an "access is denied" error when attempting to access contentDocument on the iframe in some cases
-        // try {
-        //     // iframe.contentWindow.document - for IE<7
-        //     var doc = iframe.contentDocument ? iframe.contentDocument: iframe.contentWindow.document,
-        //         response;
-
-        //     var innerHTML = doc.body.innerHTML;
-        //     this.log("converting iframe's innerHTML to JSON");
-        //     this.log("innerHTML = " + innerHTML);
-        //     //plain text response may be wrapped in <pre> tag
-        //     if (innerHTML.slice(0, 5).toLowerCase() == '<pre>' && innerHTML.slice(-6).toLowerCase() == '</pre>') {
-        //         innerHTML = doc.body.firstChild.firstChild.nodeValue;
-        //     }
-        //     response = eval("(" + innerHTML + ")");
-        // } catch(err){
-        //     response = {success: false};
-        // }
+            response = {};
+            response.success = false;
+            response.error = true;
+            console.log('[Fileuploader] Невозможно выпарсить ответ сервера. Ожидается JSON! Возвращается:', innerText);
+        }
 
         return response;
     },
@@ -1491,15 +1481,19 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
         this._options.onProgress(id, name, size, size);
 
         if (xhr.status == 200){
-            this.log("xhr - server response received");
-            this.log("responseText = " + xhr.responseText);
-
+    
             var response;
 
             try {
                 response = eval("(" + xhr.responseText + ")");
+                response.success = true;
+                response.error = false;
+                console.log('[Fileuploader] uploaded! response: ', response);
             } catch(err){
+                console.log('[Fileuploader] Невозможно выпарсить ответ сервера. Ожидается JSON! Возвращается:', xhr.responseText);
                 response = {};
+                response.success = false;
+                response.error = true;
             }
 
             this._options.onComplete(id, name, response);

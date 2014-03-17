@@ -1,6 +1,6 @@
-/* Prototype Model*/
 
-var Models, PrototypeModel, UserModel, _ref,
+/* Prototype Model */
+var Models, PrototypeModel, UserModel,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -27,28 +27,28 @@ UserModel = (function(_super) {
   __extends(UserModel, _super);
 
   function UserModel() {
-    _ref = UserModel.__super__.constructor.apply(this, arguments);
-    return _ref;
+    return UserModel.__super__.constructor.apply(this, arguments);
   }
+
 
   /*
   	Описание: Отдает данные пользователя
-  */
-
+   */
 
   UserModel.prototype.getDetails = function(data, callback) {
-    var _this = this;
-    return this.get('api/user/details', data, function(res) {
-      return callback(res);
-    });
+    return this.get('api/user/details', data, (function(_this) {
+      return function(res) {
+        return callback(res);
+      };
+    })(this));
   };
 
   return UserModel;
 
 })(PrototypeModel);
 
-/* ============ Объявляем классы! ===========*/
 
+/* ============ Объявляем классы! =========== */
 
 Models = (function() {
   function Models() {

@@ -1,0 +1,165 @@
+/* 
+	===================
+	==== GUIDELINE ====
+	===================
+
+	(!) Все глобальные классы начинаются с префикса g
+	
+*/
+
+/* _________ ЦВЕТА _________ */
+
+
+g-color-graydarker 	= #222
+g-color-graydark 		= #333
+g-color-gray 			= #555
+g-color-graylight 	= #999
+g-color-graylighter 	= #A9A9A9
+
+.g-color-graydarker
+	background  g-color-graydarker
+.g-color-graydark
+	background  g-color-graydark 
+.g-color-gray
+	background  g-color-gray 
+.g-color-graylight
+	background  g-color-graylight 
+.g-color-graylighter
+	background  g-color-graylighter
+
+/* _________ АБЗАЦЫ _________ */
+
+p
+	font 16px Ubuntu
+	margin-top 10px
+	margin-bottom 10px
+	
+/* _________ ЗАГОЛОВКИ _________ */
+
+h1
+	font 36px Ubuntu
+h2
+	font 30px Ubuntu
+h3
+	font 24px Ubuntu
+h4
+	font 18px Ubuntu
+h5
+	font 14px Ubuntu
+h6
+	font 12px Ubuntu
+
+/* _________ СПИСКИ _________*/
+
+ul
+	list-style-type none
+
+
+/* _________ ССЫЛКИ _________ */
+
+// Mixin ССЫЛКИ
+g_link()
+	text-decoration none
+	transition all 0.2s
+
+a
+	g_link()
+
+.g-link-1
+	g_link()
+	color g-color-graydark
+	&:hover
+		border-bottom 1px solid g-color-graydark
+
+.g-link-2
+	g_link()
+	color g-color-graydark
+	border-bottom 1px solid g-color-graydark
+	&:hover
+		border-bottom 0
+
+
+/* _________ КНОПКИ  _________ */
+
+// Mixin КНОПКИ
+g_btn(w = false,h = false)
+	if w
+		width (w)px
+	if h
+		height (h)px
+
+	display block
+	position relative
+	cursor pointer
+	text-align center
+	border 0
+	outline none
+	text-decoration none
+	transition all 0.2s
+
+.g-btn-1
+	font 18px Ubuntu
+	g_btn(200,50)
+	border-radius(10px)
+	text-transform uppercase
+	color #FFF
+	background g-color-gray
+	&:hover
+		background g-color-graylight
+	span
+		position relative
+		top 15px
+
+.g-btn-2
+	font 18px Ubuntu
+	g_btn(200,50)
+	border-radius(10px)
+	text-transform uppercase
+	color #FFF
+	background g-color-graydark
+	&:hover
+		background g-color-graylight
+	span
+		position relative
+		top 15px
+
+.g-btn-3
+	font 18px Ubuntu
+	g_btn(350,50)
+	border-radius(10px)
+	text-transform uppercase
+	color #FFF
+	background g-color-graydarker
+	&:hover
+		background g-color-graylight
+	span
+		position relative
+		top 15px
+
+
+/* _________ ФОРМЫ  _________ */
+
+input:focus, textarea:focus
+	outline none
+
+.g-input-1
+	border-radius(5px)
+	border 1px solid g-color-graylighter
+	box 300-10*2, 25-5*2
+	padding 5px 10px
+	font 16px Ubuntu
+
+	&:focus
+		border 1px solid g-color-gray
+
+
+
+.g-textarea-1
+	border-radius(5px)
+	border 1px solid g-color-graylighter
+	box 300-10*2, 100-10*2
+	padding 10px 10px
+
+	&:focus
+		border 1px solid g-color-gray
+

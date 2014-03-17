@@ -13,12 +13,13 @@
 <script type="text/javascript" src="js/libs/helpers.js"></script>
 <script>(function() {
   if (!/debug/.test(window.location.search)) {
+    console.log('[App] PRODUCTION MODE (Console is disabled)');
     $$.disableConsole();
     $$.includeJS('js/libs/lib.min.js');
     $$.includeCSS('css/project.css');
     $$.includeJS('js/project.min.js');
   } else {
-    console.debug('DEBUG MODE');
+    console.debug('[App] DEBUG MODE');
     $$.includeJS('js/libs/jquery-1.10.2.min.js');
     $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
     $$.includeJS('js/libs/jquery.tinyscrollbar.js');
@@ -28,6 +29,8 @@
     $$.includeJS('js/libs/json2.js');
     $$.includeJS('js/libs/backbone.router.js');
     $$.includeJS('js/libs/popup.js');
+    $$.includeJS('js/libs/form.js');
+    $$.includeJS('js/libs/fileuploader.js');
     $$.includeCSS('css/app.css');
     $$.includeJS('js/app.models.js');
     $$.includeJS('js/app.views.js');
@@ -43,7 +46,8 @@
    name: "Frontend Skeleton",
    hashNavigate: false,
    remoteHost: "",
-   root: ""
+   root: "",
+   onLoad: function(){}
   });
   
   

@@ -22,17 +22,14 @@ $$; // SHORT NAMESPACE
 	if( !window.console ) {
 		$.disableConsole();
 	}
-	else if (!window.console.debug) { window.console.debug = function(){}; }
 	else if (!window.console.log) 	{ window.console.log = function(){}; }
+	else if (!window.console.debug) 	{ window.console.debug = function(){}; }
 	else if (!window.console.warn) 	{ window.console.warn = function(){}; }
 	else if (!window.console.info) 	{ window.console.info = function(){}; }
 	else if (!window.console.error) 	{ window.console.error = function(){}; }
 
+	/* Console.log json */
 
-	$.log = function(obj) { 
-		console.log(obj);
-	};
-		
 	$.jlog = function(obj) { 
 
 		if( !window.JSON  || !window.JSON.hasOwnProperty('stringify') ) {
@@ -144,15 +141,13 @@ $$; // SHORT NAMESPACE
 		напр. ?debug=test -> вернет test
 	 */
   	$.urlParam = function(name) {
-	    var results;
-	    results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
 	    if (results && results[1]) {
 	      return results[1];
 	    } else {
 	      return false;
 	    }
   	};
-
 
 
 	/* Масштабирование изображения по центру внутри элемента */
@@ -300,43 +295,20 @@ $$; // SHORT NAMESPACE
 
 	};
 
+	/* Разрывание связи объектов */
 
-
-	/* Блокирование инпутов
-	Example: onkeydown="if (!validField('digit',event)) return false" */
-
-	$.validField = function(rule, event) {
-		var evt;
-		if (rule == 'digit') {
-			evt = event || window.event;
-			return ((evt.keyCode >= 48 && evt.keyCode <= 57) || (evt.keyCode >= 96 && evt.keyCode <= 105)) || evt.keyCode === 8;
-		}
+	$$.unlinkObj = function(obj) {
+		var json = JSON.stringify(obj);
+		obj = $.parseJSON(json);
+		return obj;
 	};
 
-
-	/* PLACEHOLDER FOR FORM INPUTS  
-	use: $$.placeholder($('input[name="name"]'),'Имя');
-	*/
-	$.placeholder = function(element,value){
-		element.focus(function(){
-			if(element.val() === value) element.val('');         
-		}).
-		blur(function(){
-			if(element.val() === '') element.val(value);
-		});
-
-		element.blur();
-	};
 
 	
 })(__helpers__);
 
 	
 /*  HELPERS  END */
-
-
-
-
 
 
 

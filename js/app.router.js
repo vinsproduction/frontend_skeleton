@@ -1,6 +1,6 @@
-/* Router*/
 
-var Router, _ref,
+/* Router */
+var Router,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -8,48 +8,41 @@ Router = (function(_super) {
   __extends(Router, _super);
 
   function Router() {
-    _ref = Router.__super__.constructor.apply(this, arguments);
-    return _ref;
+    return Router.__super__.constructor.apply(this, arguments);
   }
 
-  /* маршруты*/
 
+  /* маршруты */
 
   Router.prototype.routes = {
     "": "index",
-    "!": "index",
-    "!/": "index",
-    "!/page/:id": "page",
-    "!/page/:id/": "page",
-    "!/ooops": "ooops",
-    "!/ooops/": "ooops",
+    "/": "index",
+    "page/:id": "page",
+    "page/:id/": "page",
+    "ooops": "ooops",
+    "ooops/": "ooops",
     "*path": "notFound"
   };
 
-  /* инициализация*/
 
+  /* инициализация */
 
   Router.prototype.initialize = function() {
     return this.bind("all", function(route, router) {});
   };
 
-  /* до перехода*/
 
+  /* до перехода */
 
   Router.prototype.before = function(route) {
-    if (route !== '') {
-      console.debug('[Route]', route);
-    }
-    this.hide();
-    if (typeof VK !== "undefined" && VK !== null) {
-      /* выставить хеш*/
-
-      return VK.callMethod('setLocation', route.replace("!", ""));
-    }
+    this.route = route === "" ? "empty" : route;
+    app.debugBox.log('route:' + this.route);
+    console.debug('[Route]', this.route);
+    return this.hide();
   };
 
-  /* после перехода*/
 
+  /* после перехода */
 
   Router.prototype.after = function(route) {};
 
@@ -58,6 +51,7 @@ Router = (function(_super) {
   };
 
   Router.prototype.show = function(el) {
+    this.hide();
     return el.addClass('current').show();
   };
 
@@ -66,22 +60,16 @@ Router = (function(_super) {
       speed = 400;
     }
     if (speed) {
-      $('html,body').animate({
+      return $('html,body').animate({
         scrollTop: 0
       }, speed);
-      if (typeof VK !== "undefined" && VK !== null) {
-        return VK.callMethod('scrollWindow', 0, speed);
-      }
     } else {
-      $('body').scrollTop(0);
-      if (typeof VK !== "undefined" && VK !== null) {
-        return VK.callMethod('scrollWindow', 0);
-      }
+      return $('body').scrollTop(0);
     }
   };
 
-  /*  404 страница*/
 
+  /*  404 страница */
 
   Router.prototype.notFound = function(path) {
     var el;
@@ -90,12 +78,12 @@ Router = (function(_super) {
     return this.show(el);
   };
 
-  /* Серверная ошибка*/
 
+  /* Серверная ошибка */
 
   Router.prototype.ooops = function() {
     var el;
-    el = $('section#notFound');
+    el = $('section#ooops');
     this.scrollTop();
     return this.show(el);
   };

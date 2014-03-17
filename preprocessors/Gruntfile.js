@@ -33,6 +33,7 @@ module.exports = function(grunt) {
 					"../layout/footer.html": "jade/layout/footer.jade",
 
 					"../fonts.html": "jade/fonts.jade",
+					"../guideline.html": "jade/guideline.jade",
 				}
 			}
 		},
@@ -48,7 +49,8 @@ module.exports = function(grunt) {
 				
 	       	files: {
 	     			'../js/libs/popup.js': 'coffee/libs/popup.coffee',
-
+	     			'../js/libs/form.js': 'coffee/libs/form.coffee',
+	       	
 	     			'../js/app.models.js': 'coffee/app.models.coffee',
 		    		'../js/app.views.js': 'coffee/app.views.coffee',
 		    		'../js/app.router.js': 'coffee/app.router.coffee',

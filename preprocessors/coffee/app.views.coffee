@@ -8,10 +8,11 @@ class PrototypeView
 
 		@varconstants = {}
 
+		do @init
+
 		do @doResize
 		$(window).resize => do @doResize
 
-		do @init
 
 	generateRenders: (template =  @template) ->
 
@@ -23,7 +24,7 @@ class PrototypeView
 
 			# Generate Render for templates
 			if !@render then @render = {}
-			@render[key] = => @doRender key, @template[key], @templateSourse[key]
+			@render[key] = (options={}) => @doRender key, @template[key], @templateSourse[key], options
 
 			# Generate preRender for templates
 			if !@preRender then @preRender = {}
@@ -59,11 +60,15 @@ class PrototypeView
 			console.error '[preRender] template undefined'
 			console.error error
 
-	doRender: (templateName, $el, sourse, vars = @vars) ->
+	doRender: (templateName, $el, sourse, options={method:"html"}) ->
 
-		if @render_debug then console.log "[Render #{templateName}]", '| @vars:', vars
+		if @render_debug then console.log "[Render #{templateName}]", '| @vars:', @vars
 
-		$el.html( Mustache.to_html(sourse, vars) )
+		switch options.method
+			when 'append' 	then $el.append( Mustache.to_html(sourse, @vars) )
+			when 'prepend' then $el.prepend( Mustache.to_html(sourse, @vars) )
+			else $el.html( Mustache.to_html(sourse, @vars) )
+
 
 	doResize: (callback) ->
 
@@ -73,9 +78,10 @@ class PrototypeView
 		headerH		= parseInt($('body > main > header').height())
 		footerH 		= parseInt($('body > main > footer').height())
 		sectionsH 	= parseInt($('body > main > .sections').height())
+		windowH 		= $(window).height()
 			
-		app.debugBox.log "sect", "header: #{headerH}px | sections: #{sectionsH}px | footer: #{footerH}px"
-		app.debugBox.log "res", "#{$(window).width()}px x #{$(window).height()}px"
+		app.debugBox.log "header: #{headerH}px | sections: #{sectionsH}px | footer: #{footerH}px", "sect"
+		app.debugBox.log "#{$(window).width()}px x #{$(window).height()}px", "res"
 
 		do @resize
 

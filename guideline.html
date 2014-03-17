@@ -105,94 +105,69 @@
       </div>
     </header>
     <div class="sections">
-      <style>@font-face {
-  font-family: 'Ubuntu';
-  src: url("fonts/ubuntu-r-webfont.eot"), url("fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/ubuntu-r-webfont.svg") format('svg'), url("fonts/ubuntu-r-webfont.woff") format('woff'), url("fonts/ubuntu-r-webfont.ttf") format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'consola';
-  src: url("fonts/consola-webfont.eot"), url("fonts/consola-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/consola-webfont.svg") format('svg'), url("fonts/consola-webfont.woff") format('woff'), url("fonts/consola-webfont.ttf") format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'pfplayskoolpro';
-  src: url("fonts/pfplayskoolpro-regular-webfont.eot"), url("fonts/pfplayskoolpro-regular-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/pfplayskoolpro-regular-webfont.svg") format('svg'), url("fonts/pfplayskoolpro-regular-webfont.woff") format('woff'), url("fonts/pfplayskoolpro-regular-webfont.ttf") format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-      </style>
-      <script>(function() {
-  window.Fonts = (function() {
-    Fonts.prototype.fontFamily = 'Arial';
-
-    Fonts.prototype.minFontSize = 8;
-
-    function Fonts() {
-      $((function(_this) {
-        return function() {
-          return _this.init();
-        };
-      })(this));
-    }
-
-    Fonts.prototype.init = function() {
-      var fontsEl, i, _i, _ref, _ref1, _results;
-      this.el = $('section#fonts');
-      fontsEl = $("<div style='font-family: " + this.fontFamily + ";''><h2>" + this.fontFamily + "</h2></div>");
-      this.el.find('.fonts').append(fontsEl);
-      _results = [];
-      for (i = _i = _ref = this.minFontSize, _ref1 = this.maxFontSize; _ref <= _ref1 ? _i <= _ref1 : _i >= _ref1; i = _ref <= _ref1 ? ++_i : --_i) {
-        _results.push(fontsEl.append("<p style=\"font-size:" + i + "px\"><span>" + i + "px - </span><span class=\"lowercase\">абвгдеёжзийклмнопрстуфхцчшщъыьэюя</span></p>\n<p style=\"font-size:" + i + "px\"><span>" + i + "px - </span><span class=\"lowercase\">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></p>\n<p style=\"font-size:" + i + "px\"><span>" + i + "px - </span><span class=\"uppercase\">абвгдеёжзийклмнопрстуфхцчшщъыьэюя</span></p>\n<p style=\"font-size:" + i + "px\"><span>" + i + "px - </span><span class=\"uppercase\">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></p>"));
-      }
-      return _results;
-    };
-
-    return Fonts;
-
-  })();
-
-}).call(this);
-
-      </script>
-      <script>(function() {
-  var fonts;
-
-  fonts = new Fonts;
-
-  fonts.fontFamily = 'pfplayskoolpro';
-
-  fonts.minFontSize = 10;
-
-  fonts.maxFontSize = 40;
-
-  fonts = new Fonts;
-
-  fonts.fontFamily = 'Ubuntu';
-
-  fonts.minFontSize = 10;
-
-  fonts.maxFontSize = 40;
-
-  fonts = new Fonts;
-
-  fonts.fontFamily = 'consola';
-
-  fonts.minFontSize = 10;
-
-  fonts.maxFontSize = 40;
-
-}).call(this);
-
-      </script>
-      <section id="fonts">
+      <section id="guideline">
         <div class="container">
           <div class="content">
-            <h1>FONTS</h1>
-            <div class="fonts"></div>
+            <h1>GUIDELINE</h1>
+            <div class="row">
+              <div class="colors">
+                <div class="g-color-graydarker">graydarker</div>
+                <div class="g-color-graydark">graydark</div>
+                <div class="g-color-gray">gray</div>
+                <div class="g-color-graylight">graylight</div>
+                <div class="g-color-graylighter">graylighter</div>
+              </div>
+            </div>
+            <div class="row">
+              <h1>Заголовок H1</h1>
+              <h2>Заголовок H2</h2>
+              <h3>Заголовок H3</h3>
+              <h3>Заголовок H4</h3>
+              <h5>Заголовок H5</h5>
+              <h6>Заголовок H6</h6>
+            </div>
+            <div class="row">
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis tempus nisl. Nulla magna metus, imperdiet gravida facilisis ut, porttitor sed sapien. Pellentesque consectetur erat felis, non lobortis est faucibus non. Donec placerat augue in justo fermentum facilisis. Curabitur fringilla neque ut leo scelerisque facilisis. Vivamus vel justo vitae nibh imperdiet interdum id ac neque. Etiam ac massa pellentesque, dictum justo quis, dignissim est. Phasellus sit amet rutrum odio. In mollis dictum dolor vehicula imperdiet. Vestibulum et odio egestas, cursus dui vel, semper mi.</p>
+            </div>
+            <div class="row">
+              <p><a href="#" class="g-link-1">Ссылка без подчеркиванием</a></p>
+              <p><a href="#" class="g-link-2">Ссылка c подчеркиванием</a></p>
+            </div>
+            <div class="row">
+              <button class="g-btn-1">Кнопка</button>
+            </div>
+            <div class="row"><a href="#" class="g-btn-2"><span>Ссылка кнопка</span></a></div>
+            <div class="row"><a href="#" onclick="popup.custom('unique');return false;" class="g-btn-3"><span>Ссылка кнопка Открыть попап</span></a></div>
+            <div class="row">
+              <label>Input</label><br>
+              <input type="text" name="input" class="g-input-1">
+            </div>
+            <div class="row">
+              <label>Textarea</label><br>
+              <textarea name="text" class="g-textarea-1"></textarea>
+            </div>
+            <div class="row">
+              <label>Checkbox</label><br>
+              <div class="field-group"><span>1</span>
+                <input type="checkbox" name="checkbox-1" value="1"><span>2</span>
+                <input type="checkbox" name="checkbox-2" value="2">
+              </div>
+            </div>
+            <div class="row">
+              <label>Radiobutton</label><br>
+              <div class="field-group"><span>1</span>
+                <input type="radio" name="radiobutton" value="1"><span>2	</span>
+                <input type="radio" name="radiobutton" value="2">
+              </div>
+            </div>
+            <div class="row">
+              <label>Dropdown</label><br>
+              <select name="dropdown">
+                <option>- Выбрать -</option>
+                <option value="1">Опция 1</option>
+                <option value="2">Опция 2</option>
+              </select>
+            </div>
           </div>
         </div>
       </section>

@@ -7,14 +7,13 @@ class Router extends Backbone.Router
 	routes:
 
 		"": "index"
-		"!": "index"
-		"!/": "index"
+		"/": "index"
 
-		"!/page/:id": "page"
-		"!/page/:id/": "page"
+		"page/:id": "page"
+		"page/:id/": "page"
 
-		"!/ooops" : "ooops"
-		"!/ooops/" : "ooops"
+		"ooops" : "ooops"
+		"ooops/" : "ooops"
 
 		"*path" : "notFound"
 
@@ -28,26 +27,27 @@ class Router extends Backbone.Router
 	### до перехода ###
 	before: (route) ->
 
-		if route isnt ''
-			console.debug '[Route]',route
+		@route = if route is "" then "empty" else route
+
+		app.debugBox.log 'route:' + @route
+
+		console.debug '[Route]', @route
 
 		@hide()
 
-		if VK?
-			### выставить хеш ###
-			VK.callMethod('setLocation',route.replace("!",""))
 
-	
 	### после перехода ###
 	after: (route) ->
-		#console.debug '[Route > after]'
 
+		#console.debug '[Route > after]'
 
 	hide: ->
 
 		$('body > main > .sections > section').removeClass('current').hide()
 
 	show: (el)  ->
+
+		@hide()
 
 		el.addClass('current').show()
 
@@ -56,11 +56,9 @@ class Router extends Backbone.Router
 
 		if speed
 			$('html,body').animate({scrollTop: 0},speed)
-			if VK? then VK.callMethod('scrollWindow', 0, speed)
 		else
 			$('body').scrollTop(0)
-			if VK? then VK.callMethod('scrollWindow', 0)
-
+	
 
 	###  404 страница ###
 	notFound: (path) ->
@@ -74,7 +72,7 @@ class Router extends Backbone.Router
 	### Серверная ошибка ###
 	ooops: ->
 
-		el = $('section#notFound')
+		el = $('section#ooops')
 
 		@scrollTop()
 		@show(el)
@@ -82,13 +80,6 @@ class Router extends Backbone.Router
 
 	index: ->
 
-		# авто переход по переданному уру, на случай шаринга
-		# if window.vkredirect and window.vkredirect not in ["","/"]
-		# 	console.debug '[VKONTAKTE > hash detected!] Redirect to', window.vkredirect
-		# 	app.redirect(window.vkredirect)
-		# 	window.vkredirect = false
-		# 	return
-		
 		el = $('section#index')
 
 		@scrollTop()

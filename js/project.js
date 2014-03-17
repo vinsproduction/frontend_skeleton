@@ -1,6 +1,6 @@
-/* Prototype Model*/
 
-var Models, PrototypeModel, UserModel, _ref,
+/* Prototype Model */
+var Models, PrototypeModel, UserModel,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -27,28 +27,28 @@ UserModel = (function(_super) {
   __extends(UserModel, _super);
 
   function UserModel() {
-    _ref = UserModel.__super__.constructor.apply(this, arguments);
-    return _ref;
+    return UserModel.__super__.constructor.apply(this, arguments);
   }
+
 
   /*
   	Описание: Отдает данные пользователя
-  */
-
+   */
 
   UserModel.prototype.getDetails = function(data, callback) {
-    var _this = this;
-    return this.get('api/user/details', data, function(res) {
-      return callback(res);
-    });
+    return this.get('api/user/details', data, (function(_this) {
+      return function(res) {
+        return callback(res);
+      };
+    })(this));
   };
 
   return UserModel;
 
 })(PrototypeModel);
 
-/* ============ Объявляем классы! ===========*/
 
+/* ============ Объявляем классы! =========== */
 
 Models = (function() {
   function Models() {
@@ -59,9 +59,9 @@ Models = (function() {
 
 })();
 
-/* Prototype View*/
 
-var IndexView, PrototypeView, Views, _ref,
+/* Prototype View */
+var IndexView, PrototypeView, Views,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -69,46 +69,53 @@ PrototypeView = (function() {
   PrototypeView.prototype.render_debug = true;
 
   function PrototypeView() {
-    var _this = this;
     this.varconstants = {};
-    this.doResize();
-    $(window).resize(function() {
-      return _this.doResize();
-    });
     this.init();
+    this.doResize();
+    $(window).resize((function(_this) {
+      return function() {
+        return _this.doResize();
+      };
+    })(this));
   }
 
   PrototypeView.prototype.generateRenders = function(template) {
-    var _this = this;
     if (template == null) {
       template = this.template;
     }
-    _.each(template, function(val, key) {
-      if (!_this.templateSourse) {
-        _this.templateSourse = {};
-      }
-      _this.templateSourse[key] = $.trim(val.html());
-      if (!_this.render) {
-        _this.render = {};
-      }
-      _this.render[key] = function() {
-        return _this.doRender(key, _this.template[key], _this.templateSourse[key]);
-      };
-      if (!_this.preRender) {
-        _this.preRender = {};
-      }
-      return _this.preRender[key] = function(options) {
-        if (options == null) {
-          options = {};
+    _.each(template, (function(_this) {
+      return function(val, key) {
+        if (!_this.templateSourse) {
+          _this.templateSourse = {};
         }
-        return _this.doPreRender(key, _this.template[key], options);
+        _this.templateSourse[key] = $.trim(val.html());
+        if (!_this.render) {
+          _this.render = {};
+        }
+        _this.render[key] = function(options) {
+          if (options == null) {
+            options = {};
+          }
+          return _this.doRender(key, _this.template[key], _this.templateSourse[key], options);
+        };
+        if (!_this.preRender) {
+          _this.preRender = {};
+        }
+        return _this.preRender[key] = function(options) {
+          if (options == null) {
+            options = {};
+          }
+          return _this.doPreRender(key, _this.template[key], options);
+        };
       };
-    });
-    return this.renderAll = function(options) {
-      return _.each(template, function(val, key) {
-        return _this.render[key]();
-      });
-    };
+    })(this));
+    return this.renderAll = (function(_this) {
+      return function(options) {
+        return _.each(template, function(val, key) {
+          return _this.render[key]();
+        });
+      };
+    })(this);
   };
 
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
@@ -134,26 +141,36 @@ PrototypeView = (function() {
     }
   };
 
-  PrototypeView.prototype.doRender = function(templateName, $el, sourse, vars) {
-    if (vars == null) {
-      vars = this.vars;
+  PrototypeView.prototype.doRender = function(templateName, $el, sourse, options) {
+    if (options == null) {
+      options = {
+        method: "html"
+      };
     }
     if (this.render_debug) {
-      console.log("[Render " + templateName + "]", '| @vars:', vars);
+      console.log("[Render " + templateName + "]", '| @vars:', this.vars);
     }
-    return $el.html(Mustache.to_html(sourse, vars));
+    switch (options.method) {
+      case 'append':
+        return $el.append(Mustache.to_html(sourse, this.vars));
+      case 'prepend':
+        return $el.prepend(Mustache.to_html(sourse, this.vars));
+      default:
+        return $el.html(Mustache.to_html(sourse, this.vars));
+    }
   };
 
   PrototypeView.prototype.doResize = function(callback) {
-    var footerH, headerH, sectionsH;
+    var footerH, headerH, sectionsH, windowH;
     this.sections = {
       el: $('body > main > .sections')
     };
     headerH = parseInt($('body > main > header').height());
     footerH = parseInt($('body > main > footer').height());
     sectionsH = parseInt($('body > main > .sections').height());
-    app.debugBox.log("sect", "header: " + headerH + "px | sections: " + sectionsH + "px | footer: " + footerH + "px");
-    app.debugBox.log("res", "" + ($(window).width()) + "px x " + ($(window).height()) + "px");
+    windowH = $(window).height();
+    app.debugBox.log("header: " + headerH + "px | sections: " + sectionsH + "px | footer: " + footerH + "px", "sect");
+    app.debugBox.log("" + ($(window).width()) + "px x " + ($(window).height()) + "px", "res");
     return this.resize();
   };
 
@@ -186,15 +203,14 @@ PrototypeView = (function() {
 
 })();
 
-/* Views*/
 
+/* Views */
 
 IndexView = (function(_super) {
   __extends(IndexView, _super);
 
   function IndexView() {
-    _ref = IndexView.__super__.constructor.apply(this, arguments);
-    return _ref;
+    return IndexView.__super__.constructor.apply(this, arguments);
   }
 
   IndexView.prototype.init = function() {
@@ -206,20 +222,21 @@ IndexView = (function(_super) {
   };
 
   IndexView.prototype.controller = function(opt) {
-    var _this = this;
     this.opt = opt != null ? opt : {};
     this.vars = {};
     this.preRender['example']({
       t: 'Load...',
       h: 130
     });
-    return app.models.user.get({}, function(res) {
-      if (res.error) {
-        return app.errors.popup(res.error);
-      } else {
-        return _this.renderResponse(res);
-      }
-    });
+    return app.models.user.get({}, (function(_this) {
+      return function(res) {
+        if (res.error) {
+          return app.errors.popup(res.error);
+        } else {
+          return _this.renderResponse(res);
+        }
+      };
+    })(this));
   };
 
   IndexView.prototype.renderResponse = function(data) {
@@ -236,8 +253,8 @@ IndexView = (function(_super) {
 
 })(PrototypeView);
 
-/* ============ Объявляем классы! ===========*/
 
+/* ============ Объявляем классы! =========== */
 
 Views = (function() {
   function Views() {
@@ -248,9 +265,9 @@ Views = (function() {
 
 })();
 
-/* Router*/
 
-var Router, _ref,
+/* Router */
+var Router,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -258,48 +275,41 @@ Router = (function(_super) {
   __extends(Router, _super);
 
   function Router() {
-    _ref = Router.__super__.constructor.apply(this, arguments);
-    return _ref;
+    return Router.__super__.constructor.apply(this, arguments);
   }
 
-  /* маршруты*/
 
+  /* маршруты */
 
   Router.prototype.routes = {
     "": "index",
-    "!": "index",
-    "!/": "index",
-    "!/page/:id": "page",
-    "!/page/:id/": "page",
-    "!/ooops": "ooops",
-    "!/ooops/": "ooops",
+    "/": "index",
+    "page/:id": "page",
+    "page/:id/": "page",
+    "ooops": "ooops",
+    "ooops/": "ooops",
     "*path": "notFound"
   };
 
-  /* инициализация*/
 
+  /* инициализация */
 
   Router.prototype.initialize = function() {
     return this.bind("all", function(route, router) {});
   };
 
-  /* до перехода*/
 
+  /* до перехода */
 
   Router.prototype.before = function(route) {
-    if (route !== '') {
-      console.debug('[Route]', route);
-    }
-    this.hide();
-    if (typeof VK !== "undefined" && VK !== null) {
-      /* выставить хеш*/
-
-      return VK.callMethod('setLocation', route.replace("!", ""));
-    }
+    this.route = route === "" ? "empty" : route;
+    app.debugBox.log('route:' + this.route);
+    console.debug('[Route]', this.route);
+    return this.hide();
   };
 
-  /* после перехода*/
 
+  /* после перехода */
 
   Router.prototype.after = function(route) {};
 
@@ -308,6 +318,7 @@ Router = (function(_super) {
   };
 
   Router.prototype.show = function(el) {
+    this.hide();
     return el.addClass('current').show();
   };
 
@@ -316,22 +327,16 @@ Router = (function(_super) {
       speed = 400;
     }
     if (speed) {
-      $('html,body').animate({
+      return $('html,body').animate({
         scrollTop: 0
       }, speed);
-      if (typeof VK !== "undefined" && VK !== null) {
-        return VK.callMethod('scrollWindow', 0, speed);
-      }
     } else {
-      $('body').scrollTop(0);
-      if (typeof VK !== "undefined" && VK !== null) {
-        return VK.callMethod('scrollWindow', 0);
-      }
+      return $('body').scrollTop(0);
     }
   };
 
-  /*  404 страница*/
 
+  /*  404 страница */
 
   Router.prototype.notFound = function(path) {
     var el;
@@ -340,12 +345,12 @@ Router = (function(_super) {
     return this.show(el);
   };
 
-  /* Серверная ошибка*/
 
+  /* Серверная ошибка */
 
   Router.prototype.ooops = function() {
     var el;
-    el = $('section#notFound');
+    el = $('section#ooops');
     this.scrollTop();
     return this.show(el);
   };
@@ -368,120 +373,131 @@ Router = (function(_super) {
 
 })(Backbone.Router);
 
+
+/* Front-end Skeleton / ver. 2.0 / 17.03.2014 */
 var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 App = (function() {
-  App.prototype.ver = '1.0';
-
   App.prototype.name = 'Frontend Skeleton';
 
-  /* Хеш навигация в проекте*/
 
+  /* Хеш навигация в проекте */
 
   App.prototype.hashNavigate = false;
 
-  /* Удаленный хост для локальной разработки с api*/
 
+  /* Удаленный хост для локальной разработки с api */
 
   App.prototype.remoteHost = "http://vinsproduction.com";
 
-  /* Путь до картинок и прочей статики*/
 
+  /* Путь до картинок и прочей статики */
 
   App.prototype.root = "";
 
+
+  /* Callback загрузки приложения */
+
+  App.prototype.onLoad = function() {};
+
   function App(opt) {
-    var k, livereloadPort, v,
-      _this = this;
-    if (opt == null) {
-      opt = {};
-    }
-    for (k in opt) {
-      v = opt[k];
+    var k, livereloadPort, v, _ref;
+    this.opt = opt != null ? opt : {};
+    _ref = this.opt;
+    for (k in _ref) {
+      v = _ref[k];
       this[k] = v;
     }
-    /* Если хоста нет, значит - локальный просмотр!*/
 
-    this.localview = window.location.host === "" || /localhost/.test(window.location.host);
-    /* HOST!*/
+    /* Дебаг режим */
+    this.debugMode = /debug/.test(window.location.search);
 
+    /* Если хоста нет, значит - локальный просмотр! */
+    this.local = window.location.host === "" || /localhost/.test(window.location.host);
+
+    /* HOST! */
     this.host = window.location.protocol + "//" + window.location.host;
-    /* Возвращает параметры дебага, напр. ?debug=test -> вернет test*/
 
-    this.debug = (function() {
-      var debug;
-      debug = $$.urlParam('debug');
-      if (debug) {
-        return debug.split(',');
-      } else {
-        return [];
-      }
-    })();
-    /* Только для локальной разработки!*/
+    /* Возвращает параметры дебага, напр. ?debug=test -> вернет test */
+    this.debug = (function(_this) {
+      return function() {
+        var debug;
+        debug = $$.urlParam('debug');
+        if (debug) {
+          return debug.split(',');
+        } else {
+          return [];
+        }
+      };
+    })(this)();
 
-    if (!$$.browser.msie && this.localview) {
+    /* Только для локальной разработки! */
+    if (!$$.browser.msie && this.local) {
       livereloadPort = 777;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
       console.debug("[Livereload] http://localhost:" + livereloadPort + "/livereload.js");
     }
-    /* Если Ie!*/
 
+    /* Если Ie! */
     if ($$.browser.msie6 || $$.browser.msie7) {
       return;
     }
-    /* Настройки библиотек*/
 
+    /* Настройки библиотек */
     this.libs();
-    /* основная инизиализация*/
 
+    /* основная инизиализация */
     this.init();
   }
 
   App.prototype.init = function() {
-    var _this = this;
-    return $(function() {
-      /* Дебагер*/
+    return $((function(_this) {
+      return function() {
 
-      if (__indexOf.call(_this.debug, 'box') >= 0) {
-        _this.debugBox.init();
-      }
-      /* модели/api*/
+        /* Дебагер */
+        if (__indexOf.call(_this.debug, 'box') >= 0) {
+          _this.debugBox.init();
+        }
 
-      if (Models) {
-        _this.models = new Models;
-      }
-      /* контроллеры/рендеры*/
+        /* модели/api */
+        if (Models) {
+          _this.models = new Models;
+        }
 
-      if (Views) {
-        _this.views = new Views;
-      }
-      /* Роутер/хеш навигация*/
+        /* контроллеры/рендеры */
+        if (Views) {
+          _this.views = new Views;
+        }
 
-      if (_this.hashNavigate) {
-        _this.router = new Router;
-        Backbone.history.start();
-      }
-      /* Настройки соцсетей*/
+        /* Роутер/хеш навигация */
+        if (_this.hashNavigate) {
+          _this.router = new Router;
+          Backbone.history.start();
+        }
 
-      _this.social.init();
-      return console.debug("[App > init] " + _this.name + " ver. " + _this.ver, _this);
-    });
+        /* Настройки соцсетей */
+        _this.social.init();
+        console.debug("[App]", _this.name, "Options:", _this.opt);
+        return _this.onLoad();
+      };
+    })(this));
   };
 
-  /* Hash навигация*/
 
+  /* Hash навигация */
 
   App.prototype.redirect = function(page) {
     if (page == null) {
       page = "";
     }
-    console.debug('[app > redirect]', page);
+    console.debug('[App > redirect]', page);
     if (window.location.hash === "#!" + page) {
       this.router.navigate("!/redirect");
     }
     return this.router.navigate("!" + page, true);
   };
+
 
   /* @API
   	Пример запроса: app.api.request 'user/details', 'GET', {}, (res) =>
@@ -489,71 +505,73 @@ App = (function() {
   				return app.errors.popup res.error
   			else
   				console.log res
-  */
+   */
 
 
-  /* API pefix, например номер версии серверного api /api/v1/*/
-
+  /* API pefix, например номер версии серверного api /api/v1/ */
 
   App.prototype.apiPrefix = "/";
 
   App.prototype.api = function(url, type, data, callback) {
-    var host,
-      _this = this;
+    var host;
     if (type == null) {
       type = "GET";
     }
     if (data == null) {
       data = {};
     }
-    host = this.localview ? this.remoteHost : this.host;
+    host = this.local ? this.remoteHost : this.host;
     url = host + this.apiPrefix + url;
     return $.ajax({
       type: type,
       dataType: 'json',
       url: url,
       data: data
-    }).done(function(res) {
-      var response;
-      response = $$.browser.msie ? JSON.stringify(res) : res;
-      if (res.status === 'success') {
-        if (!res.data) {
-          res.data = [];
+    }).done((function(_this) {
+      return function(res) {
+        var response;
+        response = $$.browser.msie ? JSON.stringify(res) : res;
+        if (res.status === 'success') {
+          if (!res.data) {
+            res.data = [];
+          }
+          console.debug("[Api] " + url + " | " + type + ":", data, "| success: ", response);
+          if (callback) {
+            return callback(res.data);
+          }
+        } else if (res.status === 'error') {
+          console.error("[Api] " + url + " | " + type + ":", data, "| error: ", response);
+          if (callback) {
+            return callback({
+              error: res.error
+            });
+          }
         }
-        console.debug("[Api] " + url + " | " + type + ":", data, "| success: ", response);
-        if (callback) {
-          return callback(res.data);
-        }
-      } else if (res.status === 'error') {
-        console.error("[Api] " + url + " | " + type + ":", data, "| error: ", response);
-        if (callback) {
-          return callback({
-            error: res.error
-          });
-        }
-      }
-    }).fail(function(res) {
-      var response;
-      response = $$.browser.msie ? JSON.stringify(res) : res;
-      console.error("[Api] " + url + " | " + type + ":", data, "| fail: ", response);
-      if (res.readyState === 4 && res.status === 404) {
-        /* запрос в никуда*/
+      };
+    })(this)).fail((function(_this) {
+      return function(res) {
+        var response;
+        response = $$.browser.msie ? JSON.stringify(res) : res;
+        console.error("[Api] " + url + " | " + type + ":", data, "| fail: ", response);
+        if (res.readyState === 4 && res.status === 404) {
 
-        if (_this.hashNavigate) {
-          return app.redirect('/404');
-        }
-      } else {
-        /* серверная ошибка*/
+          /* запрос в никуда */
+          if (_this.hashNavigate) {
+            return app.redirect('/404');
+          }
+        } else {
 
-        if (_this.hashNavigate) {
-          return app.redirect('/ooops');
+          /* серверная ошибка */
+          if (_this.hashNavigate) {
+            return app.redirect('/ooops');
+          }
         }
-      }
-    });
+      };
+    })(this));
   };
 
-  /* Debug monitor*/
 
+  /* Debug monitor */
 
   App.prototype.debugBox = {
     init: function() {
@@ -576,12 +594,12 @@ App = (function() {
     }
   };
 
-  /* Всякие библиотеки для общего пользования*/
 
+  /* Всякие библиотеки для общего пользования */
 
   App.prototype.libs = function() {
-    /* Крайне важная штука для ajax запросов в рамках разных доменов, в IE!*/
 
+    /* Крайне важная штука для ajax запросов в рамках разных доменов, в IE! */
     $.support.cors = true;
     return $.ajaxSetup({
       cache: false,
@@ -589,18 +607,18 @@ App = (function() {
     });
   };
 
-  /* Социальные настройки*/
 
+  /* Социальные настройки */
 
   App.prototype.social = {
     vkontakteApiId: '',
     facebookApiId: '',
     odnoklassnikiApiId: '',
     init: function() {
-      return this.url = app.localview ? app.remoteHost : app.host;
+      return this.url = app.local ? app.remoteHost : app.host;
     },
-    /* Пост на стенку в соц. сети*/
 
+    /* Пост на стенку в соц. сети */
     wallPost: {
       vkontakte: function(options) {
         if (options == null) {
@@ -609,11 +627,11 @@ App = (function() {
         if (typeof VK === "undefined" || VK === null) {
           return console.warn('[App > social > wallPost] VK is not defined');
         }
+
         /*
         				в attachments должна быть только 1 ссылка! Если надо прекрепить фото, 
         				оно должно быть залито в сам ВКонтакте
-        */
-
+         */
         options.attachLink = options.attachLink ? ("" + app.social.url + "#") + options.attachLink : app.social.url;
         options.attachPhoto = options.attachPhoto ? options.attachPhoto : "photo131380871_321439116";
         return VK.api("wall.post", {
@@ -683,14 +701,14 @@ App = (function() {
         return window.open("http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "toolbar=0,status=0,width=626,height=436");
       }
     },
-    /* Шаринг в сосетях*/
 
+    /* Шаринг в сосетях */
     share: {
+
       /* 
       			просто хелпер для всего приложения для навешивания на ссылки, например:
       			app.social.share.it()
-      */
-
+       */
       itVk: function() {
         var options;
         options = {};
@@ -779,21 +797,22 @@ App = (function() {
       return popup.custom('Ошибка!', text);
     },
     get: function(error) {
-      var list,
-        _this = this;
+      var list;
       if ($$.isObject(error)) {
         list = "";
-        _.each(error, function(text) {
-          text = _this.rus[text] || text;
-          return list += text + "<br/><br/>";
-        });
+        _.each(error, (function(_this) {
+          return function(text) {
+            text = _this.rus[text] || text;
+            return list += text + "<br/><br/>";
+          };
+        })(this));
       } else {
         list = this.rus[error];
       }
       return list || "Неизвестная ошибка";
     },
-    /* Русификатор*/
 
+    /* Русификатор */
     rus: {
       "Story doesn't exist": "Истории не существует",
       "User is not authenticated": "Юзер не авторизован"

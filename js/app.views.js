@@ -1,6 +1,6 @@
-/* Prototype View*/
 
-var IndexView, PrototypeView, Views, _ref,
+/* Prototype View */
+var IndexView, PrototypeView, Views,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -8,46 +8,53 @@ PrototypeView = (function() {
   PrototypeView.prototype.render_debug = true;
 
   function PrototypeView() {
-    var _this = this;
     this.varconstants = {};
-    this.doResize();
-    $(window).resize(function() {
-      return _this.doResize();
-    });
     this.init();
+    this.doResize();
+    $(window).resize((function(_this) {
+      return function() {
+        return _this.doResize();
+      };
+    })(this));
   }
 
   PrototypeView.prototype.generateRenders = function(template) {
-    var _this = this;
     if (template == null) {
       template = this.template;
     }
-    _.each(template, function(val, key) {
-      if (!_this.templateSourse) {
-        _this.templateSourse = {};
-      }
-      _this.templateSourse[key] = $.trim(val.html());
-      if (!_this.render) {
-        _this.render = {};
-      }
-      _this.render[key] = function() {
-        return _this.doRender(key, _this.template[key], _this.templateSourse[key]);
-      };
-      if (!_this.preRender) {
-        _this.preRender = {};
-      }
-      return _this.preRender[key] = function(options) {
-        if (options == null) {
-          options = {};
+    _.each(template, (function(_this) {
+      return function(val, key) {
+        if (!_this.templateSourse) {
+          _this.templateSourse = {};
         }
-        return _this.doPreRender(key, _this.template[key], options);
+        _this.templateSourse[key] = $.trim(val.html());
+        if (!_this.render) {
+          _this.render = {};
+        }
+        _this.render[key] = function(options) {
+          if (options == null) {
+            options = {};
+          }
+          return _this.doRender(key, _this.template[key], _this.templateSourse[key], options);
+        };
+        if (!_this.preRender) {
+          _this.preRender = {};
+        }
+        return _this.preRender[key] = function(options) {
+          if (options == null) {
+            options = {};
+          }
+          return _this.doPreRender(key, _this.template[key], options);
+        };
       };
-    });
-    return this.renderAll = function(options) {
-      return _.each(template, function(val, key) {
-        return _this.render[key]();
-      });
-    };
+    })(this));
+    return this.renderAll = (function(_this) {
+      return function(options) {
+        return _.each(template, function(val, key) {
+          return _this.render[key]();
+        });
+      };
+    })(this);
   };
 
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
@@ -73,26 +80,36 @@ PrototypeView = (function() {
     }
   };
 
-  PrototypeView.prototype.doRender = function(templateName, $el, sourse, vars) {
-    if (vars == null) {
-      vars = this.vars;
+  PrototypeView.prototype.doRender = function(templateName, $el, sourse, options) {
+    if (options == null) {
+      options = {
+        method: "html"
+      };
     }
     if (this.render_debug) {
-      console.log("[Render " + templateName + "]", '| @vars:', vars);
+      console.log("[Render " + templateName + "]", '| @vars:', this.vars);
     }
-    return $el.html(Mustache.to_html(sourse, vars));
+    switch (options.method) {
+      case 'append':
+        return $el.append(Mustache.to_html(sourse, this.vars));
+      case 'prepend':
+        return $el.prepend(Mustache.to_html(sourse, this.vars));
+      default:
+        return $el.html(Mustache.to_html(sourse, this.vars));
+    }
   };
 
   PrototypeView.prototype.doResize = function(callback) {
-    var footerH, headerH, sectionsH;
+    var footerH, headerH, sectionsH, windowH;
     this.sections = {
       el: $('body > main > .sections')
     };
     headerH = parseInt($('body > main > header').height());
     footerH = parseInt($('body > main > footer').height());
     sectionsH = parseInt($('body > main > .sections').height());
-    app.debugBox.log("sect", "header: " + headerH + "px | sections: " + sectionsH + "px | footer: " + footerH + "px");
-    app.debugBox.log("res", "" + ($(window).width()) + "px x " + ($(window).height()) + "px");
+    windowH = $(window).height();
+    app.debugBox.log("header: " + headerH + "px | sections: " + sectionsH + "px | footer: " + footerH + "px", "sect");
+    app.debugBox.log("" + ($(window).width()) + "px x " + ($(window).height()) + "px", "res");
     return this.resize();
   };
 
@@ -125,15 +142,14 @@ PrototypeView = (function() {
 
 })();
 
-/* Views*/
 
+/* Views */
 
 IndexView = (function(_super) {
   __extends(IndexView, _super);
 
   function IndexView() {
-    _ref = IndexView.__super__.constructor.apply(this, arguments);
-    return _ref;
+    return IndexView.__super__.constructor.apply(this, arguments);
   }
 
   IndexView.prototype.init = function() {
@@ -145,20 +161,21 @@ IndexView = (function(_super) {
   };
 
   IndexView.prototype.controller = function(opt) {
-    var _this = this;
     this.opt = opt != null ? opt : {};
     this.vars = {};
     this.preRender['example']({
       t: 'Load...',
       h: 130
     });
-    return app.models.user.get({}, function(res) {
-      if (res.error) {
-        return app.errors.popup(res.error);
-      } else {
-        return _this.renderResponse(res);
-      }
-    });
+    return app.models.user.get({}, (function(_this) {
+      return function(res) {
+        if (res.error) {
+          return app.errors.popup(res.error);
+        } else {
+          return _this.renderResponse(res);
+        }
+      };
+    })(this));
   };
 
   IndexView.prototype.renderResponse = function(data) {
@@ -175,8 +192,8 @@ IndexView = (function(_super) {
 
 })(PrototypeView);
 
-/* ============ Объявляем классы! ===========*/
 
+/* ============ Объявляем классы! =========== */
 
 Views = (function() {
   function Views() {

@@ -18047,6 +18047,7 @@ if (typeof JSON !== 'object') {
 
 }).call(this);
 
+
 /* Примеры вызова попапа
 
 1.  popup.open('popup_name')
@@ -18061,29 +18062,27 @@ if (typeof JSON !== 'object') {
 5.  Если необходимо отделить одни попапы от других
       window.popup2 = new Popup()
       И соответсвенно запускаем их через popup2.open('popup_name')
-*/
-
+ */
 var Popup;
 
 Popup = (function() {
-  /* плавное открыватие попапа*/
 
+  /* плавное открыватие попапа */
   Popup.prototype.fade = 500;
 
-  /* Автоматическое и ручное позицонирование попапа*/
 
+  /* Автоматическое и ручное позицонирование попапа */
 
   Popup.prototype.top = 'auto';
 
   Popup.prototype.left = 'auto';
 
-  /* Автоматическое движение попапа за скроллом*/
 
+  /* Автоматическое движение попапа за скроллом */
 
   Popup.prototype.scroll = true;
 
   function Popup(opt) {
-    var _this = this;
     if (opt == null) {
       opt = {};
     }
@@ -18100,35 +18099,37 @@ Popup = (function() {
     if (opt.left) {
       this.left = opt.left;
     }
-    $(function() {
-      _this.el = $("#popups");
-      _this.bg = _this.el.find(".background");
-      _this.elClose = _this.el.find("[data-popup-close]");
-      _this.popups = _this.el.find("[data-popup-name]");
-      _this.elClose.click(function() {
-        _this.disable();
-        return false;
-      });
-      $(document).keypress(function(e) {
-        if (e.keyCode === 27 && _this.status === 1) {
-          return _this.disable();
-        }
-      });
-      $(window).scroll(function() {
-        if (_this.status === 1) {
-          return _this.center();
-        }
-      });
-      return $(window).resize(function() {
-        if (_this.status === 1) {
-          return _this.center();
-        }
-      });
-    });
+    $((function(_this) {
+      return function() {
+        _this.el = $("#popups");
+        _this.bg = _this.el.find(".background");
+        _this.elClose = _this.el.find("[data-popup-close]");
+        _this.popups = _this.el.find("[data-popup-name]");
+        _this.elClose.click(function() {
+          _this.disable();
+          return false;
+        });
+        $(document).keypress(function(e) {
+          if (e.keyCode === 27 && _this.status === 1) {
+            return _this.disable();
+          }
+        });
+        $(window).scroll(function() {
+          if (_this.status === 1) {
+            return _this.center();
+          }
+        });
+        return $(window).resize(function() {
+          if (_this.status === 1) {
+            return _this.center();
+          }
+        });
+      };
+    })(this));
   }
 
-  /* Список всех попапов*/
 
+  /* Список всех попапов */
 
   Popup.prototype.list = function() {
     return this.popups.each(function() {
@@ -18137,7 +18138,6 @@ Popup = (function() {
   };
 
   Popup.prototype.load = function(popup, opt) {
-    var _this = this;
     if (opt == null) {
       opt = {};
     }
@@ -18149,12 +18149,14 @@ Popup = (function() {
       });
       popup.addClass('open');
       if (this.fade) {
-        popup.fadeIn(this.fade, function() {
-          if (opt.callback) {
-            opt.callback();
-          }
-          return _this.loadCallback(popup);
-        });
+        popup.fadeIn(this.fade, (function(_this) {
+          return function() {
+            if (opt.callback) {
+              opt.callback();
+            }
+            return _this.loadCallback(popup);
+          };
+        })(this));
       } else {
         popup.show();
         if (opt.callback) {
@@ -18167,17 +18169,17 @@ Popup = (function() {
     }
   };
 
-  /* Если надо отловить callback ДО открытия попапа:*/
 
+  /* Если надо отловить callback ДО открытия попапа: */
 
   Popup.prototype.doCallback = function(popup) {};
+
 
   /* Если надо отловить callback после появления попапа:
   popup.loadCallback = function(popup){
     console.log('this loadCallback. and this popup:',popup);
   }
-  */
-
+   */
 
   Popup.prototype.loadCallback = function(popup) {};
 
@@ -18260,6 +18262,7 @@ Popup = (function() {
     }
   };
 
+
   /* Функция открытия конкретного попапа
   popup.open('unique',{button: function(){popup.close()}});
   opt = {
@@ -18267,12 +18270,10 @@ Popup = (function() {
     closeDisable: bool Если надо блокировать закрытие
     callback: function
   }
-  */
-
+   */
 
   Popup.prototype.open = function(name, opt) {
-    var $button, popup,
-      _this = this;
+    var $button, popup;
     if (opt == null) {
       opt = {};
     }
@@ -18285,24 +18286,26 @@ Popup = (function() {
     this.load(popup, opt);
     $button = popup.find("[data-popup-button]");
     if (opt.button && $button.size()) {
-      $button.unbind("click").click(function() {
-        if (typeof button === "function") {
-          return opt.button();
-        } else {
-          return _this.close();
-        }
-      });
+      $button.unbind("click").click((function(_this) {
+        return function() {
+          if (typeof button === "function") {
+            return opt.button();
+          } else {
+            return _this.close();
+          }
+        };
+      })(this));
     }
     if (opt.closeDisable) {
       return this.status = 0;
     }
   };
 
+
   /* Функция открытия конкретного попапа  
   кастомный попап для вывода любой	информации
   popup.custom('Ошибка','Необходима авторизация',{button: function(){popup.open('popup_name')}});
-  */
-
+   */
 
   Popup.prototype.custom = function(title, text, opt) {
     var name, popup;
@@ -18323,7 +18326,7 @@ Popup = (function() {
 
 })();
 
-/* ============ Объявляем Попапы! ===========*/
 
+/* ============ Объявляем Попапы! =========== */
 
 window.popup = new Popup;

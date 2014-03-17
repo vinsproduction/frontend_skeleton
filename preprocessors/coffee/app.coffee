@@ -1,7 +1,6 @@
-class App
+### Front-end Skeleton / ver. 2.0 / 17.03.2014 ###
 
-	## Версия проекта (опционально) ###
-	ver: '1.0'
+class App
 
 	## Имя проекта (опционально) ###
 	name: 'Frontend Skeleton'
@@ -15,16 +14,23 @@ class App
 	### Путь до картинок и прочей статики ###
 	root: ""
 
-	constructor: (opt={}) ->
+	### Callback загрузки приложения ###
+	onLoad: ->
 
-		for k,v of opt
+	constructor: (@opt={}) ->
+
+		for k,v of @opt
 			@[k] = v
 
+		### Дебаг режим ###
+		@debugMode = /debug/.test(window.location.search)
+
 		### Если хоста нет, значит - локальный просмотр! ###
-		@localview = window.location.host is "" or /localhost/.test window.location.host
+		@local = window.location.host is "" or /localhost/.test window.location.host
 
 		### HOST! ###
 		@host = window.location.protocol + "//" + window.location.host
+
 
 		### Возвращает параметры дебага, напр. ?debug=test -> вернет test ###
 		@debug = do =>
@@ -32,7 +38,7 @@ class App
 			return if debug then debug.split(',') else []
 
 		### Только для локальной разработки! ###
-		if !$$.browser.msie and @localview
+		if !$$.browser.msie and @local
 			livereloadPort = 777 # Порт должен совпадать с портом в Gruntfile.js
 			$$.includeJS "http://localhost:#{livereloadPort}/livereload.js"
 			console.debug "[Livereload] http://localhost:#{livereloadPort}/livereload.js"
@@ -72,11 +78,14 @@ class App
 			### Настройки соцсетей ###
 			do @social.init
 
-			console.debug "[App > init] #{@name} ver. #{@ver}",@
+			console.debug "[App]", @name, "Options:", @opt
+
+			do @onLoad
+
 
 	### Hash навигация ###
 	redirect: (page = "") ->
-		console.debug '[app > redirect]', page
+		console.debug '[App > redirect]', page
 
 		if window.location.hash is "#!" + page
 			@router.navigate("!/redirect")
@@ -97,7 +106,7 @@ class App
 
 	api: (url,type="GET",data={},callback) ->
 
-		host = if @localview then @remoteHost else @host
+		host = if @local then @remoteHost else @host
 
 		url =  host + @apiPrefix + url
 
@@ -190,7 +199,7 @@ class App
 
 		init: ->
 
-			@url = if app.localview then app.remoteHost else app.host
+			@url = if app.local then app.remoteHost else app.host
 
 			# if VK?
 			# 	VK.init

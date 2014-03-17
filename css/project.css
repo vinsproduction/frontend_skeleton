@@ -2,59 +2,146 @@
 	===============
 	=== PROJECT ===
 	===============
+
+	(!) Все глобальные классы и переменные начинаются с префикса g
+
 */
 @import 'normalize.css';
-/* FONTS */
+/* _________ FONTS _________ */
 @font-face {
   font-family: 'Ubuntu';
   src: url("../fonts/ubuntu-r-webfont.eot"), url("../fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/ubuntu-r-webfont.svg") format('svg'), url("../fonts/ubuntu-r-webfont.woff") format('woff'), url("../fonts/ubuntu-r-webfont.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }
-/* STYLES FOR ALL */
-textarea:focus,
-input:focus {
-  outline: none;
-}
-ul {
-  list-style-type: none;
-}
-/* CLASS - HELPERS */
-.clearfix {
+/* _________ HELPERS ________*/
+.g-clearfix {
   clear: both;
 }
-.hide {
+.g-hide {
   display: none;
 }
-.none {
+.g-hidden {
   visibility: hidden;
 }
-.block-inline {
+.g-block-inline {
   vertical-align: top;
   display: -moz-inline-stack;
   display: inline-block;
   zoom: 1;
   *display: inline;
 }
-.block-left {
+.g-block-left {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
   zoom: 1;
   *display: inline;
 }
-.block-right {
+.g-block-right {
   float: right;
   display: -moz-inline-stack;
   display: inline-block;
   zoom: 1;
   *display: inline;
 }
-/* BUTTONS */
-/* Для ссылок */
-.btn-1 {
+/*_________ GUIDELINE _______*/
+/*
+	Все глобальные стили кнопок, форм, ссылок, списков и тд.
+	описываются здесь
+*/
+.g-color-graydarker {
+  background: #222;
+}
+.g-color-graydark {
+  background: #333;
+}
+.g-color-gray {
+  background: #555;
+}
+.g-color-graylight {
+  background: #999;
+}
+.g-color-graylighter {
+  background: #a9a9a9;
+}
+p {
+  font-size: 16px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+h1 {
+  font-size: 36px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h2 {
+  font-size: 30px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h3 {
+  font-size: 24px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h4 {
   font-size: 18px;
-  font-family: "Ubuntu", helvetica, verdana, arial, tahoma;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h5 {
+  font-size: 14px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h6 {
+  font-size: 12px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+ul {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.g-link-1 {
+  text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  color: #333;
+}
+.g-link-1:hover {
+  border-bottom: 1px solid #333;
+}
+.g-link-2 {
+  text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  color: #333;
+  border-bottom: 1px solid #333;
+}
+.g-link-2:hover {
+  border-bottom: 0;
+}
+.g-btn-1 {
+  font-size: 18px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   width: 200px;
   height: 50px;
   display: block;
@@ -64,6 +151,11 @@ ul {
   border: 0;
   outline: none;
   text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
@@ -71,25 +163,21 @@ ul {
   border-radius: 10px;
   text-transform: uppercase;
   color: #fff;
-  background: #ee2e24;
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  -o-transition: all 0.2s;
-  transition: all 0.2s;
+  background: #555;
 }
-.btn-1:hover {
-  background: #ccc;
+.g-btn-1:hover {
+  background: #999;
 }
-.btn-1 span {
+.g-btn-1 span {
   position: relative;
+  top: 15px;
 }
-/* Для buttons */
-.btn-2,
+.g-btn-2,
 #popups .popup[data-popup-name="custom"] .footer button,
 #popups .popup[data-popup-name="unique"] .footer button {
   font-size: 18px;
-  font-family: "Ubuntu", helvetica, verdana, arial, tahoma;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   width: 200px;
   height: 50px;
   display: block;
@@ -99,6 +187,11 @@ ul {
   border: 0;
   outline: none;
   text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
@@ -106,19 +199,89 @@ ul {
   border-radius: 10px;
   text-transform: uppercase;
   color: #fff;
-  background: #ee2e24;
+  background: #333;
+}
+.g-btn-2:hover,
+#popups .popup[data-popup-name="custom"] .footer button:hover,
+#popups .popup[data-popup-name="unique"] .footer button:hover {
+  background: #999;
+}
+.g-btn-2 span,
+#popups .popup[data-popup-name="custom"] .footer button span,
+#popups .popup[data-popup-name="unique"] .footer button span {
+  position: relative;
+  top: 15px;
+}
+.g-btn-3 {
+  font-size: 18px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  width: 350px;
+  height: 50px;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  border: 0;
+  outline: none;
+  text-decoration: none;
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
   -ms-transition: all 0.2s;
   -o-transition: all 0.2s;
   transition: all 0.2s;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  color: #fff;
+  background: #222;
 }
-.btn-2:hover,
-#popups .popup[data-popup-name="custom"] .footer button:hover,
-#popups .popup[data-popup-name="unique"] .footer button:hover {
-  background: #ccc;
+.g-btn-3:hover {
+  background: #999;
 }
-/* STYLES - MAIN */
+.g-btn-3 span {
+  position: relative;
+  top: 15px;
+}
+input:focus,
+textarea:focus {
+  outline: none;
+}
+.g-input-1 {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #a9a9a9;
+  width: 300px;
+  height: 25px;
+  padding: 5px 10px;
+  font-size: 16px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+.g-input-1:focus {
+  border: 1px solid #555;
+}
+.g-textarea-1 {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #a9a9a9;
+  width: 300px;
+  height: 100px;
+  padding: 10px 10px;
+}
+.g-textarea-1:focus {
+  border: 1px solid #555;
+}
+/*_________ MAIN __________*/
 html {
   height: 100%;
 }
@@ -126,24 +289,22 @@ body {
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
-/* Самый задний фон */
-  background-color: #0a1018;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  background-color: #222;
 }
-/* Фон с изображением */
 body > main {
   position: relative;
   min-height: 100%;
   width: 100%;
-  background: url("../img/bg.jpg") no-repeat;
-  background-repeat: repeat-x;
+  background: url("../img/bg.jpg") repeat-y center center;
 }
-/* HEADER */
+/*_________ HEADER ___________*/
 body > main > header {
   z-index: 2;
   width: 100%;
   height: 40px;
-  background: #736b68;
+  background: #555;
 }
 body > main > header.fixed {
   position: fixed;
@@ -154,7 +315,7 @@ body > main > header > .container {
   height: 16px;
   padding: 12px 0;
   margin: 0 auto;
-  background: #c1b0a3;
+  background: #999;
 }
 body > main > header > .container > .content {
   padding: 0 5px;
@@ -163,6 +324,10 @@ body > main > header > .container > .content {
   zoom: 1;
   *display: inline;
   width: 1255px;
+}
+body > main > header > .container > .content .logo a {
+  text-decoration: none;
+  color: #000;
 }
 body > main > header > .container > .content nav#menu {
   float: right;
@@ -196,14 +361,14 @@ body > main > header > .container > .content .logo {
   zoom: 1;
   *display: inline;
 }
-/* FOOTER */
+/*_________ FOOTER ___________*/
 body > main > footer {
   position: absolute;
   bottom: 0;
   z-index: 2;
   width: 100%;
   height: 40px;
-  background: #736b68;
+  background: #333;
 }
 body > main > footer.fixed {
   position: fixed;
@@ -214,7 +379,7 @@ body > main > footer > .container {
   height: 16px;
   padding: 12px 0;
   margin: 0 auto;
-  background: #c1b0a3;
+  background: #555;
 }
 body > main > footer > .container > .content {
   padding: 0 5px;
@@ -223,7 +388,7 @@ body > main > footer > .container > .content {
   zoom: 1;
   *display: inline;
 }
-/* SECTIONS */
+/*_________ SECTIONS _________*/
 body > main > .sections {
   clear: both;
   width: 100%;
@@ -251,15 +416,63 @@ body > main > .sections > section > .container > .content {
   display: inline-block;
   zoom: 1;
   *display: inline;
-}
-/* -------------------- Let's go -------------------- */
-section#index .container .content {
   padding: 50px 20px;
 }
-section#index .container .content p {
-  margin: 10px 0;
+/* _________ PAGES _________*/
+section#guideline h1 {
+  font-size: 36px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
-/* -------------------- Popups -------------------- */
+section#guideline .row {
+  display: -moz-inline-stack;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  clear: both;
+  width: 100%;
+  border-top: 1px solid #555;
+  padding: 20px 0;
+}
+section#guideline .colors div {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  zoom: 1;
+  *display: inline;
+  width: 100px;
+  height: 50px;
+  color: #fff;
+  padding: 3px;
+}
+section#fonts .container .content {
+  padding: 50px 20px;
+}
+section#fonts .container .content h1 {
+  margin: 30px 0;
+  font-size: 24px;
+}
+section#fonts .container .content h2 {
+  margin: 30px 0;
+  font-size: 47px;
+}
+section#fonts .container .content .fonts {
+  width: 1225px;
+  overflow: hidden;
+}
+section#fonts .container .content .fonts p {
+  margin: 15px 0;
+  background: #fff;
+  padding: 0 10px;
+  border: 1px solid #808080;
+}
+section#fonts .container .content .fonts p .lowercase {
+  text-transform: lowercase;
+}
+section#fonts .container .content .fonts p .uppercase {
+  text-transform: uppercase;
+}
+/* _________ POPUPS ________*/
 #popups .background {
   display: none;
   position: fixed;
@@ -310,6 +523,7 @@ section#index .container .content p {
 }
 #popups .popup[data-popup-name="custom"] .body {
   font-size: 24px;
+  line-height: 1.4;
   font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   color: #333;
   padding: 0 90px;
@@ -335,6 +549,7 @@ section#index .container .content p {
 }
 #popups .popup[data-popup-name="unique"] .body {
   font-size: 24px;
+  line-height: 1.4;
   font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   color: #333;
   padding: 0 90px;
@@ -345,7 +560,7 @@ section#index .container .content p {
 #popups .popup[data-popup-name="unique"] .footer button {
   margin: 0 auto;
 }
-/* -------------------- MEDIA -------------------- */
+/* _________ MEDIA _________ */
 @media (max-height: 768px) {
   #debugBox .mediaHeight:after {
     content: '@media(max-height: 768px)';

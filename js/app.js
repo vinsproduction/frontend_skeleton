@@ -1,117 +1,128 @@
+
+/* Front-end Skeleton / ver. 2.0 / 17.03.2014 */
 var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 App = (function() {
-  App.prototype.ver = '1.0';
-
   App.prototype.name = 'Frontend Skeleton';
 
-  /* Хеш навигация в проекте*/
 
+  /* Хеш навигация в проекте */
 
   App.prototype.hashNavigate = false;
 
-  /* Удаленный хост для локальной разработки с api*/
 
+  /* Удаленный хост для локальной разработки с api */
 
   App.prototype.remoteHost = "http://vinsproduction.com";
 
-  /* Путь до картинок и прочей статики*/
 
+  /* Путь до картинок и прочей статики */
 
   App.prototype.root = "";
 
+
+  /* Callback загрузки приложения */
+
+  App.prototype.onLoad = function() {};
+
   function App(opt) {
-    var k, livereloadPort, v,
-      _this = this;
-    if (opt == null) {
-      opt = {};
-    }
-    for (k in opt) {
-      v = opt[k];
+    var k, livereloadPort, v, _ref;
+    this.opt = opt != null ? opt : {};
+    _ref = this.opt;
+    for (k in _ref) {
+      v = _ref[k];
       this[k] = v;
     }
-    /* Если хоста нет, значит - локальный просмотр!*/
 
-    this.localview = window.location.host === "" || /localhost/.test(window.location.host);
-    /* HOST!*/
+    /* Дебаг режим */
+    this.debugMode = /debug/.test(window.location.search);
 
+    /* Если хоста нет, значит - локальный просмотр! */
+    this.local = window.location.host === "" || /localhost/.test(window.location.host);
+
+    /* HOST! */
     this.host = window.location.protocol + "//" + window.location.host;
-    /* Возвращает параметры дебага, напр. ?debug=test -> вернет test*/
 
-    this.debug = (function() {
-      var debug;
-      debug = $$.urlParam('debug');
-      if (debug) {
-        return debug.split(',');
-      } else {
-        return [];
-      }
-    })();
-    /* Только для локальной разработки!*/
+    /* Возвращает параметры дебага, напр. ?debug=test -> вернет test */
+    this.debug = (function(_this) {
+      return function() {
+        var debug;
+        debug = $$.urlParam('debug');
+        if (debug) {
+          return debug.split(',');
+        } else {
+          return [];
+        }
+      };
+    })(this)();
 
-    if (!$$.browser.msie && this.localview) {
+    /* Только для локальной разработки! */
+    if (!$$.browser.msie && this.local) {
       livereloadPort = 777;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
       console.debug("[Livereload] http://localhost:" + livereloadPort + "/livereload.js");
     }
-    /* Если Ie!*/
 
+    /* Если Ie! */
     if ($$.browser.msie6 || $$.browser.msie7) {
       return;
     }
-    /* Настройки библиотек*/
 
+    /* Настройки библиотек */
     this.libs();
-    /* основная инизиализация*/
 
+    /* основная инизиализация */
     this.init();
   }
 
   App.prototype.init = function() {
-    var _this = this;
-    return $(function() {
-      /* Дебагер*/
+    return $((function(_this) {
+      return function() {
 
-      if (__indexOf.call(_this.debug, 'box') >= 0) {
-        _this.debugBox.init();
-      }
-      /* модели/api*/
+        /* Дебагер */
+        if (__indexOf.call(_this.debug, 'box') >= 0) {
+          _this.debugBox.init();
+        }
 
-      if (Models) {
-        _this.models = new Models;
-      }
-      /* контроллеры/рендеры*/
+        /* модели/api */
+        if (Models) {
+          _this.models = new Models;
+        }
 
-      if (Views) {
-        _this.views = new Views;
-      }
-      /* Роутер/хеш навигация*/
+        /* контроллеры/рендеры */
+        if (Views) {
+          _this.views = new Views;
+        }
 
-      if (_this.hashNavigate) {
-        _this.router = new Router;
-        Backbone.history.start();
-      }
-      /* Настройки соцсетей*/
+        /* Роутер/хеш навигация */
+        if (_this.hashNavigate) {
+          _this.router = new Router;
+          Backbone.history.start();
+        }
 
-      _this.social.init();
-      return console.debug("[App > init] " + _this.name + " ver. " + _this.ver, _this);
-    });
+        /* Настройки соцсетей */
+        _this.social.init();
+        console.debug("[App]", _this.name, "Options:", _this.opt);
+        return _this.onLoad();
+      };
+    })(this));
   };
 
-  /* Hash навигация*/
 
+  /* Hash навигация */
 
   App.prototype.redirect = function(page) {
     if (page == null) {
       page = "";
     }
-    console.debug('[app > redirect]', page);
+    console.debug('[App > redirect]', page);
     if (window.location.hash === "#!" + page) {
       this.router.navigate("!/redirect");
     }
     return this.router.navigate("!" + page, true);
   };
+
 
   /* @API
   	Пример запроса: app.api.request 'user/details', 'GET', {}, (res) =>
@@ -119,71 +130,73 @@ App = (function() {
   				return app.errors.popup res.error
   			else
   				console.log res
-  */
+   */
 
 
-  /* API pefix, например номер версии серверного api /api/v1/*/
-
+  /* API pefix, например номер версии серверного api /api/v1/ */
 
   App.prototype.apiPrefix = "/";
 
   App.prototype.api = function(url, type, data, callback) {
-    var host,
-      _this = this;
+    var host;
     if (type == null) {
       type = "GET";
     }
     if (data == null) {
       data = {};
     }
-    host = this.localview ? this.remoteHost : this.host;
+    host = this.local ? this.remoteHost : this.host;
     url = host + this.apiPrefix + url;
     return $.ajax({
       type: type,
       dataType: 'json',
       url: url,
       data: data
-    }).done(function(res) {
-      var response;
-      response = $$.browser.msie ? JSON.stringify(res) : res;
-      if (res.status === 'success') {
-        if (!res.data) {
-          res.data = [];
+    }).done((function(_this) {
+      return function(res) {
+        var response;
+        response = $$.browser.msie ? JSON.stringify(res) : res;
+        if (res.status === 'success') {
+          if (!res.data) {
+            res.data = [];
+          }
+          console.debug("[Api] " + url + " | " + type + ":", data, "| success: ", response);
+          if (callback) {
+            return callback(res.data);
+          }
+        } else if (res.status === 'error') {
+          console.error("[Api] " + url + " | " + type + ":", data, "| error: ", response);
+          if (callback) {
+            return callback({
+              error: res.error
+            });
+          }
         }
-        console.debug("[Api] " + url + " | " + type + ":", data, "| success: ", response);
-        if (callback) {
-          return callback(res.data);
-        }
-      } else if (res.status === 'error') {
-        console.error("[Api] " + url + " | " + type + ":", data, "| error: ", response);
-        if (callback) {
-          return callback({
-            error: res.error
-          });
-        }
-      }
-    }).fail(function(res) {
-      var response;
-      response = $$.browser.msie ? JSON.stringify(res) : res;
-      console.error("[Api] " + url + " | " + type + ":", data, "| fail: ", response);
-      if (res.readyState === 4 && res.status === 404) {
-        /* запрос в никуда*/
+      };
+    })(this)).fail((function(_this) {
+      return function(res) {
+        var response;
+        response = $$.browser.msie ? JSON.stringify(res) : res;
+        console.error("[Api] " + url + " | " + type + ":", data, "| fail: ", response);
+        if (res.readyState === 4 && res.status === 404) {
 
-        if (_this.hashNavigate) {
-          return app.redirect('/404');
-        }
-      } else {
-        /* серверная ошибка*/
+          /* запрос в никуда */
+          if (_this.hashNavigate) {
+            return app.redirect('/404');
+          }
+        } else {
 
-        if (_this.hashNavigate) {
-          return app.redirect('/ooops');
+          /* серверная ошибка */
+          if (_this.hashNavigate) {
+            return app.redirect('/ooops');
+          }
         }
-      }
-    });
+      };
+    })(this));
   };
 
-  /* Debug monitor*/
 
+  /* Debug monitor */
 
   App.prototype.debugBox = {
     init: function() {
@@ -206,12 +219,12 @@ App = (function() {
     }
   };
 
-  /* Всякие библиотеки для общего пользования*/
 
+  /* Всякие библиотеки для общего пользования */
 
   App.prototype.libs = function() {
-    /* Крайне важная штука для ajax запросов в рамках разных доменов, в IE!*/
 
+    /* Крайне важная штука для ajax запросов в рамках разных доменов, в IE! */
     $.support.cors = true;
     return $.ajaxSetup({
       cache: false,
@@ -219,18 +232,18 @@ App = (function() {
     });
   };
 
-  /* Социальные настройки*/
 
+  /* Социальные настройки */
 
   App.prototype.social = {
     vkontakteApiId: '',
     facebookApiId: '',
     odnoklassnikiApiId: '',
     init: function() {
-      return this.url = app.localview ? app.remoteHost : app.host;
+      return this.url = app.local ? app.remoteHost : app.host;
     },
-    /* Пост на стенку в соц. сети*/
 
+    /* Пост на стенку в соц. сети */
     wallPost: {
       vkontakte: function(options) {
         if (options == null) {
@@ -239,11 +252,11 @@ App = (function() {
         if (typeof VK === "undefined" || VK === null) {
           return console.warn('[App > social > wallPost] VK is not defined');
         }
+
         /*
         				в attachments должна быть только 1 ссылка! Если надо прекрепить фото, 
         				оно должно быть залито в сам ВКонтакте
-        */
-
+         */
         options.attachLink = options.attachLink ? ("" + app.social.url + "#") + options.attachLink : app.social.url;
         options.attachPhoto = options.attachPhoto ? options.attachPhoto : "photo131380871_321439116";
         return VK.api("wall.post", {
@@ -313,14 +326,14 @@ App = (function() {
         return window.open("http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "toolbar=0,status=0,width=626,height=436");
       }
     },
-    /* Шаринг в сосетях*/
 
+    /* Шаринг в сосетях */
     share: {
+
       /* 
       			просто хелпер для всего приложения для навешивания на ссылки, например:
       			app.social.share.it()
-      */
-
+       */
       itVk: function() {
         var options;
         options = {};
@@ -409,21 +422,22 @@ App = (function() {
       return popup.custom('Ошибка!', text);
     },
     get: function(error) {
-      var list,
-        _this = this;
+      var list;
       if ($$.isObject(error)) {
         list = "";
-        _.each(error, function(text) {
-          text = _this.rus[text] || text;
-          return list += text + "<br/><br/>";
-        });
+        _.each(error, (function(_this) {
+          return function(text) {
+            text = _this.rus[text] || text;
+            return list += text + "<br/><br/>";
+          };
+        })(this));
       } else {
         list = this.rus[error];
       }
       return list || "Неизвестная ошибка";
     },
-    /* Русификатор*/
 
+    /* Русификатор */
     rus: {
       "Story doesn't exist": "Истории не существует",
       "User is not authenticated": "Юзер не авторизован"
