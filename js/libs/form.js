@@ -17,7 +17,7 @@ Form = (function() {
 
   Form.prototype.errorHideMethod = "visibility";
 
-  Form.prototype.errorFade = 400;
+  Form.prototype.errorFade = 300;
 
   Form.prototype.fields = {};
 
@@ -32,6 +32,8 @@ Form = (function() {
   Form.prototype.onSubmit = function(data) {};
 
   Form.prototype.onReset = function() {};
+
+  Form.prototype.onLoad = function() {};
 
   function Form(options) {
     var k, v, _ref;
@@ -48,7 +50,8 @@ Form = (function() {
         _this.form = $("#" + _this.formId);
         _this.submitBtn = _this.form.find(_this.submitBtnClass);
         _this.init();
-        return _this.log("options", _this.options);
+        _this.log("onLoad", "options", _this.options);
+        return _this.onLoad();
       };
     })(this));
   }
@@ -114,7 +117,7 @@ Form = (function() {
                 self.setError(name, valid.reason);
               }
             }
-            if (!self.isEmpty(self.errors)) {
+            if (!self.isEmpty(self.errors[name])) {
               self.log("onError", name, self.errors[name]);
               self.addErrorAlert(name);
               return self.fields[name].onError(name, self.errors[name]);
@@ -135,6 +138,29 @@ Form = (function() {
         return false;
       };
     })(this));
+  };
+
+  Form.prototype.setVal = function(name, val) {
+    var el, errorAlert, _ref;
+    el = this.form.find("[name='" + name + "']");
+    if ((_ref = el.attr('type')) === 'checkbox' || _ref === 'radio') {
+      el.prop("checked", false);
+      el.filter("[value='" + val + "']").prop("checked", true);
+    } else {
+      el.val($$.trim(val));
+    }
+    if (this.fields[name].placeholder && (el.is("input[type='text']") || el.is('textarea'))) {
+      if (val === "" || val === this.fields[name].placeholder) {
+        this.placeholder(el, this.fields[name].placeholder);
+      } else {
+        el.removeClass(this.placeholderClass);
+      }
+    }
+    if (this.fields[name].useErrorTemplate) {
+      errorAlert = this.form.find("." + this.errorAlertExtClass + "-" + name);
+      errorAlert.empty();
+      return el.removeClass(this.errorInputClass);
+    }
   };
 
   Form.prototype.getVal = function(name) {
@@ -208,24 +234,11 @@ Form = (function() {
   };
 
   Form.prototype.reset = function() {
-    var el, errorAlert, name, _ref;
+    var name;
     this.resetData();
     this.resetErorrs();
     for (name in this.fields) {
-      el = this.form.find("[name='" + name + "']");
-      if ((_ref = el.attr('type')) === 'checkbox' || _ref === 'radio') {
-        el.prop("checked", false);
-        if (this.fields[name].originVal) {
-          el.filter("[value='" + this.fields[name].originVal + "']").prop("checked", true);
-        }
-      } else {
-        el.val(this.fields[name].originVal);
-      }
-      if (this.fields[name].useErrorTemplate) {
-        errorAlert = this.form.find("." + this.errorAlertExtClass + "-" + name);
-        errorAlert.empty();
-        el.removeClass(this.errorInputClass);
-      }
+      this.setVal(name, this.fields[name].originVal);
     }
     this.log("onReset");
     this.onReset();

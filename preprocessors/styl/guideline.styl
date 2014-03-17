@@ -139,27 +139,51 @@ g_btn(w = false,h = false)
 
 /* _________ ФОРМЫ  _________ */
 
-input:focus, textarea:focus
+input:focus, textarea:focus, select:focus
 	outline none
 
 .g-input-1
 	border-radius(5px)
 	border 1px solid g-color-graylighter
-	box 300-10*2, 25-5*2
+	box 300 - 10*2 - 1*2, 35 - 5*2 - 1*2
 	padding 5px 10px
 	font 16px Ubuntu
 
 	&:focus
 		border 1px solid g-color-gray
 
+	&.error-field
+		border 1px solid #F00
+
 
 
 .g-textarea-1
 	border-radius(5px)
 	border 1px solid g-color-graylighter
-	box 300-10*2, 100-10*2
+	box 300 - 10*2 - 1*2, 100 - 10*2 - 1*2
 	padding 10px 10px
+	font 16px Ubuntu
 
 	&:focus
 		border 1px solid g-color-gray
 
+	&.error-field
+		border 1px solid #F00
+
+.g-select-1
+	border-radius(5px)
+	box 300, 35
+	font 16px Ubuntu
+
+	&:focus
+		border 1px solid g-color-gray
+
+	&.error-field
+		border 1px solid #F00
+
+.g-checkbox-1
+	box 25 25
+
+
+.g-radio-1
+	box 25 25

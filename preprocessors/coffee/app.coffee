@@ -78,7 +78,7 @@ class App
 			### Настройки соцсетей ###
 			do @social.init
 
-			console.debug "[App]", @name, "Options:", @opt
+			console.debug "[App]", @name, "onLoad", "options:", @opt
 
 			do @onLoad
 

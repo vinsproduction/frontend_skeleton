@@ -12,7 +12,7 @@ class Form
 
 	errorHideMethod: "visibility" # "display"
 
-	errorFade: 400
+	errorFade: 300
 
 	fields: {}
 	data: {}
@@ -22,6 +22,7 @@ class Form
 	onSuccess: (data)   ->
 	onSubmit: (data) ->
 	onReset: ->
+	onLoad: ->
 
 	constructor: (@options={}) ->
 
@@ -43,7 +44,9 @@ class Form
 
 			do @init
 
-			@log "options", @options
+			@log "onLoad", "options", @options
+
+			do @onLoad
 
 	init: ->
 
@@ -119,7 +122,7 @@ class Form
 							if !valid.state
 								self.setError(name,valid.reason)
 
-						if !self.isEmpty(self.errors)
+						if !self.isEmpty(self.errors[name])
 							self.log "onError", name, self.errors[name]
 							self.addErrorAlert(name)
 							self.fields[name].onError(name,self.errors[name])
@@ -132,6 +135,28 @@ class Form
 		@submitBtn.click =>
 			@submit()
 			return false
+
+	setVal: (name,val) ->
+
+		el  = @form.find("[name='#{name}']")
+
+		if el.attr('type') in ['checkbox','radio']
+
+			el.prop("checked", false)
+			el.filter("[value='#{val}']").prop("checked", true)
+		else
+			el.val($$.trim(val))
+
+		if @fields[name].placeholder and (el.is("input[type='text']") or el.is('textarea'))
+			if val in ["",@fields[name].placeholder]
+				@placeholder(el,@fields[name].placeholder)
+			else
+				el.removeClass(@placeholderClass)
+
+		if @fields[name].useErrorTemplate
+			errorAlert = @form.find(".#{@errorAlertExtClass}-#{name}")
+			errorAlert.empty()
+			el.removeClass(@errorInputClass)
 
 	getVal: (name) ->
 
@@ -208,21 +233,7 @@ class Form
 
 		for name of @fields
 
-			el  = @form.find("[name='#{name}']")
-
-			if el.attr('type') in ['checkbox','radio']
-
-				el.prop("checked", false)
-				if @fields[name].originVal
-					el.filter("[value='#{@fields[name].originVal}']").prop("checked", true)
-			else
-
-				el.val @fields[name].originVal
-
-			if @fields[name].useErrorTemplate
-				errorAlert = @form.find(".#{@errorAlertExtClass}-#{name}")
-				errorAlert.empty()
-				el.removeClass(@errorInputClass)
+			@setVal(name,@fields[name].originVal)
 
 		@log "onReset"
 		do @onReset
@@ -280,7 +291,6 @@ class Form
 				errorAlert.css('visibility','hidden').show()
 			else
 				errorAlert.hide()
-
 	
 	placeholder: (el,val) ->
 

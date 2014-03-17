@@ -247,7 +247,8 @@ a {
   top: 15px;
 }
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   outline: none;
 }
 .g-input-1 {
@@ -257,8 +258,8 @@ textarea:focus {
   -o-border-radius: 5px;
   border-radius: 5px;
   border: 1px solid #a9a9a9;
-  width: 300px;
-  height: 25px;
+  width: 278px;
+  height: 23px;
   padding: 5px 10px;
   font-size: 16px;
   line-height: 1.4;
@@ -267,6 +268,9 @@ textarea:focus {
 .g-input-1:focus {
   border: 1px solid #555;
 }
+.g-input-1.error-field {
+  border: 1px solid #f00;
+}
 .g-textarea-1 {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -274,12 +278,44 @@ textarea:focus {
   -o-border-radius: 5px;
   border-radius: 5px;
   border: 1px solid #a9a9a9;
-  width: 300px;
-  height: 100px;
+  width: 278px;
+  height: 78px;
   padding: 10px 10px;
+  font-size: 16px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 .g-textarea-1:focus {
   border: 1px solid #555;
+}
+.g-textarea-1.error-field {
+  border: 1px solid #f00;
+}
+.g-select-1 {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  width: 300px;
+  height: 35px;
+  font-size: 16px;
+  line-height: 1.4;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+.g-select-1:focus {
+  border: 1px solid #555;
+}
+.g-select-1.error-field {
+  border: 1px solid #f00;
+}
+.g-checkbox-1 {
+  width: 25px;
+  height: 25px;
+}
+.g-radio-1 {
+  width: 25px;
+  height: 25px;
 }
 /*_________ MAIN __________*/
 html {

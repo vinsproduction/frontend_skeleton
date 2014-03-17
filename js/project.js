@@ -478,7 +478,7 @@ App = (function() {
 
         /* Настройки соцсетей */
         _this.social.init();
-        console.debug("[App]", _this.name, "Options:", _this.opt);
+        console.debug("[App]", _this.name, "onLoad", "options:", _this.opt);
         return _this.onLoad();
       };
     })(this));
