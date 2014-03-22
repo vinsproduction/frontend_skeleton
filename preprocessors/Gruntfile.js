@@ -75,8 +75,8 @@ module.exports = function(grunt) {
 				src: [
 					'../js/libs/jquery-1.10.2.min.js',
 					'../js/libs/jquery-ui-1.10.3.custom.js',
-					'../js/libs/jquery.tinyscrollbar.js',
-					'../js/libs/jquery.jcarousel.js',
+					//'../js/libs/jquery.tinyscrollbar.js',
+					//'../js/libs/jquery.jcarousel.js',
 					'../js/libs/jquery.cookie.js',
 					'../js/libs/mustache.js',
 					'../js/libs/underscore-min.js',

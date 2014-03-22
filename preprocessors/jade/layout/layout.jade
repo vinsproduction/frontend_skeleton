@@ -1,24 +1,28 @@
 doctype html
-head
+html
+	head
 
-	include head
+		include head
 
-body
+	body
 
-	//-script(src='http://vkontakte.ru/js/api/openapi.js', type='text/javascript')
-	//-#fb-root
-	//-script(src='http://connect.facebook.net/en_US/all.js')
-	
-	include ../popups
+		block social
 
-	main
+			//Vkontakte openapi
+			script(src='http://vkontakte.ru/js/api/openapi.js', type='text/javascript')
 
-		include header
+			//Facebook SDK 
+			#fb-root
+			script(src='http://connect.facebook.net/en_US/all.js')
+		
+		include ../popups
 
-		.sections
+		main
 
-			block content
+			include header
 
-		include footer
+			.sections
 
-	
+				block content
+
+			include footer

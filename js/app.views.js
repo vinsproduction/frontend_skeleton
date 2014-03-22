@@ -10,12 +10,6 @@ PrototypeView = (function() {
   function PrototypeView() {
     this.varconstants = {};
     this.init();
-    this.doResize();
-    $(window).resize((function(_this) {
-      return function() {
-        return _this.doResize();
-      };
-    })(this));
   }
 
   PrototypeView.prototype.generateRenders = function(template) {
@@ -98,22 +92,6 @@ PrototypeView = (function() {
         return $el.html(Mustache.to_html(sourse, this.vars));
     }
   };
-
-  PrototypeView.prototype.doResize = function(callback) {
-    var footerH, headerH, sectionsH, windowH;
-    this.sections = {
-      el: $('body > main > .sections')
-    };
-    headerH = parseInt($('body > main > header').height());
-    footerH = parseInt($('body > main > footer').height());
-    sectionsH = parseInt($('body > main > .sections').height());
-    windowH = $(window).height();
-    app.debugBox.log("header: " + headerH + "px | sections: " + sectionsH + "px | footer: " + footerH + "px", "sect");
-    app.debugBox.log("" + ($(window).width()) + "px x " + ($(window).height()) + "px", "res");
-    return this.resize();
-  };
-
-  PrototypeView.prototype.resize = function() {};
 
   PrototypeView.prototype.init = function() {};
 

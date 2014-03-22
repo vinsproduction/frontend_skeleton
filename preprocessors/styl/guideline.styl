@@ -7,47 +7,103 @@
 	
 */
 
+/* _________ FONTS _________ */
+
+import-font($root + 'fonts/ubuntu-r-webfont','Ubuntu')
+
+
+/* _________ КОНСТАНТЫ _________ */
+
+// Главный шрифт
+$mainFont  = 'Ubuntu'
+
+$color-graydarker 	= #222
+$color-graydark 		= #333
+$color-gray 			= #555
+$color-graylight 		= #999
+$color-graylighter 	= #A9A9A9
+
+/* _________ MIXINS _________ */
+
+font-family(name)
+	line-height 1
+	font-family name, helvetica,verdana,arial,tahoma
+
+font(size,name)
+	//font-size unit(size*6.5, '%') convert px to percents
+	font-size size
+	font-family name
+
+bg(filename, arguments=false)
+	if !arguments
+		arguments = no-repeat center center
+	background url($root + 'img/' + filename) arguments
+
+
+/* _________ HELPERS ________*/
+
+.g-clearfix
+	clear both
+
+.g-hide
+	display none
+
+.g-hidden
+	visibility hidden
+
+.g-block-inline
+	block-inline()
+
+.g-block-left
+	block-left()
+
+.g-block-right
+	block-right()
+
 /* _________ ЦВЕТА _________ */
 
-
-g-color-graydarker 	= #222
-g-color-graydark 		= #333
-g-color-gray 			= #555
-g-color-graylight 	= #999
-g-color-graylighter 	= #A9A9A9
+.g-bg-color-graydarker
+	background-color $color-graydarker
+.g-bg-color-graydark
+	background-color $color-graydark 
+.g-bg-color-gray
+	background-color $color-gray 
+.g-bg-color-graylight
+	background-color $color-graylight 
+.g-bg-color-graylighter
+	background-color $color-graylighter
 
 .g-color-graydarker
-	background  g-color-graydarker
+	color $color-graydarker
 .g-color-graydark
-	background  g-color-graydark 
+	color $color-graydark 
 .g-color-gray
-	background  g-color-gray 
+	color $color-gray 
 .g-color-graylight
-	background  g-color-graylight 
+	color $color-graylight 
 .g-color-graylighter
-	background  g-color-graylighter
+	color $color-graylighter
+
 
 /* _________ АБЗАЦЫ _________ */
 
 p
-	font 16px Ubuntu
-	margin-top 10px
-	margin-bottom 10px
+	font 16px $mainFont
 	
 /* _________ ЗАГОЛОВКИ _________ */
 
 h1
-	font 36px Ubuntu
+	font 36px $mainFont
 h2
-	font 30px Ubuntu
+	font 30px $mainFont
 h3
-	font 24px Ubuntu
+	font 24px $mainFont
 h4
-	font 18px Ubuntu
+	font 18px $mainFont
 h5
-	font 14px Ubuntu
+	font 14px $mainFont
 h6
-	font 12px Ubuntu
+	font 12px $mainFont
 
 /* _________ СПИСКИ _________*/
 
@@ -67,14 +123,14 @@ a
 
 .g-link-1
 	g_link()
-	color g-color-graydark
+	color $color-graydark
 	&:hover
-		border-bottom 1px solid g-color-graydark
+		border-bottom 1px solid $color-graydark
 
 .g-link-2
 	g_link()
-	color g-color-graydark
-	border-bottom 1px solid g-color-graydark
+	color $color-graydark
+	border-bottom 1px solid $color-graydark
 	&:hover
 		border-bottom 0
 
@@ -98,40 +154,40 @@ g_btn(w = false,h = false)
 	transition all 0.2s
 
 .g-btn-1
-	font 18px Ubuntu
+	font 18px $mainFont
 	g_btn(200,50)
 	border-radius(10px)
 	text-transform uppercase
 	color #FFF
-	background g-color-gray
+	background $color-gray
 	&:hover
-		background g-color-graylight
+		background $color-graylight
 	span
 		position relative
 		top 15px
 
 .g-btn-2
-	font 18px Ubuntu
+	font 18px $mainFont
 	g_btn(200,50)
 	border-radius(10px)
 	text-transform uppercase
 	color #FFF
-	background g-color-graydark
+	background $color-graydark
 	&:hover
-		background g-color-graylight
+		background $color-graylight
 	span
 		position relative
 		top 15px
 
 .g-btn-3
-	font 18px Ubuntu
+	font 18px $mainFont
 	g_btn(350,50)
 	border-radius(10px)
 	text-transform uppercase
 	color #FFF
-	background g-color-graydarker
+	background $color-graydarker
 	&:hover
-		background g-color-graylight
+		background $color-graylight
 	span
 		position relative
 		top 15px
@@ -144,13 +200,13 @@ input:focus, textarea:focus, select:focus
 
 .g-input-1
 	border-radius(5px)
-	border 1px solid g-color-graylighter
+	border 1px solid $color-graylighter
 	box 300 - 10*2 - 1*2, 35 - 5*2 - 1*2
 	padding 5px 10px
-	font 16px Ubuntu
+	font 16px $mainFont
 
 	&:focus
-		border 1px solid g-color-gray
+		border 1px solid $color-gray
 
 	&.error-field
 		border 1px solid #F00
@@ -159,13 +215,13 @@ input:focus, textarea:focus, select:focus
 
 .g-textarea-1
 	border-radius(5px)
-	border 1px solid g-color-graylighter
+	border 1px solid $color-graylighter
 	box 300 - 10*2 - 1*2, 100 - 10*2 - 1*2
 	padding 10px 10px
-	font 16px Ubuntu
+	font 16px $mainFont
 
 	&:focus
-		border 1px solid g-color-gray
+		border 1px solid $color-gray
 
 	&.error-field
 		border 1px solid #F00
@@ -173,10 +229,10 @@ input:focus, textarea:focus, select:focus
 .g-select-1
 	border-radius(5px)
 	box 300, 35
-	font 16px Ubuntu
+	font 16px $mainFont
 
 	&:focus
-		border 1px solid g-color-gray
+		border 1px solid $color-gray
 
 	&.error-field
 		border 1px solid #F00

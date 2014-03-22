@@ -2,19 +2,17 @@
 	===============
 	=== PROJECT ===
 	===============
-
-	(!) Все глобальные классы и переменные начинаются с префикса g
-
 */
+/* _________ IMPORT ________*/
 @import 'normalize.css';
-/* _________ FONTS _________ */
+/*_________ GUIDELINE _______*/
 @font-face {
   font-family: 'Ubuntu';
-  src: url("../fonts/ubuntu-r-webfont.eot"), url("../fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/ubuntu-r-webfont.svg") format('svg'), url("../fonts/ubuntu-r-webfont.woff") format('woff'), url("../fonts/ubuntu-r-webfont.ttf") format('truetype');
+  src: url("../fonts/ubuntu-r-webfont.eot");
+  src: url("../fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/ubuntu-r-webfont.svg") format('svg'), url("../fonts/ubuntu-r-webfont.woff") format('woff'), url("../fonts/ubuntu-r-webfont.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }
-/* _________ HELPERS ________*/
 .g-clearfix {
   clear: both;
 }
@@ -25,9 +23,9 @@
   visibility: hidden;
 }
 .g-block-inline {
-  vertical-align: top;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
 }
@@ -35,6 +33,7 @@
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
 }
@@ -42,65 +41,74 @@
   float: right;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
 }
-/*_________ GUIDELINE _______*/
-/*
-	Все глобальные стили кнопок, форм, ссылок, списков и тд.
-	описываются здесь
-*/
+.g-bg-color-graydarker {
+  background-color: #222;
+}
+.g-bg-color-graydark {
+  background-color: #333;
+}
+.g-bg-color-gray {
+  background-color: #555;
+}
+.g-bg-color-graylight {
+  background-color: #999;
+}
+.g-bg-color-graylighter {
+  background-color: #a9a9a9;
+}
 .g-color-graydarker {
-  background: #222;
+  color: #222;
 }
 .g-color-graydark {
-  background: #333;
+  color: #333;
 }
 .g-color-gray {
-  background: #555;
+  color: #555;
 }
 .g-color-graylight {
-  background: #999;
+  color: #999;
 }
 .g-color-graylighter {
-  background: #a9a9a9;
+  color: #a9a9a9;
 }
 p {
   font-size: 16px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 h1 {
   font-size: 36px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 h2 {
   font-size: 30px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 h3 {
   font-size: 24px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 h4 {
   font-size: 18px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 h5 {
   font-size: 14px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 h6 {
   font-size: 12px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 ul {
   list-style-type: none;
@@ -140,8 +148,8 @@ a {
 }
 .g-btn-1 {
   font-size: 18px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
   width: 200px;
   height: 50px;
   display: block;
@@ -176,8 +184,8 @@ a {
 #popups .popup[data-popup-name="custom"] .footer button,
 #popups .popup[data-popup-name="unique"] .footer button {
   font-size: 18px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
   width: 200px;
   height: 50px;
   display: block;
@@ -214,8 +222,8 @@ a {
 }
 .g-btn-3 {
   font-size: 18px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
   width: 350px;
   height: 50px;
   display: block;
@@ -262,8 +270,8 @@ select:focus {
   height: 23px;
   padding: 5px 10px;
   font-size: 16px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 .g-input-1:focus {
   border: 1px solid #555;
@@ -282,8 +290,8 @@ select:focus {
   height: 78px;
   padding: 10px 10px;
   font-size: 16px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 .g-textarea-1:focus {
   border: 1px solid #555;
@@ -300,8 +308,8 @@ select:focus {
   width: 300px;
   height: 35px;
   font-size: 16px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 .g-select-1:focus {
   border: 1px solid #555;
@@ -325,8 +333,8 @@ body {
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
   background-color: #222;
 }
 body > main {
@@ -357,6 +365,7 @@ body > main > header > .container > .content {
   padding: 0 5px;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
   width: 1255px;
@@ -369,6 +378,7 @@ body > main > header > .container > .content nav#menu {
   float: right;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
   text-transform: uppercase;
@@ -377,6 +387,7 @@ body > main > header > .container > .content nav#menu a {
   text-decoration: none;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
   position: relative;
@@ -394,6 +405,7 @@ body > main > header > .container > .content .logo {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
 }
@@ -421,6 +433,7 @@ body > main > footer > .container > .content {
   padding: 0 5px;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
 }
@@ -437,6 +450,7 @@ body > main > .sections > section {
   width: 100%;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
 }
@@ -448,21 +462,23 @@ body > main > .sections > section > .container {
   background: #f2e5d5;
 }
 body > main > .sections > section > .container > .content {
-  display: -moz-inline-stack;
-  display: inline-block;
-  zoom: 1;
-  *display: inline;
   padding: 50px 20px;
 }
 /* _________ PAGES _________*/
+section#index .container .content p {
+  margin: 20px 0;
+  line-height: 1.4;
+}
+/* _________ DEV PAGES _________*/
 section#guideline h1 {
   font-size: 36px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
 }
 section#guideline .row {
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
   clear: both;
@@ -474,12 +490,15 @@ section#guideline .colors div {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
+  vertical-align: top;
   zoom: 1;
   *display: inline;
   width: 100px;
   height: 50px;
-  color: #fff;
   padding: 3px;
+}
+section#guideline .colors div.bg {
+  color: #fff;
 }
 section#fonts .container .content {
   padding: 50px 20px;
@@ -539,7 +558,7 @@ section#fonts .container .content .fonts p .uppercase {
   top: -33px;
   width: 56px;
   height: 52px;
-  background: url("../img/close_popup.png") no-repeat;
+  background: url("../img/close_popup.png") no-repeat center center;
   background-position: left 0px;
   text-decoration: none !important;
   z-index: 98;
@@ -559,8 +578,8 @@ section#fonts .container .content .fonts p .uppercase {
 }
 #popups .popup[data-popup-name="custom"] .body {
   font-size: 24px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
   color: #333;
   padding: 0 90px;
 }
@@ -585,8 +604,8 @@ section#fonts .container .content .fonts p .uppercase {
 }
 #popups .popup[data-popup-name="unique"] .body {
   font-size: 24px;
-  line-height: 1.4;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  line-height: 1;
+  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
   color: #333;
   padding: 0 90px;
 }

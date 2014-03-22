@@ -10,10 +10,6 @@ class PrototypeView
 
 		do @init
 
-		do @doResize
-		$(window).resize => do @doResize
-
-
 	generateRenders: (template =  @template) ->
 
 		_.each template, (val,key) =>
@@ -68,24 +64,6 @@ class PrototypeView
 			when 'append' 	then $el.append( Mustache.to_html(sourse, @vars) )
 			when 'prepend' then $el.prepend( Mustache.to_html(sourse, @vars) )
 			else $el.html( Mustache.to_html(sourse, @vars) )
-
-
-	doResize: (callback) ->
-
-		@sections =
-			el 	: $('body > main > .sections')
-
-		headerH		= parseInt($('body > main > header').height())
-		footerH 		= parseInt($('body > main > footer').height())
-		sectionsH 	= parseInt($('body > main > .sections').height())
-		windowH 		= $(window).height()
-			
-		app.debugBox.log "header: #{headerH}px | sections: #{sectionsH}px | footer: #{footerH}px", "sect"
-		app.debugBox.log "#{$(window).width()}px x #{$(window).height()}px", "res"
-
-		do @resize
-
-	resize: ->
 
 	init: ->
 

@@ -1,16 +1,37 @@
 
-<meta charset="utf-8"/>
-<title>SCELETON</title>
+<meta name="viewport" content="width=1265"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<!--SEO-->
+<title>FRONTEND SCELETON</title>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
+<!-- Open Graph-->
 <meta property="og:title" content=""/>
 <meta property="og:url" content=""/>
 <meta property="og:image" content=""/>
 <meta property="og:description" content=""/>
+<!--favicon-->
 <link rel="image_src" href=""/>
 <link rel="shortcut icon" type="image/x-icon" href=""/>
-<meta name="viewport" content="width=1265"/>
+<!--IE--><!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta http-equiv="imagetoolbar" content="no"/>
+<meta http-equiv="MSThemeCompatible" content="no"/>
+<![endif]-->
+<!--[if lt IE 7]>
+<style>
+  body > main {
+   height: 100%;
+  }
+</style><![endif]-->
+<!--[if lt IE 9]>
+<script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
+<!--Apple-->
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<!--JS helpers -->
 <script type="text/javascript" src="js/libs/helpers.js"></script>
+<!--Include JS/CSS-->
 <script>(function() {
   if (!/debug/.test(window.location.search)) {
     console.log('[App] PRODUCTION MODE (Console is disabled)');
@@ -41,6 +62,7 @@
 }).call(this);
 
 </script>
+<!--App initialization!-->
 <script>
   window.app = new App({
    name: "Frontend Skeleton",
@@ -50,12 +72,4 @@
    onLoad: function(){}
   });
   
-  
-</script><!--[if lt IE 7]>
-<style>
-  body > main {
-   height: 100%;
-  }
-</style><![endif]-->
-<!--[if lt IE 9]>
-<script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
+</script>

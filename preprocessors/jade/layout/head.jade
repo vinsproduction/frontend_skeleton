@@ -1,20 +1,49 @@
-meta(charset='utf-8')
-title SCELETON
-meta(name='description', content='')
-meta(name='keywords', content='')
 
-meta(property='og:title', content='')
-meta(property='og:url', content='')
-meta(property='og:image', content='')
-meta(property='og:description', content='')
+meta(name='viewport' content='width=1265')
 
-link(rel='image_src', href='')
+meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 
-link(rel="shortcut icon",type="image/x-icon",href="")
-meta(name='viewport', content='width=1265')
+//SEO
+title FRONTEND SCELETON
+meta(name='description' content='')
+meta(name='keywords' content='')
 
-script(type='text/javascript', src='js/libs/helpers.js')
+// Open Graph
+meta(property='og:title' content='')
+meta(property='og:url' content='')
+meta(property='og:image' content='')
+meta(property='og:description' content='')
 
+//favicon
+link(rel='image_src' href='')
+link(rel="shortcut icon" type="image/x-icon" href="")
+
+//IE
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta http-equiv="imagetoolbar" content="no"/>
+<meta http-equiv="MSThemeCompatible" content="no"/>
+<![endif]-->
+
+<!--[if lt IE 7]>
+style.
+	body > main {
+		height: 100%;
+	}
+<![endif]-->
+			
+<!--[if lt IE 9]>
+script(type='text/javascript' src='js/libs/html5shiv.js')
+<![endif]-->
+
+//Apple
+meta(name="apple-mobile-web-app-capable" content="yes")
+meta(name="apple-mobile-web-app-status-bar-style" content="black-translucent")
+
+//JS helpers 
+script(type='text/javascript' src='js/libs/helpers.js')
+
+//Include JS/CSS
 script
 
 	:coffee
@@ -23,7 +52,7 @@ script
 
 			console.log '[App] PRODUCTION MODE (Console is disabled)'
 
-			$$.disableConsole()
+			//$$.disableConsole()
 			
 			$$.includeJS 'js/libs/lib.min.js'
 			$$.includeCSS 'css/project.css'
@@ -55,7 +84,7 @@ script
 			$$.includeJS 'js/app.router.js'
 			$$.includeJS 'js/app.js'
 
-
+//App initialization!
 script.
 
 	window.app = new App({
@@ -65,18 +94,6 @@ script.
 		root: "",
 		onLoad: function(){}
 	});
-
-
-<!--[if lt IE 7]>
-style.
-	body > main {
-		height: 100%;
-	}
-<![endif]-->
-			
-<!--[if lt IE 9]>
-script(type='text/javascript', src='js/libs/html5shiv.js')
-<![endif]-->
 
 block css
 	//-

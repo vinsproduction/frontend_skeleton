@@ -52,7 +52,8 @@ import-font(originalname, newname)
 
 	@font-face
 		font-family newname
-		src url(originalname +'.eot'), url(originalname +'.eot?#iefix') format('embedded-opentype'), url(originalname +'.svg') format('svg'), url(originalname +'.woff') format('woff'), url(originalname +'.ttf') format('truetype')
+		src url(originalname +'.eot')
+		src url(originalname +'.eot?#iefix') format('embedded-opentype'), url(originalname +'.svg') format('svg'), url(originalname +'.woff') format('woff'), url(originalname +'.ttf') format('truetype')
 		font-weight normal
 		font-style normal
 
@@ -72,7 +73,7 @@ block(w = false,h = false)
 block-inline(w = false,h = false)
 	display -moz-inline-stack
 	display inline-block
-	//vertical-align top
+	vertical-align top
 	zoom 1
 	*display inline
 	if w
@@ -95,3 +96,12 @@ block-right(w = false,h = false)
 		width (w)px
 	if h
 		height (h)px
+
+absolute()
+	position absolute
+
+relative()
+	position relative
+
+fixed()
+	position fixed

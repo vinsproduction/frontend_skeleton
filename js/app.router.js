@@ -16,11 +16,14 @@ Router = (function(_super) {
 
   Router.prototype.routes = {
     "": "index",
-    "/": "index",
-    "page/:id": "page",
-    "page/:id/": "page",
-    "ooops": "ooops",
-    "ooops/": "ooops",
+    "!": "index",
+    "!index": "index",
+    "!page": "page",
+    "!page/": "page",
+    "!page/:id": "page",
+    "!page/:id/": "page",
+    "!ooops": "ooops",
+    "!ooops/": "ooops",
     "*path": "notFound"
   };
 
@@ -35,9 +38,15 @@ Router = (function(_super) {
   /* до перехода */
 
   Router.prototype.before = function(route) {
-    this.route = route === "" ? "empty" : route;
-    app.debugBox.log('route:' + this.route);
-    console.debug('[Route]', this.route);
+    if (route === "") {
+      this.route = "empty";
+    } else {
+      this.route = route;
+    }
+    if (app.debugBox.state) {
+      app.debugBox.log("route", this.route);
+    }
+    console.debug('[App > router]', 'route:', this.route);
     return this.hide();
   };
 
@@ -50,56 +59,47 @@ Router = (function(_super) {
     return $('body > main > .sections > section').removeClass('current').hide();
   };
 
-  Router.prototype.show = function(el) {
+  Router.prototype.show = function() {
     this.hide();
-    return el.addClass('current').show();
+    return this.el.addClass('current').show();
   };
 
   Router.prototype.scrollTop = function(speed) {
-    if (speed == null) {
-      speed = 400;
-    }
-    if (speed) {
-      return $('html,body').animate({
-        scrollTop: 0
-      }, speed);
-    } else {
-      return $('body').scrollTop(0);
-    }
+    return app.scroll(0, speed);
   };
 
 
   /*  404 страница */
 
   Router.prototype.notFound = function(path) {
-    var el;
-    el = $('section#notFound');
+    this.el = $('section#notFound');
     this.scrollTop();
-    return this.show(el);
+    this.show();
+    console.error("[App > router] route " + path + " not found");
+    if (app.debugBox.state) {
+      return app.debugBox.log("route", "not found");
+    }
   };
 
 
   /* Серверная ошибка */
 
   Router.prototype.ooops = function() {
-    var el;
-    el = $('section#ooops');
+    this.el = $('section#ooops');
     this.scrollTop();
-    return this.show(el);
+    return this.show();
   };
 
   Router.prototype.index = function() {
-    var el;
-    el = $('section#index');
+    this.el = $('section#index');
     this.scrollTop();
-    return this.show(el);
+    return this.show();
   };
 
   Router.prototype.page = function(id) {
-    var el;
-    el = $('section#page');
+    this.el = $('section#page');
     this.scrollTop();
-    return this.show(el);
+    return this.show();
   };
 
   return Router;

@@ -2,24 +2,29 @@
 
 class App
 
-	## Имя проекта (опционально) ###
-	name: 'Frontend Skeleton'
 
-	### Хеш навигация в проекте ###
-	hashNavigate: false
+	constructor: (options={}) ->
 
-	### Удаленный хост для локальной разработки с api ###
-	remoteHost: "http://vinsproduction.com"
+		@options = 
 
-	### Путь до картинок и прочей статики ###
-	root: ""
+			## Имя проекта (опционально) ###
+			name: 'Frontend Skeleton'
 
-	### Callback загрузки приложения ###
-	onLoad: ->
+			### Хеш навигация в проекте ###
+			hashNavigate: false
 
-	constructor: (@opt={}) ->
+			### Удаленный хост для локальной разработки с api ###
+			remoteHost: "http://vinsproduction.com"
 
-		for k,v of @opt
+			### Путь до картинок и прочей статики ###
+			root: ""
+
+			### Callback загрузки приложения ###
+			onLoad: ->
+
+		_.extend @options, options
+
+		for k,v of @options
 			@[k] = v
 
 		### Дебаг режим ###
@@ -41,13 +46,14 @@ class App
 		if !$$.browser.msie and @local
 			livereloadPort = 777 # Порт должен совпадать с портом в Gruntfile.js
 			$$.includeJS "http://localhost:#{livereloadPort}/livereload.js"
-			console.debug "[Livereload] http://localhost:#{livereloadPort}/livereload.js"
+			console.debug "[App > Livereload] http://localhost:#{livereloadPort}/livereload.js"
 
 		### Если Ie! ###
 		if $$.browser.msie6 or $$.browser.msie7 #or $$.browser.msie8
 
 			#@redirect 'ie'
 			return
+
 
 		### Настройки библиотек ###
 		do @libs
@@ -61,6 +67,9 @@ class App
 
 			### Дебагер ###
 			if 'box' in @debug then do @debugBox.init
+
+			### Слушатели ###
+			do @listeners
 
 			### модели/api ###
 			if Models
@@ -78,9 +87,147 @@ class App
 			### Настройки соцсетей ###
 			do @social.init
 
-			console.debug "[App]", @name, "onLoad", "options:", @opt
+			console.debug "[App > onLoad]", @name, "Options >", @options, ' Debug >', @debug, ' Browser >', $$.browser.name
 
 			do @onLoad
+
+
+	listeners: ->
+
+		self = @
+
+		### Scroll ###
+
+		### Listener callback scroll
+		app.onScroll (v) ->
+		###
+
+		@onScroll = (callback) ->
+			$(window).on 'AppOnScroll', (event,v) ->
+				callback(v) if callback
+
+		lastScrollTop = 0
+		$(window).scroll (e) ->
+
+			top = self.scroll()
+
+			if top isnt lastScrollTop
+
+				action = if top > lastScrollTop then 'down' else 'up'
+				lastScrollTop = top
+
+				if app.debugBox.state
+					app.debugBox.log "scroll", "#{action} | top: #{top}px"
+
+				vars = {top,action,e}
+
+				$(window).trigger("AppOnScroll",[vars])
+
+		$(window).scroll()
+
+		### Resize ###
+
+		### Listener callback resize
+		app.onResize (v) ->
+		###
+		@onResize = (callback) ->
+			$(window).on 'AppOnResize', (event,v) ->
+				callback(v) if callback
+
+		$(window).resize =>
+
+			vars = app.size()
+
+			if app.debugBox.state
+				app.debugBox.log "sect", "header: #{vars.headerHeight}px | sections: #{vars.sectionsHeight}px | footer: #{vars.footerHeight}px"
+				app.debugBox.log "res", "#{vars.windowWidth}px x #{vars.windowHeight}px"
+
+			$(window).trigger("AppOnResize",[vars])
+
+		$(window).resize()
+
+	### Scroll
+
+	app.scroll(500)
+	app.scroll(500,true)
+	app.scroll('section#guests',true)
+	app.scroll('section#guests',{time:500,easing:'easeOutElastic',done:function(){console.log('animate complete');}})
+	app.scroll($('section#guests'))
+
+	###
+	scroll: (v,animate) ->
+
+		time 		= animate?.time 	|| 800
+		easing 	= animate?.easing 	|| 'easeOutCubic'
+		callback = false
+
+		# Если это строка, то имеется ввиду селектор
+		if v? and _.isString(v)
+
+			el = $(v)
+
+			if el[0] and _.isElement(el[0])
+
+				if animate
+					$('html,body').stop().animate {scrollTop : el.offset().top}, time, easing, ->
+						if !callback
+							callback = true 
+							animate.done() if animate.done
+				else
+					$('html,body').scrollTop el.offset().top
+
+		# Если это элемент дома
+		else if v? and v[0] and _.isElement(v[0])
+
+			if animate
+				$('html,body').stop().animate {scrollTop : v.offset().top}, time, easing, ->
+					if !callback
+						callback = true 
+						animate.done() if animate.done
+			else
+				$('html,body').scrollTop v.offset().top
+
+		# Если передается значение
+		else if v?
+
+			if animate
+				$('html,body').stop().animate {scrollTop :v}, time, easing, ->
+					if !callback
+						callback = true 
+						animate.done() if animate.done
+			else
+				$('html,body').scrollTop v
+
+		# В противном случае отдается значение
+		else
+
+			$(window).scrollTop()
+
+	### Размеры ###
+	size: ->
+
+		vars = 
+
+			windowWidth 	: $(window).width()
+			windowHeight 	: $(window).height()
+
+			documentWidth 	: $(document).width()
+			documentHeight : $(document).height()
+
+			bodyWidth 		: parseInt($('body').width())
+			bodyHeight 		: parseInt($('body').height())
+
+			mainWidth		: parseInt($('body > main').width())
+			mainHeight		: parseInt($('body > main').height())
+
+			headerWidth		: parseInt($('body > main > header').width())
+			headerHeight	: parseInt($('body > main > header').height())
+
+			footerWidth		: parseInt($('body > main > footer').width())
+			footerHeight	: parseInt($('body > main > footer').height())
+			
+			sectionsWidth 	: parseInt($('body > main > .sections').width())
+			sectionsHeight : parseInt($('body > main > .sections').height())
 
 
 	### Hash навигация ###
@@ -88,7 +235,7 @@ class App
 		console.debug '[App > redirect]', page
 
 		if window.location.hash is "#!" + page
-			@router.navigate("!/redirect")
+			@router.navigate("redirect")
 		
 		@router.navigate("!" + page,true)
 
@@ -102,7 +249,7 @@ class App
 	###
 
 	### API pefix, например номер версии серверного api /api/v1/ ###
-	apiPrefix: "/"
+	apiPrefix: ""
 
 	api: (url,type="GET",data={},callback) ->
 
@@ -120,13 +267,13 @@ class App
 
 				if !res.data then res.data = []
 
-				console.debug "[Api] #{url} | #{type}:", data, "| success: ", response
+				console.debug "[App > api] #{url} | #{type}:", data, "| success: ", response
 
 				callback res.data if callback
 
 			else if res.status is 'error'
 
-				console.error "[Api] #{url} | #{type}:", data, "| error: ", response
+				console.error "[App > api] #{url} | #{type}:", data, "| error: ", response
 
 				callback {error: res.error} if callback
 
@@ -134,25 +281,31 @@ class App
 
 			response = if $$.browser.msie then JSON.stringify res else res
 
-			console.error "[Api] #{url} | #{type}:", data, "| fail: ", response
+			console.error "[App > api] #{url} | #{type}:", data, "| fail: ", response
 
 			if res.readyState is 4 and res.status is 404
 				### запрос в никуда ###
-				app.redirect '/404' if @hashNavigate
+				app.redirect "server-404" if @hashNavigate
 			else
 				### серверная ошибка ###
-				app.redirect '/ooops' if @hashNavigate
+				app.redirect "server-error" if @hashNavigate
 		)
 
 	### Debug monitor ###
 	debugBox:
 
+		state: false
+
 		init: ->
 
+			@state = true
+
 			$('body').append """
-				<div id="debugBox" style="font-size: 14px;background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;">
+				<div id="debugBox" style="font-size: 14px;background:transparent;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#60000000,endColorstr=#60000000);background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;">
 					debug box
 					<pre class="res">resolution: <span></span></pre>
+					<pre class="scroll">scroll: <span>none</span></pre>
+					<pre class="route">route: <span>none</span></pre>
 					<div class="sect"></div>
 					<div class="log"></div>
 					<pre class="mediaHeight" style="color:red;"></pre>
@@ -165,20 +318,28 @@ class App
 		
 		log: (place, log) ->
 
-			if place is 'log'
+			switch place
+				when 'log'
+					$('#debugBox .log').append """
+						<pre>#{log}</pre>
+					"""
+				when 'sect'
+					$('#debugBox .sect').html """
+						<pre>#{log}</pre>
+					"""
+				when 'res'
+					$('#debugBox .res span').html """
+						#{log}
+					"""
+				when 'scroll'
+					$('#debugBox .scroll span').html """
+						#{log}
+					"""
+				when 'route'
+					$('#debugBox .route span').html """
+						#{log}
+					"""
 
-				$('#debugBox .log').append """
-					<pre>#{log}</pre>
-				"""
-			else if place is 'sect'
-
-				$('#debugBox .sect').html """
-					<pre>#{log}</pre>
-				"""
-			else if place is 'res'
-				$('#debugBox .res span').html """
-					#{log}
-				"""
 
 			app.debugBox.color()
 
@@ -193,7 +354,7 @@ class App
 	social:
 
 		vkontakteApiId		: ''
-		facebookApiId		: ''
+		facebookApiId		: '283793001782971'
 		odnoklassnikiApiId: ''
 
 
@@ -213,7 +374,6 @@ class App
 			# 		xfbml: true
 			# 		oauth: true
 
-		
 		### Пост на стенку в соц. сети ###
 		wallPost:
 
@@ -289,16 +449,15 @@ class App
 			просто хелпер для всего приложения для навешивания на ссылки, например:
 			app.social.share.it()
 			###
-			itVk: -> 
+			it: -> 
 				options = {}
 				options.title 	= "title"
 				options.description 	= "description"
-				options.url 	= app.social.url
 				options.image 	= "#{app.host}/img/for_post.png"
 
-				@vkontakte options
+				@facebook options
 
-			vkontakte: (options={}) ->
+			vk: (options={}) ->
 
 				options.url = options.url || app.social.url
 
@@ -311,7 +470,16 @@ class App
 
 				@popup url
 
-			odnoklassniki: (options={}) ->
+			vkCount: (url,callback) ->
+
+				url = url || app.social.url
+
+				VK = {Share: {}} if !VK
+				VK.Share.count = (index, count) -> callback(count) if callback
+
+				$.getJSON 'http://vkontakte.ru/share.php?act=count&index=1&url=' + url + '&format=json&callback=?'
+
+			ok: (options={}) ->
 
 				options.url = options.url || app.social.url
 
@@ -321,7 +489,16 @@ class App
 
 				@popup url
 
-			facebook: (options={}) ->
+			okCount: (url,callback) ->
+
+				url = url || app.social.url
+
+				ODKL = {} if !ODKL
+				ODKL.updateCountOC = (a, count, b, c) -> callback(count) if callback
+
+				$.getJSON 'http://www.odnoklassniki.ru/dk?st.cmd=extOneClickLike&uid=odklocs0&callback=?&ref='+url
+
+			fb: (options={}) ->
 
 				options.url = options.url || app.social.url
 
@@ -333,7 +510,14 @@ class App
 
 				@popup url
 
-			twitter: (options={}) ->
+			fbCount: (url,callback) ->
+
+				url = url || app.social.url
+
+				$.getJSON 'http://api.facebook.com/restserver.php?method=links.getStats&callback=?&urls=' + escape(url) + '&format=json', (data) ->
+					callback(data[0].share_count) if callback
+
+			tw: (options={}) ->
 
 				options.url = options.url || app.social.url
 
@@ -343,6 +527,13 @@ class App
 				url += "&counturl=" + encodeURIComponent(options.url)
 
 				@popup url
+
+			twCount: (url,callback) ->
+
+				url = url || app.social.url
+
+				$.getJSON 'http://urls.api.twitter.com/1/urls/count.json?url=' + url + '&callback=?', (data) ->
+					callback(data.count) if callback
 
 			mailru: (options={}) ->
 

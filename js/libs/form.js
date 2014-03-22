@@ -264,9 +264,7 @@ Form = (function() {
     if (!this.errors[name]) {
       this.errors[name] = [];
     }
-    if (this.errors[name].indexOf(val) < 0) {
-      return this.errors[name].push(val);
-    }
+    return this.errors[name].push(val);
   };
 
   Form.prototype.addErrorAlert = function(name) {
@@ -439,13 +437,20 @@ Form = (function() {
   /* HELPERS */
 
   Form.prototype.log = function() {
-    var i, newArgs;
+    var e, i, newArgs, _results;
     if (console && this.logs) {
-      newArgs = ["[Form]", "#" + this.formId];
-      for (i in arguments) {
-        newArgs.push(arguments[i]);
+      try {
+        newArgs = ["[Form]", "#" + this.formId];
+        _results = [];
+        for (i in arguments) {
+          newArgs.push(arguments[i]);
+          _results.push(console.log.apply(console, newArgs));
+        }
+        return _results;
+      } catch (_error) {
+        e = _error;
+        return console.log.apply("[Form #" + this.formId + "]", arguments);
       }
-      return console.log.apply(console, newArgs);
     }
   };
 

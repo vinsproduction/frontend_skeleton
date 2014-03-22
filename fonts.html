@@ -1,18 +1,40 @@
 <!DOCTYPE html>
-<head>
-  <meta charset="utf-8">
-  <title>SCELETON</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-  <meta property="og:title" content="">
-  <meta property="og:url" content="">
-  <meta property="og:image" content="">
-  <meta property="og:description" content="">
-  <link rel="image_src" href="">
-  <link rel="shortcut icon" type="image/x-icon" href="">
-  <meta name="viewport" content="width=1265">
-  <script type="text/javascript" src="js/libs/helpers.js"></script>
-  <script>(function() {
+<html>
+  <head>
+    <meta name="viewport" content="width=1265">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--SEO-->
+    <title>FRONTEND SCELETON</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- Open Graph-->
+    <meta property="og:title" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:description" content="">
+    <!--favicon-->
+    <link rel="image_src" href="">
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <!--IE--><!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <meta http-equiv="MSThemeCompatible" content="no"/>
+    <![endif]-->
+    <!--[if lt IE 7]>
+    <style>
+      body > main {
+       height: 100%;
+      }
+    </style><![endif]-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
+    <!--Apple-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--JS helpers -->
+    <script type="text/javascript" src="js/libs/helpers.js"></script>
+    <!--Include JS/CSS-->
+    <script>(function() {
   if (!/debug/.test(window.location.search)) {
     console.log('[App] PRODUCTION MODE (Console is disabled)');
     $$.disableConsole();
@@ -41,71 +63,69 @@
 
 }).call(this);
 
-  </script>
-  <script>
-    window.app = new App({
-     name: "Frontend Skeleton",
-     hashNavigate: false,
-     remoteHost: "",
-     root: "",
-     onLoad: function(){}
-    });
-    
-    
-  </script><!--[if lt IE 7]>
-  <style>
-    body > main {
-     height: 100%;
-    }
-  </style><![endif]-->
-  <!--[if lt IE 9]>
-  <script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
-</head>
-<body>
-  <div id="popups" class="yea">
-    <div data-popup-name="custom" class="popup">
-      <div data-popup-close class="close"></div>
-      <div class="header">
-        <h1></h1>
-      </div>
-      <div class="body"></div>
-      <div class="footer">
-        <button data-popup-close>закрыть</button>
-      </div>
-    </div>
-    <div data-popup-name="unique" class="popup">
-      <div data-popup-close class="close"></div>
-      <div class="header">
-        <h1>unique</h1>
-      </div>
-      <div class="body">
-        <p>popup</p>
-      </div>
-      <div class="footer">
-        <button data-popup-button>закрыть</button>
-      </div>
-    </div>
-    <div data-popup-close class="background"></div>
-  </div>
-  <main>
-    <header class="fixed">
-      <div class="container">
-        <div class="content">
-          <div class="logo">
-            <h5><a href="index.html">HEADER (fixed)</a></h5>
-          </div>
-          <nav id="menu">
-            <ul>
-              <li><a href="guideline.html">Guideline</a></li>
-              <li><a href="fonts.html">Fonts</a></li>
-              <li><a href="http://vinsproduction.com/skeleton/tutorials/" target="_blank">Tutorials</a></li>
-            </ul>
-          </nav>
+    </script>
+    <!--App initialization!-->
+    <script>
+      window.app = new App({
+       name: "Frontend Skeleton",
+       hashNavigate: false,
+       remoteHost: "",
+       root: "",
+       onLoad: function(){}
+      });
+      
+    </script>
+  </head>
+  <body>
+    <!--Vkontakte openapi-->
+    <script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
+    <!--Facebook SDK -->
+    <div id="fb-root"></div>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <div id="popups" class="yea">
+      <div data-popup-name="custom" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1></h1>
+        </div>
+        <div class="body"></div>
+        <div class="footer">
+          <button data-popup-close>закрыть</button>
         </div>
       </div>
-    </header>
-    <div class="sections">
-      <style>@font-face {
+      <div data-popup-name="unique" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1>unique</h1>
+        </div>
+        <div class="body">
+          <p>popup</p>
+        </div>
+        <div class="footer">
+          <button data-popup-button>закрыть</button>
+        </div>
+      </div>
+      <div data-popup-close class="background"></div>
+    </div>
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">HEADER (fixed)</a></h5>
+            </div>
+            <nav id="menu">
+              <ul>
+                <li><a href="guideline.html">Guideline</a></li>
+                <li><a href="fonts.html">Fonts</a></li>
+                <li><a href="http://vinsproduction.com/skeleton/tutorials/" target="_blank">Tutorials</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="sections">
+        <style>@font-face {
   font-family: 'Ubuntu';
   src: url("fonts/ubuntu-r-webfont.eot"), url("fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/ubuntu-r-webfont.svg") format('svg'), url("fonts/ubuntu-r-webfont.woff") format('woff'), url("fonts/ubuntu-r-webfont.ttf") format('truetype');
   font-weight: normal;
@@ -124,8 +144,8 @@
   font-style: normal;
 }
 
-      </style>
-      <script>(function() {
+        </style>
+        <script>(function() {
   window.Fonts = (function() {
     Fonts.prototype.fontFamily = 'Arial';
 
@@ -157,8 +177,8 @@
 
 }).call(this);
 
-      </script>
-      <script>(function() {
+        </script>
+        <script>(function() {
   var fonts;
 
   fonts = new Fonts;
@@ -187,22 +207,23 @@
 
 }).call(this);
 
-      </script>
-      <section id="fonts">
+        </script>
+        <section id="fonts">
+          <div class="container">
+            <div class="content">
+              <h1>FONTS</h1>
+              <div class="fonts"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <footer>
         <div class="container">
           <div class="content">
-            <h1>FONTS</h1>
-            <div class="fonts"></div>
+            <h5>FOOTER (always at the bottom)</h5>
           </div>
         </div>
-      </section>
-    </div>
-    <footer>
-      <div class="container">
-        <div class="content">
-          <h5>FOOTER (always at the bottom)</h5>
-        </div>
-      </div>
-    </footer>
-  </main>
-</body>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -4,32 +4,28 @@ var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 App = (function() {
-  App.prototype.name = 'Frontend Skeleton';
-
-
-  /* Хеш навигация в проекте */
-
-  App.prototype.hashNavigate = false;
-
-
-  /* Удаленный хост для локальной разработки с api */
-
-  App.prototype.remoteHost = "http://vinsproduction.com";
-
-
-  /* Путь до картинок и прочей статики */
-
-  App.prototype.root = "";
-
-
-  /* Callback загрузки приложения */
-
-  App.prototype.onLoad = function() {};
-
-  function App(opt) {
+  function App(options) {
     var k, livereloadPort, v, _ref;
-    this.opt = opt != null ? opt : {};
-    _ref = this.opt;
+    if (options == null) {
+      options = {};
+    }
+    this.options = {
+      name: 'Frontend Skeleton',
+
+      /* Хеш навигация в проекте */
+      hashNavigate: false,
+
+      /* Удаленный хост для локальной разработки с api */
+      remoteHost: "http://vinsproduction.com",
+
+      /* Путь до картинок и прочей статики */
+      root: "",
+
+      /* Callback загрузки приложения */
+      onLoad: function() {}
+    };
+    _.extend(this.options, options);
+    _ref = this.options;
     for (k in _ref) {
       v = _ref[k];
       this[k] = v;
@@ -61,7 +57,7 @@ App = (function() {
     if (!$$.browser.msie && this.local) {
       livereloadPort = 777;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
-      console.debug("[Livereload] http://localhost:" + livereloadPort + "/livereload.js");
+      console.debug("[App > Livereload] http://localhost:" + livereloadPort + "/livereload.js");
     }
 
     /* Если Ie! */
@@ -85,6 +81,9 @@ App = (function() {
           _this.debugBox.init();
         }
 
+        /* Слушатели */
+        _this.listeners();
+
         /* модели/api */
         if (Models) {
           _this.models = new Models;
@@ -103,10 +102,163 @@ App = (function() {
 
         /* Настройки соцсетей */
         _this.social.init();
-        console.debug("[App]", _this.name, "onLoad", "options:", _this.opt);
+        console.debug("[App > onLoad]", _this.name, "Options >", _this.options, ' Debug >', _this.debug, ' Browser >', $$.browser.name);
         return _this.onLoad();
       };
     })(this));
+  };
+
+  App.prototype.listeners = function() {
+    var lastScrollTop, self;
+    self = this;
+
+    /* Scroll */
+
+    /* Listener callback scroll
+    		app.onScroll (v) ->
+     */
+    this.onScroll = function(callback) {
+      return $(window).on('AppOnScroll', function(event, v) {
+        if (callback) {
+          return callback(v);
+        }
+      });
+    };
+    lastScrollTop = 0;
+    $(window).scroll(function(e) {
+      var action, top, vars;
+      top = self.scroll();
+      if (top !== lastScrollTop) {
+        action = top > lastScrollTop ? 'down' : 'up';
+        lastScrollTop = top;
+        if (app.debugBox.state) {
+          app.debugBox.log("scroll", "" + action + " | top: " + top + "px");
+        }
+        vars = {
+          top: top,
+          action: action,
+          e: e
+        };
+        return $(window).trigger("AppOnScroll", [vars]);
+      }
+    });
+    $(window).scroll();
+
+    /* Resize */
+
+    /* Listener callback resize
+    		app.onResize (v) ->
+     */
+    this.onResize = function(callback) {
+      return $(window).on('AppOnResize', function(event, v) {
+        if (callback) {
+          return callback(v);
+        }
+      });
+    };
+    $(window).resize((function(_this) {
+      return function() {
+        var vars;
+        vars = app.size();
+        if (app.debugBox.state) {
+          app.debugBox.log("sect", "header: " + vars.headerHeight + "px | sections: " + vars.sectionsHeight + "px | footer: " + vars.footerHeight + "px");
+          app.debugBox.log("res", "" + vars.windowWidth + "px x " + vars.windowHeight + "px");
+        }
+        return $(window).trigger("AppOnResize", [vars]);
+      };
+    })(this));
+    return $(window).resize();
+  };
+
+
+  /* Scroll
+  
+  	app.scroll(500)
+  	app.scroll(500,true)
+  	app.scroll('section#guests',true)
+  	app.scroll('section#guests',{time:500,easing:'easeOutElastic',done:function(){console.log('animate complete');}})
+  	app.scroll($('section#guests'))
+   */
+
+  App.prototype.scroll = function(v, animate) {
+    var callback, easing, el, time;
+    time = (animate != null ? animate.time : void 0) || 800;
+    easing = (animate != null ? animate.easing : void 0) || 'easeOutCubic';
+    callback = false;
+    if ((v != null) && _.isString(v)) {
+      el = $(v);
+      if (el[0] && _.isElement(el[0])) {
+        if (animate) {
+          return $('html,body').stop().animate({
+            scrollTop: el.offset().top
+          }, time, easing, function() {
+            if (!callback) {
+              callback = true;
+              if (animate.done) {
+                return animate.done();
+              }
+            }
+          });
+        } else {
+          return $('html,body').scrollTop(el.offset().top);
+        }
+      }
+    } else if ((v != null) && v[0] && _.isElement(v[0])) {
+      if (animate) {
+        return $('html,body').stop().animate({
+          scrollTop: v.offset().top
+        }, time, easing, function() {
+          if (!callback) {
+            callback = true;
+            if (animate.done) {
+              return animate.done();
+            }
+          }
+        });
+      } else {
+        return $('html,body').scrollTop(v.offset().top);
+      }
+    } else if (v != null) {
+      if (animate) {
+        return $('html,body').stop().animate({
+          scrollTop: v
+        }, time, easing, function() {
+          if (!callback) {
+            callback = true;
+            if (animate.done) {
+              return animate.done();
+            }
+          }
+        });
+      } else {
+        return $('html,body').scrollTop(v);
+      }
+    } else {
+      return $(window).scrollTop();
+    }
+  };
+
+
+  /* Размеры */
+
+  App.prototype.size = function() {
+    var vars;
+    return vars = {
+      windowWidth: $(window).width(),
+      windowHeight: $(window).height(),
+      documentWidth: $(document).width(),
+      documentHeight: $(document).height(),
+      bodyWidth: parseInt($('body').width()),
+      bodyHeight: parseInt($('body').height()),
+      mainWidth: parseInt($('body > main').width()),
+      mainHeight: parseInt($('body > main').height()),
+      headerWidth: parseInt($('body > main > header').width()),
+      headerHeight: parseInt($('body > main > header').height()),
+      footerWidth: parseInt($('body > main > footer').width()),
+      footerHeight: parseInt($('body > main > footer').height()),
+      sectionsWidth: parseInt($('body > main > .sections').width()),
+      sectionsHeight: parseInt($('body > main > .sections').height())
+    };
   };
 
 
@@ -118,7 +270,7 @@ App = (function() {
     }
     console.debug('[App > redirect]', page);
     if (window.location.hash === "#!" + page) {
-      this.router.navigate("!/redirect");
+      this.router.navigate("redirect");
     }
     return this.router.navigate("!" + page, true);
   };
@@ -135,7 +287,7 @@ App = (function() {
 
   /* API pefix, например номер версии серверного api /api/v1/ */
 
-  App.prototype.apiPrefix = "/";
+  App.prototype.apiPrefix = "";
 
   App.prototype.api = function(url, type, data, callback) {
     var host;
@@ -160,12 +312,12 @@ App = (function() {
           if (!res.data) {
             res.data = [];
           }
-          console.debug("[Api] " + url + " | " + type + ":", data, "| success: ", response);
+          console.debug("[App > api] " + url + " | " + type + ":", data, "| success: ", response);
           if (callback) {
             return callback(res.data);
           }
         } else if (res.status === 'error') {
-          console.error("[Api] " + url + " | " + type + ":", data, "| error: ", response);
+          console.error("[App > api] " + url + " | " + type + ":", data, "| error: ", response);
           if (callback) {
             return callback({
               error: res.error
@@ -177,18 +329,18 @@ App = (function() {
       return function(res) {
         var response;
         response = $$.browser.msie ? JSON.stringify(res) : res;
-        console.error("[Api] " + url + " | " + type + ":", data, "| fail: ", response);
+        console.error("[App > api] " + url + " | " + type + ":", data, "| fail: ", response);
         if (res.readyState === 4 && res.status === 404) {
 
           /* запрос в никуда */
           if (_this.hashNavigate) {
-            return app.redirect('/404');
+            return app.redirect("server-404");
           }
         } else {
 
           /* серверная ошибка */
           if (_this.hashNavigate) {
-            return app.redirect('/ooops');
+            return app.redirect("server-error");
           }
         }
       };
@@ -199,8 +351,10 @@ App = (function() {
   /* Debug monitor */
 
   App.prototype.debugBox = {
+    state: false,
     init: function() {
-      return $('body').append("<div id=\"debugBox\" style=\"font-size: 14px;background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;\">\n	debug box\n	<pre class=\"res\">resolution: <span></span></pre>\n	<div class=\"sect\"></div>\n	<div class=\"log\"></div>\n	<pre class=\"mediaHeight\" style=\"color:red;\"></pre>\n	<pre class=\"mediaWidth\" style=\"color:red;\"></pre>\n</div>");
+      this.state = true;
+      return $('body').append("<div id=\"debugBox\" style=\"font-size: 14px;background:transparent;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#60000000,endColorstr=#60000000);background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;\">\n	debug box\n	<pre class=\"res\">resolution: <span></span></pre>\n	<pre class=\"scroll\">scroll: <span>none</span></pre>\n	<pre class=\"route\">route: <span>none</span></pre>\n	<div class=\"sect\"></div>\n	<div class=\"log\"></div>\n	<pre class=\"mediaHeight\" style=\"color:red;\"></pre>\n	<pre class=\"mediaWidth\" style=\"color:red;\"></pre>\n</div>");
     },
     color: function() {
       return $('#debugBox').find(".log pre:nth-child(2n)").css({
@@ -208,12 +362,21 @@ App = (function() {
       });
     },
     log: function(place, log) {
-      if (place === 'log') {
-        $('#debugBox .log').append("<pre>" + log + "</pre>");
-      } else if (place === 'sect') {
-        $('#debugBox .sect').html("<pre>" + log + "</pre>");
-      } else if (place === 'res') {
-        $('#debugBox .res span').html("" + log);
+      switch (place) {
+        case 'log':
+          $('#debugBox .log').append("<pre>" + log + "</pre>");
+          break;
+        case 'sect':
+          $('#debugBox .sect').html("<pre>" + log + "</pre>");
+          break;
+        case 'res':
+          $('#debugBox .res span').html("" + log);
+          break;
+        case 'scroll':
+          $('#debugBox .scroll span').html("" + log);
+          break;
+        case 'route':
+          $('#debugBox .route span').html("" + log);
       }
       return app.debugBox.color();
     }
@@ -237,7 +400,7 @@ App = (function() {
 
   App.prototype.social = {
     vkontakteApiId: '',
-    facebookApiId: '',
+    facebookApiId: '283793001782971',
     odnoklassnikiApiId: '',
     init: function() {
       return this.url = app.local ? app.remoteHost : app.host;
@@ -334,16 +497,15 @@ App = (function() {
       			просто хелпер для всего приложения для навешивания на ссылки, например:
       			app.social.share.it()
        */
-      itVk: function() {
+      it: function() {
         var options;
         options = {};
         options.title = "title";
         options.description = "description";
-        options.url = app.social.url;
         options.image = "" + app.host + "/img/for_post.png";
-        return this.vkontakte(options);
+        return this.facebook(options);
       },
-      vkontakte: function(options) {
+      vk: function(options) {
         var url;
         if (options == null) {
           options = {};
@@ -357,7 +519,22 @@ App = (function() {
         url += "&noparse=true";
         return this.popup(url);
       },
-      odnoklassniki: function(options) {
+      vkCount: function(url, callback) {
+        var VK;
+        url = url || app.social.url;
+        if (!VK) {
+          VK = {
+            Share: {}
+          };
+        }
+        VK.Share.count = function(index, count) {
+          if (callback) {
+            return callback(count);
+          }
+        };
+        return $.getJSON('http://vkontakte.ru/share.php?act=count&index=1&url=' + url + '&format=json&callback=?');
+      },
+      ok: function(options) {
         var url;
         if (options == null) {
           options = {};
@@ -368,7 +545,20 @@ App = (function() {
         url += "&st._surl=" + encodeURIComponent(options.url);
         return this.popup(url);
       },
-      facebook: function(options) {
+      okCount: function(url, callback) {
+        var ODKL;
+        url = url || app.social.url;
+        if (!ODKL) {
+          ODKL = {};
+        }
+        ODKL.updateCountOC = function(a, count, b, c) {
+          if (callback) {
+            return callback(count);
+          }
+        };
+        return $.getJSON('http://www.odnoklassniki.ru/dk?st.cmd=extOneClickLike&uid=odklocs0&callback=?&ref=' + url);
+      },
+      fb: function(options) {
         var url;
         if (options == null) {
           options = {};
@@ -381,7 +571,15 @@ App = (function() {
         url += "&p[images][0]=" + encodeURIComponent(options.image);
         return this.popup(url);
       },
-      twitter: function(options) {
+      fbCount: function(url, callback) {
+        url = url || app.social.url;
+        return $.getJSON('http://api.facebook.com/restserver.php?method=links.getStats&callback=?&urls=' + escape(url) + '&format=json', function(data) {
+          if (callback) {
+            return callback(data[0].share_count);
+          }
+        });
+      },
+      tw: function(options) {
         var url;
         if (options == null) {
           options = {};
@@ -392,6 +590,14 @@ App = (function() {
         url += "&url=" + encodeURIComponent(options.url);
         url += "&counturl=" + encodeURIComponent(options.url);
         return this.popup(url);
+      },
+      twCount: function(url, callback) {
+        url = url || app.social.url;
+        return $.getJSON('http://urls.api.twitter.com/1/urls/count.json?url=' + url + '&callback=?', function(data) {
+          if (callback) {
+            return callback(data.count);
+          }
+        });
       },
       mailru: function(options) {
         var url;

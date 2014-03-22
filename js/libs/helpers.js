@@ -9,34 +9,6 @@ $$; // SHORT NAMESPACE
 	
 	$$ = __helpers__;
 
-	$.disableConsole = function(){
-		window.console = {
-			log: function(){},
-			debug: function(){},
-			warn: function(){},
-			info: function(){},
-			error: function(){}
-		};	
-	};
-
-	if( !window.console ) {
-		$.disableConsole();
-	}
-	else if (!window.console.log) 	{ window.console.log = function(){}; }
-	else if (!window.console.debug) 	{ window.console.debug = function(){}; }
-	else if (!window.console.warn) 	{ window.console.warn = function(){}; }
-	else if (!window.console.info) 	{ window.console.info = function(){}; }
-	else if (!window.console.error) 	{ window.console.error = function(){}; }
-
-	/* Console.log json */
-
-	$.jlog = function(obj) { 
-
-		if( !window.JSON  || !window.JSON.hasOwnProperty('stringify') ) {
-			window.JSON = { stringify: function(){} };
-		}			
-		return window.JSON.stringify(obj); 
-	};
 	
 	/* INCLUDE JAVASCRIPT FILE
 	EXAMPLE IncludeJavaScript('/js/helpers.js'); */
@@ -50,6 +22,7 @@ $$; // SHORT NAMESPACE
 	$.userAgent = navigator.userAgent.toLowerCase();
 
 	$.browser = {
+		name: $.userAgent,
 		version: ($.userAgent.match( /.+(?:me|ox|on|rv|it|era|ie)[\/: ]([\d.]+)/ ) || [0,'0'])[1],
 		opera: /opera/i.test($.userAgent),
 		msie: (/msie/i.test($.userAgent) && !/opera/i.test($.userAgent)),
@@ -73,6 +46,39 @@ $$; // SHORT NAMESPACE
 		opera_mobile: /opera mini|opera mobi/i.test($.userAgent),
 		mac: /mac/i.test($.userAgent)
 	};
+
+	if( !window.JSON  || !window.JSON.hasOwnProperty('stringify') ) {
+		window.JSON = { stringify: function(){} };
+	};
+
+	$.disableConsole = function(){
+		window.console = {
+			log: function(){},
+			debug: function(){},
+			warn: function(){},
+			info: function(){},
+			error: function(){}
+		};	
+	};
+
+	if( !window.console ) {
+		$.disableConsole();
+	}
+
+	
+	if (!window.console.debug) { if(window.console.log){window.console.debug 	= window.console.log}else{window.console.debug = function(){};} }
+	if (!window.console.warn) 	{ if(window.console.log){window.console.warn 	= window.console.log}else{window.console.warn = function(){};} }
+	if (!window.console.info) 	{ if(window.console.log){window.console.info 	= window.console.log}else{window.console.info = function(){};} }
+	if (!window.console.error) { if(window.console.log){window.console.error 	= window.console.log}else{window.console.error = function(){};} }
+	if (!window.console.log) 	{ window.console.log = function(){}; }
+
+
+	/* Console.log json */
+
+	$.jlog = function(obj) { 
+		return window.JSON.stringify(obj); 
+	};
+	
 
 	/* EXAMPLE
 	   getDate('d/m-y h:i') 

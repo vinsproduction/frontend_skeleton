@@ -3,69 +3,27 @@
 	===============
 	=== PROJECT ===
 	===============
-
-	(!) Все глобальные классы и переменные начинаются с префикса g
-
 */
+
+// Все глобальные классы начинаются с префикса g
+
+// _______ КОНСТАНТЫ ________
+
+// Путь до статики
+$root = '../'
+
+// Ширина контейнера с контентом
+$mainWidth 	= 1265
+
+/* _________ IMPORT ________*/
 
 @import 'normalize.css'
 @import 'mixins'
 
-/* _________ FONTS _________ */
-
-import-font('../fonts/ubuntu-r-webfont','Ubuntu')
-
-// MAIN CONSTANTS
-
-g-mainWidth 	= 1265
-g-mainHeight 	= 1000
-
-
-// UNIQ MIXINS */
-
-font-family(name)
-	line-height 1.4
-	font-family name, helvetica,verdana,arial,tahoma
-
-font(size,name)
-	//font-size unit(size*6.5, '%') convert px to percents
-	font-size size
-	font-family name
-
-bg(filename, arguments=false)
-	if !arguments
-		arguments = no-repeat
-	background url('../img/' + filename) arguments
-
-
-/* _________ HELPERS ________*/
-
-.g-clearfix
-	clear both
-
-.g-hide
-	display none
-
-.g-hidden
-	visibility hidden
-
-.g-block-inline
-	vertical-align top
-	block-inline()
-
-.g-block-left
-	block-left()
-
-.g-block-right
-	block-right()
-
-
 /*_________ GUIDELINE _______*/
 
-/*
-	Все глобальные стили кнопок, форм, ссылок, списков и тд.
-	описываются здесь
-*/
+//Все глобальные стили кнопок, форм, ссылок, списков и тд.
+//описываются здесь
 
 @require 'guideline'
 
@@ -79,11 +37,10 @@ body
 	height 100%
 	overflow-x hidden
 	overflow-y auto
-	font-family Ubuntu
+	font-family $mainFont
 	
-	background-color g-color-graydarker
-
 	// bg 'bg.jpg', top center
+	background-color $color-graydarker
 	// background-attachment fixed
 	// -webkit-background-size cover
 	// -moz-background-size cover
@@ -92,13 +49,13 @@ body
 	
 body > main
 	
-	position relative
+	relative()
 	min-height 100%
 	width 100%
 	
 	// Фон с изображением
 	bg 'bg.jpg', repeat-y center center
-
+	// background-color $color-graydarker
 	// background-attachment fixed
 	// -webkit-background-size cover
 	// -moz-background-size cover
@@ -113,24 +70,24 @@ body > main > header
 	width 100%
 	height 40px
 
-	background g-color-gray
+	background $color-gray
 
 	&.fixed
 		position fixed
 		top 0
 
 	> .container
-		width  (g-mainWidth)px
+		width  ($mainWidth)px
 		height (40 - 12*2)px
 		padding 12px 0
 		margin 0 auto
 
-		background g-color-graylight
+		background $color-graylight
 
 		> .content
 			padding 0 5px
 			block-inline()
-			width  (g-mainWidth - 5*2)px
+			width  ($mainWidth - 5*2)px
 
 			.logo
 				a
@@ -144,7 +101,7 @@ body > main > header
 				a 
 					text-decoration none
 					block-inline()
-					position relative
+					relative()
 					color #FFF
 
 				ul
@@ -161,25 +118,25 @@ body > main > header
 /*_________ FOOTER ___________*/
 
 body > main > footer
-	position absolute
+	absolute()
 	bottom 0
 	z-index 2
 	width 100%
 	height 40px
 
-	background g-color-graydark
+	background $color-graydark
 
 	&.fixed
 		position fixed
 		bottom 0
 
 	> .container
-		width  (g-mainWidth)px
+		width  ($mainWidth)px
 		height (40 - 12*2)px
 		padding 12px 0
 		margin 0 auto
 
-		background g-color-gray
+		background $color-gray
 
 		> .content
 			padding 0 5px
@@ -198,21 +155,20 @@ body > main > .sections
 	> section
 
 		clear both
-		position relative
+		relative()
 		z-index 1
 		width 100%
 		block-inline()
 
 		> .container
-			position relative
-			width  (g-mainWidth)px
+			relative()
+			width  ($mainWidth)px
 			height 100%
 			margin 0 auto
 
 			background #F2E5D5
 
 			> .content
-				block-inline()
 				padding 50px 20px
 
 
@@ -221,27 +177,31 @@ body > main > .sections
 section#index
 	.container
 		.content
-			//
+			p 
+				margin 20px 0
+				line-height 1.4
 
+
+/* _________ DEV PAGES _________*/
 
 section#guideline
 	
 	h1
-		font 36px Ubuntu
+		font 36px $mainFont
 
 	.row
 		block-inline()
 		clear both
 		width 100%
-		border-top 1px solid g-color-gray
+		border-top 1px solid $color-gray
 		padding 20px 0
 
 	.colors
 		div
 			block-left 100 50
-			color #FFF
 			padding 3px
-
+			&.bg
+				color #FFF
 
 section#fonts
 	.container
@@ -267,11 +227,9 @@ section#fonts
 					.uppercase
 						text-transform uppercase
 
-
 /* _________ POPUPS ________*/
 
 @require 'popup'
-
 
 /* _________ MEDIA _________ */
 
