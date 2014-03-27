@@ -13,18 +13,47 @@
   font-weight: normal;
   font-style: normal;
 }
-/* _________ MIXINS _________ */
-/* _________ HELPERS ________*/
-.g-clearfix {
+/* _________ GLOBAL _________
+
+Все глобальные КЛАССЫ описываются здесь
+и начинаются с префикса g
+*/
+.g-clearfix:before,
+.g-clearfix:after {
+  content: " ";
+  display: table;
+}
+.g-clearfix:after {
   clear: both;
 }
 .g-hide {
-  display: none;
+  display: none !important;
 }
-.g-hidden {
+.g-vhide {
+  display: block;
   visibility: hidden;
 }
+.g-show {
+  display: block;
+}
+.g-vshow {
+  display: block;
+  visibility: visible;
+}
+.g-block-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .g-block-inline {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+.g-block-left {
+  float: left;
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: top;
@@ -39,7 +68,37 @@
   zoom: 1;
   *display: inline;
 }
-/*_________ GUIDELINE _______*/
+.g-center {
+  text-align: center;
+}
+.g-left {
+  float: left;
+}
+.g-right {
+  float: right;
+}
+.g-row {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 100%;
+  margin: 10px 0;
+}
+.g-row:before,
+.g-row:after {
+  content: " ";
+  display: table;
+}
+.g-row:after {
+  clear: both;
+}
+/* _______ GUIDELINE _______
+
+Все глобальные СТИЛИ кнопок, форм, ссылок, списков и тд.
+описываются здесь
+*/
 .g-bg-color-graydarker {
   background-color: #222;
 }
@@ -53,7 +112,7 @@
   background-color: #999;
 }
 .g-bg-color-graylighter {
-  background-color: #a9a9a9;
+  background-color: #ccc;
 }
 .g-color-graydarker {
   color: #222;
@@ -68,42 +127,42 @@
   color: #999;
 }
 .g-color-graylighter {
-  color: #a9a9a9;
+  color: #ccc;
 }
 p {
   font-size: 16px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 h1 {
   font-size: 36px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 h2 {
   font-size: 30px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 h3 {
   font-size: 24px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 h4 {
   font-size: 18px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 h5 {
   font-size: 14px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 h6 {
   font-size: 12px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 ul {
   list-style-type: none;
@@ -144,7 +203,7 @@ a {
 .g-btn-1 {
   font-size: 18px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   width: 200px;
   height: 50px;
   display: block;
@@ -178,7 +237,7 @@ a {
 .g-btn-2 {
   font-size: 18px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   width: 200px;
   height: 50px;
   display: block;
@@ -212,7 +271,7 @@ a {
 .g-btn-3 {
   font-size: 18px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   width: 350px;
   height: 50px;
   display: block;
@@ -254,13 +313,13 @@ select:focus {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  border: 1px solid #a9a9a9;
+  border: 1px solid #ccc;
   width: 278px;
   height: 23px;
   padding: 5px 10px;
   font-size: 16px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 .g-input-1:focus {
   border: 1px solid #555;
@@ -274,13 +333,13 @@ select:focus {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   border-radius: 5px;
-  border: 1px solid #a9a9a9;
+  border: 1px solid #ccc;
   width: 278px;
   height: 78px;
   padding: 10px 10px;
   font-size: 16px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 .g-textarea-1:focus {
   border: 1px solid #555;
@@ -298,7 +357,7 @@ select:focus {
   height: 35px;
   font-size: 16px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 .g-select-1:focus {
   border: 1px solid #555;
@@ -323,7 +382,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   background-color: #222;
 }
 body > main {
@@ -390,6 +449,14 @@ body > main > header > .container > .content nav#menu ul li {
   float: left;
   margin: 0 0 0 50px;
 }
+body > main > header > .container > .content .logo {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
 /*_________ FOOTER ___________*/
 body > main > footer {
   position: absolute;
@@ -454,7 +521,7 @@ section#index .container .content p {
 section#guideline h1 {
   font-size: 36px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
 section#guideline .row {
   display: -moz-inline-stack;
@@ -468,7 +535,14 @@ section#guideline .row {
   padding: 20px 0;
 }
 section#guideline .colors div {
-  block-left: 100 50;
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 100px;
+  height: 50px;
   padding: 3px;
 }
 section#guideline .colors div.bg {
@@ -508,7 +582,7 @@ section#fonts .container .content .fonts p .uppercase {
   height: 100%;
   width: 100%;
   top: 0;
-  float: left;
+  left: 0;
   z-index: 88888;
   background: #000;
   opacity: 0.6;
@@ -528,8 +602,7 @@ section#fonts .container .content .fonts p .uppercase {
 #popups .popup .close {
   cursor: pointer;
   position: absolute;
-  float: right;
-  width: -36px;
+  right: -36px;
   top: -33px;
   width: 56px;
   height: 52px;
@@ -554,7 +627,7 @@ section#fonts .container .content .fonts p .uppercase {
 #popups .popup[data-popup-name="custom"] .body {
   font-size: 24px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   color: #333;
   padding: 0 90px;
 }
@@ -580,7 +653,7 @@ section#fonts .container .content .fonts p .uppercase {
 #popups .popup[data-popup-name="unique"] .body {
   font-size: 24px;
   line-height: 1;
-  font-family: 'Ubuntu', helvetica, verdana, arial, tahoma;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
   color: #333;
   padding: 0 90px;
 }
@@ -594,5 +667,25 @@ section#fonts .container .content .fonts p .uppercase {
 @media (max-height: 768px) {
   #debugBox .mediaHeight:after {
     content: '@media(max-height: 768px)';
+  }
+}
+@media (max-width: 767px) {
+  #debugBox .mediaWidth:after {
+    content: '@media(max-width: 767px)';
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #debugBox .mediaWidth:after {
+    content: '@media(min-width: 768px) and (max-width: 991px)';
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  #debugBox .mediaWidth:after {
+    content: '@media(min-width: 992px) and (max-width: 1199px)';
+  }
+}
+@media (min-width: 1200px) {
+  #debugBox .mediaWidth:after {
+    content: '@media(min-width: 1200px)';
   }
 }

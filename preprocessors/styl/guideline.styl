@@ -11,11 +11,11 @@
 /* _________ КОНСТАНТЫ _________ */
 
 
-$color-graydarker 	= #222
-$color-graydark 		= #333
-$color-gray 			= #555
-$color-graylight 		= #999
-$color-graylighter 	= #A9A9A9
+$color-graydarker 	= lighten(#000, 13.5%)
+$color-graydark 		= lighten(#000, 20%)
+$color-gray 			= lighten(#000, 33.5%)
+$color-graylight 		= lighten(#000, 60%)
+$color-graylighter 	= lighten(#000, 80%)
 
 
 /* _________ ЦВЕТА _________ */
@@ -159,7 +159,7 @@ input:focus, textarea:focus, select:focus
 .g-input-1
 	border-radius(5px)
 	border 1px solid $color-graylighter
-	box 300 - 10*2 - 1*2, 35 - 5*2 - 1*2
+	size 300 - 10*2 - 1*2, 35 - 5*2 - 1*2
 	padding 5px 10px
 	font 16px $mainFont
 
@@ -174,7 +174,7 @@ input:focus, textarea:focus, select:focus
 .g-textarea-1
 	border-radius(5px)
 	border 1px solid $color-graylighter
-	box 300 - 10*2 - 1*2, 100 - 10*2 - 1*2
+	size 300 - 10*2 - 1*2, 100 - 10*2 - 1*2
 	padding 10px 10px
 	font 16px $mainFont
 
@@ -186,7 +186,7 @@ input:focus, textarea:focus, select:focus
 
 .g-select-1
 	border-radius(5px)
-	box 300, 35
+	size 300, 35
 	font 16px $mainFont
 
 	&:focus
@@ -196,8 +196,8 @@ input:focus, textarea:focus, select:focus
 		border 1px solid #F00
 
 .g-checkbox-1
-	box 25 25
+	size 25 25
 
 
 .g-radio-1
-	box 25 25
+	size 25 25

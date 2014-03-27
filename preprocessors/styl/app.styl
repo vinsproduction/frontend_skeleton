@@ -19,17 +19,17 @@
 $root = '../'
 
 // Ширина контейнера с контентом
-$mainWidth 	= 1265
+$mainWidth = 1265
 
 // Главный шрифт
-$mainFont  = 'Ubuntu'
+$mainFont = Ubuntu
 
 /* _________ FONTS _________ */
 
 import-font($root + 'fonts/ubuntu-r-webfont','Ubuntu')
 
 
-/* _________ MIXINS _________ */
+// _________ MIXINS _________
 
 font-family(name)
 	line-height 1
@@ -46,31 +46,20 @@ bg(filename, arguments=false)
 	background url($root + 'img/' + filename) arguments
 
 
-/* _________ HELPERS ________*/
+/* _________ GLOBAL _________
 
-.g-clearfix
-	clear both
+Все глобальные КЛАССЫ описываются здесь
+и начинаются с префикса g
+*/
 
-.g-hide
-	display none
-
-.g-hidden
-	visibility hidden
-
-.g-block-inline
-	block-inline()
-
-.g-block-left
-	block-left()
-
-.g-block-right
-	block-right()
+@require 'global'
 
 
-/*_________ GUIDELINE _______*/
+/* _______ GUIDELINE _______
 
-//Все глобальные стили кнопок, форм, ссылок, списков и тд.
-//описываются здесь
+Все глобальные СТИЛИ кнопок, форм, ссылок, списков и тд.
+описываются здесь
+*/
 
 @require 'guideline'
 

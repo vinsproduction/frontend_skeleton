@@ -437,20 +437,14 @@ Form = (function() {
   /* HELPERS */
 
   Form.prototype.log = function() {
-    var e, i, newArgs, _results;
+    var argument, newArgs, _i, _len;
     if (console && this.logs) {
-      try {
-        newArgs = ["[Form]", "#" + this.formId];
-        _results = [];
-        for (i in arguments) {
-          newArgs.push(arguments[i]);
-          _results.push(console.log.apply(console, newArgs));
-        }
-        return _results;
-      } catch (_error) {
-        e = _error;
-        return console.log.apply("[Form #" + this.formId + "]", arguments);
+      newArgs = ["[Form]", "#" + this.formId];
+      for (_i = 0, _len = arguments.length; _i < _len; _i++) {
+        argument = arguments[_i];
+        newArgs.push(argument);
       }
+      return console.log.apply(console, newArgs);
     }
   };
 

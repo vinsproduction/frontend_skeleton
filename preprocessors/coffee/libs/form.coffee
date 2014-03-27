@@ -406,13 +406,12 @@ class Form
 
 	log: () ->
 		if console and @logs
-			try
-				newArgs = ["[Form]","##{@formId}"]
-				for i of arguments
-					newArgs.push arguments[i]
-					console.log.apply(console,newArgs)
-			catch e
-				console.log.apply("[Form ##{@formId}]",arguments)
+			
+			newArgs = ["[Form]","##{@formId}"]
+			for argument in arguments
+				newArgs.push argument
+			console.log.apply(console,newArgs)
+			
 			
 			
 

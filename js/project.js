@@ -352,7 +352,7 @@ Router = (function(_super) {
 })(Backbone.Router);
 
 
-/* Front-end Skeleton / ver. 2.0 / 17.03.2014 */
+/* Front-end Skeleton / ver. 2.1 / rev. 27.03.2014 / vinsproduction */
 var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -374,6 +374,9 @@ App = (function() {
       /* Путь до картинок и прочей статики */
       root: "",
 
+      /* Визуальный дебаггер */
+      box: false,
+
       /* Callback загрузки приложения */
       onLoad: function() {}
     };
@@ -382,7 +385,11 @@ App = (function() {
     this.hashNavigate = this.options.hashNavigate;
     this.remoteHost = this.options.remoteHost;
     this.root = this.options.root;
+    this.box = this.options.box;
     this.onLoad = this.options.onLoad;
+
+    /* Настройка window.console */
+    this.console();
 
     /* Дебаг режим */
     this.debugMode = /debug/.test(window.location.search);
@@ -407,15 +414,10 @@ App = (function() {
     })(this)();
 
     /* Только для локальной разработки! */
-    if (!$$.browser.msie && this.local) {
+    if (this.local && window.WebSocket) {
       livereloadPort = 777;
       $$.includeJS("http://localhost:" + livereloadPort + "/livereload.js");
       console.debug("[App > Livereload] http://localhost:" + livereloadPort + "/livereload.js");
-    }
-
-    /* Если Ie! */
-    if ($$.browser.msie6 || $$.browser.msie7) {
-      return;
     }
 
     /* Настройки библиотек */
@@ -430,7 +432,7 @@ App = (function() {
       return function() {
 
         /* Дебагер */
-        if (__indexOf.call(_this.debug, 'box') >= 0) {
+        if (__indexOf.call(_this.debug, 'box') >= 0 || _this.box) {
           _this.debugBox.init();
         }
 
@@ -455,10 +457,78 @@ App = (function() {
 
         /* Настройки соцсетей */
         _this.social.init();
-        console.debug("[App > onLoad]", _this.name, "Options >", _this.options, ' Debug >', _this.debug, ' Browser >', $$.browser.name);
+        window.console.info("[App > onLoad]", _this.name, "Options >", _this.options, " Debug >", _this.debug, " Browser > " + $$.browser.name + " ver. " + $$.browser.version);
         return _this.onLoad();
       };
     })(this));
+  };
+
+  App.prototype.console = function() {
+    var log, self;
+    self = this;
+    window.originalConsole = console;
+    window.console = {
+      log: function() {},
+      debug: function() {},
+      warn: function() {},
+      info: function() {},
+      error: function() {}
+    };
+    log = function() {
+      var args, argument, e, type, _i, _len;
+      type = arguments[0];
+      args = _.rest(arguments);
+      log = "";
+      for (_i = 0, _len = args.length; _i < _len; _i++) {
+        argument = args[_i];
+        log += _.isObject(argument) ? $$.jlog(argument) : argument;
+        log += " ";
+      }
+      try {
+        switch (type) {
+          case 'log':
+            this.log.apply(this, args);
+            break;
+          case 'debug':
+            this.debug.apply(this, args);
+            break;
+          case 'warn':
+            this.warn.apply(this, args);
+            break;
+          case 'info':
+            this.info.apply(this, args);
+            break;
+          case 'error':
+            this.error.apply(this, args);
+        }
+      } catch (_error) {
+        e = _error;
+        switch (type) {
+          case 'log':
+            this.log(log);
+            break;
+          case 'debug':
+            this.debug(log);
+            break;
+          case 'warn':
+            this.warn(log);
+            break;
+          case 'info':
+            this.info(log);
+            break;
+          case 'error':
+            this.error(log);
+        }
+      }
+      if ((__indexOf.call(self.debug, 'box') >= 0 || self.box) && self.debugBox.state && self.debugBox.logs) {
+        return self.debugBox.log('log', log);
+      }
+    };
+    window.console.log = _.bind(log, window.originalConsole, 'log');
+    window.console.debug = _.bind(log, window.originalConsole, 'debug');
+    window.console.warn = _.bind(log, window.originalConsole, 'warn');
+    window.console.info = _.bind(log, window.originalConsole, 'info');
+    return window.console.error = _.bind(log, window.originalConsole, 'error');
   };
 
   App.prototype.listeners = function() {
@@ -653,7 +723,7 @@ App = (function() {
       data = {};
     }
     host = this.local ? this.remoteHost : this.host;
-    url = host + this.apiPrefix + url;
+    url = host + "/" + this.apiPrefix + url;
     return $.ajax({
       type: type,
       dataType: 'json',
@@ -706,20 +776,28 @@ App = (function() {
   /* Debug monitor */
 
   App.prototype.debugBox = {
+    logs: true,
     state: false,
     init: function() {
       this.state = true;
-      return $('body').append("<div id=\"debugBox\" style=\"font-size: 14px;background:transparent;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#60000000,endColorstr=#60000000);background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;\">\n	debug box\n	<pre class=\"res\">resolution: <span></span></pre>\n	<pre class=\"scroll\">scroll: <span>none</span></pre>\n	<pre class=\"route\">route: <span>none</span></pre>\n	<div class=\"sect\"></div>\n	<div class=\"log\"></div>\n	<pre class=\"mediaHeight\" style=\"color:red;\"></pre>\n	<pre class=\"mediaWidth\" style=\"color:red;\"></pre>\n</div>");
+      return $('body').append("<div id=\"debugBox\" style=\"max-width: 400px;background:transparent;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#60000000,endColorstr=#60000000);background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;\">\n	DebugBox - " + app.name + "\n	<pre class=\"browser\">browser: <span>" + $$.browser.name + " ver." + $$.browser.version + "</span></pre>\n	<pre class=\"res\">resolution: <span></span></pre>\n	<pre class=\"scroll\">scroll: <span>none</span></pre>\n	<pre class=\"route\">route: <span>none</span></pre>\n	<pre class=\"sect\"></pre>\n	<pre class=\"mediaHeight\" style=\"color:red;\"></pre>\n	<pre class=\"mediaWidth\" style=\"color:red;\"></pre>\n	<div class=\"log\" style=\"margin-top: 10px; max-height: 80px;overflow-y:auto;word-wrap: break-word;\"><div></div></div>\n</div>");
     },
-    color: function() {
-      return $('#debugBox').find(".log pre:nth-child(2n)").css({
-        color: 'gray'
+    style: function() {
+      var el;
+      el = $('#debugBox');
+      el.find(".log").css({
+        'color': '#85FF00'
+      }).scrollTop(el.find(".log div").height());
+      return el.find("pre,span").css({
+        'font': '14px monospace',
+        'padding': 0,
+        'margin': 0
       });
     },
     log: function(place, log) {
       switch (place) {
         case 'log':
-          $('#debugBox .log').append("<pre>" + log + "</pre>");
+          $('#debugBox .log div').append("<pre>" + log + "</pre>\n<pre>------</pre>");
           break;
         case 'sect':
           $('#debugBox .sect').html("<pre>" + log + "</pre>");
@@ -733,7 +811,7 @@ App = (function() {
         case 'route':
           $('#debugBox .route span').html("" + log);
       }
-      return app.debugBox.color();
+      return this.style();
     }
   };
 

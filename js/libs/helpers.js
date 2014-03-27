@@ -22,7 +22,7 @@ $$; // SHORT NAMESPACE
 	$.userAgent = navigator.userAgent.toLowerCase();
 
 	$.browser = {
-		name: $.userAgent,
+		userAgent: $.userAgent,
 		version: ($.userAgent.match( /.+(?:me|ox|on|rv|it|era|ie)[\/: ]([\d.]+)/ ) || [0,'0'])[1],
 		opera: /opera/i.test($.userAgent),
 		msie: (/msie/i.test($.userAgent) && !/opera/i.test($.userAgent)),
@@ -47,9 +47,13 @@ $$; // SHORT NAMESPACE
 		mac: /mac/i.test($.userAgent)
 	};
 
-	if( !window.JSON  || !window.JSON.hasOwnProperty('stringify') ) {
-		window.JSON = { stringify: function(){} };
+	// Get Browser
+	for (var i in $.browser) {
+		if($.browser[i] === true){
+			$.browser.name = i;
+		}
 	};
+	
 
 	$.disableConsole = function(){
 		window.console = {
@@ -64,8 +68,8 @@ $$; // SHORT NAMESPACE
 	if( !window.console ) {
 		$.disableConsole();
 	}
-
 	
+
 	if (!window.console.debug) { if(window.console.log){window.console.debug 	= window.console.log}else{window.console.debug = function(){};} }
 	if (!window.console.warn) 	{ if(window.console.log){window.console.warn 	= window.console.log}else{window.console.warn = function(){};} }
 	if (!window.console.info) 	{ if(window.console.log){window.console.info 	= window.console.log}else{window.console.info = function(){};} }

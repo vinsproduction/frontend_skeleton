@@ -1,4 +1,5 @@
-// Mixins
+
+/*_________ MIXINS ________*/
 
 vendor(prop, args)
 	-webkit-{prop} args
@@ -57,51 +58,72 @@ import-font(originalname, newname)
 		font-weight normal
 		font-style normal
 
-box(w = false,h = false)
+
+clearfix()
+	&:before,
+	&:after
+		content " "
+		display table
+	&:after
+		clear both
+
+size(w = false,h = false)
 	if w
 		width (w)px
 	if h
 		height (h)px
 
+show(visibility=false)
+	if visibility
+		display block
+		visibility visible
+	else
+		display block
+
+hide(visibility=false)
+	if visibility
+		display block
+		visibility hidden
+	else
+		display none !important
+
+
 block(w = false,h = false)
 	display block
-	if w
-		width (w)px
-	if h
-		height (h)px
-	
+	size(w,h)
+
+block-center(w = false,h = false)
+	block(w,h)
+	margin-left auto
+	margin-right auto
+
 block-inline(w = false,h = false)
 	display -moz-inline-stack
 	display inline-block
 	vertical-align top
 	zoom 1
 	*display inline
-	if w
-		width (w)px
-	if h
-		height (h)px
+	size(w,h)
 
-left(w = false,h = false)
+box-left(w = false,h = false)
 	float left
-	if w
-		width (w)px
-	if h
-		height (h)px
+	size(w,h)
+
+box-right(w = false,h = false)
+	float right
+	size(w,h)
+
+block-left(w = false,h = false)
+	float left
+	block-inline(w,h)
 
 block-right(w = false,h = false)
 	float right
-	block-inline()
-	if w
-		width (w)px
-	if h
-		height (h)px
+	block-inline(w,h)
 
-right(w = false,h = false)
-	float right
-	if w
-		width (w)px
-	if h
-		height (h)px
+
+center()
+	text-align center
 
 absolute()
 	position absolute

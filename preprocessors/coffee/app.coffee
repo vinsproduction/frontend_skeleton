@@ -1,4 +1,4 @@
-### Front-end Skeleton / ver. 2.0 / 17.03.2014 ###
+### Front-end Skeleton / ver. 2.1 / rev. 27.03.2014 / vinsproduction ###
 
 class App
 
@@ -19,6 +19,9 @@ class App
 			### Путь до картинок и прочей статики ###
 			root: ""
 
+			### Визуальный дебаггер ###
+			box: false
+
 			### Callback загрузки приложения ###
 			onLoad: ->
 
@@ -28,7 +31,11 @@ class App
 		@hashNavigate 	= @options.hashNavigate
 		@remoteHost 	= @options.remoteHost
 		@root 			= @options.root
+		@box 				= @options.box
 		@onLoad 			= @options.onLoad
+
+		### Настройка window.console ###
+		do @console
 
 		### Дебаг режим ###
 		@debugMode = /debug/.test(window.location.search)
@@ -39,22 +46,16 @@ class App
 		### HOST! ###
 		@host = window.location.protocol + "//" + window.location.host
 
-
 		### Возвращает параметры дебага, напр. ?debug=test -> вернет test ###
 		@debug = do =>
 			debug = $$.urlParam('debug')
-			return if debug then debug.split(',') else []
+			if debug then debug.split(',') else []
 
 		### Только для локальной разработки! ###
-		if !$$.browser.msie and @local
+		if @local and window.WebSocket
 			livereloadPort = 777 # Порт должен совпадать с портом в Gruntfile.js
 			$$.includeJS "http://localhost:#{livereloadPort}/livereload.js"
 			console.debug "[App > Livereload] http://localhost:#{livereloadPort}/livereload.js"
-
-		### Если Ie! ###
-		if $$.browser.msie6 or $$.browser.msie7 #or $$.browser.msie8
-			#@redirect 'ie'
-			return
 
 		### Настройки библиотек ###
 		do @libs
@@ -67,7 +68,7 @@ class App
 		$ =>
 
 			### Дебагер ###
-			if 'box' in @debug then do @debugBox.init
+			if 'box' in @debug or @box then do @debugBox.init
 
 			### Слушатели ###
 			do @listeners
@@ -88,9 +89,58 @@ class App
 			### Настройки соцсетей ###
 			do @social.init
 
-			console.debug "[App > onLoad]", @name, "Options >", @options, ' Debug >', @debug, ' Browser >', $$.browser.name
+			window.console.info "[App > onLoad]", @name, "Options >", @options, " Debug >", @debug, " Browser > #{$$.browser.name} ver. #{$$.browser.version}"
 
 			do @onLoad
+
+
+	console: ->
+
+		self = @
+
+		window.originalConsole = console
+		window.console =
+			log: ->
+			debug: ->
+			warn: ->
+			info: ->
+			error: ->
+
+
+		log = ->
+
+			type = arguments[0]
+			args = _.rest(arguments)
+
+			log = ""
+			for argument in args
+
+				log += if _.isObject(argument) then $$.jlog(argument) else argument
+				log += " "
+			
+			try
+				switch type
+					when 'log' 		then this.log.apply(this,args)
+					when 'debug' 	then this.debug.apply(this,args)
+					when 'warn' 	then this.warn.apply(this,args)
+					when 'info' 	then this.info.apply(this,args)
+					when 'error'	then this.error.apply(this,args)
+	
+			catch e
+				switch type
+					when 'log' 		then this.log(log)
+					when 'debug' 	then this.debug(log)
+					when 'warn' 	then this.warn(log)
+					when 'info' 	then this.info(log)
+					when 'error' 	then this.error(log)
+
+			self.debugBox.log('log', log) if ('box' in self.debug or self.box) and self.debugBox.state and self.debugBox.logs
+
+		window.console.log 	= _.bind log, window.originalConsole,'log'
+		window.console.debug = _.bind log, window.originalConsole,'debug'
+		window.console.warn 	= _.bind log, window.originalConsole,'warn'
+		window.console.info 	= _.bind log, window.originalConsole,'info'
+		window.console.error = _.bind log, window.originalConsole,'error'
 
 
 	listeners: ->
@@ -259,7 +309,7 @@ class App
 
 		host = if @local then @remoteHost else @host
 
-		url =  host + @apiPrefix + url
+		url =  host + "/" + @apiPrefix + url
 
 		$.ajax({ type, dataType:'json', url, data })
 
@@ -298,34 +348,50 @@ class App
 	### Debug monitor ###
 	debugBox:
 
-		state: false
+		logs: true # Отображать console.log в боксе
+
+		state: false # Готовность к использованию 
 
 		init: ->
 
 			@state = true
 
 			$('body').append """
-				<div id="debugBox" style="font-size: 14px;background:transparent;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#60000000,endColorstr=#60000000);background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;">
-					debug box
+				<div id="debugBox" style="max-width: 400px;background:transparent;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#60000000,endColorstr=#60000000);background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;">
+					DebugBox - #{app.name}
+					<pre class="browser">browser: <span>#{$$.browser.name} ver.#{$$.browser.version}</span></pre>
 					<pre class="res">resolution: <span></span></pre>
 					<pre class="scroll">scroll: <span>none</span></pre>
 					<pre class="route">route: <span>none</span></pre>
-					<div class="sect"></div>
-					<div class="log"></div>
+					<pre class="sect"></pre>
 					<pre class="mediaHeight" style="color:red;"></pre>
 					<pre class="mediaWidth" style="color:red;"></pre>
+					<div class="log" style="margin-top: 10px; max-height: 80px;overflow-y:auto;word-wrap: break-word;"><div></div></div>
 				</div>
 			"""
 
-		color:-> $('#debugBox').find(".log pre:nth-child(2n)").css({color: 'gray'})
+		style:->
 
-		
+			el = $('#debugBox')
+
+			el.find(".log")
+				.css
+					'color': '#85FF00'
+
+				.scrollTop el.find(".log div").height()
+
+			el.find("pre,span").css
+				'font': '14px monospace'
+				'padding':0
+				'margin':0
+
 		log: (place, log) ->
 
 			switch place
 				when 'log'
-					$('#debugBox .log').append """
+					$('#debugBox .log div').append """
 						<pre>#{log}</pre>
+						<pre>------</pre>
 					"""
 				when 'sect'
 					$('#debugBox .sect').html """
@@ -345,7 +411,7 @@ class App
 					"""
 
 
-			app.debugBox.color()
+			@style()
 
 	### Всякие библиотеки для общего пользования ###
 	libs: ->
