@@ -24,8 +24,11 @@ class App
 
 		_.extend @options, options
 
-		for k,v of @options
-			@[k] = v
+		@name 			= @options.name
+		@hashNavigate 	= @options.hashNavigate
+		@remoteHost 	= @options.remoteHost
+		@root 			= @options.root
+		@onLoad 			= @options.onLoad
 
 		### Дебаг режим ###
 		@debugMode = /debug/.test(window.location.search)
@@ -50,10 +53,8 @@ class App
 
 		### Если Ie! ###
 		if $$.browser.msie6 or $$.browser.msie7 #or $$.browser.msie8
-
 			#@redirect 'ie'
 			return
-
 
 		### Настройки библиотек ###
 		do @libs
@@ -71,15 +72,15 @@ class App
 			### Слушатели ###
 			do @listeners
 
-			### модели/api ###
+			### Модели/Api ###
 			if Models
 				@models 	= new Models
 
-			### контроллеры/рендеры ###
+			### Контроллеры/Рендеры ###
 			if Views
 				@views 	= new Views
 
-			### Роутер/хеш навигация ###
+			### Роутер/Хеш навигация ###
 			if @hashNavigate
 				@router = new Router
 				Backbone.history.start()
@@ -158,7 +159,7 @@ class App
 	scroll: (v,animate) ->
 
 		time 		= animate?.time 	|| 800
-		easing 	= animate?.easing 	|| 'easeOutCubic'
+		easing 	= animate?.easing || 'easeOutCubic'
 		callback = false
 
 		# Если это строка, то имеется ввиду селектор
@@ -231,13 +232,16 @@ class App
 
 
 	### Hash навигация ###
+
+	routePrefix: "!"
+
 	redirect: (page = "") ->
 		console.debug '[App > redirect]', page
 
-		if window.location.hash is "#!" + page
+		if window.location.hash is "##{@routePrefix}" + page
 			@router.navigate("redirect")
 		
-		@router.navigate("!" + page,true)
+		@router.navigate(@routePrefix + page,true)
 
 
 	### @API
@@ -346,7 +350,6 @@ class App
 	### Всякие библиотеки для общего пользования ###
 	libs: ->
 
-		### Крайне важная штука для ajax запросов в рамках разных доменов, в IE!   ###
 		$.support.cors = true
 		$.ajaxSetup({ cache: false, crossDomain: true})
 

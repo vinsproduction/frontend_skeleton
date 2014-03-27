@@ -5,7 +5,7 @@ var App,
 
 App = (function() {
   function App(options) {
-    var k, livereloadPort, v, _ref;
+    var livereloadPort;
     if (options == null) {
       options = {};
     }
@@ -25,11 +25,11 @@ App = (function() {
       onLoad: function() {}
     };
     _.extend(this.options, options);
-    _ref = this.options;
-    for (k in _ref) {
-      v = _ref[k];
-      this[k] = v;
-    }
+    this.name = this.options.name;
+    this.hashNavigate = this.options.hashNavigate;
+    this.remoteHost = this.options.remoteHost;
+    this.root = this.options.root;
+    this.onLoad = this.options.onLoad;
 
     /* Дебаг режим */
     this.debugMode = /debug/.test(window.location.search);
@@ -84,17 +84,17 @@ App = (function() {
         /* Слушатели */
         _this.listeners();
 
-        /* модели/api */
+        /* Модели/Api */
         if (Models) {
           _this.models = new Models;
         }
 
-        /* контроллеры/рендеры */
+        /* Контроллеры/Рендеры */
         if (Views) {
           _this.views = new Views;
         }
 
-        /* Роутер/хеш навигация */
+        /* Роутер/Хеш навигация */
         if (_this.hashNavigate) {
           _this.router = new Router;
           Backbone.history.start();
@@ -264,15 +264,17 @@ App = (function() {
 
   /* Hash навигация */
 
+  App.prototype.routePrefix = "!";
+
   App.prototype.redirect = function(page) {
     if (page == null) {
       page = "";
     }
     console.debug('[App > redirect]', page);
-    if (window.location.hash === "#!" + page) {
+    if (window.location.hash === ("#" + this.routePrefix) + page) {
       this.router.navigate("redirect");
     }
-    return this.router.navigate("!" + page, true);
+    return this.router.navigate(this.routePrefix + page, true);
   };
 
 
@@ -386,8 +388,6 @@ App = (function() {
   /* Всякие библиотеки для общего пользования */
 
   App.prototype.libs = function() {
-
-    /* Крайне важная штука для ajax запросов в рамках разных доменов, в IE! */
     $.support.cors = true;
     return $.ajaxSetup({
       cache: false,

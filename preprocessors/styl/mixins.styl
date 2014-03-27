@@ -81,9 +81,8 @@ block-inline(w = false,h = false)
 	if h
 		height (h)px
 
-block-left(w = false,h = false)
+left(w = false,h = false)
 	float left
-	block-inline()
 	if w
 		width (w)px
 	if h
@@ -92,6 +91,13 @@ block-left(w = false,h = false)
 block-right(w = false,h = false)
 	float right
 	block-inline()
+	if w
+		width (w)px
+	if h
+		height (h)px
+
+right(w = false,h = false)
+	float right
 	if w
 		width (w)px
 	if h

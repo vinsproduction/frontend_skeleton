@@ -7,6 +7,12 @@
 
 // Все глобальные классы начинаются с префикса g
 
+/* _________ IMPORT ________*/
+
+@import 'normalize.css'
+@import 'mixins'
+
+
 // _______ КОНСТАНТЫ ________
 
 // Путь до статики
@@ -15,10 +21,51 @@ $root = '../'
 // Ширина контейнера с контентом
 $mainWidth 	= 1265
 
-/* _________ IMPORT ________*/
+// Главный шрифт
+$mainFont  = 'Ubuntu'
 
-@import 'normalize.css'
-@import 'mixins'
+/* _________ FONTS _________ */
+
+import-font($root + 'fonts/ubuntu-r-webfont','Ubuntu')
+
+
+/* _________ MIXINS _________ */
+
+font-family(name)
+	line-height 1
+	font-family name, helvetica,verdana,arial,tahoma
+
+font(size,name)
+	//font-size unit(size*6.5, '%') convert px to percents
+	font-size size
+	font-family name
+
+bg(filename, arguments=false)
+	if !arguments
+		arguments = no-repeat center center
+	background url($root + 'img/' + filename) arguments
+
+
+/* _________ HELPERS ________*/
+
+.g-clearfix
+	clear both
+
+.g-hide
+	display none
+
+.g-hidden
+	visibility hidden
+
+.g-block-inline
+	block-inline()
+
+.g-block-left
+	block-left()
+
+.g-block-right
+	block-right()
+
 
 /*_________ GUIDELINE _______*/
 
@@ -87,7 +134,7 @@ body > main > header
 		> .content
 			padding 0 5px
 			block-inline()
-			width  ($mainWidth - 5*2)px
+			width ($mainWidth - 5*2)px
 
 			.logo
 				a
