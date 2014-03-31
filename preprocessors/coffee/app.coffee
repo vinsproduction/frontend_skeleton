@@ -118,6 +118,8 @@ class App
 				log += if _.isObject(argument) then $$.jlog(argument) else argument
 				log += " "
 			
+			log = _.escape log
+
 			try
 				switch type
 					when 'log' 		then this.log.apply(this,args)
@@ -135,6 +137,8 @@ class App
 					when 'error' 	then this.error(log)
 
 			self.debugBox.log('log', log) if ('box' in self.debug or self.box) and self.debugBox.state and self.debugBox.logs
+
+			return
 
 		window.console.log 	= _.bind log, window.originalConsole,'log'
 		window.console.debug = _.bind log, window.originalConsole,'debug'

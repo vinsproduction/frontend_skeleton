@@ -484,6 +484,7 @@ App = (function() {
         log += _.isObject(argument) ? $$.jlog(argument) : argument;
         log += " ";
       }
+      log = _.escape(log);
       try {
         switch (type) {
           case 'log':
@@ -521,7 +522,7 @@ App = (function() {
         }
       }
       if ((__indexOf.call(self.debug, 'box') >= 0 || self.box) && self.debugBox.state && self.debugBox.logs) {
-        return self.debugBox.log('log', log);
+        self.debugBox.log('log', log);
       }
     };
     window.console.log = _.bind(log, window.originalConsole, 'log');

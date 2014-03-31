@@ -83,6 +83,7 @@
   vertical-align: top;
   zoom: 1;
   *display: inline;
+  position: relative;
   width: 100%;
   margin: 10px 0;
 }
