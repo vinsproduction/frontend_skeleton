@@ -1,0 +1,982 @@
+/* 
+	=========================
+	=== PROJECT TUTORIALS ===
+	=========================
+*/
+/* _________ IMPORT ________*/
+@import '../../css/normalize.css';
+/* _________ FONTS _________ */
+@font-face {
+  font-family: 'Ubuntu';
+  src: url("../../fonts/ubuntu-r-webfont.eot");
+  src: url("../../fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("../../fonts/ubuntu-r-webfont.svg") format('svg'), url("../../fonts/ubuntu-r-webfont.woff") format('woff'), url("../../fonts/ubuntu-r-webfont.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'consola';
+  src: url("../../fonts/consola-webfont.eot");
+  src: url("../../fonts/consola-webfont.eot?#iefix") format('embedded-opentype'), url("../../fonts/consola-webfont.svg") format('svg'), url("../../fonts/consola-webfont.woff") format('woff'), url("../../fonts/consola-webfont.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+/* _________ GLOBAL _________
+
+Все глобальные КЛАССЫ описываются здесь
+и начинаются с префикса g
+*/
+.g-clearfix:before,
+.g-clearfix:after {
+  content: " ";
+  display: table;
+}
+.g-clearfix:after {
+  clear: both;
+}
+.g-hide {
+  display: none !important;
+}
+.g-vhide {
+  display: block;
+  visibility: hidden;
+}
+.g-show {
+  display: block;
+}
+.g-vshow {
+  display: block;
+  visibility: visible;
+}
+.g-block-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.g-block-inline {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+.g-block-left {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+.g-block-right {
+  float: right;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+.g-center {
+  text-align: center;
+}
+.g-left {
+  float: left;
+}
+.g-right {
+  float: right;
+}
+.g-row {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  position: relative;
+  width: 100%;
+  margin: 10px 0;
+}
+.g-row:before,
+.g-row:after {
+  content: " ";
+  display: table;
+}
+.g-row:after {
+  clear: both;
+}
+.g-color-1 {
+  background: #0e83cd;
+}
+.g-color-2 {
+  background: #f06060;
+}
+.g-color-3 {
+  background: #fcd04b;
+}
+.g-color-4 {
+  background: #2ecc71;
+}
+.g-color-5 {
+  background: #9e54bd;
+}
+.g-color-6 {
+  background: #4593e3;
+}
+.g-color-7 {
+  background: #2ac56c;
+}
+.g-color-8 {
+  background: #3851bc;
+}
+.g-color-9 {
+  background: #96a94b;
+}
+.g-color-10 {
+  background: #16a085;
+}
+.g-color-11 {
+  background: #aab7b7;
+}
+/* _______ GUIDELINE _______
+
+Все глобальные СТИЛИ кнопок, форм, ссылок, списков и тд.
+описываются здесь
+*/
+.g-bg-color-graydarker {
+  background-color: #222;
+}
+.g-bg-color-graydark {
+  background-color: #333;
+}
+.g-bg-color-gray {
+  background-color: #555;
+}
+.g-bg-color-graylight {
+  background-color: #999;
+}
+.g-bg-color-graylighter {
+  background-color: #ccc;
+}
+.g-color-graydarker {
+  color: #222;
+}
+.g-color-graydark {
+  color: #333;
+}
+.g-color-gray {
+  color: #555;
+}
+.g-color-graylight {
+  color: #999;
+}
+.g-color-graylighter {
+  color: #ccc;
+}
+p {
+  font-size: 16px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h1 {
+  font-size: 36px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h2 {
+  font-size: 30px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h3 {
+  font-size: 24px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h4 {
+  font-size: 18px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h5 {
+  font-size: 14px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+h6 {
+  font-size: 12px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+ul {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.g-link-1 {
+  text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  color: #333;
+}
+.g-link-1:hover {
+  border-bottom: 1px solid #333;
+}
+.g-link-2 {
+  text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  color: #333;
+  border-bottom: 1px solid #333;
+}
+.g-link-2:hover {
+  border-bottom: 0;
+}
+.g-btn-1,
+section#page-form .container .content button.reset {
+  font-size: 18px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  width: 200px;
+  height: 50px;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  border: 0;
+  outline: none;
+  text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  color: #fff;
+  background: #555;
+}
+.g-btn-1:hover,
+section#page-form .container .content button.reset:hover {
+  background: #999;
+}
+.g-btn-1 span,
+section#page-form .container .content button.reset span {
+  position: relative;
+  top: 15px;
+}
+.g-btn-2,
+section#page-form .container .content input.submit {
+  font-size: 18px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  width: 200px;
+  height: 50px;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  border: 0;
+  outline: none;
+  text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  color: #fff;
+  background: #333;
+}
+.g-btn-2:hover,
+section#page-form .container .content input.submit:hover {
+  background: #999;
+}
+.g-btn-2 span,
+section#page-form .container .content input.submit span {
+  position: relative;
+  top: 15px;
+}
+.g-btn-3 {
+  font-size: 18px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  width: 350px;
+  height: 50px;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+  border: 0;
+  outline: none;
+  text-decoration: none;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  color: #fff;
+  background: #222;
+}
+.g-btn-3:hover {
+  background: #999;
+}
+.g-btn-3 span {
+  position: relative;
+  top: 15px;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+.g-input-1,
+section#page-form .container .content input[type='text'] {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 278px;
+  height: 23px;
+  padding: 5px 10px;
+  font-size: 16px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+.g-input-1:focus,
+section#page-form .container .content input[type='text']:focus {
+  border: 1px solid #555;
+}
+.g-input-1.error-field,
+section#page-form .container .content input[type='text'].error-field {
+  border: 1px solid #f00;
+}
+.g-textarea-1,
+section#page-form .container .content textarea {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 278px;
+  height: 78px;
+  padding: 10px 10px;
+  font-size: 16px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+.g-textarea-1:focus,
+section#page-form .container .content textarea:focus {
+  border: 1px solid #555;
+}
+.g-textarea-1.error-field,
+section#page-form .container .content textarea.error-field {
+  border: 1px solid #f00;
+}
+.g-select-1,
+section#page-form .container .content select {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  width: 300px;
+  height: 35px;
+  font-size: 16px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+}
+.g-select-1:focus,
+section#page-form .container .content select:focus {
+  border: 1px solid #555;
+}
+.g-select-1.error-field,
+section#page-form .container .content select.error-field {
+  border: 1px solid #f00;
+}
+.g-checkbox-1,
+section#page-form .container .content input[type='checkbox'] {
+  width: 25px;
+  height: 25px;
+}
+.g-radio-1,
+section#page-form .container .content input[type='radio'] {
+  width: 25px;
+  height: 25px;
+}
+pre {
+  line-height: 1;
+  font-family: consola, helvetica, verdana, arial, tahoma;
+  padding: 5px 15px 5px 15px;
+  margin: 10px 0;
+}
+h1,
+h2 {
+  margin: 10px 0;
+}
+h2 span {
+  background: #000;
+  color: #fff;
+  padding: 2px 8px 4px 8px;
+  font-size: 21px;
+  text-transform: lowercase;
+}
+p {
+  margin: 10px 0;
+}
+/*_________ MAIN __________*/
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  background-color: #222;
+}
+body > main {
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  background: url("../../img/bg.jpg") repeat-y center center;
+}
+/*_________ HEADER ___________*/
+body > main > header {
+  z-index: 2;
+  width: 100%;
+  height: 40px;
+  background: #555;
+}
+body > main > header.fixed {
+  position: fixed;
+  top: 0;
+}
+body > main > header > .container {
+  width: 1265px;
+  height: 16px;
+  padding: 12px 0;
+  margin: 0 auto;
+  background: #999;
+}
+body > main > header > .container > .content {
+  padding: 0 5px;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 1255px;
+}
+body > main > header > .container > .content .logo a {
+  text-decoration: none;
+  color: #000;
+}
+body > main > header > .container > .content nav#menu {
+  float: right;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  text-transform: uppercase;
+}
+body > main > header > .container > .content nav#menu a {
+  text-decoration: none;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  position: relative;
+  color: #fff;
+}
+body > main > header > .container > .content nav#menu ul {
+  float: left;
+  padding: 0;
+}
+body > main > header > .container > .content nav#menu ul li {
+  float: left;
+  margin: 0 0 0 50px;
+}
+body > main > header > .container > .content .logo {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+/*_________ FOOTER ___________*/
+body > main > footer {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  width: 100%;
+  height: 40px;
+  background: #333;
+}
+body > main > footer.fixed {
+  position: fixed;
+  bottom: 0;
+}
+body > main > footer > .container {
+  width: 1265px;
+  height: 16px;
+  padding: 12px 0;
+  margin: 0 auto;
+  background: #555;
+}
+body > main > footer > .container > .content {
+  padding: 0 5px;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+/*_________ SECTIONS _________*/
+body > main > .sections {
+  clear: both;
+  width: 100%;
+  padding-bottom: 40px;
+}
+body > main > .sections > section {
+  clear: both;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+body > main > .sections > section > .container {
+  position: relative;
+  width: 1265px;
+  height: 100%;
+  margin: 0 auto;
+  background: #f2e5d5;
+}
+body > main > .sections > section > .container > .content {
+  padding: 50px 20px;
+}
+/* _________ PAGES _________*/
+section#page-index .container .content {
+  width: 1225px;
+}
+section#page-index .container .content li {
+  margin: 15px 0;
+  font-size: 18px;
+}
+section#page-index .container .content li a {
+  color: #000;
+  text-decoration: none;
+  padding: 5px 10px;
+  display: table;
+}
+section#page-index .container .content li a:hover {
+  background: #c1b0a3;
+  color: #fff;
+}
+section#page-render .container .content .clarification {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 580px;
+  line-height: 1;
+  font-family: consola, helvetica, verdana, arial, tahoma;
+  text-align: right;
+  padding: 0 10px;
+}
+section#page-render .container .content .clarification h2 + p {
+  margin-bottom: 95px;
+}
+section#page-render .container .content .example {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 580px;
+  padding: 0 10px;
+}
+section#page-popup .container .content .example {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 260px;
+}
+section#page-popup .container .content .clarification {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 900px;
+  line-height: 1;
+  font-family: consola, helvetica, verdana, arial, tahoma;
+}
+section#page-helpers-images .container .content .g-block-inline {
+  width: 400px;
+}
+section#page-helpers-images .container .content .frame {
+  overflow: hidden;
+  border: 2px solid #f00;
+}
+section#page-helpers-images .container .content .frame.frame-horizontal {
+  display: block;
+  width: 200px;
+  height: 100px;
+}
+section#page-helpers-images .container .content .frame.frame-vertical {
+  display: block;
+  width: 100px;
+  height: 200px;
+}
+section#page-helpers-images .container .content .frame.frame-square {
+  display: block;
+  width: 200px;
+  height: 200px;
+}
+section#page-CreativeButtons .container .content,
+section#page-IconHoverEffects .container .content,
+section#page-CreativeLinkEffects .container .content {
+  width: 100%;
+  padding: 40px 0 0 0;
+  text-align: center;
+}
+section#page-CreativeButtons .container .content p,
+section#page-IconHoverEffects .container .content p,
+section#page-CreativeLinkEffects .container .content p {
+  margin: 0;
+}
+section#page-CreativeButtons .container .content p.text,
+section#page-IconHoverEffects .container .content p.text,
+section#page-CreativeLinkEffects .container .content p.text {
+  padding: 10px 30px;
+}
+section#page-CreativeButtons .container .content .btn,
+section#page-IconHoverEffects .container .content .btn,
+section#page-CreativeLinkEffects .container .content .btn {
+  z-index: 1;
+}
+section#page-CreativeLinkEffects section {
+  padding: 80px 0;
+  text-align: center;
+}
+section#page-map .container .content {
+  padding-top: 80px;
+}
+section#page-map .container .content #shop-map {
+  height: 580px;
+}
+section#page-map .container .content .example {
+  margin-top: 20px;
+}
+section#page-gallery .container .content {
+  background: #f2e5d5;
+}
+section#page-carousel .container .content {
+  position: relative;
+  width: 900px;
+  margin: 0 auto;
+}
+section#page-video .container .content {
+  position: relative;
+  padding: 0;
+}
+section#page-video .container .content .desc {
+  position: absolute;
+  top: 40px;
+  left: 30px;
+  display: table;
+  z-index: 4;
+  background: transparent;
+  -webkit-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  -moz-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  -o-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  background: rgba(0,0,0,0.5);
+  padding: 0 20px;
+  text-align: center;
+}
+section#page-video .container .content .desc h1 {
+  font-size: 54px;
+  font-weight: normal;
+  color: #fff;
+  text-transform: uppercase;
+}
+section#page-video .container .content .desc p {
+  color: #fff;
+  margin: 24px 0 24px 0;
+}
+section#page-video .container .content .desc p a {
+  text-decoration: none;
+  color: #fff;
+}
+section#page-form .container .content label {
+  vertical-align: top;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 150px;
+}
+section#page-form .container .content .field-group {
+  vertical-align: top;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 300px;
+}
+section#page-form .container .content textarea.placeholder,
+section#page-form .container .content input[type='text'].placeholder {
+  color: #ccc;
+}
+section#page-form .container .content .error-field {
+  border: 1px solid #f00;
+}
+section#page-form .container .content .error-alert {
+  vertical-align: top;
+  height: 50px;
+  color: #f00;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 300px;
+  margin-left: 20px;
+  font-size: 14px;
+}
+section#page-form .container .content .error-custom-field {
+  border: 1px solid #00f;
+}
+section#page-form .container .content .error-custom-alert {
+  vertical-align: top;
+  height: 50px;
+  color: #00f;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 300px;
+  margin-left: 20px;
+  font-size: 14px;
+}
+section#page-form .container .content input.submit {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+section#page-form .container .content button.reset {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+section#page-fileuploader .container .content .row-actions {
+  height: 150px;
+}
+section#page-fileuploader .container .content #fileuploader,
+section#page-fileuploader .container .content .qq-upload-button {
+  position: absolute;
+  z-index: 5;
+  cursor: pointer;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+section#page-fileuploader .container .content #fileuploader .qq-upload-drop-area,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-drop-area {
+  position: absolute;
+  left: 220px;
+  width: 500px;
+  height: 150px;
+  background: #ccc;
+}
+section#page-fileuploader .container .content #fileuploader .qq-upload-list,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-list {
+  position: absolute;
+  overflow: auto;
+  left: 733px;
+  width: 500px;
+  height: 150px;
+  background: #fff;
+  color: #000;
+}
+section#page-fileuploader .container .content #fileuploader .qq-upload-list li,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-list li {
+  list-style-type: none;
+  font-size: 12px;
+  text-align: left;
+}
+section#page-fileuploader .container .content #fileuploader .qq-upload-list li span,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-list li span {
+  margin-left: 5px;
+}
+section#page-fileuploader .container .content #fileuploader .qq-upload-list li .qq-upload-failed-text,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-list li .qq-upload-failed-text {
+  display: none;
+}
+/* _________ POPUPS ________*/
+#popups .background {
+  display: none;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 88888;
+  background: #000;
+  opacity: 0.6;
+  -webkit-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  -moz-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  -o-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60);
+}
+#popups .popup {
+  z-index: 99999;
+  position: absolute;
+  display: none;
+  background-color: #fff;
+  border: 10px solid #e2e2e2;
+}
+#popups .popup .close {
+  cursor: pointer;
+  position: absolute;
+  right: -36px;
+  top: -33px;
+  width: 56px;
+  height: 52px;
+  background: url("../../img/close_popup.png") no-repeat center center;
+  background-position: left 0px;
+  text-decoration: none !important;
+  z-index: 98;
+}
+#popups .popup[data-popup-name="custom"] {
+  text-align: center;
+  min-height: 274px;
+  width: 705px;
+}
+#popups .popup[data-popup-name="custom"] .header {
+  padding: 30px 0 50px 0;
+}
+#popups .popup[data-popup-name="custom"] .header h1 {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 30px;
+}
+#popups .popup[data-popup-name="custom"] .body {
+  font-size: 24px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  color: #333;
+  padding: 0 90px;
+}
+#popups .popup[data-popup-name="custom"] .footer {
+  padding: 50px 0 30px 0;
+}
+#popups .popup[data-popup-name="custom"] .footer button {
+  margin: 0 auto;
+}
+#popups .popup[data-popup-name="unique"] {
+  text-align: center;
+  min-height: 274px;
+  width: 705px;
+}
+#popups .popup[data-popup-name="unique"] .header {
+  padding: 30px 0 50px 0;
+}
+#popups .popup[data-popup-name="unique"] .header h1 {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 30px;
+}
+#popups .popup[data-popup-name="unique"] .body {
+  font-size: 24px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  color: #333;
+  padding: 0 90px;
+}
+#popups .popup[data-popup-name="unique"] .footer {
+  padding: 50px 0 30px 0;
+}
+#popups .popup[data-popup-name="unique"] .footer button {
+  margin: 0 auto;
+}
+/* _________ MEDIA _________ */
+@media (max-height: 768px) {
+  #debugBox .mediaHeight:after {
+    content: '@media(max-height: 768px)';
+  }
+}
+@media (max-width: 767px) {
+  #debugBox .mediaWidth:after {
+    content: '@media(max-width: 767px)';
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #debugBox .mediaWidth:after {
+    content: '@media(min-width: 768px) and (max-width: 991px)';
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  #debugBox .mediaWidth:after {
+    content: '@media(min-width: 992px) and (max-width: 1199px)';
+  }
+}
+@media (min-width: 1200px) {
+  #debugBox .mediaWidth:after {
+    content: '@media(min-width: 1200px)';
+  }
+}

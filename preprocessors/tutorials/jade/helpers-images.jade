@@ -1,0 +1,148 @@
+
+extends layout/layout
+
+block content
+
+	section#page-helpers-images
+		.container
+			.content
+
+				h2 Позиционирование картинки по центру внутри родительского элемента
+
+				.clarification
+
+					span.note css
+
+					pre(class="prettyprint linenums").
+
+						.frame {
+							overflow: hidden;
+							border: 2px solid #f00;
+							width: 200px;
+							height: 100px;
+						}
+						.frame img{}
+
+					span.note html
+
+					pre(class="prettyprint linenums") &lt;img src="img/poster_500_500.jpg" onload="$$.imageCenter(this)"&gt;
+
+
+				h2: span Оригинальные размеры картинок
+			
+				.g-row
+					p горизонтальная картинка
+					img(src="img/poster_889_500.jpg")
+					
+				.g-block-inline
+					p вертикальная картинка
+					img(src="img/poster_296_500.jpg")
+							
+				.g-block-inline
+					p квадратная картинка
+					img(src="img/poster_500_500.jpg")
+
+
+				h2: span Простое центрирование
+
+				
+				.g-block-inline
+					p горизонтальный фрейм - квадратная картинка
+					.frame.frame-horizontal
+						img(src="img/poster_500_500.jpg" onload="$$.imageCenter(this)")
+				
+				.g-block-inline
+					p вертикальный фрейм - квадратная картинка
+					.frame.frame-vertical
+						img(src="img/poster_500_500.jpg" onload="$$.imageCenter(this)")
+				
+				.g-block-inline
+					p квадратный фрейм - квадратная картинка
+					.frame.frame-square
+						img(src="img/poster_500_500.jpg" onload="$$.imageCenter(this)")
+
+
+				
+				.g-block-inline
+					p горизонтальный фрейм - горизонтальная картинка
+					.frame.frame-horizontal
+						img(src="img/poster_889_500.jpg" onload="$$.imageCenter(this)")
+				
+				.g-block-inline
+					p вертикальный фрейм - вертикальная картинка
+					.frame.frame-vertical
+						img(src="img/poster_296_500.jpg" onload="$$.imageCenter(this)")
+				
+				.g-block-inline
+					p вертикальный фрейм - горизонтальная картинка
+					.frame.frame-vertical
+						img(src="img/poster_889_500.jpg" onload="$$.imageCenter(this)")
+				
+				.g-block-inline
+					p горизонтальный фрейм - вертикальная картинка
+					.frame.frame-horizontal
+						img(src="img/poster_296_500.jpg" onload="$$.imageCenter(this)")
+				
+				.g-block-inline
+					p квадратный фрейм - горизонтальная картинка
+					.frame.frame-square
+						img(src="img/poster_889_500.jpg" onload="$$.imageCenter(this)")
+				
+				.g-block-inline
+					p квадратный фрейм - вертикальная картинка
+					.frame.frame-square
+						img(src="img/poster_296_500.jpg" onload="$$.imageCenter(this)")
+
+				h2: span Центрирование и масштабирование до рамок родителя
+
+				
+				.g-block-inline
+					p горизонтальный фрейм - квадратная картинка
+					.frame.frame-horizontal
+						img(src="img/poster_500_500.jpg" onload="$$.imageCenter(this,true)")
+				
+				.g-block-inline
+					p вертикальный фрейм - квадратная картинка
+					.frame.frame-vertical
+						img(src="img/poster_500_500.jpg" onload="$$.imageCenter(this,true)")
+				
+				.g-block-inline
+					p квадратный фрейм - квадратная картинка
+					.frame.frame-square
+						img(src="img/poster_500_500.jpg" onload="$$.imageCenter(this,true)")
+
+
+				.g-block-inline
+					p горизонтальный фрейм - горизонтальная картинка
+					.frame.frame-horizontal
+						img(src="img/poster_889_500.jpg" onload="$$.imageCenter(this,true)")
+				
+				.g-block-inline
+					p вертикальный фрейм - вертикальная картинка
+					.frame.frame-vertical
+						img(src="img/poster_296_500.jpg" onload="$$.imageCenter(this,true)")
+				
+				.g-block-inline
+					p вертикальный фрейм - горизонтальная картинка
+					.frame.frame-vertical
+						img(src="img/poster_889_500.jpg" onload="$$.imageCenter(this,true)")
+				
+				.g-block-inline
+					p горизонтальный фрейм - вертикальная картинка
+					.frame.frame-horizontal
+						img(src="img/poster_296_500.jpg" onload="$$.imageCenter(this,true)")
+				
+				.g-block-inline
+					p квадратный фрейм - горизонтальная картинка
+					.frame.frame-square
+						img(src="img/poster_889_500.jpg" onload="$$.imageCenter(this,true)")
+				
+				.g-block-inline
+					p квадратный фрейм - вертикальная картинка
+					.frame.frame-square
+						img(src="img/poster_296_500.jpg" onload="$$.imageCenter(this,true)")
+				
+				.g-block-inline
+					p квадратный фрейм - квадратная картинка
+					.frame.frame-square
+						img(src="img/poster_500_500.jpg" onload="$$.imageCenter(this,true)")

@@ -1,0 +1,72 @@
+extends layout/layout
+
+block append css
+
+block append js
+
+	script(type="text/javascript", src="../js/libs/fileuploader.js")
+
+	script.
+
+		$(document).ready(function(){
+
+			window.q = new qq.FileUploader({
+				element: $('#fileuploader')[0],
+				XhrMode: true,
+				action: '/api/upload',
+				inputName: 'image',
+				params: {
+					test: 1
+				},
+				allowedExtensions: ["jpg", "jpeg", "png"],
+				multiple: true,
+				sizeLimit: 5242880,
+				minSizeLimit: 0,
+				debug: false,
+				messages: {
+					typeError: "{file} has invalid extension. Only {extensions} are allowed.",
+					sizeError: "{file} is too large, maximum file size is {sizeLimit}.",
+					minSizeError: "{file} is too small, minimum file size is {minSizeLimit}.",
+					emptyError: "{file} is empty, please select files again without it.",
+					onLeave: "The files are being uploaded, if you leave now the upload will be cancelled."
+				},
+				template: "<div class=\"qq-uploader\">\n	<div class=\"qq-upload-button\"></div>\n	<ul class=\"qq-upload-list\" ><span>Uploaded list</span></ul>\n	<div class=\"qq-upload-drop-area\" ><span>Drop files here to upload</span></div>\n</div>",
+				onSubmit: function(id, fileName) {},
+				onProgress: function(id, fileName, loaded, total) {
+					return console.log('[Fileuploader] loaded >',loaded, 'total >', total);
+				},
+				showMessage: function(message) {
+					return popup.custom('', message);
+				},
+				onError: function(id, fileName, xhr) {
+					return console.log('[Fileuploader] id >',id, 'fileName >', fileName, 'xhr >', xhr);
+				},
+				onComplete: function(id, filename, responseJSON) {
+					var res = responseJSON;
+					//console.log(res);
+					if (res.success) {
+						console.log('[Fileuploader] success > ', res);
+
+						$('.row-fileresult').append('<img src="img/'+ res.uploadfile +'" />')
+
+					} else {
+						console.log('[Fileuploader] error > ', res);
+					}
+				}
+			});
+
+		});
+
+block content
+
+	section#page-fileuploader
+		.container
+			.content
+
+				.row.row-actions
+
+					.button-1
+						span Загрузить
+						#fileuploader
+
+				.row.row-fileresult

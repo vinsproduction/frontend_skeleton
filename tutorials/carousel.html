@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="js csstransforms3d">
+  <head>
+    <meta name="viewport" content="width=1265">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--SEO-->
+    <title>TUTORIALS</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- Open Graph-->
+    <meta property="og:title" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:description" content="">
+    <!--favicon-->
+    <link rel="image_src" href="">
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <!--IE--><!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <meta http-equiv="MSThemeCompatible" content="no"/>
+    <![endif]-->
+    <!--[if lt IE 7]>
+    <style>
+      body > main {
+       height: 100%;
+      }
+    </style><![endif]-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/libs/html5shiv.js"></script><![endif]-->
+    <!--Apple-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--JS helpers -->
+    <script type="text/javascript" src="../js/libs/helpers.js"></script>
+    <!--LIBS-->
+    <script src="../tutorials/js/prettify.js"></script>
+    <script src="../tutorials/js/lang-css.js"></script>
+    <link rel="stylesheet" href="../tutorials/css/sons-of-obsidian.css">
+    <!--Include JS/CSS-->
+    <script>
+      console.debug('TUTORIALS');
+      $$.includeJS('../js/libs/jquery-1.10.2.min.js');
+      $$.includeJS('../js/libs/jquery-ui-1.10.3.custom.js');
+      $$.includeJS('../js/libs/jquery.tinyscrollbar.js');
+      $$.includeJS('../js/libs/jquery.cookie.js');
+      
+      $$.includeJS('../js/libs/mustache.js');
+      $$.includeJS('../js/libs/underscore-min.js');
+      $$.includeJS('../js/libs/json2.js');
+      $$.includeJS('../js/libs/backbone.router.js');
+      $$.includeJS('../js/libs/popup.js');
+      $$.includeJS('../tutorials/js/classie.js');
+      
+      $$.includeCSS('../tutorials/css/app.css');
+      $$.includeJS('../tutorials/js/app.models.js');
+      $$.includeJS('../tutorials/js/app.views.js');
+      $$.includeJS('../tutorials/js/app.router.js');
+      $$.includeJS('../js/app.js');
+      
+    </script>
+    <!--App initialization!-->
+    <script>
+      window.app = new App({
+       name: "Frontend tutorials",
+       hashNavigate: false,
+       root: "",
+       box: true
+      });
+      
+      
+    </script>
+    <link rel="stylesheet" type="text/css" href="css/carousel.css">
+    <script type="text/javascript" src="../js/libs/carousel.js"></script>
+    <script>
+      carousel = new Carousel({
+       el: '#carousel',
+       height: 500,
+       width: 900,
+       itemWidth: 250,
+       paginationON: true,
+       controlsON: true,
+       load:  function() {
+        console.log('[Carousel #carousel > load');
+       },
+       before:  function(vars) {
+        console.log('[Carousel #carousel > before', vars);
+       },
+       after:  function(vars) {
+        console.log('[Carousel #carousel > after', vars);
+       }
+       
+      })
+      
+      carousel2 = new Carousel({
+       el: '#carousel-2',
+       height: 50,
+       width: 900,
+       itemWidth: 50,
+       paginationON: true,
+       controlsON: true,
+       load:  function() {
+        console.log('[Carousel #carousel-2 > load');
+       },
+       before:  function(vars) {
+        console.log('[Carousel #carousel-2 > before', vars);
+       },
+       after:  function(vars) {
+        console.log('[Carousel #carousel-2 > after', vars);
+       }
+      })
+      
+      
+    </script>
+  </head>
+  <body onload="prettyPrint()">
+    <div id="popups" class="yea">
+      <div data-popup-name="custom" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1></h1>
+        </div>
+        <div class="body"></div>
+        <div class="footer">
+          <button data-popup-close class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-name="unique" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1>unique</h1>
+        </div>
+        <div class="body">
+          <p>popup</p>
+        </div>
+        <div class="footer">
+          <button data-popup-button class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-close class="background"></div>
+    </div>
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">Tutorials</a></h5>
+            </div>
+            <nav id="menu">
+              <ul>
+                <li><a href="../">Skeleton</a></li>
+                <li><a href="../guideline.html">Guideline</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="sections">
+        <section id="page-carousel">
+          <div class="container">
+            <div class="content">
+              <div class="g-row"><a id="carousel-prev" href="#">prev</a>
+                <div id="carousel">
+                  <div class="items">
+                    <div class="item"><img src="img/carousel/1.jpg"></div>
+                    <div class="item"><img src="img/carousel/2.jpg"></div>
+                    <div class="item"><img src="img/carousel/3.jpg"></div>
+                    <div class="item"><img src="img/carousel/4.jpg"></div>
+                    <div class="item"><img src="img/carousel/5.jpg"></div>
+                  </div>
+                </div><a id="carousel-next" href="#">next</a>
+                <div class="controls">
+                  <div id="carousel-pagination"></div>
+                </div>
+              </div>
+              <div class="g-row"><a id="carousel-2-prev" href="#">prev</a>
+                <div id="carousel-2">
+                  <div class="items">
+                    <div onclick="carousel.goTo(0);" class="item"><img src="img/carousel/1.jpg"></div>
+                    <div onclick="carousel.goTo(1);" class="item"><img src="img/carousel/2.jpg"></div>
+                    <div onclick="carousel.goTo(2);" class="item"><img src="img/carousel/3.jpg"></div>
+                    <div onclick="carousel.goTo(3);" class="item"><img src="img/carousel/4.jpg"></div>
+                    <div onclick="carousel.goTo(4);" class="item"><img src="img/carousel/5.jpg"></div>
+                    <div onclick="carousel.goTo(0);" class="item"><img src="img/carousel/1.jpg"></div>
+                    <div onclick="carousel.goTo(1);" class="item"><img src="img/carousel/2.jpg"></div>
+                    <div onclick="carousel.goTo(2);" class="item"><img src="img/carousel/3.jpg"></div>
+                    <div onclick="carousel.goTo(3);" class="item"><img src="img/carousel/4.jpg"></div>
+                    <div onclick="carousel.goTo(4);" class="item"><img src="img/carousel/5.jpg"></div>
+                    <div onclick="carousel.goTo(0);" class="item"><img src="img/carousel/1.jpg"></div>
+                    <div onclick="carousel.goTo(1);" class="item"><img src="img/carousel/2.jpg"></div>
+                    <div onclick="carousel.goTo(2);" class="item"><img src="img/carousel/3.jpg"></div>
+                    <div onclick="carousel.goTo(3);" class="item"><img src="img/carousel/4.jpg"></div>
+                    <div onclick="carousel.goTo(4);" class="item"><img src="img/carousel/5.jpg"></div>
+                    <div onclick="carousel.goTo(0);" class="item"><img src="img/carousel/1.jpg"></div>
+                    <div onclick="carousel.goTo(1);" class="item"><img src="img/carousel/2.jpg"></div>
+                    <div onclick="carousel.goTo(2);" class="item"><img src="img/carousel/3.jpg"></div>
+                    <div onclick="carousel.goTo(3);" class="item"><img src="img/carousel/4.jpg"></div>
+                    <div onclick="carousel.goTo(4);" class="item"><img src="img/carousel/5.jpg"></div>
+                  </div>
+                </div><a id="carousel-2-next" href="#">next</a>
+                <div class="controls">
+                  <div id="carousel-2-pagination"></div>
+                </div>
+              </div>
+              <h2><span>JS	[верхняя карусель]	</span></h2>
+              <pre class="example prettyprint lang-js linenums">carousel = new Carousel({
+ el: '#carousel',
+ height: 500,
+ width: 900,
+ itemWidth: 250,
+ paginationON: true,
+ controlsON: true
+})
+</pre>
+              <h2><span>JS	[нижняя карусель]	</span></h2>
+              <pre class="example prettyprint lang-js linenums">carousel2 = new Carousel({
+ el: '#carousel-2',
+ height: 50,
+ width: 900,
+ itemWidth: 50,
+ paginationON: true,
+ controlsON: true
+})
+</pre>
+              <h2><span>options			</span></h2>
+              <pre class="example prettyprint lang-js linenums">carousel = new Carousel({
+ el: '#carousel',
+ height: 500,
+ width: 900,
+ itemWidth: 250,
+ start: 3,
+ autoplayON: true,
+ autoplayTime: 3000,
+ easing: 'easeOutExpo',
+ animateTime: 500,
+ paginationON: true,
+ controlsON: true,
+ load:  function() {
+  console.log('[Carousel #carousel > load');
+ },
+ before:  function(vars) {
+  console.log('[Carousel #carousel > before', vars);
+ },
+ after:  function(vars) {
+  console.log('[Carousel #carousel > after', vars);
+ }
+ 
+})
+
+</pre>
+              <h2><span>jade</span></h2>
+              <pre class="example prettyprint lang-html linenums">a#carousel-prev(href="#") prev
+
+#carousel
+ .items
+  .item
+   img(src="img/carousel/1.jpg")
+  .item
+   img(src="img/carousel/2.jpg")
+  .item
+   img(src="img/carousel/3.jpg")
+  .item
+   img(src="img/carousel/4.jpg")
+  .item
+   img(src="img/carousel/5.jpg")
+   
+a#carousel-next(href="#") next
+.controls
+
+ #carousel-pagination</pre>
+            </div>
+          </div>
+        </section>
+      </div>
+      <footer>
+        <div class="container">
+          <div class="content">
+            <h1></h1>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

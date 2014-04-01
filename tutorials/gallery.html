@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="js csstransforms3d">
+  <head>
+    <meta name="viewport" content="width=1265">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--SEO-->
+    <title>TUTORIALS</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- Open Graph-->
+    <meta property="og:title" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:description" content="">
+    <!--favicon-->
+    <link rel="image_src" href="">
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <!--IE--><!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <meta http-equiv="MSThemeCompatible" content="no"/>
+    <![endif]-->
+    <!--[if lt IE 7]>
+    <style>
+      body > main {
+       height: 100%;
+      }
+    </style><![endif]-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/libs/html5shiv.js"></script><![endif]-->
+    <!--Apple-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--JS helpers -->
+    <script type="text/javascript" src="../js/libs/helpers.js"></script>
+    <!--LIBS-->
+    <script src="../tutorials/js/prettify.js"></script>
+    <script src="../tutorials/js/lang-css.js"></script>
+    <link rel="stylesheet" href="../tutorials/css/sons-of-obsidian.css">
+    <!--Include JS/CSS-->
+    <script>
+      console.debug('TUTORIALS');
+      $$.includeJS('../js/libs/jquery-1.10.2.min.js');
+      $$.includeJS('../js/libs/jquery-ui-1.10.3.custom.js');
+      $$.includeJS('../js/libs/jquery.tinyscrollbar.js');
+      $$.includeJS('../js/libs/jquery.cookie.js');
+      
+      $$.includeJS('../js/libs/mustache.js');
+      $$.includeJS('../js/libs/underscore-min.js');
+      $$.includeJS('../js/libs/json2.js');
+      $$.includeJS('../js/libs/backbone.router.js');
+      $$.includeJS('../js/libs/popup.js');
+      $$.includeJS('../tutorials/js/classie.js');
+      
+      $$.includeCSS('../tutorials/css/app.css');
+      $$.includeJS('../tutorials/js/app.models.js');
+      $$.includeJS('../tutorials/js/app.views.js');
+      $$.includeJS('../tutorials/js/app.router.js');
+      $$.includeJS('../js/app.js');
+      
+    </script>
+    <!--App initialization!-->
+    <script>
+      window.app = new App({
+       name: "Frontend tutorials",
+       hashNavigate: false,
+       root: "",
+       box: true
+      });
+      
+      
+    </script>
+    <link rel="stylesheet" type="text/css" href="css/gallery.css">
+    <script type="text/javascript" src="js/gallery.js"></script>
+    <script>
+      $(function() {
+       var slides;
+       slides = [
+        {
+         image: "img/gallery/1.jpg",
+         thumb: "img/gallery/1.jpg"
+        }, {
+         image: "img/gallery/2.jpg",
+         thumb: "img/gallery/2.jpg"
+        }, {
+         image: "img/gallery/3.jpg",
+         thumb: "img/gallery/3.jpg"
+        }, {
+         image: "img/gallery/4.jpg",
+         thumb: "img/gallery/4.jpg"
+        }, {
+         image: "img/gallery/5.jpg",
+         thumb: "img/gallery/5.jpg"
+        }
+       ];
+       
+       gallery.height = 500;
+       gallery.width 	= 1225;
+       
+       gallery.load = function() {
+        console.log('gallery load!');
+        $('pre.example').show()
+        $('a.afull').show()
+       };
+       
+       window.fullscreen = function() {
+       
+        main = $('body > main');
+        
+        if(main.hasClass('fullscreen')){
+         main.removeClass('fullscreen');
+         gallery.height = 500;
+         gallery.width 	= 1225;
+         $('pre.example').show()
+        }else{
+         main.addClass('fullscreen');
+         gallery.height = '100%';
+         gallery.width 	= '100%';
+         $('pre.example').hide()
+        }
+        
+        $(window).resize()
+       }
+       
+       
+       return gallery.init(slides);
+      });
+      
+      
+      
+    </script>
+  </head>
+  <body onload="prettyPrint()">
+    <div id="popups" class="yea">
+      <div data-popup-name="custom" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1></h1>
+        </div>
+        <div class="body"></div>
+        <div class="footer">
+          <button data-popup-close class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-name="unique" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1>unique</h1>
+        </div>
+        <div class="body">
+          <p>popup</p>
+        </div>
+        <div class="footer">
+          <button data-popup-button class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-close class="background"></div>
+    </div>
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">Tutorials</a></h5>
+            </div>
+            <nav id="menu">
+              <ul>
+                <li><a href="../">Skeleton</a></li>
+                <li><a href="../guideline.html">Guideline</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="sections">
+        <section id="page-gallery">
+          <div class="container">
+            <div class="content">
+              <div id="gallery-preloader"></div>
+              <div id="gallery">
+              </div>
+              <div class="controls"><a href="#" style="display:none;" onclick="fullscreen(); return false;" class="afull">fullscreen</a><a id="gallery-prev" href="#">prev</a>
+                <div id="gallery-pagination"></div><a id="gallery-next" href="#">next</a><a id="gallery-thumbs-prev" href="#">thumb prev</a><a id="gallery-thumbs-next" href="#">thumb next</a>
+              </div>
+              <div id="gallery-thumbs"></div>
+              <pre style="display:none;" class="example prettyprint lang-js linenums">$(function() {
+
+ var slides;
+ 
+ slides = [
+  {
+   image: "img/gallery/1.jpg",
+   thumb: "img/gallery/1.jpg"
+  }, {
+   image: "img/gallery/2.jpg",
+   thumb: "img/gallery/2.jpg"
+  }, {
+   image: "img/gallery/3
+   thumb: "img/gallery/3.jpg".jpg",
+  }, {
+   image: "img/gallery/4.jpg",
+   thumb: "img/gallery/4.jpg"
+  }, {
+   image: "img/gallery/5.jpg",
+   thumb: "img/gallery/5.jpg"
+  }
+ ];
+ 
+ gallery.height = 500;
+ gallery.width = 1225;
+ 
+ return gallery.init(slides);
+ 
+});
+</pre>
+            </div>
+          </div>
+        </section>
+      </div>
+      <footer>
+        <div class="container">
+          <div class="content">
+            <h1></h1>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
