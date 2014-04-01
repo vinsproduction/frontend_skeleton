@@ -1,4 +1,4 @@
-### Prototype Model 1 ###
+### Prototype Model ###
 
 class PrototypeModel
 
