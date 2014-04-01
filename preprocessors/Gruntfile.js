@@ -48,9 +48,6 @@ module.exports = function(grunt) {
 	       	},
 				
 	       	files: {
-	     			'../js/libs/popup.js': 'coffee/libs/popup.coffee',
-	     			'../js/libs/form.js': 'coffee/libs/form.coffee',
-	       	
 	     			'../js/app.models.js': 'coffee/app.models.coffee',
 		    		'../js/app.views.js': 'coffee/app.views.coffee',
 		    		'../js/app.router.js': 'coffee/app.router.coffee',
@@ -75,14 +72,14 @@ module.exports = function(grunt) {
 				src: [
 					'../js/libs/jquery-1.10.2.min.js',
 					'../js/libs/jquery-ui-1.10.3.custom.js',
-					//'../js/libs/jquery.tinyscrollbar.js',
-					//'../js/libs/jquery.jcarousel.js',
 					'../js/libs/jquery.cookie.js',
 					'../js/libs/mustache.js',
 					'../js/libs/underscore-min.js',
 					'../js/libs/json2.js',
 					'../js/libs/backbone.router.js',
 					'../js/libs/popup.js',
+					'../js/libs/form.js',
+					'../js/libs/carousel.js',
 				],
 				dest: '../js/libs/lib.js'
 			},
