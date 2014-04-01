@@ -1,4 +1,4 @@
-### Front-end Skeleton / ver. 2.1 / rev. 27.03.2014 / vinsproduction ###
+### Front-end Skeleton / ver. 2.2 / rev. 27.03.2014 / vinsproduction ###
 
 class App
 
