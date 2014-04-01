@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html class="js csstransforms3d">
+  <head>
+    <meta name="viewport" content="width=1265">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--SEO-->
+    <title>TUTORIALS</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- Open Graph-->
+    <meta property="og:title" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:description" content="">
+    <!--favicon-->
+    <link rel="image_src" href="">
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <!--IE--><!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <meta http-equiv="MSThemeCompatible" content="no"/>
+    <![endif]-->
+    <!--[if lt IE 7]>
+    <style>
+      body > main {
+       height: 100%;
+      }
+    </style><![endif]-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/libs/html5shiv.js"></script><![endif]-->
+    <!--Apple-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--JS helpers -->
+    <script type="text/javascript" src="../js/libs/helpers.js"></script>
+    <!--LIBS-->
+    <script src="../tutorials/js/prettify.js"></script>
+    <script src="../tutorials/js/lang-css.js"></script>
+    <link rel="stylesheet" href="../tutorials/css/sons-of-obsidian.css">
+    <!--Include JS/CSS-->
+    <script>
+      console.debug('TUTORIALS');
+      $$.includeJS('../js/libs/jquery-1.10.2.min.js');
+      $$.includeJS('../js/libs/jquery-ui-1.10.3.custom.js');
+      $$.includeJS('../js/libs/jquery.tinyscrollbar.js');
+      $$.includeJS('../js/libs/jquery.cookie.js');
+      
+      $$.includeJS('../js/libs/mustache.js');
+      $$.includeJS('../js/libs/underscore-min.js');
+      $$.includeJS('../js/libs/json2.js');
+      $$.includeJS('../js/libs/backbone.router.js');
+      $$.includeJS('../js/libs/popup.js');
+      $$.includeJS('../tutorials/js/classie.js');
+      
+      $$.includeCSS('../tutorials/css/app.css');
+      $$.includeJS('../tutorials/js/app.models.js');
+      $$.includeJS('../tutorials/js/app.views.js');
+      $$.includeJS('../tutorials/js/app.router.js');
+      $$.includeJS('../js/app.js');
+      
+    </script>
+    <!--App initialization!-->
+    <script>
+      window.app = new App({
+       name: "Frontend tutorials",
+       hashNavigate: false,
+       root: "",
+       box: true
+      });
+      
+      
+    </script>
+    <link rel="stylesheet" type="text/css" href="css/map.css">
+    <script type="text/javascript" src="../js/libs/jquery-ui-1.10.3.custom.js"></script>
+    <script type="text/javascript" src="../js/libs/underscore-min.js"></script>
+    <script type="text/javascript" src="js/jquery.maphilight.min.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
+    <!--map init-->
+    <script>
+      $(document).ready(function(){
+      
+       // Все опции кроме apiUrl - не обязательны!
+       
+       window.map = new Map({
+        apiUrl: "http://" + window.location.host + "/api/getshop", // Экшен получения данных с сервака
+        
+        root: "", // Пусть до статики, по умолчанию пустой
+        
+        wrapperWidth: 660, // Ширина сдерживающего блока
+        wrapperHeight: 564,// Высота сдерживающего блока
+        mapWidth: 924,// Высота карта
+        mapHeight:790,// Ширина карты
+        hilightColor: '10C3A8',// Цвет подсвечивания полигонов при наведении
+        doneColor: 'FAF00D',// Цвет заполненных полигонов, по умполчанию такой же как остальная подсветка
+        zoom: 0.6,// Зум по умолчанию, он же минимальный, по умполчанию 0.7
+        zoomMax: 1.4,// Максимальный зум, по умполчанию 1.5
+        zoomStep: 0.1,// Шаг зума при клике, по умполчанию 0.1
+        mapPosition: {left:5,top:0},// Позиция карты, по умполчанию по центру
+        showIds: true, // Показывать id полигонов, опция для админки, по умолчанию false
+        showDoneShops: true, // Показывать заполненные магазины
+        boxidSize: '10px', // размер шрифта айдишников на полигонах
+        boxidColor: '#000', // цвет айдишников на полигонах
+        wrapperBgColor: '#000', // Цвет бекграунда карты
+        showLayers: true
+       });
+       
+       // Загрузка нужной карты
+       // Первый параметр - название магазина
+       // Первый параметр - этаж, который надо открыть(необязательный)
+       // Третий параметр - полигон, который надо подсветить(необязательный)
+       
+       map.getMap('ocean',1, 15);
+       
+       // Карта загрузилась, this - объект карты
+       map.createCallback = function(data){
+        console.debug('map create!', this);
+       }
+       
+       // Клик по полигону
+       map.areaClick = function(data){
+        console.debug('click!', data);
+       }
+       
+       // Ховер по полигону
+       map.areaHover = function(data){
+        console.log('hover!', data);
+       }
+       
+       // Клик по этажу
+       map.floorClick = function(data){   
+        console.log('floor click!', data);
+       }
+       
+      })
+      
+      
+    </script>
+    <!--/map init-->
+  </head>
+  <body onload="prettyPrint()">
+    <div id="popups" class="yea">
+      <div data-popup-name="custom" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1></h1>
+        </div>
+        <div class="body"></div>
+        <div class="footer">
+          <button data-popup-close class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-name="unique" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1>unique</h1>
+        </div>
+        <div class="body">
+          <p>popup</p>
+        </div>
+        <div class="footer">
+          <button data-popup-button class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-close class="background"></div>
+    </div>
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">Tutorials</a></h5>
+            </div>
+            <nav id="menu">
+              <ul>
+                <li><a href="../">Skeleton</a></li>
+                <li><a href="../guideline.html">Guideline</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="sections">
+        <section id="page-map">
+          <div class="container">
+            <div class="content">
+              <div id="shop-map">
+                <!--Список магазинов-->
+                <div class="brandlist">
+                  <div class="inner">
+                    <div class="title">Shops <a href="#" onclick="map.showDone();return false;">Показать все</a></div>
+                    <ul class="list"></ul>
+                  </div>
+                </div>
+                <!--/Список магазинов-->
+                <div class="mapcontainer">
+                  <!--Этажи-->
+                  <div class="floors nav"></div>
+                  <!--/Этажи-->
+                  <!--Zoom-->
+                  <div class="zoom"><a class="plus"></a><a class="minus"></a></div>
+                  <!--/Zoom-->
+                  <!--Preloader-->
+                  <div class="preloader"><img src="images/preloader.gif"></div>
+                  <!--/Preloader-->
+                  <!--Cдерживающий блок для карты-->
+                  <div class="wrapper">
+                    <div class="movebox">
+                      <!--Карта-->
+                      <div class="map"></div>
+                      <!--/Карта-->
+                    </div>
+                  </div>
+                  <!--/Cдерживающий блок для карты-->
+                </div>
+                <!--Меню навигации	-->
+                <div class="menu">
+                  <div class="search">
+                    <label>Поиск</label>
+                    <input id="findAreaByBrand" type="text">
+                  </div>
+                  <div class="list-2">
+                    <ul>
+                      <li><a href="#" data-layer="cash"><span class="icon icon01"></span>Банкомат</a></li>
+                      <li><a href="#" data-layer="escalator"><span class="icon icon02"></span>Эскалатор</a></li>
+                      <li><a href="#" data-layer="metro"><span class="icon icon03"></span>Метро</a></li>
+                      <li><a href="#" data-layer="wc"><span class="icon icon04"></span>Туалет</a></li>
+                      <li><a href="#" data-layer="exit"><span class="icon icon05"></span>Запасной выход</a></li>
+                      <li><a href="#" data-layer="elevator"><span class="icon icon06"></span>Лифт</a></li>
+                      <li><a href="#" data-layer="cloakroom"><span class="icon icon07"></span>Гардероб</a></li>
+                      <li><a href="#" data-layer="info"><span class="icon icon08"></span>Информационная стойка</a></li>
+                      <li><a data-sale="" href="#"><span class="icon icon09"></span>Sale</a></li>
+                    </ul>
+                  </div>
+                  <div class="list-1">
+                    <ul>
+                      <li data-type="1" class="icon01"><a href="">Молодежная одежда</a></li>
+                      <li data-type="2" class="icon02"><a href="">Женская одежда</a></li>
+                      <li data-type="3" class="icon03"><a href="">Мужская одежда</a></li>
+                      <li data-type="4" class="icon04"><a href="">Одежда для детей</a></li>
+                      <li data-type="5" class="icon05"><a href="">Обувь</a></li>
+                      <li data-type="6" class="icon06"><a href="">Белье</a></li>
+                    </ul>
+                    <ul>
+                      <li data-type="7" class="icon04"><a href="">Меха и кожаные изделия</a></li>
+                      <li data-type="8" class="icon08"><a href="">Аксессуары</a></li>
+                      <li data-type="9" class="icon09"><a href="">Оптика</a></li>
+                      <li data-type="10" class="icon10"><a href="">Ювелирные изделия</a></li>
+                      <li data-type="11" class="icon11"><a href="">Красота и здоровье</a></li>
+                      <li data-type="12" class="icon12"><a href="">Парфюмерия и косметика</a></li>
+                    </ul>
+                    <ul>
+                      <li data-type="13" class="icon13"><a href="">Постельное белье</a></li>
+                      <li data-type="14" class="icon14"><a href="">Сувениры, цветы, подарки</a></li>
+                      <li data-type="15" class="icon15"><a href="">Табак</a></li>
+                      <li data-type="16" class="icon16"><a href="">Дом быта</a></li>
+                      <li data-type="17" class="icon17"><a href="">Все для дома</a></li>
+                      <li data-type="18" class="icon18"><a href="">Салон</a></li>
+                    </ul>
+                    <ul>
+                      <li data-type="19" class="icon19"><a href="">Кофейня</a></li>
+                      <li data-type="20" class="icon20"><a href="">Ресторан</a></li>
+                      <li data-type="21" class="icon21"><a href="">Фудкорт/Кафе</a></li>
+                      <li data-type="22" class="icon22"><a href="">Гастрономия</a></li>
+                      <li data-type="23" class="icon23"><a href="">Сувениры</a></li>
+                      <li data-type="24" class="icon24"><a href="">Развлечения</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <!--/Меню навигации	-->
+              </div>
+              <pre class="example prettyprint lang-js linenums">$(document).ready(function(){
+
+ // Все опции кроме apiUrl - не обязательны!
+ 
+ map = new Map({
+  apiUrl: "http://localhost:8888/api/getshop", // Экшен получения данных с сервака
+  
+  root: "", // Пусть до статики, по умолчанию пустой
+  
+  wrapperWidth: 660, // Ширина сдерживающего блока
+  wrapperHeight: 564,// Высота сдерживающего блока
+  mapWidth: 924,// Высота карта
+  mapHeight:790,// Ширина карты
+  hilightColor: 'ff6699',// Цвет подсвечивания полигонов при наведении
+  doneColor: 'FAF00D',// Цвет заполненных полигонов, по умполчанию такой же как остальная подсветка
+  zoom: 0.8,// Зум по умолчанию, он же минимальный, по умполчанию 0.7
+  zoomMax: 1.4,// Максимальный зум, по умполчанию 1.5
+  zoomStep: 0.1,// Шаг зума при клике, по умполчанию 0.1
+  mapPosition: {left:5,top:30},// Позиция карты, по умполчанию по центру
+  showIds: true, // Показывать id полигонов, опция для админки, по умолчанию false
+  showDoneShops: true // Показывать заполненные магазины
+  boxidSize: '10px', // размер шрифта айдишников на полигонах
+  boxidColor: 'red', // цвет айдишников на полигонах
+  wrapperBgColor: '#000' // Цвет бекграунда карты
+ });
+ 
+ // Загрузка нужной карты
+ // Первый параметр - название магазина
+ // Первый параметр - этаж, который надо открыть(необязательный)
+ // Третий параметр - полигон, который надо подсветить(необязательный)
+ 
+ map.getMap('krasnodar',1, 16);
+ 
+ // Карта загрузилась, this - объект карты
+ map.createCallback = function(data){
+  console.debug('map create!', this);
+ }
+ 
+ // Клик по полигону
+ map.areaClick = function(data){
+  console.debug('click!', data);
+ }
+ 
+ // Ховер по полигону
+ map.areaHover = function(data){
+  console.debug('hover!', data);
+ }
+ 
+ // Клик по этажу
+ map.floorClick = function(data){   
+  console.log('floor click!', data);
+ }
+ 
+})</pre>
+            </div>
+          </div>
+        </section>
+      </div>
+      <footer>
+        <div class="container">
+          <div class="content">
+            <h1></h1>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

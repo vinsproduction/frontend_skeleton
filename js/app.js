@@ -1,5 +1,5 @@
 
-/* Front-end Skeleton / ver. 2.2 / rev. 27.03.2014 / vinsproduction */
+/* Front-end Skeleton / ver. 2.1 / rev. 27.03.2014 / vinsproduction */
 var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 

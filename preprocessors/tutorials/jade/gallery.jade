@@ -1,0 +1,134 @@
+extends layout/layout
+
+block append css
+	link(rel="stylesheet", type="text/css", href="css/gallery.css")
+
+block append js
+	script(type="text/javascript", src="js/gallery.js")
+
+	script.
+
+			$(function() {
+				var slides;
+				slides = [
+					{
+						image: "img/gallery/1.jpg",
+						thumb: "img/gallery/1.jpg"
+					}, {
+						image: "img/gallery/2.jpg",
+						thumb: "img/gallery/2.jpg"
+					}, {
+						image: "img/gallery/3.jpg",
+						thumb: "img/gallery/3.jpg"
+					}, {
+						image: "img/gallery/4.jpg",
+						thumb: "img/gallery/4.jpg"
+					}, {
+						image: "img/gallery/5.jpg",
+						thumb: "img/gallery/5.jpg"
+					}
+				];
+
+				gallery.height = 500;
+				gallery.width 	= 1225;
+
+				gallery.load = function() {
+					console.log('gallery load!');
+					$('pre.example').show()
+					$('a.afull').show()
+				};
+
+				window.fullscreen = function() {
+
+					main = $('body > main');
+
+					if(main.hasClass('fullscreen')){
+						main.removeClass('fullscreen');
+						gallery.height = 500;
+						gallery.width 	= 1225;
+						$('pre.example').show()
+					}else{
+						main.addClass('fullscreen');
+						gallery.height = '100%';
+						gallery.width 	= '100%';
+						$('pre.example').hide()
+					}
+
+					$(window).resize()
+				}
+
+
+				return gallery.init(slides);
+			});
+
+
+
+block content
+
+	section#page-gallery
+
+		.container
+			.content
+
+				#gallery-preloader
+
+				#gallery
+					//- .wrapper
+					//- 	.preloader Загрузка...
+					//- 	.items
+					//- 		.item: img(src="http://dev.tpsgroup.dev.ailove.ru/data/photologue/photos/vodopad.jpg", alt="")
+					//- 		.item: img(src="http://dev.tpsgroup.dev.ailove.ru/data/photologue/photos/1%20(1).jpg", alt="")
+					//- 		.item: img(src="http://dev.tpsgroup.dev.ailove.ru/data/photologue/photos/krasnodar_cam_3level_cam_01_01.jpg", alt="")
+							
+					//- 		.item: img(src="http://dev.tpsgroup.dev.ailove.ru/data/photologue/photos/04.jpg", alt="")
+					//- 		.item: img(src="http://dev.tpsgroup.dev.ailove.ru/data/photologue/photos/Roof%20copy.jpg", alt="")
+					//- 		.item: img(src="http://dev.tpsgroup.dev.ailove.ru/data/photologue/photos/View01.jpg", alt="")
+
+				
+				.controls
+
+					a(href="#", class="afull", style="display:none;", onclick="fullscreen(); return false;") fullscreen
+
+					a#gallery-prev(href="#") prev
+					
+					#gallery-pagination
+
+					a#gallery-next(href="#") next
+
+					a#gallery-thumbs-prev(href="#") thumb prev
+					a#gallery-thumbs-next(href="#") thumb next
+
+				#gallery-thumbs
+
+
+				pre.example(style="display:none;", class="prettyprint lang-js linenums").
+					$(function() {
+
+						var slides;
+
+						slides = [
+							{
+								image: "img/gallery/1.jpg",
+								thumb: "img/gallery/1.jpg"
+							}, {
+								image: "img/gallery/2.jpg",
+								thumb: "img/gallery/2.jpg"
+							}, {
+								image: "img/gallery/3
+								thumb: "img/gallery/3.jpg".jpg",
+							}, {
+								image: "img/gallery/4.jpg",
+								thumb: "img/gallery/4.jpg"
+							}, {
+								image: "img/gallery/5.jpg",
+								thumb: "img/gallery/5.jpg"
+							}
+						];
+
+						gallery.height = 500;
+						gallery.width = 1225;
+
+						return gallery.init(slides);
+
+					});
+
