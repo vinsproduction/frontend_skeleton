@@ -1,7 +1,2 @@
 /preprocessors/node_modules
 /preprocessors/npm-debug.log
-/tutorials
-/preprocessors/tutorials
-/preprocessors/Gruntfile_tutorials.js
-/preprocessors/tutorials.sh
-/preprocessors/server_routes/routes_tutorials.js
