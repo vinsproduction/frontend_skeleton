@@ -1,0 +1,521 @@
+
+/* 
+	=========================
+	====== PROJECT DEV  =====
+	=========================
+*/
+
+
+// MAIN CONSTANTS
+
+$root = '../../../'
+
+$mainWidth = 1265
+
+// Главный шрифт
+$mainFont  = Ubuntu
+
+/* _________ IMPORT ________*/
+
+@import $root + 'static/css/normalize.css'
+
+// _________ MIXINS _________
+
+@require $root + 'ppc/styl/mixins'
+
+/* _________ FONTS _________ */
+
+import-font($root + 'static/fonts/ubuntu-r-webfont','Ubuntu')
+import-font($root + 'static/fonts/consola-webfont','consola')
+
+
+//______ UNIQUE MIXINS _____
+
+font-family(name)
+	line-height 1
+	font-family name, helvetica,verdana,arial,tahoma
+
+font(size,name)
+	//font-size unit(size*6.5, '%') convert px to percents
+	font-size size
+	font-family name
+
+bg(filename, arguments=false)
+	if !arguments
+		arguments = no-repeat center center
+	background url($root + 'static/img/' + filename) arguments
+
+/* _________ GLOBAL _________
+
+Все глобальные КЛАССЫ описываются здесь
+и начинаются с префикса g
+*/
+
+
+@require $root + 'ppc/styl/global'
+
+.g-color-1
+	background #0e83cd
+
+.g-color-2
+	background #f06060
+
+.g-color-3
+	background #fcd04b
+
+.g-color-4
+	background #2ecc71
+
+.g-color-5
+	background #9e54bd
+
+.g-color-6
+	background #4593e3
+
+.g-color-7
+	background #2ac56c
+
+.g-color-8
+	background #3851BC
+
+.g-color-9
+	background #96A94B
+
+.g-color-10
+	background #16A085
+
+.g-color-11
+	background #AAB7B7
+
+
+/* _______ GUIDELINE _______
+
+Все глобальные СТИЛИ кнопок, форм, ссылок, списков и тд.
+описываются здесь
+*/
+
+@require $root + 'ppc/styl/guideline'
+
+pre 
+	font-family consola
+	padding 5px 15px 5px 15px
+	margin 10px 0
+
+h1,h2
+	margin 10px 0
+
+h2
+	span
+		background #000
+		color #FFF
+		padding 2px 8px 4px 8px
+		font-size 21px
+		text-transform lowercase
+
+p
+	margin 10px 0
+
+
+/*_________ MAIN __________*/
+
+
+html
+	height 100%
+
+body
+	height 100%
+	overflow-x hidden
+	overflow-y auto
+	font-family Ubuntu
+	
+	background-color $color-graydarker
+
+	// bg 'bg.jpg', top center
+	// background-attachment fixed
+	// -webkit-background-size cover
+	// -moz-background-size cover
+	// -o-background-size cover
+	// background-size cover
+	
+body > main
+	
+	position relative
+	min-height 100%
+	width 100%
+	
+	// Фон с изображением
+	bg 'bg.jpg', repeat-y center center
+
+	// background-attachment fixed
+	// -webkit-background-size cover
+	// -moz-background-size cover
+	// -o-background-size cover
+	// background-size cover
+
+
+/*_________ HEADER ___________*/
+
+body > main > header
+	z-index 2
+	width 100%
+	height 40px
+
+	background $color-gray
+
+	&.fixed
+		position fixed
+		top 0
+
+	> .container
+		width  ($mainWidth)px
+		height (40 - 12*2)px
+		padding 12px 0
+		margin 0 auto
+
+		background $color-graylight
+
+		> .content
+			padding 0 5px
+			block-inline()
+			width  ($mainWidth - 5*2)px
+
+			.logo
+				a
+					text-decoration none
+					color #000
+
+			nav#menu
+				block-right()
+				text-transform uppercase
+				
+				a 
+					text-decoration none
+					block-inline()
+					position relative
+					color #FFF
+
+				ul
+					float left
+					padding 0
+					li
+						float left
+						margin 0 0 0 50px
+					
+
+			.logo
+				block-left()
+
+/*_________ FOOTER ___________*/
+
+body > main > footer
+	position absolute
+	bottom 0
+	z-index 2
+	width 100%
+	height 40px
+
+	background $color-graydark
+
+	&.fixed
+		position fixed
+		bottom 0
+
+	> .container
+		width  ($mainWidth)px
+		height (40 - 12*2)px
+		padding 12px 0
+		margin 0 auto
+
+		background $color-gray
+
+		> .content
+			padding 0 5px
+			block-inline()
+
+
+/*_________ SECTIONS _________*/
+
+body > main > .sections
+
+	clear both
+	width 100%
+	padding-bottom 40px // Height of the footer
+
+	// Для всех секций!
+	> section
+
+		clear both
+		position relative
+		z-index 1
+		width 100%
+		block-inline()
+
+		> .container
+			position relative
+			width  ($mainWidth)px
+			height 100%
+			margin 0 auto
+
+			background #F2E5D5
+
+			> .content
+				padding 50px 20px
+
+
+/* _________ PAGES _________*/
+
+section#page-index
+	.container
+		.content
+			width  ($mainWidth - 40)px
+			li 
+				margin 15px 0
+				font-size 18px
+
+				a
+					color #000
+					text-decoration none
+					padding 5px 10px
+					display table
+					&:hover
+						background rgb(193, 176, 163)
+						color #FFF
+							
+section#page-render
+	
+	.container
+		.content
+			
+			.clarification
+				block-left 580
+				font-family consola
+				text-align right
+				padding 0 10px
+				h2 + p
+					margin-bottom 95px
+
+			
+			.example
+				block-left 580
+				
+				padding 0 10px
+
+section#page-popup
+	
+	.container
+		.content
+
+			.example
+				block-left 260
+
+			.clarification
+				block-left 900
+				font-family consola
+
+section#page-helpers-images
+	
+	.container
+		.content
+			
+			.g-block-inline
+				size 400
+	
+			.frame	
+				overflow hidden
+				border 2px solid red
+				img
+					//
+				&.frame-horizontal
+					block 200 100
+				&.frame-vertical
+					block 100 200
+				&.frame-square
+					block 200 200
+
+section#page-CreativeButtons,section#page-IconHoverEffects,section#page-CreativeLinkEffects
+	.container
+		.content
+	
+			width 100%
+			padding 40px 0 0 0
+			center()
+			p 
+				margin 0
+				&.text 
+					padding 10px 30px
+
+
+			.btn
+				z-index 1
+
+section#page-CreativeLinkEffects
+	section
+		padding 80px 0
+		center()
+
+section#page-map
+	.container
+		.content
+			padding-top 80px
+
+			#shop-map
+				height 580px
+			.example
+				margin-top 20px
+
+section#page-gallery
+	.container
+		.content
+			background #F2E5D5
+
+section#page-carousel
+	.container
+		.content
+			position relative
+			size 900
+			margin 0 auto
+
+section#page-video
+	.container
+		.content
+			position relative
+			padding 0
+
+			.desc
+				position absolute
+				top 40px
+				left 30px
+				display table
+				z-index 4
+
+				background_rgba(#000000,'#000000',0.5)
+				padding 0 20px
+				text-align center
+				h1
+					font-size 54px
+					font-weight normal
+					color #FFF
+					text-transform uppercase
+
+
+				p 
+					color #FFF
+					margin 24px 0 24px 0
+					a 
+						text-decoration none
+						color #FFF
+
+section#page-form
+	.container
+		.content
+			
+			label
+				vertical-align top
+				block-inline 150px
+
+			input[type='text']
+				@extends .g-input-1
+
+			textarea
+				@extends .g-textarea-1
+
+			select
+				@extends .g-select-1
+
+			input[type='checkbox']
+				@extends .g-checkbox-1
+
+			input[type='radio']
+				@extends .g-radio-1
+
+			.field-group
+				vertical-align top
+				block-inline()
+				width 300px
+
+			textarea,input[type='text']
+				&.placeholder
+					color #CCC
+
+			.error-field
+				border 1px solid red
+
+			.error-alert
+				vertical-align top
+				height 50px
+				color red
+				block-inline 300px
+				margin-left 20px
+				font-size 14px
+
+			.error-custom-field
+				border 1px solid blue
+
+			.error-custom-alert
+				vertical-align top
+				height 50px
+				color blue
+				block-inline 300px
+				margin-left 20px
+				font-size 14px
+
+			input.submit
+				@extends .g-btn-2
+				block-inline()
+
+			button.reset
+				@extends .g-btn-1
+				block-inline()
+
+section#page-fileuploader
+	.container
+		.content
+			
+			.row-actions
+				height 150px
+
+			#fileuploader, .qq-upload-button
+				position absolute
+				z-index 5
+				cursor pointer
+				left 0
+				top 0
+				right 0
+				bottom 0
+
+				.qq-upload-drop-area
+					position absolute
+					left 220px
+					width 500px
+					height 150px
+					background #CCC
+
+				.qq-upload-list
+					position absolute
+					overflow auto
+					left 733px
+					width 500px
+					height 150px
+					background #FFF
+					color #000
+
+					li 
+						list-style-type none
+						font-size 12px
+						text-align left
+
+						span
+							margin-left 5px
+
+						.qq-upload-failed-text
+							display none
+
+
+/* _________ POPUPS ________*/
+
+@require $root + 'ppc/styl/popup'
+
+
+/* _________ MEDIA _________ */
+
+@require $root + 'ppc/styl/media'

@@ -1,0 +1,421 @@
+extends layout/layout
+
+block append css
+
+block append js
+
+	script(type="text/javascript", src="../js/libs/form.js")
+
+	script.
+
+		formValidator = new Form({
+
+			logs: true,
+
+			formId: 'form',
+			submitBtnClass: '.submit',
+
+			fields:{
+				'firstname' : {
+					useErrorTemplate: true,
+					checkErrorsOnFocus: true,
+					placeholder: 'placeholder firstname',
+					rules: {
+						required:{
+							reason: 'Обязательное поле для заполнения'
+						},
+						min: {
+							count: 2,
+							reason: 'Минимум {count} символа'
+						},
+						max: {
+							count: 10,
+							reason: 'Максимум {count} символов'
+						}
+					}
+				},
+				'password' : {
+					useErrorTemplate: true,
+					hideErrorsOnFocus: true,
+					//focus: true,
+					rules: {
+						required:{
+							reason: 'Обязательное поле для заполнения'
+						},
+						numeric:{
+							reason: 'Разрешены только цифры'
+						}
+					}
+				},
+				'url' : {
+					rules: {
+						required:{
+							reason: 'Обязательное поле для заполнения'
+						},
+						url: {
+							reason: 'Неправильно заполненный url'
+						}
+					},
+					onError: function(fieldName,errors){
+						for(i in errors){
+							$(".error-custom-url").append(errors[i] + "<br/>");
+						};
+					}
+				},
+				'email' : {
+					rules: {
+						required:{
+							reason: 'Обязательное поле для заполнения'
+						},
+						email: {
+							reason: 'Неправильно заполненный email'
+						}
+					},
+					onError: function(fieldName,errors){
+						for(i in errors){
+							$(".error-custom-email").append(errors[i] + "<br/>");
+						};
+					}
+				},
+				'text' : {
+					hideErrorsOnFocus: true,
+					useErrorTemplate: true,
+					escape: true,
+					placeholder: 'placeholder text',
+					rules: {
+						required:{
+							reason: 'Обязательное поле для заполнения'
+						}
+					}
+				},
+				'checkbox_1' : {
+					rules: {
+						required:{
+							reason: 'Обязательное поле для заполнения'
+						}
+					},
+					onError: function(fieldName,errors){
+						for(i in errors){
+							$(".error-custom-checkbox_1").append(errors[i] + "<br/>");
+						};
+					}
+				},
+				'checkbox_2' : {
+					rules: {
+						required:{
+							reason: 'Обязательное поле для заполнения'
+						}
+					},
+					onError: function(fieldName,errors){
+						for(i in errors){
+							$(".error-custom-checkbox_2").append(errors[i] + "<br/>");
+						};
+					}
+				},
+				'radiobutton' : {
+					rules: {
+						required:{
+							reason: 'Обязательное поле для заполнения'
+						}
+					},
+					onError: function(fieldName,errors){
+						for(i in errors){
+							$(".error-custom-radiobutton").append(errors[i] + "<br/>");
+						};
+					}
+				},
+				'dropdown' : {
+					rules: {
+						required:{
+							not: '- Выбрать -',
+							reason: 'Обязательное поле для заполнения'
+						}
+					},
+					onError: function(fieldName,errors){
+						for(i in errors){
+							$(".error-custom-dropdown").append(errors[i] + "<br/>");
+						};
+					}
+				}
+			},
+
+			onSubmit: function(data){
+				$(".error-custom-alert").empty();
+			},
+
+			onFail: function(errors){},
+
+			onReset: function(){
+				$(".error-custom-alert").empty();
+			},
+
+			onLoad: function(){},
+
+			onSuccess: function(data){
+				$(".error-custom-alert").empty();
+			}
+		});
+		
+
+		formValidator.addRule({
+			field: 'firstname',
+			rule: 'custom rule',
+			reason: 'Введите слово "хорошо"',
+			condition: function(val){
+				return val == 'хорошо';
+			}
+		});
+
+block content
+
+	section#page-form
+		.container
+			.content
+
+				h1 Form validation
+
+				form#form
+
+					.g-row
+						label firstname
+						input(type='text', name='firstname')
+		
+					.g-row
+						label password
+						input(type='text', name='password')
+
+					.g-row
+						label url
+						input(type='text', name='url')
+						.error-custom-alert.error-custom-url
+
+					.g-row
+						label email
+						input(type='text', name='email')
+						.error-custom-alert.error-custom-email
+
+					.g-row
+						label text
+						textarea(name='text') куку
+	
+					.g-row
+						label checkbox 1
+						.field-group
+							span 1
+							input(type="checkbox", name="checkbox_1", value="1", checked=true)
+						.error-custom-alert.error-custom-checkbox_1
+
+					.g-row
+						label checkbox 2
+						.field-group
+							span 3
+							input(type="checkbox", name="checkbox_2", value="2")
+						.error-custom-alert.error-custom-checkbox_2
+
+					.g-row
+						label radio
+
+						.field-group
+							span 1
+							input(type="radio", name="radiobutton", value="1", checked=true)
+							
+							span 2	
+							input(type="radio", name="radiobutton", value="2")
+
+						.error-custom-alert.error-custom-radiobutton
+
+					.g-row
+						label dropdown
+						select(name="dropdown")
+							option(selected=true) - Выбрать -
+							option(value="o1") option1
+							option(value="o2") option2
+						.error-custom-alert.error-custom-dropdown
+
+					.g-row
+						button.reset(onclick="formValidator.reset();") Сбросить
+						input.submit(type="submit",value="Отправить")
+
+				h2 Правила валидации
+
+				.g-row required &mdash; Обязательное поле
+				.g-row numeric &mdash; Разрешены только цифры
+				.g-row numericDash &mdash; Разрешены только цифры и подчеркивания
+				.g-row alpha &mdash; Разрешены только буквы
+				.g-row alphaDash &mdash; Разрешены только буквы и подчеркивания
+				.g-row alphaNumeric &mdash; Разрешены только буквы и цифры
+				.g-row max &mdash; Максимум символов
+				.g-row min &mdash; Минимум символов
+				.g-row email &mdash; Email
+				.g-row url &mdash; Url
+				.g-row ip &mdash; Ip
+
+				h2 Инициализация формы
+					
+				pre.example(class="prettyprint lang-js linenums").
+
+					formValidator = new Form({
+
+						logs: true, // Логировать форму
+
+						formId: 'form', // ID фомы
+						submitBtnClass: '.submit', // Класс кнопки отправки
+
+						fields:{
+							'firstname' : {
+								useErrorTemplate: true, // Использовать темплейт с ошибками
+								checkErrorsOnFocus: true, // Валидировать поле сразу в фокусе
+								placeholder: 'placeholder firstname', // Плейсхолдер (Не значение!)
+								rules: {
+									required:{ // Правило
+										reason: 'Обязательное поле для заполнения' // Установка причины ошибки (опционально)
+									},
+									min: {
+										count: 2, // Миниальное кол-во символов
+										reason: 'Минимум {count} символа' // Установка причины ошибки (опционально)
+									},
+									max: {
+										count: 10, // Максимальное кол-во символов
+										reason: 'Максимум {count} символов'
+									}
+								}
+							},
+							'password' : {
+								useErrorTemplate: true,
+								hideErrorsOnFocus: true, // Скрывать ошибки в фокусе
+								//focus: true, // Фокусировать на это поле
+								rules: {
+									required:{
+										reason: 'Обязательное поле для заполнения'
+									},
+									numeric:{
+										reason: 'Разрешены только цифры'
+									}
+								}
+							},
+							'url' : {
+								rules: {
+									required:{
+										reason: 'Обязательное поле для заполнения'
+									},
+									url: {
+										reason: 'Неправильно заполненный url'
+									}
+								},
+
+								// Ручная работа над ошибками, без использования темплейтов
+								onError: function(fieldName,errors){
+									for(i in errors){
+										$(".error-custom-url").append(errors[i]);
+									};
+								}
+							},
+							'email' : {
+								rules: {
+									required:{
+										reason: 'Обязательное поле для заполнения'
+									},
+									email: {
+										reason: 'Неправильно заполненный email'
+									}
+								},
+								onError: function(fieldName,errors){
+									for(i in errors){
+										$(".error-custom-email").append(errors[i]);
+									};
+								}
+							},
+							'text' : {
+								hideErrorsOnFocus: true,
+								useErrorTemplate: true,
+								escape: true, // Экранировать ввод символов
+								placeholder: 'placeholder text',
+								rules: {
+									required:{
+										reason: 'Обязательное поле для заполнения'
+									}
+								}
+							},
+							'checkbox_1' : {
+								rules: {
+									required:{
+										reason: 'Обязательное поле для заполнения'
+									}
+								},
+								onError: function(fieldName,errors){
+									for(i in errors){
+										$(".error-custom-checkbox_1").append(errors[i]);
+									};
+								}
+							},
+							'checkbox_2' : {
+								rules: {
+									required:{
+										reason: 'Обязательное поле для заполнения'
+									}
+								},
+								onError: function(fieldName,errors){
+									for(i in errors){
+										$(".error-custom-checkbox_2").append(errors[i]);
+									};
+								}
+							},
+							'radiobutton' : {
+								rules: {
+									required:{
+										reason: 'Обязательное поле для заполнения'
+									}
+								},
+								onError: function(fieldName,errors){
+									for(i in errors){
+										$(".error-custom-radiobutton").append(errors[i]);
+									};
+								}
+							},
+							'dropdown' : {
+								rules: {
+									required:{
+										not: '- Выбрать -', // Это значение НЕ валидируется!
+										reason: 'Обязательное поле для заполнения'
+									}
+								},
+								onError: function(fieldName,errors){
+									for(i in errors){
+										$(".error-custom-dropdown").append(errors[i]);
+									};
+								}
+							}
+						},
+
+						// Событие отправки формы
+						onSubmit: function(data){
+							$(".error-custom-alert").empty();
+						},
+
+						// Событие неудачной отправки формы
+						onFail: function(errors){},
+
+						// Событие сброса формы
+						onReset: function(){
+							$(".error-custom-alert").empty();
+						},
+
+						// Событие загрузки формы
+						onLoad: function(){},
+
+						// Событие успешной отправки формы
+						onSuccess: function(data){
+							$(".error-custom-alert").empty();
+						}
+					})
+
+					// Добавление нового правила
+					formValidator.addRule({
+						field: 'firstname', // Имя поля
+						rule: 'custom rule', // Название правила
+						reason: 'Введите слово "хорошо"', // Описание причины ошибки
+						condition: function(val){ // Условие исполнения - должно возвращать или true или false
+							return val == 'хорошо';
+						}
+					});
+

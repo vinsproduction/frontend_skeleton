@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="js csstransforms3d">
+  <head>
+    <meta name="viewport" content="width=1265">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--SEO-->
+    <title>dev</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- Open Graph-->
+    <meta property="og:title" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:description" content="">
+    <!--favicon-->
+    <link rel="image_src" href="">
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <!--IE--><!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <meta http-equiv="MSThemeCompatible" content="no"/>
+    <![endif]-->
+    <!--[if lt IE 7]>
+    <style>
+      body > main {
+       height: 100%;
+      }
+    </style><![endif]-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/libs/html5shiv.js"></script><![endif]-->
+    <!--Apple-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--JS helpers -->
+    <script type="text/javascript" src="../../static/js/libs/helpers.js"></script>
+    <!--Include JS/CSS-->
+    <script>
+      console.debug('dev');
+      $$.includeJS('../../static/js/libs/jquery-1.10.2.min.js');
+      $$.includeJS('../../static/js/libs/jquery-ui-1.10.3.custom.js');
+      $$.includeJS('../../static/js/libs/jquery.tinyscrollbar.js');
+      $$.includeJS('../../static/js/libs/jquery.cookie.js');
+      
+      $$.includeJS('../../static/js/libs/mustache.js');
+      $$.includeJS('../../static/js/libs/underscore-min.js');
+      $$.includeJS('../../static/js/libs/json2.js');
+      $$.includeJS('../../static/js/libs/backbone.router.js');
+      $$.includeJS('../../static/js/libs/popup.js');
+      
+      $$.includeJS('js/classie.js');
+      
+      $$.includeCSS('css/app.css');
+      $$.includeJS('js/prettify.js');
+      $$.includeJS('js/lang-css.js');
+      $$.includeCSS('css/sons-of-obsidian.css');
+      
+      
+      $$.includeJS('js/app.models.js');
+      $$.includeJS('js/app.views.js');
+      $$.includeJS('js/app.router.js');
+      
+      $$.includeJS('../../static/js/app.js');
+      
+    </script>
+    <!--App initialization!-->
+    <script>
+      window.app = new App({
+       name: "Frontend dev",
+       hashNavigate: false,
+       root: "",
+       box: true
+      });
+      
+      
+    </script>
+    <link rel="stylesheet" type="text/css" href="CreativeButtons/css/component.css">
+  </head>
+  <body onload="prettyPrint()">
+    <div id="popups" class="yea">
+      <div data-popup-name="custom" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1></h1>
+        </div>
+        <div class="body"></div>
+        <div class="footer">
+          <button data-popup-close class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-name="unique" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1>unique</h1>
+        </div>
+        <div class="body">
+          <p>popup</p>
+        </div>
+        <div class="footer">
+          <button data-popup-button class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-close class="background"></div>
+    </div>
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">Tutorials</a></h5>
+            </div>
+            <nav id="menu">
+              <ul>
+                <li><a href="../">Skeleton</a></li>
+                <li><a href="../guideline.html">Guideline</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="sections">
+        <section id="page-CreativeButtons">
+          <div class="container">
+            <div class="content">
+              <link rel="stylesheet" type="text/css" href="CreativeButtons/css/component.css">
+              <script>
+                $(document).ready(function(){
+                var buttons7Click = Array.prototype.slice.call( document.querySelectorAll( '#btn-click button' ) ),
+                buttons9Click = Array.prototype.slice.call( document.querySelectorAll( 'button.btn-8g' ) ),
+                totalButtons7Click = buttons7Click.length,
+                totalButtons9Click = buttons9Click.length;
+                buttons7Click.forEach( function( el, i ) { el.addEventListener( 'click', activate, false ); } );
+                buttons9Click.forEach( function( el, i ) { el.addEventListener( 'click', activate, false ); } );
+                function activate() {
+                var self = this, activatedClass = 'btn-activated';
+                if( classie.has( this, 'btn-7h' ) ) {
+                // if it is the first of the two btn-7h then activatedClass = 'btn-error';
+                // if it is the second then activatedClass = 'btn-success'
+                activatedClass = buttons7Click.indexOf( this ) === totalButtons7Click-2 ? 'btn-error' : 'btn-success';
+                }
+                else if( classie.has( this, 'btn-8g' ) ) {
+                // if it is the first of the two btn-8g then activatedClass = 'btn-success3d';
+                // if it is the second then activatedClass = 'btn-error3d'
+                activatedClass = buttons9Click.indexOf( this ) === totalButtons9Click-2 ? 'btn-success3d' : 'btn-error3d';
+                }
+                if( !classie.has( this, activatedClass ) ) {
+                classie.add( this, activatedClass );
+                setTimeout( function() { classie.remove( self, activatedClass ) }, 1000 );
+                }
+                }
+                document.querySelector( '.btn-7i' ).addEventListener( 'click', function() {
+                classie.add( document.querySelector( '#trash-effect' ), 'trash-effect-active' );
+                }, false );
+                })
+              </script>
+              <section class="g-color-1">
+                <p>
+                  <button class="btn btn-1 btn-1a">Button</button>
+                  <button class="btn btn-1 btn-1b">Button</button>
+                  <button class="btn btn-1 btn-1c">Button</button>
+                </p>
+                <p>
+                  <button class="btn btn-1 btn-1d">Button</button>
+                  <button class="btn btn-1 btn-1e">Button</button>
+                  <button class="btn btn-1 btn-1f">Button</button>
+                </p>
+              </section>
+              <section class="g-color-2">
+                <p>
+                  <button class="btn btn-2 btn-2a">Button</button>
+                  <button class="btn btn-2 btn-2b">Button</button>
+                </p>
+                <p>
+                  <button class="btn btn-2 btn-2c">Button</button>
+                  <button class="btn btn-2 btn-2d">Button</button>
+                </p>
+                <p>
+                  <button class="btn btn-2 btn-2e">Button</button>
+                  <button class="btn btn-2 btn-2f">Button</button>
+                </p>
+                <p>
+                  <button class="btn btn-2 btn-2g">Button</button>
+                  <button class="btn btn-2 btn-2h">Button</button>
+                </p>
+                <p>
+                  <button class="btn btn-2 btn-2i">Yes</button>
+                  <button class="btn btn-2 btn-2j">No</button>
+                </p>
+              </section>
+              <section class="g-color-3">
+                <p>
+                  <button class="btn btn-3 btn-3a icon-cart">Add to cart</button>
+                  <button class="btn btn-3 btn-3b icon-star-2">Bookmark</button>
+                </p>
+                <p>
+                  <button class="btn btn-3 btn-3c icon-heart-2">Favorite</button>
+                </p>
+                <p>
+                  <button class="btn btn-3 btn-3d icon-cog">Settings</button>
+                  <button class="btn btn-3 btn-3e icon-arrow-right">Send data</button>
+                </p>
+              </section>
+              <section class="g-color-4">
+                <p>
+                  <button class="btn btn-4 btn-4a icon-arrow-right">Continue</button>
+                  <button class="btn btn-4 btn-4b icon-arrow-left">Return</button>
+                </p>
+                <p>
+                  <button class="btn btn-4 btn-4c icon-arrow-right">Continue</button>
+                  <button class="btn btn-4 btn-4d icon-arrow-left">Return</button>
+                </p>
+              </section>
+              <section class="g-color-5">
+                <p>
+                  <button class="btn btn-5 btn-5a icon-cart"><span>Add to cart</span></button>
+                  <button class="btn btn-5 btn-5a icon-remove"><span>Delete</span></button>
+                  <button class="btn btn-5 btn-5a icon-cog"><span>Settings</span></button>
+                </p>
+                <p>
+                  <button class="btn btn-5 btn-5b icon-cart"><span>Add to cart</span></button>
+                  <button class="btn btn-5 btn-5b icon-remove"><span>Delete</span></button>
+                  <button class="btn btn-5 btn-5b icon-cog"><span>Settings</span></button>
+                </p>
+              </section>
+              <section class="g-color-6">
+                <p>
+                  <button class="btn btn-6 btn-6a">Button</button>
+                  <button class="btn btn-6 btn-6b">Button</button>
+                  <button class="btn btn-6 btn-6c">Button</button>
+                </p>
+                <p>
+                  <button class="btn btn-6 btn-6d">Button</button>
+                  <button class="btn btn-6 btn-6e">Button</button>
+                  <button class="btn btn-6 btn-6f">Button</button>
+                </p>
+                <p>
+                  <button class="btn btn-6 btn-6g">Button</button>
+                  <button class="btn btn-6 btn-6h">Button</button>
+                  <button class="btn btn-6 btn-6i">Button</button>
+                </p>
+                <p>
+                  <button class="btn btn-6 btn-6j">Button</button>
+                  <button class="btn btn-6 btn-6k">Button</button>
+                  <button class="btn btn-6 btn-6l">Button</button>
+                </p>
+              </section>
+              <section id="btn-click" class="g-color-7">
+                <p>
+                  <button class="btn btn-7 btn-7a icon-truck">Order item</button>
+                  <button class="btn btn-7 btn-7b icon-envelope">Send message</button>
+                </p>
+                <p>
+                  <button class="btn btn-7 btn-7c btn-icon-only icon-arrow-right">Submit</button>
+                  <button class="btn btn-7 btn-7d btn-icon-only icon-remove">Empty</button>
+                </p>
+                <p>
+                  <button class="btn btn-7 btn-7e btn-icon-only icon-heart">Like</button>
+                  <button class="btn btn-7 btn-7f btn-icon-only icon-star">Fav</button>
+                  <button class="btn btn-7 btn-7g btn-icon-only icon-plus">Add</button>
+                </p>
+                <p>
+                  <button class="btn btn-7 btn-7h icon-envelope">Submit form</button>
+                  <button class="btn btn-7 btn-7h icon-envelope">Submit form</button>
+                </p>
+                <div id="trash-effect" class="trash-effect">
+                  <button class="btn btn-7 btn-7i btn-icon-only icon-remove-2">Remove</button>
+                  <div class="icon-file"></div>
+                  <div class="icon-file"></div>
+                  <div class="icon-file"></div>
+                </div>
+              </section>
+              <section class="g-color-8">
+                <p class="perspective">
+                  <button class="btn btn-8 btn-8a">3D Button</button>
+                </p>
+                <p class="perspective">
+                  <button class="btn btn-8 btn-8b">3D Button</button>
+                </p><br>
+                <p class="perspective">
+                  <button class="btn btn-8 btn-8c">3D Button</button>
+                </p>
+                <p class="perspective">
+                  <button class="btn btn-8 btn-8d">3D Button</button>
+                </p><br>
+                <p class="perspective">
+                  <button class="btn btn-8 btn-8e">3D Button</button>
+                </p>
+                <p class="perspective">
+                  <button class="btn btn-8 btn-8f">3D Button</button>
+                </p><br>
+                <p class="perspective">
+                  <button class="btn btn-8 btn-8g">3D Button</button>
+                </p>
+                <p class="perspective">
+                  <button class="btn btn-8 btn-8g">3D Button</button>
+                </p>
+              </section>
+            </div>
+          </div>
+        </section>
+      </div>
+      <footer>
+        <div class="container">
+          <div class="content">
+            <h1></h1>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

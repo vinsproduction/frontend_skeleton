@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=1265">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--SEO-->
+    <title>FRONTEND SCELETON</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- Open Graph-->
+    <meta property="og:title" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:description" content="">
+    <!--favicon-->
+    <link rel="image_src" href="">
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <!--IE--><!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <meta http-equiv="MSThemeCompatible" content="no"/>
+    <![endif]-->
+    <!--[if lt IE 7]>
+    <style>
+      body > main {
+       height: 100%;
+      }
+    </style><![endif]-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
+    <!--Apple-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--JS helpers -->
+    <script type="text/javascript" src="js/libs/helpers.js"></script>
+    <!--Include JS/CSS-->
+    <script>(function() {
+  if (!/debug/.test(window.location.search)) {
+    console.log('[App] PRODUCTION MODE (Console is disabled)');
+    $$.disableConsole();
+    $$.includeJS('js/libs/lib.min.js');
+    $$.includeCSS('css/project.css');
+    $$.includeJS('js/project.min.js');
+  } else {
+    console.debug('[App] DEBUG MODE');
+    $$.includeJS('js/libs/jquery-1.10.2.min.js');
+    $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
+    $$.includeJS('js/libs/jquery.tinyscrollbar.js');
+    $$.includeJS('js/libs/jquery.cookie.js');
+    $$.includeJS('js/libs/mustache.js');
+    $$.includeJS('js/libs/underscore-min.js');
+    $$.includeJS('js/libs/json2.js');
+    $$.includeJS('js/libs/backbone.router.js');
+    $$.includeJS('js/libs/popup.js');
+    $$.includeJS('js/libs/form.js');
+    $$.includeJS('js/libs/carousel.js');
+    $$.includeJS('js/libs/fileuploader.js');
+    $$.includeCSS('css/app.css');
+    $$.includeJS('js/app.models.js');
+    $$.includeJS('js/app.views.js');
+    $$.includeJS('js/app.router.js');
+    $$.includeJS('js/app.js');
+  }
+
+}).call(this);
+
+    </script>
+    <!--App initialization!-->
+    <script>
+      window.app = new App({
+       name: "Frontend Skeleton",
+       hashNavigate: false,
+       remoteHost: "",
+       root: "",
+       box: true,
+       onLoad: function(){}
+      });
+      
+    </script>
+  </head>
+  <body>
+    <!--Vkontakte openapi-->
+    <script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
+    <!--Facebook SDK -->
+    <div id="fb-root"></div>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <div id="popups" class="yea">
+      <div data-popup-name="custom" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1></h1>
+        </div>
+        <div class="body"></div>
+        <div class="footer">
+          <button data-popup-close class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-name="unique" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1>unique</h1>
+        </div>
+        <div class="body">
+          <p>popup</p>
+        </div>
+        <div class="footer">
+          <button data-popup-button class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-close class="background"></div>
+    </div>
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">HEADER (fixed)</a></h5>
+            </div>
+            <nav id="menu">
+              <ul>
+                <li><a href="guideline.html">Guideline</a></li>
+                <li><a href="fonts.html">Fonts</a></li>
+                <li><a href="http://vinsproduction.com/skeleton/dev/" target="_blank">Dev</a></li>
+                <li><a href="https://github.com/vinsproduction/frontend_skeleton" target="_blank">Download</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="sections">
+      </div>
+      <footer>
+        <div class="container">
+          <div class="content">
+            <h5>FOOTER (always at the bottom)</h5>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

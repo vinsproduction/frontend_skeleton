@@ -1,0 +1,86 @@
+extends layout/layout
+
+block append css
+	link(rel="stylesheet", type="text/css", href="css/video-js.css")
+	link(rel="stylesheet", type="text/css", href="css/video.css")
+	
+
+block append js
+
+	script(type="text/javascript", src="js/video.dev.js")
+	script(type="text/javascript", src="js/video.js")
+
+	script.
+		
+		window.video = new Video({
+			poster: "img/poster_889_500.jpg",
+			width: 1265,
+			wrapperWidth: 1265,
+			wrapperHeight: 500,
+			autoplay: true,
+			preload: true,
+			loop: true,
+			controls: false,
+			valume: 0.5,
+			startTime: 0
+		})
+
+		window.fullscreen = function() {
+
+			var mainEl = $('body > main');
+
+			if (mainEl.hasClass('fullscreen')) {
+
+				mainEl.removeClass('fullscreen');
+				video.normalScreen();
+
+			} else {
+
+				mainEl.addClass('fullscreen');
+				video.fullScreen();
+			}
+		};
+		
+
+
+
+block content
+
+	section#page-video
+
+		.container
+			.content
+
+				.desc
+					p: a(href="#", onclick="fullscreen();return false;") fullscreen
+					p
+						a.block-inline(href="#",onclick="video.play();return false;") play 
+						a.block-inline(href="#",onclick="video.pause();return false;", style="margin: 0 10px;") pause 
+						a.block-inline(href="#",onclick="video.stop();return false;") stop 
+				
+
+				#video
+
+					.greed
+
+					video#player.vjs-default-skin
+						//-source(src='http://cs526107v4.vk.me/u17348293/videos/ad12c20bf0.720.mp4', type='video/mp4')
+						source(src='data/ape.mp4', type='video/mp4')
+						source(src='data/ape.webm', type='video/webm')
+						source(src='data/ape.ogv', type='video/ogg')
+
+
+				pre.example(class="prettyprint lang-js linenums").
+					window.video = new Video({
+						poster: "img/poster_889_500.jpg",
+						width: 1265,
+						wrapperWidth: 1265,
+						wrapperHeight: 500,
+						autoplay: true,
+						preload: true,
+						loop: true,
+						controls: false,
+						valume: 0.5,
+						startTime: 0
+					})
+

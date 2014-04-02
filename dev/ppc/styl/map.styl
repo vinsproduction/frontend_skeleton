@@ -1,0 +1,256 @@
+
+@require '../../../ppc/styl/mixins'
+
+pre.example
+	clear both
+	margin 20px 0
+	font-size 14px
+
+.container
+	margin 50px 20px 20px 20px
+
+
+	
+#shop-map
+	position relative
+
+	#tooltip-area
+		position: absolute
+		z-index: 6
+		text-transform: uppercase
+		display: inline-block
+		margin-left: -36px
+		margin-top: -62px
+
+		&.withlogo
+			margin-top: -122px
+
+		.tooltip-wrapper
+			background-color: #FFF
+			position: relative
+			z-index: 6
+			padding: 3px
+
+			.tooltip-inner
+				max-height: 20px
+				overflow: hidden
+
+				&.withlogo
+					max-height: 80px
+
+		.tooltip-corner
+			position: relative
+			z-index: 5
+			background: url("../images/nav-corner.png")
+			width: 36px
+			height: 36px
+			left: 0
+	
+	.brandlist
+		width 250px
+		height 580px
+		overflow auto
+		float left
+		margin 0 5px 0 0
+		border 2px solid #B34D48
+		position relative
+
+		.inner
+			padding 0 5px 0 10px
+			.title
+				font 18px Arial
+				text-transform uppercase
+
+				a
+					text-transform lowercase
+					font-size 14px
+					color #000
+					text-decoration none
+					border-bottom 1px dashed #000
+
+			ul.list
+				list-style-type none
+				li
+					margin 10px 0 0 0
+					font 16px Arial
+					cursor pointer
+					font-weight bold
+					&.active
+						color rgb(238, 46, 36)
+						border-bottom 1px solid #000
+
+
+	.mapcontainer
+		
+		block-left()
+		position relative
+		border 10px solid #B34D48
+		background #000
+			
+		.floors.nav
+			position absolute
+			top -43px
+			z-index 1
+			.floor
+				position relative
+				padding 10px 20px 6px 20px
+				margin 0 0 0 4px
+				background #000
+				text-transform uppercase
+				font 15px Arial
+				display inline-block
+				cursor pointer
+				font-weight bold
+				color #FFF
+
+				a
+					text-decoration none
+					color #FFF
+
+				&.ui-tabs-active
+					background #B34D48
+
+		.zoom
+			position absolute
+			top 0
+			right 0
+			z-index 3
+			a 
+				width: 35px
+				height:35px
+				background url("../images/zoom.png") no-repeat
+				position relative
+				display block
+				cursor pointer
+				
+				&.plus
+					background-position 0 0
+					&:hover
+						background-position -35px 0
+				&.minus
+					background-position 0 -35px
+					&:hover
+						background-position -35px -35px
+
+		.preloader
+			position absolute
+			top 250px
+			left 300px
+
+
+		.wrapper
+			
+			overflow hidden
+
+			.movebox
+				//cursor move
+
+				.map
+					position relative
+					z-index 2
+
+	
+	.menu
+		
+		width 247px
+		height 580px
+		overflow auto
+		float left
+		border 2px solid #B34D48
+		margin-left 5px
+		padding-left 30px
+		.search
+			clear both
+			margin-bottom 20px
+
+			input
+				width 205px
+				-webkit-box-shadow inset 0 3px 10px 1px #d8ddde
+				-moz-box-shadow inset 0 3px 10px 1px #d8ddde
+				box-shadow inset 0 3px 10px 1px #d8ddde
+				border 1px solid #fff
+				height 35px
+				color #056d89
+				padding-left 15px
+
+		.list-1
+			
+			ul
+				list-style-type none
+				li
+					line-height 24px
+					position relative
+					font-size 13px
+					
+					&:before
+						content "•"
+						font-size 54px
+						position absolute
+						top 0
+						left -20px
+						width 10px
+						height 10px
+						display block
+					
+					&.icon01:before{color:#299838;}
+					&.icon02:before{color:#c91c00;}
+					&.icon03:before{color:#248fd0;}
+					&.icon04:before{color:#f5dc00;}
+					&.icon05:before{color:#89462d;}
+					&.icon06:before{color:#d899eb;}
+					&.icon07:before{color:#101111;}
+					&.icon08:before{color:#cd0576;}
+					&.icon09:before{color:#c9dff2;}
+					&.icon10:before{color:#fff49a;}
+					&.icon11:before{color:#b0d300;}
+					&.icon12:before{color:#f57c75;}
+					&.icon13:before{color:#0030ff;}
+					&.icon14:before{color:#c7898d;}
+					&.icon15:before{color:#436a9f;}
+					&.icon16:before{color:#e46b00;}
+					&.icon17:before{color:#e89700;}
+					&.icon18:before{color:#2a108c;}
+					&.icon19:before{color:#685b52;}
+					&.icon20:before{color:#756500;}
+					&.icon21:before{color:#3e3752;}
+					&.icon22:before{color:#5aa1ab;}
+					&.icon23:before{color:#be8241;}
+					&.icon24:before{color:#aef1a5;}
+
+					a
+						color #e82154
+						text-decoration none
+						&.active
+							text-decoration underline
+			
+		.list-2
+			
+			ul
+				list-style-type none
+				
+				li
+					clear both
+					a
+						color #e82154
+						text-decoration none
+						&.active
+							text-decoration underline
+
+						.icon
+							background: url("../images/pict.png") no-repeat
+							width 24px
+							height 22px
+							display inline-block
+							float left
+							margin-right: 5px
+
+							&.icon01 {background-position: 0 0;}
+							&.icon02 {background-position: -60px 0;}	
+							&.icon03 {background-position: -120px 0;}
+							&.icon04 {background-position: 0 -26px;}		
+							&.icon05 {background-position: -60px -26px;}		
+							&.icon06 {background-position: -120px -26px;}	
+							&.icon07 {background-position: 0 -52px;}		
+							&.icon08 {background-position: -60px -52px;}
+							&.icon09 {background-position: -120px -52px;}
+		
