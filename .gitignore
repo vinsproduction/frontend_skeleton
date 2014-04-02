@@ -1,2 +1,4 @@
-/preprocessors/node_modules
-/preprocessors/npm-debug.log
+node_modules
+npm-debug.log
+/dev/node_modules
+/dev/npm-debug.log
