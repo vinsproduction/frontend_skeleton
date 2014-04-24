@@ -4,9 +4,9 @@ class PrototypeModel
 
 	constructor: ->
 
-	get: (url,data,callback)  -> app.api url, 'GET', data, (res) -> callback res
+	get: (url,data,callback)  -> app.api {url, dataType:'GET', data, dataType: 'json', callback: (res) -> callback res}
 
-	post: (url,data,callback) -> app.api url, 'POST', data, (res) -> callback res
+	post: (url,data,callback) -> app.api {url, dataType:'POST', data, dataType: 'json', callback: (res) -> callback res}
 
 
 class UserModel extends PrototypeModel

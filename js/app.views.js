@@ -1,6 +1,6 @@
 
 /* Prototype View */
-var IndexView, PrototypeView, Views,
+var IndexView, PrototypeView, Views, allView,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -123,6 +123,13 @@ PrototypeView = (function() {
 
 /* Views */
 
+allView = (function() {
+  function allView() {}
+
+  return allView;
+
+})();
+
 IndexView = (function(_super) {
   __extends(IndexView, _super);
 
@@ -145,7 +152,7 @@ IndexView = (function(_super) {
       t: 'Load...',
       h: 130
     });
-    return app.models.user.get({}, (function(_this) {
+    return app.models.user.getDetails({}, (function(_this) {
       return function(res) {
         if (res.error) {
           return app.errors.popup(res.error);
@@ -175,6 +182,7 @@ IndexView = (function(_super) {
 
 Views = (function() {
   function Views() {
+    this.all = new allView;
     this.index = new IndexView;
   }
 

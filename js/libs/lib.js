@@ -17032,9 +17032,11 @@ var Form;
 Form = (function() {
   Form.prototype.logs = false;
 
-  Form.prototype.formId = "form";
+  Form.prototype.formName = false;
 
-  Form.prototype.submitBtnClass = ".submit";
+  Form.prototype.formEl = false;
+
+  Form.prototype.submitEl = false;
 
   Form.prototype.errorAlertClass = "error-alert";
 
@@ -17064,6 +17066,8 @@ Form = (function() {
 
   Form.prototype.onLoad = function() {};
 
+  Form.prototype.onInit = function() {};
+
   function Form(options) {
     var k, v, _ref;
     this.options = options != null ? options : {};
@@ -17076,8 +17080,20 @@ Form = (function() {
     this.errorTemplateList = "{error}<br/>";
     $((function(_this) {
       return function() {
-        _this.form = $("#" + _this.formId);
-        _this.submitBtn = _this.form.find(_this.submitBtnClass);
+        if (!_this.formEl) {
+          return _this.log('Warning! formEl not set');
+        }
+        if (!_this.submitEl) {
+          return _this.log('Warning! submitEl not set');
+        }
+        _this.form = $$.isObject(_this.formEl) ? _this.formEl : $(_this.formEl);
+        _this.submitBtn = $$.isObject(_this.submitEl) ? _this.submitEl : _this.form.find(_this.submitEl);
+        if (!_this.form.size()) {
+          return _this.log('Warning! formEl not found in DOM');
+        }
+        if (!_this.submitBtn.size()) {
+          return _this.log('Warning! submitEl not found in DOM');
+        }
         _this.init();
         _this.log("onLoad", "options", _this.options);
         return _this.onLoad();
@@ -17105,8 +17121,21 @@ Form = (function() {
       if (!this.fields[name].onError) {
         this.fields[name].onError = function(fieldName, errors) {};
       }
+
+      /* placeholder */
       if (this.fields[name].placeholder && (el.is("input[type='text']") || el.is('textarea'))) {
         this.placeholder(el, this.fields[name].placeholder);
+      }
+
+      /* Отправка по Enter */
+      if (this.fields[name].enterSubmit) {
+        el.keydown((function(_this) {
+          return function(event) {
+            if (event.keyCode === 13) {
+              return _this.submit();
+            }
+          };
+        })(this));
       }
       if (this.fields[name].useErrorTemplate && this.fields[name].rules) {
         errorAlert = $("." + this.errorAlertExtClass + "-" + name);
@@ -17161,12 +17190,13 @@ Form = (function() {
     this.form.submit(function(e) {
       return e.preventDefault();
     });
-    return this.submitBtn.click((function(_this) {
+    this.submitBtn.click((function(_this) {
       return function() {
         _this.submit();
         return false;
       };
     })(this));
+    return this.onInit();
   };
 
   Form.prototype.setVal = function(name, val) {
@@ -17466,9 +17496,10 @@ Form = (function() {
   /* HELPERS */
 
   Form.prototype.log = function() {
-    var argument, newArgs, _i, _len;
+    var argument, formName, newArgs, _i, _len;
     if (console && this.logs) {
-      newArgs = ["[Form]", "#" + this.formId];
+      formName = this.formName || this.formEl;
+      newArgs = ["[Form]", "'" + formName + "'"];
       for (_i = 0, _len = arguments.length; _i < _len; _i++) {
         argument = arguments[_i];
         newArgs.push(argument);

@@ -82,6 +82,12 @@ class PrototypeView
 
 ### Views ###
 
+class allView
+
+	constructor: ->
+
+		#app.api {url:'user/details',data:{'q':1}}, (res) =>
+
 class IndexView extends PrototypeView
 
 	init: ->
@@ -93,11 +99,13 @@ class IndexView extends PrototypeView
 
 		do @generateRenders
 
+		#do @controller
+
 	controller: (@opt={}) ->
 
 		@vars = {} #reset vars
 		@preRender['example'](t: 'Load...',h:130)
-		app.models.user.get {}, (res) =>
+		app.models.user.getDetails {}, (res) =>
 			if res.error
 				return app.errors.popup(res.error)
 			else
@@ -120,5 +128,6 @@ class Views
 
 	constructor: ->
 
-		@index = new IndexView
+		@all  	= new allView
+		@index 	= new IndexView
 

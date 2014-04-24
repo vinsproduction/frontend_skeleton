@@ -93,9 +93,11 @@ script.
 		hashNavigate: false,
 		remoteHost: "",
 		root: "",
-		box: true,
-		onLoad: function(){}
 	});
+
+	app.onLoad(function(data){ console.log('=> onLoad', data); });
+	app.onScroll(function(data){ console.log('=> onScroll', data); });
+	app.onResize(function(data){ console.log('=> onResize', data); });
 
 block css
 	//-

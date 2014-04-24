@@ -1,5 +1,5 @@
 
-/* Front-end Skeleton / ver. 2.1 / rev. 27.03.2014 / vinsproduction */
+/* Front-end Skeleton / ver. 3.0 / rev. 24.03.2014 / vinsproduction */
 var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -12,8 +12,17 @@ App = (function() {
     this.options = {
       name: 'Frontend Skeleton',
 
+      /* Дебаг префикс в урле */
+      debugUri: "debug",
+
+      /* Визуальный дебаг префикс в урле */
+      boxUri: "box",
+
       /* Хеш навигация в проекте */
       hashNavigate: false,
+
+      /* Локальный хост */
+      localHost: ["", "localhost"],
 
       /* Удаленный хост для локальной разработки с api */
       remoteHost: "http://vinsproduction.com",
@@ -22,10 +31,7 @@ App = (function() {
       root: "",
 
       /* Визуальный дебаггер */
-      box: false,
-
-      /* Callback загрузки приложения */
-      onLoad: function() {}
+      box: false
     };
     _.extend(this.options, options);
     this.name = this.options.name;
@@ -33,10 +39,13 @@ App = (function() {
     this.remoteHost = this.options.remoteHost;
     this.root = this.options.root;
     this.box = this.options.box;
-    this.onLoad = this.options.onLoad;
+    this.boxUri = this.options.boxUri;
+    this.debugUri = this.options.debugUri;
 
     /* Настройка window.console */
-    this.console();
+
+    /* Слушатели */
+    this.listeners();
 
     /* Дебаг режим */
     this.debugMode = /debug/.test(window.location.search);
@@ -47,11 +56,36 @@ App = (function() {
     /* HOST! */
     this.host = window.location.protocol + "//" + window.location.host;
 
+    /* Визуальный Дебагер */
+    this.boxMode = new RegExp(this.boxUri).test(window.location.search);
+
+    /* Возвращает параметры визуального дебага, напр. ?box=logs -> вернет logs */
+    this.boxParams = (function(_this) {
+      return function() {
+        var box;
+        if (!_this.boxMode) {
+          return [];
+        }
+        box = $$.urlParam(_this.boxUri);
+        if (box) {
+          return box.split(',');
+        } else {
+          return [];
+        }
+      };
+    })(this)();
+
+    /* Дебаг режим */
+    this.debugMode = new RegExp(this.debugUri).test(window.location.search);
+
     /* Возвращает параметры дебага, напр. ?debug=test -> вернет test */
-    this.debug = (function(_this) {
+    this.debugParams = (function(_this) {
       return function() {
         var debug;
-        debug = $$.urlParam('debug');
+        if (!_this.debugMode) {
+          return [];
+        }
+        debug = $$.urlParam(_this.debugUri);
         if (debug) {
           return debug.split(',');
         } else {
@@ -79,33 +113,30 @@ App = (function() {
       return function() {
 
         /* Дебагер */
-        if (__indexOf.call(_this.debug, 'box') >= 0 || _this.box) {
+        if (_this.boxMode) {
           _this.debugBox.init();
         }
 
-        /* Слушатели */
-        _this.listeners();
-
         /* Модели/Api */
-        if (Models) {
+        if (typeof Models !== "undefined" && Models !== null) {
           _this.models = new Models;
         }
 
         /* Контроллеры/Рендеры */
-        if (Views) {
+        if (typeof Views !== "undefined" && Views !== null) {
           _this.views = new Views;
         }
 
         /* Роутер/Хеш навигация */
-        if (_this.hashNavigate) {
+        if ((typeof Router !== "undefined" && Router !== null) && _this.hashNavigate) {
           _this.router = new Router;
           Backbone.history.start();
         }
 
         /* Настройки соцсетей */
         _this.social.init();
-        window.console.info("[App > onLoad]", _this.name, "Options >", _this.options, " Debug >", _this.debug, " Browser > " + $$.browser.name + " ver. " + $$.browser.version);
-        return _this.onLoad();
+        window.console.info("[App > onLoad]", _this.name, "Options >", _this.options, " Debug >", (_this.debugMode ? _this.debugParams : false), " Box >", (_this.boxMode ? _this.boxParams : false), " Browser > " + $$.browser.name + " ver. " + $$.browser.version);
+        return $(window).trigger("AppOnLoad");
       };
     })(this));
   };
@@ -182,6 +213,16 @@ App = (function() {
   App.prototype.listeners = function() {
     var lastScrollTop, self;
     self = this;
+    this.onLoad = function(callback) {
+      return $(window).on('AppOnLoad', function(event) {
+        if (typeof app === "undefined" || app === null) {
+          return;
+        }
+        if (callback) {
+          return callback(app);
+        }
+      });
+    };
 
     /* Scroll */
 
@@ -198,6 +239,9 @@ App = (function() {
     lastScrollTop = 0;
     $(window).scroll(function(e) {
       var action, top, vars;
+      if (typeof app === "undefined" || app === null) {
+        return;
+      }
       top = self.scroll();
       if (top !== lastScrollTop) {
         action = top > lastScrollTop ? 'down' : 'up';
@@ -213,7 +257,9 @@ App = (function() {
         return $(window).trigger("AppOnScroll", [vars]);
       }
     });
-    $(window).scroll();
+    this.onLoad(function() {
+      return $(window).scroll();
+    });
 
     /* Resize */
 
@@ -230,6 +276,9 @@ App = (function() {
     $(window).resize((function(_this) {
       return function() {
         var vars;
+        if (typeof app === "undefined" || app === null) {
+          return;
+        }
         vars = app.size();
         if (app.debugBox.state) {
           app.debugBox.log("sect", "header: " + vars.headerHeight + "px | sections: " + vars.sectionsHeight + "px | footer: " + vars.footerHeight + "px");
@@ -238,7 +287,9 @@ App = (function() {
         return $(window).trigger("AppOnResize", [vars]);
       };
     })(this));
-    return $(window).resize();
+    return this.onLoad(function() {
+      return $(window).resize();
+    });
   };
 
 
@@ -350,7 +401,7 @@ App = (function() {
 
 
   /* @API
-  	Пример запроса: app.api.request 'user/details', 'GET', {}, (res) =>
+  	Пример запроса: app.api {url:'user/details',data:{'q':1}}, (res) =>
   		if res.error
   				return app.errors.popup res.error
   			else
@@ -362,47 +413,53 @@ App = (function() {
 
   App.prototype.apiPrefix = "";
 
-  App.prototype.api = function(url, type, data, callback) {
-    var host;
-    if (type == null) {
-      type = "GET";
+  App.prototype.api = function(options) {
+    var ajaxData, callback, data, dataType, host, logs, request, type, url, _ref;
+    if (options == null) {
+      options = {};
     }
-    if (data == null) {
-      data = {};
+    if (!options.url) {
+      return console.error('[App > api] url not set!');
     }
     host = this.local ? this.remoteHost : this.host;
-    url = host + "/" + this.apiPrefix + url;
-    return $.ajax({
-      type: type,
-      dataType: 'json',
+    url = host + "/" + this.apiPrefix + options.url;
+    type = options.type || "GET";
+    dataType = options.dataType || false;
+    data = options.data || {};
+    callback = options.callback || false;
+    logs = (_ref = options.logs) != null ? _ref : true;
+    ajaxData = {
       url: url,
-      data: data
-    }).done((function(_this) {
+      type: type,
+      data: data,
+      crossDomain: true,
+      cache: false
+    };
+    if (dataType) {
+      ajaxData.dataType = dataType;
+    }
+    request = $.ajax(ajaxData);
+    request.done((function(_this) {
       return function(res) {
         var response;
-        response = $$.browser.msie ? JSON.stringify(res) : res;
-        if (res.status === 'success') {
-          if (!res.data) {
-            res.data = [];
-          }
+        if (logs) {
+          response = $$.browser.msie ? JSON.stringify(res) : res;
+          data = $$.browser.msie ? JSON.stringify(data) : data;
           console.debug("[App > api] " + url + " | " + type + ":", data, "| success: ", response);
-          if (callback) {
-            return callback(res.data);
-          }
-        } else if (res.status === 'error') {
-          console.error("[App > api] " + url + " | " + type + ":", data, "| error: ", response);
-          if (callback) {
-            return callback({
-              error: res.error
-            });
-          }
+        }
+        if (callback) {
+          return callback(res);
         }
       };
-    })(this)).fail((function(_this) {
-      return function(res) {
+    })(this));
+    request.fail((function(_this) {
+      return function(res, err) {
         var response;
-        response = $$.browser.msie ? JSON.stringify(res) : res;
-        console.error("[App > api] " + url + " | " + type + ":", data, "| fail: ", response);
+        if (logs) {
+          response = $$.browser.msie ? JSON.stringify(res) : res;
+          data = $$.browser.msie ? JSON.stringify(data) : data;
+          console.error("[App > api] " + url + " | " + type + ":", data, "| fail: ", err, res);
+        }
         if (res.readyState === 4 && res.status === 404) {
 
           /* запрос в никуда */
@@ -424,9 +481,10 @@ App = (function() {
   /* Debug monitor */
 
   App.prototype.debugBox = {
-    logs: true,
+    logs: false,
     state: false,
     init: function() {
+      this.logs = app.boxMode && __indexOf.call(app.boxParams, 'logs') >= 0;
       this.state = true;
       return $('body').append("<div id=\"debugBox\" style=\"max-width: 400px;background:transparent;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#60000000,endColorstr=#60000000);background: rgba(0,0,0,0.6);position:fixed;z-index:10000; right:5px; bottom:5px;color:white; padding: 10px;\">\n	DebugBox - " + app.name + "\n	<pre class=\"browser\">browser: <span>" + $$.browser.name + " ver." + $$.browser.version + "</span></pre>\n	<pre class=\"res\">resolution: <span></span></pre>\n	<pre class=\"scroll\">scroll: <span>none</span></pre>\n	<pre class=\"route\">route: <span>none</span></pre>\n	<pre class=\"sect\"></pre>\n	<pre class=\"mediaHeight\" style=\"color:red;\"></pre>\n	<pre class=\"mediaWidth\" style=\"color:red;\"></pre>\n	<div class=\"log\" style=\"margin-top: 10px; max-height: 80px;overflow-y:auto;word-wrap: break-word;\"><div></div></div>\n</div>");
     },
@@ -467,11 +525,7 @@ App = (function() {
   /* Всякие библиотеки для общего пользования */
 
   App.prototype.libs = function() {
-    $.support.cors = true;
-    return $.ajaxSetup({
-      cache: false,
-      crossDomain: true
-    });
+    return $.support.cors = true;
   };
 
 
