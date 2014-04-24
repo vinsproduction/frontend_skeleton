@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html class="js csstransforms3d">
+  <head>
+    <meta name="viewport" content="width=1265">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--SEO-->
+    <title>dev</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- Open Graph-->
+    <meta property="og:title" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:description" content="">
+    <!--favicon-->
+    <link rel="image_src" href="">
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <!--IE--><!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <meta http-equiv="MSThemeCompatible" content="no"/>
+    <![endif]-->
+    <!--[if lt IE 7]>
+    <style>
+      body > main {
+       height: 100%;
+      }
+    </style><![endif]-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/libs/html5shiv.js"></script><![endif]-->
+    <!--Apple-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--JS helpers -->
+    <script type="text/javascript" src="js/libs/helpers.js"></script>
+    <!--Include JS/CSS-->
+    <script>
+      console.debug('dev');
+      $$.includeJS('js/libs/jquery-1.10.2.min.js');
+      $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
+      $$.includeJS('js/libs/jquery.tinyscrollbar.js');
+      $$.includeJS('js/libs/jquery.cookie.js');
+      
+      $$.includeJS('js/libs/mustache.js');
+      $$.includeJS('js/libs/underscore-min.js');
+      $$.includeJS('js/libs/json2.js');
+      $$.includeJS('js/libs/backbone.router.js');
+      $$.includeJS('js/libs/popup.js');
+      
+      $$.includeJS('js/classie.js');
+      
+      $$.includeCSS('css/app.css');
+      $$.includeJS('js/prettify.js');
+      $$.includeJS('js/lang-css.js');
+      $$.includeCSS('css/sons-of-obsidian.css');
+      
+      
+      $$.includeJS('js/app.models.js');
+      $$.includeJS('js/app.views.js');
+      $$.includeJS('js/app.router.js');
+      
+      $$.includeJS('js/app.js');
+      
+    </script>
+    <!--App initialization!-->
+    <script>
+      window.app = new App({
+       name: "Frontend dev",
+       hashNavigate: false,
+       root: "",
+      });
+      
+      
+    </script>
+    <link rel="stylesheet" type="text/css" href="IconHoverEffects/css/component.css">
+    <script src="IconHoverEffects/js/modernizr.custom.js"></script>
+  </head>
+  <body onload="prettyPrint()">
+    <div id="popups" class="yea">
+      <div data-popup-name="custom" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1></h1>
+        </div>
+        <div class="body"></div>
+        <div class="footer">
+          <button data-popup-close class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-name="unique" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1>unique</h1>
+        </div>
+        <div class="body">
+          <p>popup</p>
+        </div>
+        <div class="footer">
+          <button data-popup-button class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-close class="background"></div>
+    </div>
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">Tutorials</a></h5>
+            </div>
+            <nav id="menu">
+              <ul>
+                <li><a href="../">Skeleton</a></li>
+                <li><a href="../guideline.html">Guideline</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="sections">
+        <section id="page-IconHoverEffects">
+          <div class="container">
+            <div class="content">
+              <script src="IconHoverEffects/js/modernizr.custom.js"></script>
+              <link rel="stylesheet" type="text/css" href="IconHoverEffects/css/component.css">
+              <section class="g-color-1">
+                <div class="hi-icon-wrap hi-icon-effect-1 hi-icon-effect-1a"><a href="#set-1" class="hi-icon hi-icon-mobile">Mobile</a><a href="#set-1" class="hi-icon hi-icon-screen">Desktop</a><a href="#set-1" class="hi-icon hi-icon-earth">Partners</a><a href="#set-1" class="hi-icon hi-icon-support">Support</a><a href="#set-1" class="hi-icon hi-icon-locked">Security</a></div>
+                <div class="hi-icon-wrap hi-icon-effect-1 hi-icon-effect-1b"><a href="#set-1" class="hi-icon hi-icon-mobile">Mobile</a><a href="#set-1" class="hi-icon hi-icon-screen">Desktop</a><a href="#set-1" class="hi-icon hi-icon-earth">Partners</a><a href="#set-1" class="hi-icon hi-icon-support">Support</a><a href="#set-1" class="hi-icon hi-icon-locked">Security</a></div>
+              </section>
+              <section class="g-color-2">
+                <div class="hi-icon-wrap hi-icon-effect-2 hi-icon-effect-2a"><a href="#set-2" class="hi-icon hi-icon-cog">Settings</a><a href="#set-2" class="hi-icon hi-icon-clock">Time</a><a href="#set-2" class="hi-icon hi-icon-videos">Videos</a><a href="#set-2" class="hi-icon hi-icon-list">List</a><a href="#set-2" class="hi-icon hi-icon-refresh">Refresh</a></div>
+                <div class="hi-icon-wrap hi-icon-effect-2 hi-icon-effect-2b"><a href="#set-2" class="hi-icon hi-icon-cog">Settings</a><a href="#set-2" class="hi-icon hi-icon-clock">Time</a><a href="#set-2" class="hi-icon hi-icon-videos">Videos</a><a href="#set-2" class="hi-icon hi-icon-list">List</a><a href="#set-2" class="hi-icon hi-icon-refresh">Refresh</a></div>
+              </section>
+              <section class="g-color-3">
+                <div class="hi-icon-wrap hi-icon-effect-3 hi-icon-effect-3a"><a href="#set-3" class="hi-icon hi-icon-images">Images</a><a href="#set-3" class="hi-icon hi-icon-pencil">Edit</a><a href="#set-3" class="hi-icon hi-icon-link">Link</a><a href="#set-3" class="hi-icon hi-icon-mail">Mail</a><a href="#set-3" class="hi-icon hi-icon-location">Location</a></div>
+                <div class="hi-icon-wrap hi-icon-effect-3 hi-icon-effect-3b"><a href="#set-3" class="hi-icon hi-icon-images">Images</a><a href="#set-3" class="hi-icon hi-icon-pencil">Edit</a><a href="#set-3" class="hi-icon hi-icon-link">Link</a><a href="#set-3" class="hi-icon hi-icon-mail">Mail</a><a href="#set-3" class="hi-icon hi-icon-location">Location</a></div>
+              </section>
+              <section class="g-color-4">
+                <div class="hi-icon-wrap hi-icon-effect-4 hi-icon-effect-4a"><a href="#set-4" class="hi-icon hi-icon-archive">Archive</a><a href="#set-4" class="hi-icon hi-icon-chat">Chat</a><a href="#set-4" class="hi-icon hi-icon-bookmark">Bookmarks</a><a href="#set-4" class="hi-icon hi-icon-user">User</a><a href="#set-4" class="hi-icon hi-icon-contract">Contact</a></div>
+                <div class="hi-icon-wrap hi-icon-effect-4 hi-icon-effect-4b"><a href="#set-4" class="hi-icon hi-icon-archive">Archive</a><a href="#set-4" class="hi-icon hi-icon-chat">Chat</a><a href="#set-4" class="hi-icon hi-icon-bookmark">Bookmarks</a><a href="#set-4" class="hi-icon hi-icon-user">User</a><a href="#set-4" class="hi-icon hi-icon-contract">Contact</a></div>
+              </section>
+              <section class="g-color-5">
+                <div class="hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5a"><a href="#set-5" class="hi-icon hi-icon-mobile">Mobile</a><a href="#set-5" class="hi-icon hi-icon-screen">Desktop</a><a href="#set-5" class="hi-icon hi-icon-earth">Partners</a><a href="#set-5" class="hi-icon hi-icon-support">Support</a><a href="#set-5" class="hi-icon hi-icon-locked">Security</a></div>
+                <div class="hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5b"><a href="#set-5" class="hi-icon hi-icon-mobile">Mobile</a><a href="#set-5" class="hi-icon hi-icon-screen">Desktop</a><a href="#set-5" class="hi-icon hi-icon-earth">Partners</a><a href="#set-5" class="hi-icon hi-icon-support">Support</a><a href="#set-5" class="hi-icon hi-icon-locked">Security</a></div>
+                <div class="hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5c"><a href="#set-5" class="hi-icon hi-icon-mobile">Mobile</a><a href="#set-5" class="hi-icon hi-icon-screen">Desktop</a><a href="#set-5" class="hi-icon hi-icon-earth">Partners</a><a href="#set-5" class="hi-icon hi-icon-support">Support</a><a href="#set-5" class="hi-icon hi-icon-locked">Security</a></div>
+                <div class="hi-icon-wrap hi-icon-effect-5 hi-icon-effect-5d"><a href="#set-5" class="hi-icon hi-icon-mobile">Mobile</a><a href="#set-5" class="hi-icon hi-icon-screen">Desktop</a><a href="#set-5" class="hi-icon hi-icon-earth">Partners</a><a href="#set-5" class="hi-icon hi-icon-support">Support</a><a href="#set-5" class="hi-icon hi-icon-locked">Security</a></div>
+              </section>
+              <section class="g-color-6">
+                <div class="hi-icon-wrap hi-icon-effect-6"><a href="#set-6" class="hi-icon hi-icon-cog">Settings</a><a href="#set-6" class="hi-icon hi-icon-support">Support</a><a href="#set-6" class="hi-icon hi-icon-star">Fav</a><a href="#set-6" class="hi-icon hi-icon-contract">Contract</a><a href="#set-6" class="hi-icon hi-icon-refresh">Refresh</a></div>
+              </section>
+              <section class="g-color-7">
+                <div class="hi-icon-wrap hi-icon-effect-7 hi-icon-effect-7a"><a href="#set-7" class="hi-icon hi-icon-cog">Settings</a><a href="#set-7" class="hi-icon hi-icon-clock">Time</a><a href="#set-7" class="hi-icon hi-icon-videos">Videos</a><a href="#set-7" class="hi-icon hi-icon-list">List</a><a href="#set-7" class="hi-icon hi-icon-refresh">Refresh</a></div>
+                <div class="hi-icon-wrap hi-icon-effect-7 hi-icon-effect-7b"><a href="#set-7" class="hi-icon hi-icon-cog">Settings</a><a href="#set-7" class="hi-icon hi-icon-clock">Time</a><a href="#set-7" class="hi-icon hi-icon-videos">Videos</a><a href="#set-7" class="hi-icon hi-icon-list">List</a><a href="#set-7" class="hi-icon hi-icon-refresh">Refresh</a></div>
+              </section>
+              <section class="g-color-8">
+                <div class="hi-icon-wrap hi-icon-effect-8"><a href="#set-8" class="hi-icon hi-icon-archive">Archive</a><a href="#set-8" class="hi-icon hi-icon-chat">Chat</a><a href="#set-8" class="hi-icon hi-icon-bookmark">Bookmarks</a><a href="#set-8" class="hi-icon hi-icon-user">User</a><a href="#set-8" class="hi-icon hi-icon-contract">Contact</a></div>
+              </section>
+              <section class="g-color-9">
+                <div class="hi-icon-wrap hi-icon-effect-9 hi-icon-effect-9a"><a href="#set-9" class="hi-icon hi-icon-images">Images</a><a href="#set-9" class="hi-icon hi-icon-pencil">Edit</a><a href="#set-9" class="hi-icon hi-icon-link">Link</a><a href="#set-9" class="hi-icon hi-icon-mail">Mail</a><a href="#set-9" class="hi-icon hi-icon-location">Location</a></div>
+                <div class="hi-icon-wrap hi-icon-effect-9 hi-icon-effect-9b"><a href="#set-9" class="hi-icon hi-icon-images">Images</a><a href="#set-9" class="hi-icon hi-icon-pencil">Edit</a><a href="#set-9" class="hi-icon hi-icon-link">Link</a><a href="#set-9" class="hi-icon hi-icon-mail">Mail</a><a href="#set-9" class="hi-icon hi-icon-location">Location</a></div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </div>
+      <footer>
+        <div class="container">
+          <div class="content">
+            <h1></h1>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

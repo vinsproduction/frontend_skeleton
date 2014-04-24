@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="js csstransforms3d">
+  <head>
+    <meta name="viewport" content="width=1265">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--SEO-->
+    <title>dev</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- Open Graph-->
+    <meta property="og:title" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:description" content="">
+    <!--favicon-->
+    <link rel="image_src" href="">
+    <link rel="shortcut icon" type="image/x-icon" href="">
+    <!--IE--><!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="imagetoolbar" content="no"/>
+    <meta http-equiv="MSThemeCompatible" content="no"/>
+    <![endif]-->
+    <!--[if lt IE 7]>
+    <style>
+      body > main {
+       height: 100%;
+      }
+    </style><![endif]-->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../js/libs/html5shiv.js"></script><![endif]-->
+    <!--Apple-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!--JS helpers -->
+    <script type="text/javascript" src="js/libs/helpers.js"></script>
+    <!--Include JS/CSS-->
+    <script>
+      console.debug('dev');
+      $$.includeJS('js/libs/jquery-1.10.2.min.js');
+      $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
+      $$.includeJS('js/libs/jquery.tinyscrollbar.js');
+      $$.includeJS('js/libs/jquery.cookie.js');
+      
+      $$.includeJS('js/libs/mustache.js');
+      $$.includeJS('js/libs/underscore-min.js');
+      $$.includeJS('js/libs/json2.js');
+      $$.includeJS('js/libs/backbone.router.js');
+      $$.includeJS('js/libs/popup.js');
+      
+      $$.includeJS('js/classie.js');
+      
+      $$.includeCSS('css/app.css');
+      $$.includeJS('js/prettify.js');
+      $$.includeJS('js/lang-css.js');
+      $$.includeCSS('css/sons-of-obsidian.css');
+      
+      
+      $$.includeJS('js/app.models.js');
+      $$.includeJS('js/app.views.js');
+      $$.includeJS('js/app.router.js');
+      
+      $$.includeJS('js/app.js');
+      
+    </script>
+    <!--App initialization!-->
+    <script>
+      window.app = new App({
+       name: "Frontend dev",
+       hashNavigate: false,
+       root: "",
+      });
+      
+      
+    </script>
+    <script type="text/javascript" src="../js/libs/fileuploader.js"></script>
+    <script>
+      $(document).ready(function(){
+      
+       window.q = new qq.FileUploader({
+        element: $('#fileuploader')[0],
+        XhrMode: true,
+        action: '/api/upload',
+        inputName: 'image',
+        params: {
+         test: 1
+        },
+        allowedExtensions: ["jpg", "jpeg", "png"],
+        multiple: true,
+        sizeLimit: 5242880,
+        minSizeLimit: 0,
+        debug: false,
+        messages: {
+         typeError: "{file} has invalid extension. Only {extensions} are allowed.",
+         sizeError: "{file} is too large, maximum file size is {sizeLimit}.",
+         minSizeError: "{file} is too small, minimum file size is {minSizeLimit}.",
+         emptyError: "{file} is empty, please select files again without it.",
+         onLeave: "The files are being uploaded, if you leave now the upload will be cancelled."
+        },
+        template: "<div class=\"qq-uploader\">\n	<div class=\"qq-upload-button\"></div>\n	<ul class=\"qq-upload-list\" ><span>Uploaded list</span></ul>\n	<div class=\"qq-upload-drop-area\" ><span>Drop files here to upload</span></div>\n</div>",
+        onSubmit: function(id, fileName) {},
+        onProgress: function(id, fileName, loaded, total) {
+         return console.log('[Fileuploader] loaded >',loaded, 'total >', total);
+        },
+        showMessage: function(message) {
+         return popup.custom('', message);
+        },
+        onError: function(id, fileName, xhr) {
+         return console.log('[Fileuploader] id >',id, 'fileName >', fileName, 'xhr >', xhr);
+        },
+        onComplete: function(id, filename, responseJSON) {
+         var res = responseJSON;
+         //console.log(res);
+         if (res.success) {
+          console.log('[Fileuploader] success > ', res);
+          
+          $('.row-fileresult').append('<img src="img/'+ res.uploadfile +'" />')
+          
+         } else {
+          console.log('[Fileuploader] error > ', res);
+         }
+        }
+       });
+       
+      });
+      
+    </script>
+  </head>
+  <body onload="prettyPrint()">
+    <div id="popups" class="yea">
+      <div data-popup-name="custom" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1></h1>
+        </div>
+        <div class="body"></div>
+        <div class="footer">
+          <button data-popup-close class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-name="unique" class="popup">
+        <div data-popup-close class="close"></div>
+        <div class="header">
+          <h1>unique</h1>
+        </div>
+        <div class="body">
+          <p>popup</p>
+        </div>
+        <div class="footer">
+          <button data-popup-button class="g-btn-2">закрыть</button>
+        </div>
+      </div>
+      <div data-popup-close class="background"></div>
+    </div>
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">Tutorials</a></h5>
+            </div>
+            <nav id="menu">
+              <ul>
+                <li><a href="../">Skeleton</a></li>
+                <li><a href="../guideline.html">Guideline</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="sections">
+        <section id="page-fileuploader">
+          <div class="container">
+            <div class="content">
+              <div class="row row-actions">
+                <div class="button-1"><span>Загрузить</span>
+                  <div id="fileuploader"></div>
+                </div>
+              </div>
+              <div class="row row-fileresult"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <footer>
+        <div class="container">
+          <div class="content">
+            <h1></h1>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
