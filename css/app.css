@@ -1,7 +1,7 @@
 /* 
-	===============
-	=== PROJECT ===
-	===============
+	=========================
+	====== PROJECT DEV  =====
+	=========================
 */
 /* _________ IMPORT ________*/
 @import 'normalize.css';
@@ -10,6 +10,13 @@
   font-family: 'Ubuntu';
   src: url("../fonts/ubuntu-r-webfont.eot");
   src: url("../fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/ubuntu-r-webfont.svg") format('svg'), url("../fonts/ubuntu-r-webfont.woff") format('woff'), url("../fonts/ubuntu-r-webfont.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'consola';
+  src: url("../fonts/consola-webfont.eot");
+  src: url("../fonts/consola-webfont.eot?#iefix") format('embedded-opentype'), url("../fonts/consola-webfont.svg") format('svg'), url("../fonts/consola-webfont.woff") format('woff'), url("../fonts/consola-webfont.ttf") format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -94,6 +101,39 @@
 }
 .g-row:after {
   clear: both;
+}
+.g-color-1 {
+  background: #0e83cd;
+}
+.g-color-2 {
+  background: #f06060;
+}
+.g-color-3 {
+  background: #fcd04b;
+}
+.g-color-4 {
+  background: #2ecc71;
+}
+.g-color-5 {
+  background: #9e54bd;
+}
+.g-color-6 {
+  background: #4593e3;
+}
+.g-color-7 {
+  background: #2ac56c;
+}
+.g-color-8 {
+  background: #3851bc;
+}
+.g-color-9 {
+  background: #96a94b;
+}
+.g-color-10 {
+  background: #16a085;
+}
+.g-color-11 {
+  background: #aab7b7;
 }
 /* _______ GUIDELINE _______
 
@@ -201,7 +241,8 @@ a {
 .g-link-2:hover {
   border-bottom: 0;
 }
-.g-btn-1 {
+.g-btn-1,
+section#page-form .container .content button.reset {
   font-size: 18px;
   line-height: 1;
   font-family: Ubuntu, helvetica, verdana, arial, tahoma;
@@ -228,14 +269,17 @@ a {
   color: #fff;
   background: #555;
 }
-.g-btn-1:hover {
+.g-btn-1:hover,
+section#page-form .container .content button.reset:hover {
   background: #999;
 }
-.g-btn-1 span {
+.g-btn-1 span,
+section#page-form .container .content button.reset span {
   position: relative;
   top: 15px;
 }
-.g-btn-2 {
+.g-btn-2,
+section#page-form .container .content input.submit {
   font-size: 18px;
   line-height: 1;
   font-family: Ubuntu, helvetica, verdana, arial, tahoma;
@@ -262,10 +306,12 @@ a {
   color: #fff;
   background: #333;
 }
-.g-btn-2:hover {
+.g-btn-2:hover,
+section#page-form .container .content input.submit:hover {
   background: #999;
 }
-.g-btn-2 span {
+.g-btn-2 span,
+section#page-form .container .content input.submit span {
   position: relative;
   top: 15px;
 }
@@ -308,7 +354,8 @@ textarea:focus,
 select:focus {
   outline: none;
 }
-.g-input-1 {
+.g-input-1,
+section#page-form .container .content input[type='text'] {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -322,13 +369,16 @@ select:focus {
   line-height: 1;
   font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
-.g-input-1:focus {
+.g-input-1:focus,
+section#page-form .container .content input[type='text']:focus {
   border: 1px solid #555;
 }
-.g-input-1.error-field {
+.g-input-1.error-field,
+section#page-form .container .content input[type='text'].error-field {
   border: 1px solid #f00;
 }
-.g-textarea-1 {
+.g-textarea-1,
+section#page-form .container .content textarea {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -342,13 +392,16 @@ select:focus {
   line-height: 1;
   font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
-.g-textarea-1:focus {
+.g-textarea-1:focus,
+section#page-form .container .content textarea:focus {
   border: 1px solid #555;
 }
-.g-textarea-1.error-field {
+.g-textarea-1.error-field,
+section#page-form .container .content textarea.error-field {
   border: 1px solid #f00;
 }
-.g-select-1 {
+.g-select-1,
+section#page-form .container .content select {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
@@ -360,19 +413,43 @@ select:focus {
   line-height: 1;
   font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
-.g-select-1:focus {
+.g-select-1:focus,
+section#page-form .container .content select:focus {
   border: 1px solid #555;
 }
-.g-select-1.error-field {
+.g-select-1.error-field,
+section#page-form .container .content select.error-field {
   border: 1px solid #f00;
 }
-.g-checkbox-1 {
+.g-checkbox-1,
+section#page-form .container .content input[type='checkbox'] {
   width: 25px;
   height: 25px;
 }
-.g-radio-1 {
+.g-radio-1,
+section#page-form .container .content input[type='radio'] {
   width: 25px;
   height: 25px;
+}
+pre {
+  line-height: 1;
+  font-family: consola, helvetica, verdana, arial, tahoma;
+  padding: 5px 15px 5px 15px;
+  margin: 10px 0;
+}
+h1,
+h2 {
+  margin: 10px 0;
+}
+h2 span {
+  background: #000;
+  color: #fff;
+  padding: 2px 8px 4px 8px;
+  font-size: 21px;
+  text-transform: lowercase;
+}
+p {
+  margin: 10px 0;
 }
 /*_________ MAIN __________*/
 html {
@@ -514,67 +591,280 @@ body > main > .sections > section > .container > .content {
   padding: 50px 20px;
 }
 /* _________ PAGES _________*/
-section#index .container .content p {
-  margin: 20px 0;
-  line-height: 1.4;
+section#page-index .container .content {
+  width: 1225px;
 }
-/* _________ DEV PAGES _________*/
-section#guideline h1 {
-  font-size: 36px;
-  line-height: 1;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+section#page-index .container .content li {
+  margin: 15px 0;
+  font-size: 18px;
 }
-section#guideline .row {
-  display: -moz-inline-stack;
-  display: inline-block;
-  vertical-align: top;
-  zoom: 1;
-  *display: inline;
-  clear: both;
-  width: 100%;
-  border-top: 1px solid #555;
-  padding: 20px 0;
+section#page-index .container .content li a {
+  color: #000;
+  text-decoration: none;
+  padding: 5px 10px;
+  display: table;
 }
-section#guideline .colors div {
+section#page-index .container .content li a:hover {
+  background: #c1b0a3;
+  color: #fff;
+}
+section#page-render .container .content .clarification {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: top;
   zoom: 1;
   *display: inline;
-  width: 100px;
-  height: 50px;
-  padding: 3px;
+  width: 580px;
+  line-height: 1;
+  font-family: consola, helvetica, verdana, arial, tahoma;
+  text-align: right;
+  padding: 0 10px;
 }
-section#guideline .colors div.bg {
+section#page-render .container .content .clarification h2 + p {
+  margin-bottom: 95px;
+}
+section#page-render .container .content .example {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 580px;
+  padding: 0 10px;
+}
+section#page-popup .container .content .example {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 260px;
+}
+section#page-popup .container .content .clarification {
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 900px;
+  line-height: 1;
+  font-family: consola, helvetica, verdana, arial, tahoma;
+}
+section#page-helpers-images .container .content .g-block-inline {
+  width: 400px;
+}
+section#page-helpers-images .container .content .frame {
+  overflow: hidden;
+  border: 2px solid #f00;
+}
+section#page-helpers-images .container .content .frame.frame-horizontal {
+  display: block;
+  width: 200px;
+  height: 100px;
+}
+section#page-helpers-images .container .content .frame.frame-vertical {
+  display: block;
+  width: 100px;
+  height: 200px;
+}
+section#page-helpers-images .container .content .frame.frame-square {
+  display: block;
+  width: 200px;
+  height: 200px;
+}
+section#page-CreativeButtons .container .content,
+section#page-IconHoverEffects .container .content,
+section#page-CreativeLinkEffects .container .content {
+  width: 100%;
+  padding: 40px 0 0 0;
+  text-align: center;
+}
+section#page-CreativeButtons .container .content p,
+section#page-IconHoverEffects .container .content p,
+section#page-CreativeLinkEffects .container .content p {
+  margin: 0;
+}
+section#page-CreativeButtons .container .content p.text,
+section#page-IconHoverEffects .container .content p.text,
+section#page-CreativeLinkEffects .container .content p.text {
+  padding: 10px 30px;
+}
+section#page-CreativeButtons .container .content .btn,
+section#page-IconHoverEffects .container .content .btn,
+section#page-CreativeLinkEffects .container .content .btn {
+  z-index: 1;
+}
+section#page-CreativeLinkEffects section {
+  padding: 80px 0;
+  text-align: center;
+}
+section#page-map .container .content {
+  padding-top: 80px;
+}
+section#page-map .container .content #shop-map {
+  height: 580px;
+}
+section#page-map .container .content .example {
+  margin-top: 20px;
+}
+section#page-gallery .container .content {
+  background: #f2e5d5;
+}
+section#page-carousel .container .content {
+  position: relative;
+  width: 900px;
+  margin: 0 auto;
+}
+section#page-video .container .content {
+  position: relative;
+  padding: 0;
+}
+section#page-video .container .content .desc {
+  position: absolute;
+  top: 40px;
+  left: 30px;
+  display: table;
+  z-index: 4;
+  background: transparent;
+  -webkit-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  -moz-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  -o-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#50000000,endColorstr=#50000000);
+  background: rgba(0,0,0,0.5);
+  padding: 0 20px;
+  text-align: center;
+}
+section#page-video .container .content .desc h1 {
+  font-size: 54px;
+  font-weight: normal;
+  color: #fff;
+  text-transform: uppercase;
+}
+section#page-video .container .content .desc p {
+  color: #fff;
+  margin: 24px 0 24px 0;
+}
+section#page-video .container .content .desc p a {
+  text-decoration: none;
   color: #fff;
 }
-section#fonts .container .content {
-  padding: 50px 20px;
+section#page-form .container .content label {
+  vertical-align: top;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 150px;
 }
-section#fonts .container .content h1 {
-  margin: 30px 0;
-  font-size: 24px;
+section#page-form .container .content .field-group {
+  vertical-align: top;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 300px;
 }
-section#fonts .container .content h2 {
-  margin: 30px 0;
-  font-size: 47px;
+section#page-form .container .content textarea.placeholder,
+section#page-form .container .content input[type='text'].placeholder {
+  color: #ccc;
 }
-section#fonts .container .content .fonts {
-  width: 1225px;
-  overflow: hidden;
+section#page-form .container .content .error-field {
+  border: 1px solid #f00;
 }
-section#fonts .container .content .fonts p {
-  margin: 15px 0;
+section#page-form .container .content .error-alert {
+  vertical-align: top;
+  height: 50px;
+  color: #f00;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 300px;
+  margin-left: 20px;
+  font-size: 14px;
+}
+section#page-form .container .content .error-custom-field {
+  border: 1px solid #00f;
+}
+section#page-form .container .content .error-custom-alert {
+  vertical-align: top;
+  height: 50px;
+  color: #00f;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 300px;
+  margin-left: 20px;
+  font-size: 14px;
+}
+section#page-form .container .content input.submit {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+section#page-form .container .content button.reset {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+section#page-fileuploader .container .content .row-actions {
+  height: 150px;
+}
+section#page-fileuploader .container .content #fileuploader,
+section#page-fileuploader .container .content .qq-upload-button {
+  position: absolute;
+  z-index: 5;
+  cursor: pointer;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+section#page-fileuploader .container .content #fileuploader .qq-upload-drop-area,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-drop-area {
+  position: absolute;
+  left: 220px;
+  width: 500px;
+  height: 150px;
+  background: #ccc;
+}
+section#page-fileuploader .container .content #fileuploader .qq-upload-list,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-list {
+  position: absolute;
+  overflow: auto;
+  left: 733px;
+  width: 500px;
+  height: 150px;
   background: #fff;
-  padding: 0 10px;
-  border: 1px solid #808080;
+  color: #000;
 }
-section#fonts .container .content .fonts p .lowercase {
-  text-transform: lowercase;
+section#page-fileuploader .container .content #fileuploader .qq-upload-list li,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-list li {
+  list-style-type: none;
+  font-size: 12px;
+  text-align: left;
 }
-section#fonts .container .content .fonts p .uppercase {
-  text-transform: uppercase;
+section#page-fileuploader .container .content #fileuploader .qq-upload-list li span,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-list li span {
+  margin-left: 5px;
+}
+section#page-fileuploader .container .content #fileuploader .qq-upload-list li .qq-upload-failed-text,
+section#page-fileuploader .container .content .qq-upload-button .qq-upload-list li .qq-upload-failed-text {
+  display: none;
 }
 /* _________ POPUPS ________*/
 #popups .background {

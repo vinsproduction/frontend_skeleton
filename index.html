@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html class="js csstransforms3d">
   <head>
     <meta name="viewport" content="width=1265">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--SEO-->
-    <title>FRONTEND SCELETON</title>
+    <title>dev</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <!-- Open Graph-->
@@ -27,63 +27,53 @@
       }
     </style><![endif]-->
     <!--[if lt IE 9]>
-    <script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
+    <script type="text/javascript" src="../js/libs/html5shiv.js"></script><![endif]-->
     <!--Apple-->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!--JS helpers -->
     <script type="text/javascript" src="js/libs/helpers.js"></script>
     <!--Include JS/CSS-->
-    <script>(function() {
-  if (!/debug/.test(window.location.search)) {
-    console.log('[App] PRODUCTION MODE (Console is disabled)');
-    $$.disableConsole();
-    $$.includeJS('js/libs/lib.min.js');
-    $$.includeCSS('css/project.css');
-    $$.includeJS('js/project.min.js');
-  } else {
-    console.debug('[App] DEBUG MODE');
-    $$.includeJS('js/libs/jquery-1.10.2.min.js');
-    $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
-    $$.includeJS('js/libs/jquery.tinyscrollbar.js');
-    $$.includeJS('js/libs/jquery.cookie.js');
-    $$.includeJS('js/libs/mustache.js');
-    $$.includeJS('js/libs/underscore-min.js');
-    $$.includeJS('js/libs/json2.js');
-    $$.includeJS('js/libs/backbone.router.js');
-    $$.includeJS('js/libs/popup.js');
-    $$.includeJS('js/libs/form.js');
-    $$.includeJS('js/libs/carousel.js');
-    $$.includeJS('js/libs/fileuploader.js');
-    $$.includeCSS('css/app.css');
-    $$.includeJS('js/app.models.js');
-    $$.includeJS('js/app.views.js');
-    $$.includeJS('js/app.router.js');
-    $$.includeJS('js/app.js');
-  }
-
-}).call(this);
-
+    <script>
+      console.debug('dev');
+      $$.includeJS('js/libs/jquery-1.10.2.min.js');
+      $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
+      $$.includeJS('js/libs/jquery.tinyscrollbar.js');
+      $$.includeJS('js/libs/jquery.cookie.js');
+      
+      $$.includeJS('js/libs/mustache.js');
+      $$.includeJS('js/libs/underscore-min.js');
+      $$.includeJS('js/libs/json2.js');
+      $$.includeJS('js/libs/backbone.router.js');
+      $$.includeJS('js/libs/popup.js');
+      
+      $$.includeJS('js/classie.js');
+      
+      $$.includeCSS('css/app.css');
+      $$.includeJS('js/prettify.js');
+      $$.includeJS('js/lang-css.js');
+      $$.includeCSS('css/sons-of-obsidian.css');
+      
+      
+      $$.includeJS('js/app.models.js');
+      $$.includeJS('js/app.views.js');
+      $$.includeJS('js/app.router.js');
+      
+      $$.includeJS('js/app.js');
+      
     </script>
     <!--App initialization!-->
     <script>
       window.app = new App({
-       name: "Frontend Skeleton",
+       name: "Frontend dev",
        hashNavigate: false,
-       remoteHost: "",
        root: "",
-       box: true,
-       onLoad: function(){}
       });
+      
       
     </script>
   </head>
-  <body>
-    <!--Vkontakte openapi-->
-    <script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
-    <!--Facebook SDK -->
-    <div id="fb-root"></div>
-    <script src="http://connect.facebook.net/en_US/all.js"></script>
+  <body onload="prettyPrint()">
     <div id="popups" class="yea">
       <div data-popup-name="custom" class="popup">
         <div data-popup-close class="close"></div>
@@ -114,36 +104,50 @@
         <div class="container">
           <div class="content">
             <div class="logo">
-              <h5><a href="index.html">HEADER (fixed)</a></h5>
+              <h5><a href="index.html">Tutorials</a></h5>
             </div>
             <nav id="menu">
               <ul>
-                <li><a href="guideline.html">Guideline</a></li>
-                <li><a href="fonts.html">Fonts</a></li>
-                <li><a href="http://vinsproduction.com/skeleton/tutorials/" target="_blank">Tutorials</a></li>
-                <li><a href="https://github.com/vinsproduction/frontend_skeleton" target="_blank">Download</a></li>
+                <li><a href="../">Skeleton</a></li>
+                <li><a href="../guideline.html">Guideline</a></li>
               </ul>
             </nav>
           </div>
         </div>
       </header>
       <div class="sections">
-        <section id="index">
+        <section id="page-index">
           <div class="container">
             <div class="content">
-              <h1>section#index</h1>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis tempus nisl. Nulla magna metus, imperdiet gravida facilisis ut, porttitor sed sapien. Pellentesque consectetur erat felis, non lobortis est faucibus non. Donec placerat augue in justo fermentum facilisis. Curabitur fringilla neque ut leo scelerisque facilisis. Vivamus vel justo vitae nibh imperdiet interdum id ac neque. Etiam ac massa pellentesque, dictum justo quis, dignissim est. Phasellus sit amet rutrum odio. In mollis dictum dolor vehicula imperdiet. Vestibulum et odio egestas, cursus dui vel, semper mi.</p>
-                            <p>Sed non egestas quam. Pellentesque ac enim turpis. Maecenas ac libero bibendum, venenatis arcu sed, fringilla purus. Morbi ac purus ultricies, sagittis lacus id, molestie felis. Sed eget mi lectus. Etiam rutrum sollicitudin neque a ornare. Nullam blandit mauris orci, luctus porttitor mi porttitor eu. Donec sed lobortis justo. Ut et varius sem. Fusce porttitor rutrum tellus vel faucibus. Donec gravida sapien sapien, ac eleifend diam consequat ut. Donec sodales erat porttitor porttitor volutpat. Donec rutrum lectus a ligula bibendum facilisis. Sed vehicula viverra semper.</p>
-                            <p>Mauris eu justo sodales purus mollis auctor vitae eget diam. Nulla interdum nisl et tellus dictum molestie. Pellentesque nunc elit, sollicitudin at tincidunt ut, sollicitudin a quam. Vivamus consectetur ac risus eget bibendum. Quisque posuere vitae nisl eu gravida. Etiam eros nunc, euismod eu consequat quis, luctus venenatis dolor. Duis vestibulum iaculis tempus. Suspendisse urna lectus, faucibus non libero vel, vestibulum malesuada ante. Sed ornare, velit nec sodales euismod, nisi orci placerat felis, in volutpat ligula sapien eget metus. Sed malesuada purus tempus ante varius pellentesque. Mauris ut tincidunt purus. Mauris at nulla eu mi sagittis viverra. Cras in tempor quam. Quisque porta venenatis est, eu adipiscing ligula tristique ut. Nam a neque vel mi adipiscing bibendum. Sed vitae dui velit.</p>
-                            <p>Donec nec leo at tellus mattis faucibus. Suspendisse a orci consequat, mattis sem sit amet, convallis enim. Morbi iaculis blandit enim, id pretium nisl molestie sit amet. Mauris convallis diam nec mauris condimentum, ac dignissim nulla elementum. Ut eget nulla quam. Morbi sollicitudin nunc sit amet mi adipiscing, in aliquam est eleifend. Nam rhoncus metus risus, eu tincidunt metus accumsan in. Etiam adipiscing tortor et urna semper, et aliquet elit pulvinar. Phasellus suscipit urna nec malesuada pulvinar. In hac habitasse platea dictumst. Aliquam sed gravida tortor, ac elementum augue. Morbi porta pharetra nibh a vulputate. Morbi non vehicula arcu. Nullam tristique, mauris convallis congue tincidunt, mi justo dapibus ligula, at placerat est ligula eu erat. Quisque mauris magna, vulputate vel lacinia nec, venenatis quis mi. Cras non ultrices mauris.</p>
+              <h1>Index</h1>
+              <ul>
+                <li><a href="/">Framework</a></li>
+                <li><a href="render.html">Mustache render [Template engines]</a></li>
+                <li><a href="helpers-images.html">Images scale [js]</a></li>
+                <li><a href="popup.html">Popups [js]</a></li>
+                <li><a href="map.html">Map [js]</a></li>
+                <li><a href="gallery.html">Gallery [js]</a></li>
+                <li><a href="carousel.html">Carousel [js]</a></li>
+                <li><a href="video.html">Video [js]</a></li>
+                <li><a href="form.html">Form validation [js]</a></li>
+                <li><a href="CreativeLinkEffects.html">Creative link effects [css]</a></li>
+                <li><a href="IconHoverEffects.html">Icon hover effects [css]</a></li>
+                <li><a href="CreativeButtons.html">Creative buttons [css]</a></li>
+              </ul>
             </div>
           </div>
         </section>
+        <!--include popup-->
+        <!--include helpers-images-->
+        <!--include render-->
+        <!--include CreativeButtons-->
+        <!--include IconHoverEffects-->
+        <!--include CreativeLinkEffects-->
       </div>
       <footer>
         <div class="container">
           <div class="content">
-            <h5>FOOTER (always at the bottom)</h5>
+            <h1></h1>
           </div>
         </div>
       </footer>

@@ -8,14 +8,26 @@ PrototypeModel = (function() {
   function PrototypeModel() {}
 
   PrototypeModel.prototype.get = function(url, data, callback) {
-    return app.api(url, 'GET', data, function(res) {
-      return callback(res);
+    return app.api({
+      url: url,
+      dataType: 'GET',
+      data: data,
+      dataType: 'json',
+      callback: function(res) {
+        return callback(res);
+      }
     });
   };
 
   PrototypeModel.prototype.post = function(url, data, callback) {
-    return app.api(url, 'POST', data, function(res) {
-      return callback(res);
+    return app.api({
+      url: url,
+      dataType: 'POST',
+      data: data,
+      dataType: 'json',
+      callback: function(res) {
+        return callback(res);
+      }
     });
   };
 
@@ -38,7 +50,9 @@ UserModel = (function(_super) {
   UserModel.prototype.getDetails = function(data, callback) {
     return this.get('api/user/details', data, (function(_this) {
       return function(res) {
-        return callback(res);
+        if (res.status === 'success') {
+          return callback(res.data);
+        }
       };
     })(this));
   };

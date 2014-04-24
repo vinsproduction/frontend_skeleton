@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html class="js csstransforms3d">
   <head>
     <meta name="viewport" content="width=1265">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--SEO-->
-    <title>FRONTEND SCELETON</title>
+    <title>dev</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <!-- Open Graph-->
@@ -27,63 +27,53 @@
       }
     </style><![endif]-->
     <!--[if lt IE 9]>
-    <script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
+    <script type="text/javascript" src="../js/libs/html5shiv.js"></script><![endif]-->
     <!--Apple-->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!--JS helpers -->
     <script type="text/javascript" src="js/libs/helpers.js"></script>
     <!--Include JS/CSS-->
-    <script>(function() {
-  if (!/debug/.test(window.location.search)) {
-    console.log('[App] PRODUCTION MODE (Console is disabled)');
-    $$.disableConsole();
-    $$.includeJS('js/libs/lib.min.js');
-    $$.includeCSS('css/project.css');
-    $$.includeJS('js/project.min.js');
-  } else {
-    console.debug('[App] DEBUG MODE');
-    $$.includeJS('js/libs/jquery-1.10.2.min.js');
-    $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
-    $$.includeJS('js/libs/jquery.tinyscrollbar.js');
-    $$.includeJS('js/libs/jquery.cookie.js');
-    $$.includeJS('js/libs/mustache.js');
-    $$.includeJS('js/libs/underscore-min.js');
-    $$.includeJS('js/libs/json2.js');
-    $$.includeJS('js/libs/backbone.router.js');
-    $$.includeJS('js/libs/popup.js');
-    $$.includeJS('js/libs/form.js');
-    $$.includeJS('js/libs/carousel.js');
-    $$.includeJS('js/libs/fileuploader.js');
-    $$.includeCSS('css/app.css');
-    $$.includeJS('js/app.models.js');
-    $$.includeJS('js/app.views.js');
-    $$.includeJS('js/app.router.js');
-    $$.includeJS('js/app.js');
-  }
-
-}).call(this);
-
+    <script>
+      console.debug('dev');
+      $$.includeJS('js/libs/jquery-1.10.2.min.js');
+      $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
+      $$.includeJS('js/libs/jquery.tinyscrollbar.js');
+      $$.includeJS('js/libs/jquery.cookie.js');
+      
+      $$.includeJS('js/libs/mustache.js');
+      $$.includeJS('js/libs/underscore-min.js');
+      $$.includeJS('js/libs/json2.js');
+      $$.includeJS('js/libs/backbone.router.js');
+      $$.includeJS('js/libs/popup.js');
+      
+      $$.includeJS('js/classie.js');
+      
+      $$.includeCSS('css/app.css');
+      $$.includeJS('js/prettify.js');
+      $$.includeJS('js/lang-css.js');
+      $$.includeCSS('css/sons-of-obsidian.css');
+      
+      
+      $$.includeJS('js/app.models.js');
+      $$.includeJS('js/app.views.js');
+      $$.includeJS('js/app.router.js');
+      
+      $$.includeJS('js/app.js');
+      
     </script>
     <!--App initialization!-->
     <script>
       window.app = new App({
-       name: "Frontend Skeleton",
+       name: "Frontend dev",
        hashNavigate: false,
-       remoteHost: "",
        root: "",
-       box: true,
-       onLoad: function(){}
       });
+      
       
     </script>
   </head>
-  <body>
-    <!--Vkontakte openapi-->
-    <script src="http://vkontakte.ru/js/api/openapi.js" type="text/javascript"></script>
-    <!--Facebook SDK -->
-    <div id="fb-root"></div>
-    <script src="http://connect.facebook.net/en_US/all.js"></script>
+  <body onload="prettyPrint()">
     <div id="popups" class="yea">
       <div data-popup-name="custom" class="popup">
         <div data-popup-close class="close"></div>
@@ -114,14 +104,12 @@
         <div class="container">
           <div class="content">
             <div class="logo">
-              <h5><a href="index.html">HEADER (fixed)</a></h5>
+              <h5><a href="index.html">Tutorials</a></h5>
             </div>
             <nav id="menu">
               <ul>
-                <li><a href="guideline.html">Guideline</a></li>
-                <li><a href="fonts.html">Fonts</a></li>
-                <li><a href="http://vinsproduction.com/skeleton/tutorials/" target="_blank">Tutorials</a></li>
-                <li><a href="https://github.com/vinsproduction/frontend_skeleton" target="_blank">Download</a></li>
+                <li><a href="../">Skeleton</a></li>
+                <li><a href="../guideline.html">Guideline</a></li>
               </ul>
             </nav>
           </div>
@@ -223,7 +211,7 @@
       <footer>
         <div class="container">
           <div class="content">
-            <h5>FOOTER (always at the bottom)</h5>
+            <h1></h1>
           </div>
         </div>
       </footer>

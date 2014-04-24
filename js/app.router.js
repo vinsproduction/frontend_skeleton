@@ -17,13 +17,19 @@ Router = (function(_super) {
   Router.prototype.routes = {
     "": "index",
     "!": "index",
-    "!index": "index",
-    "!page": "page",
-    "!page/": "page",
-    "!page/:id": "page",
-    "!page/:id/": "page",
-    "!ooops": "ooops",
-    "!ooops/": "ooops",
+    "!/": "index",
+    "!/popup": "popup",
+    "!/popup/": "popup",
+    "!/render": "render",
+    "!/render/": "render",
+    "!/CreativeButtons": "CreativeButtons",
+    "!/CreativeButtons/": "CreativeButtons",
+    "!/CreativeLinkEffects": "CreativeLinkEffects",
+    "!/CreativeLinkEffects/": "CreativeLinkEffects",
+    "!/IconHoverEffects": "IconHoverEffects",
+    "!/IconHoverEffects/": "IconHoverEffects",
+    "!/ooops": "ooops",
+    "!/ooops/": "ooops",
     "*path": "notFound"
   };
 
@@ -53,14 +59,13 @@ Router = (function(_super) {
 
   /* после перехода */
 
-  Router.prototype.after = function(route) {};
+  Router.prototype.after = function() {};
 
   Router.prototype.hide = function() {
-    return $('body > main > .sections > section').removeClass('current').hide();
+    return $('body > main > .sections > section[data-page]').removeClass('current').hide();
   };
 
   Router.prototype.show = function() {
-    this.hide();
     return this.el.addClass('current').show();
   };
 
@@ -85,19 +90,49 @@ Router = (function(_super) {
   /* Серверная ошибка */
 
   Router.prototype.ooops = function() {
-    this.el = $('section#ooops');
+    this.el = $('section#notFound');
     this.scrollTop();
     return this.show();
   };
 
   Router.prototype.index = function() {
-    this.el = $('section#index');
+    this.el = $('section#page-index');
     this.scrollTop();
     return this.show();
   };
 
-  Router.prototype.page = function(id) {
-    this.el = $('section#page');
+  Router.prototype["popup"] = function() {
+    this.el = $('section#page-popup');
+    this.scrollTop();
+    return this.show();
+  };
+
+  Router.prototype["render"] = function() {
+    this.el = $('section#page-render');
+    this.scrollTop();
+    return this.show();
+  };
+
+  Router.prototype["helpers-images"] = function() {
+    this.el = $('section#page-helpers-images');
+    this.scrollTop();
+    return this.show();
+  };
+
+  Router.prototype["CreativeButtons"] = function() {
+    this.el = $('section#page-CreativeButtons');
+    this.scrollTop();
+    return this.show();
+  };
+
+  Router.prototype["CreativeLinkEffects"] = function() {
+    this.el = $('section#page-CreativeLinkEffects');
+    this.scrollTop();
+    return this.show();
+  };
+
+  Router.prototype["IconHoverEffects"] = function() {
+    this.el = $('section#page-IconHoverEffects');
     this.scrollTop();
     return this.show();
   };

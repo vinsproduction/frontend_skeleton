@@ -1,6 +1,6 @@
 
 /* Prototype View */
-var IndexView, PrototypeView, Views,
+var PageRenderView, PrototypeView, Views,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -123,29 +123,29 @@ PrototypeView = (function() {
 
 /* Views */
 
-IndexView = (function(_super) {
-  __extends(IndexView, _super);
+PageRenderView = (function(_super) {
+  __extends(PageRenderView, _super);
 
-  function IndexView() {
-    return IndexView.__super__.constructor.apply(this, arguments);
+  function PageRenderView() {
+    return PageRenderView.__super__.constructor.apply(this, arguments);
   }
 
-  IndexView.prototype.init = function() {
-    this.el = $("index");
+  PageRenderView.prototype.init = function() {
+    this.el = $("section#page-render");
     this.template = {
       'example': this.el.find('.example')
     };
     return this.generateRenders();
   };
 
-  IndexView.prototype.controller = function(opt) {
+  PageRenderView.prototype.controller = function(opt) {
     this.opt = opt != null ? opt : {};
     this.vars = {};
     this.preRender['example']({
       t: 'Load...',
       h: 130
     });
-    return app.models.user.get({}, (function(_this) {
+    return app.models.user.getDetails({}, (function(_this) {
       return function(res) {
         if (res.error) {
           return app.errors.popup(res.error);
@@ -156,17 +156,15 @@ IndexView = (function(_super) {
     })(this));
   };
 
-  IndexView.prototype.renderResponse = function(data) {
+  PageRenderView.prototype.renderResponse = function(data) {
     _.extend(this.vars, this.varconstants);
     _.extend(this.vars, data);
-    if (this.vars.avatar) {
-      this.doImage(this.vars.avatar);
-    }
+    this.vars.avatar = this.doImage(this.vars.avatar);
     this.render['example']();
     return this.actions();
   };
 
-  return IndexView;
+  return PageRenderView;
 
 })(PrototypeView);
 
@@ -175,7 +173,7 @@ IndexView = (function(_super) {
 
 Views = (function() {
   function Views() {
-    this.index = new IndexView;
+    this['page-render'] = new PageRenderView;
   }
 
   return Views;

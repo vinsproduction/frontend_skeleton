@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=1265"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <!--SEO-->
-<title>FRONTEND SCELETON</title>
+<title>dev</title>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
 <!-- Open Graph-->
@@ -25,53 +25,48 @@
   }
 </style><![endif]-->
 <!--[if lt IE 9]>
-<script type="text/javascript" src="js/libs/html5shiv.js"></script><![endif]-->
+<script type="text/javascript" src="../js/libs/html5shiv.js"></script><![endif]-->
 <!--Apple-->
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <!--JS helpers -->
 <script type="text/javascript" src="js/libs/helpers.js"></script>
 <!--Include JS/CSS-->
-<script>(function() {
-  if (!/debug/.test(window.location.search)) {
-    console.log('[App] PRODUCTION MODE (Console is disabled)');
-    $$.disableConsole();
-    $$.includeJS('js/libs/lib.min.js');
-    $$.includeCSS('css/project.css');
-    $$.includeJS('js/project.min.js');
-  } else {
-    console.debug('[App] DEBUG MODE');
-    $$.includeJS('js/libs/jquery-1.10.2.min.js');
-    $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
-    $$.includeJS('js/libs/jquery.tinyscrollbar.js');
-    $$.includeJS('js/libs/jquery.cookie.js');
-    $$.includeJS('js/libs/mustache.js');
-    $$.includeJS('js/libs/underscore-min.js');
-    $$.includeJS('js/libs/json2.js');
-    $$.includeJS('js/libs/backbone.router.js');
-    $$.includeJS('js/libs/popup.js');
-    $$.includeJS('js/libs/form.js');
-    $$.includeJS('js/libs/carousel.js');
-    $$.includeJS('js/libs/fileuploader.js');
-    $$.includeCSS('css/app.css');
-    $$.includeJS('js/app.models.js');
-    $$.includeJS('js/app.views.js');
-    $$.includeJS('js/app.router.js');
-    $$.includeJS('js/app.js');
-  }
-
-}).call(this);
-
+<script>
+  console.debug('dev');
+  $$.includeJS('js/libs/jquery-1.10.2.min.js');
+  $$.includeJS('js/libs/jquery-ui-1.10.3.custom.js');
+  $$.includeJS('js/libs/jquery.tinyscrollbar.js');
+  $$.includeJS('js/libs/jquery.cookie.js');
+  
+  $$.includeJS('js/libs/mustache.js');
+  $$.includeJS('js/libs/underscore-min.js');
+  $$.includeJS('js/libs/json2.js');
+  $$.includeJS('js/libs/backbone.router.js');
+  $$.includeJS('js/libs/popup.js');
+  
+  $$.includeJS('js/classie.js');
+  
+  $$.includeCSS('css/app.css');
+  $$.includeJS('js/prettify.js');
+  $$.includeJS('js/lang-css.js');
+  $$.includeCSS('css/sons-of-obsidian.css');
+  
+  
+  $$.includeJS('js/app.models.js');
+  $$.includeJS('js/app.views.js');
+  $$.includeJS('js/app.router.js');
+  
+  $$.includeJS('js/app.js');
+  
 </script>
 <!--App initialization!-->
 <script>
   window.app = new App({
-   name: "Frontend Skeleton",
+   name: "Frontend dev",
    hashNavigate: false,
-   remoteHost: "",
    root: "",
-   box: true,
-   onLoad: function(){}
   });
+  
   
 </script>
