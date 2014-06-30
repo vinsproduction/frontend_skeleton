@@ -7,25 +7,33 @@ var Models, PrototypeModel, UserModel,
 PrototypeModel = (function() {
   function PrototypeModel() {}
 
+  PrototypeModel.prototype.getApiPrefix = function() {
+    return "api/";
+  };
+
   PrototypeModel.prototype.get = function(url, data, callback) {
-    return app.api({
-      url: url,
-      dataType: 'GET',
-      data: data,
-      dataType: 'json',
-      callback: function(res) {
+    if (data == null) {
+      data = {};
+    }
+    return app.api.get(this.getApiPrefix() + url, data, function(res) {
+      if (res.status === "error") {
+        console.error("[App > models] " + url + " | error: ", res.message);
+      }
+      if (callback) {
         return callback(res);
       }
     });
   };
 
   PrototypeModel.prototype.post = function(url, data, callback) {
-    return app.api({
-      url: url,
-      dataType: 'POST',
-      data: data,
-      dataType: 'json',
-      callback: function(res) {
+    if (data == null) {
+      data = {};
+    }
+    return app.api.post(this.getApiPrefix() + url, data, function(res) {
+      if (res.status === "error") {
+        console.error("[App > models] " + url + " | error: ", res.message);
+      }
+      if (callback) {
         return callback(res);
       }
     });
@@ -48,7 +56,7 @@ UserModel = (function(_super) {
    */
 
   UserModel.prototype.getDetails = function(data, callback) {
-    return this.get('api/user/details', data, (function(_this) {
+    return this.get('user/details', data, (function(_this) {
       return function(res) {
         return callback(res);
       };
@@ -73,7 +81,7 @@ Models = (function() {
 
 
 /* Prototype View */
-var IndexView, PrototypeView, Views, allView,
+var IndexHash, IndexRenderView, IndexScroll, IndexView, PrototypeView, Views, allView,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -125,20 +133,21 @@ PrototypeView = (function() {
   };
 
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
-    var color, error, height, loadtext, margin, width;
+    var bg, color, error, height, text, top, width;
     try {
-      color = options && options.c ? options.c : "#000";
-      loadtext = options && options.t ? options.t : false;
-      width = options && options.w ? parseInt(options.w) + "px" : "auto";
-      height = options && options.h ? parseInt(options.h) + "px" : "100px";
-      margin = options && options.m ? parseInt(options.m) + "px" : (parseInt(height) / 2 - 10) + "px";
+      color = options && options.color ? options.color : "#000";
+      bg = options && options.bg ? options.bg : "none";
+      text = options && options.text ? options.text : true;
+      width = options && options.width ? parseInt(options.width) + "px" : "100%";
+      height = options && options.height ? parseInt(options.height) + "px" : "100%";
+      top = options && options.top ? parseInt(options.top) + "px" : (parseInt(height) / 2 - 10) + "px";
       if (this.render_debug) {
-        console.log("[preRender " + templateName + "] loadtext:", loadtext);
+        console.log("[preRender " + templateName + "] loadtext:", text);
       }
-      if (loadtext) {
-        return $el.html("<div class=\"prerender\" style=\"position:relative;height:" + height + ";width:" + width + ";text-align:center;\">\n	<p style=\"position: relative; top:" + margin + "; color:" + color + "\">" + loadtext + "</p>\n</div>");
+      if (text) {
+        return $el.html("<div style=\"width: " + width + "; height: " + height + "; background: " + bg + "; position:relative; clear:both;\">\n	<div style=\"top:" + top + "; text-align: center; position: relative; clear:both; color: " + color + ";\">\n		" + text + "\n	</div>\n</div>");
       } else {
-        return $el.empty();
+        return $el.html("<div id=\"preload\" style=\"width: " + width + "; height: " + height + "; background: " + bg + ";\">\n	<div class=\"inner\" style=\"top:" + top + ";\">\n		<div class=\"clock\"></div>\n		<div class=\"loader\"></div>\n	</div>\n</div>");
       }
     } catch (_error) {
       error = _error;
@@ -197,7 +206,10 @@ PrototypeView = (function() {
 /* Views */
 
 allView = (function() {
-  function allView() {}
+  function allView() {
+    this.sections = $("body > main > .sections");
+    this.section = this.sections.find('> section');
+  }
 
   return allView;
 
@@ -210,20 +222,37 @@ IndexView = (function(_super) {
     return IndexView.__super__.constructor.apply(this, arguments);
   }
 
-  IndexView.prototype.init = function() {
-    this.el = $("index");
-    this.template = {
-      'example': this.el.find('.example')
-    };
-    return this.generateRenders();
-  };
+  IndexView.prototype.init = function() {};
 
   IndexView.prototype.controller = function(opt) {
     this.opt = opt != null ? opt : {};
+    this.el = $("mainn.view-index");
+    return console.log('Hello! This is index controller');
+  };
+
+  return IndexView;
+
+})(PrototypeView);
+
+IndexRenderView = (function(_super) {
+  __extends(IndexRenderView, _super);
+
+  function IndexRenderView() {
+    return IndexRenderView.__super__.constructor.apply(this, arguments);
+  }
+
+  IndexRenderView.prototype.init = function() {};
+
+  IndexRenderView.prototype.controller = function(opt) {
+    this.opt = opt != null ? opt : {};
+    this.el = $("main.view-index-render");
+    this.template = {
+      'text': this.el.find('.text')
+    };
+    this.generateRenders();
     this.vars = {};
-    this.preRender['example']({
-      t: 'Load...',
-      h: 130
+    this.preRender['text']({
+      text: 'Load...'
     });
     return app.models.user.getDetails({}, (function(_this) {
       return function(res) {
@@ -236,17 +265,82 @@ IndexView = (function(_super) {
     })(this));
   };
 
-  IndexView.prototype.renderResponse = function(data) {
+  IndexRenderView.prototype.renderResponse = function(data) {
     _.extend(this.vars, this.varconstants);
     _.extend(this.vars, data);
     if (this.vars.avatar) {
       this.doImage(this.vars.avatar);
     }
-    this.render['example']();
+    this.render['text']();
     return this.actions();
   };
 
-  return IndexView;
+  IndexRenderView.prototype.actions = function() {};
+
+  return IndexRenderView;
+
+})(PrototypeView);
+
+IndexScroll = (function(_super) {
+  __extends(IndexScroll, _super);
+
+  function IndexScroll() {
+    return IndexScroll.__super__.constructor.apply(this, arguments);
+  }
+
+  IndexScroll.prototype.init = function() {};
+
+  IndexScroll.prototype.controller = function(opt) {
+    var self;
+    this.opt = opt != null ? opt : {};
+    this.el = $("main.view-index-scroll");
+    this.router = new indexScrollRouter;
+    Backbone.history.start();
+    self = this;
+    this.el.find('header nav#menu li a[data-page]').click(function() {
+      console.log("!" + $(this).attr('data-page'));
+      self.router.navigate("!" + $(this).attr('data-page'), true);
+      return false;
+    });
+
+    /* Если надо открывать каждый блок на всю страницу */
+    app.onResize((function(_this) {
+      return function(size) {
+        return app.views.all.section.css({
+          'min-height': size.windowHeight
+        });
+      };
+    })(this));
+    return $(window).trigger('resize');
+  };
+
+  return IndexScroll;
+
+})(PrototypeView);
+
+IndexHash = (function(_super) {
+  __extends(IndexHash, _super);
+
+  function IndexHash() {
+    return IndexHash.__super__.constructor.apply(this, arguments);
+  }
+
+  IndexHash.prototype.init = function() {};
+
+  IndexHash.prototype.controller = function(opt) {
+    var self;
+    this.opt = opt != null ? opt : {};
+    this.el = $("main.view-index-hash");
+    this.router = new indexHashRouter;
+    Backbone.history.start();
+    self = this;
+    return this.el.find('header nav#menu li a[data-page]').click(function() {
+      self.router.navigate("!" + $(this).attr('data-page'), true);
+      return false;
+    });
+  };
+
+  return IndexHash;
 
 })(PrototypeView);
 
@@ -254,10 +348,15 @@ IndexView = (function(_super) {
 /* ============ Объявляем классы! =========== */
 
 Views = (function() {
-  function Views() {
+  function Views() {}
+
+  Views.prototype.controller = function() {
     this.all = new allView;
     this.index = new IndexView;
-  }
+    this.indexRender = new IndexRenderView;
+    this.indexScroll = new IndexScroll;
+    return this.indexHash = new IndexHash;
+  };
 
   return Views;
 
@@ -265,21 +364,21 @@ Views = (function() {
 
 
 /* Router */
-var Router,
+var indexHashRouter, indexScrollRouter,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-Router = (function(_super) {
-  __extends(Router, _super);
+indexHashRouter = (function(_super) {
+  __extends(indexHashRouter, _super);
 
-  function Router() {
-    return Router.__super__.constructor.apply(this, arguments);
+  function indexHashRouter() {
+    return indexHashRouter.__super__.constructor.apply(this, arguments);
   }
 
 
   /* маршруты */
 
-  Router.prototype.routes = {
+  indexHashRouter.prototype.routes = {
     "": "index",
     "!": "index",
     "!index": "index",
@@ -295,14 +394,14 @@ Router = (function(_super) {
 
   /* инициализация */
 
-  Router.prototype.initialize = function() {
+  indexHashRouter.prototype.initialize = function() {
     return this.bind("all", function(route, router) {});
   };
 
 
   /* до перехода */
 
-  Router.prototype.before = function(route) {
+  indexHashRouter.prototype.before = function(route) {
     if (route === "") {
       this.route = "empty";
     } else {
@@ -318,25 +417,25 @@ Router = (function(_super) {
 
   /* после перехода */
 
-  Router.prototype.after = function(route) {};
+  indexHashRouter.prototype.after = function(route) {};
 
-  Router.prototype.hide = function() {
+  indexHashRouter.prototype.hide = function() {
     return $('body > main > .sections > section').removeClass('current').hide();
   };
 
-  Router.prototype.show = function() {
+  indexHashRouter.prototype.show = function() {
     this.hide();
     return this.el.addClass('current').show();
   };
 
-  Router.prototype.scrollTop = function(speed) {
+  indexHashRouter.prototype.scrollTop = function(speed) {
     return app.scroll(0, speed);
   };
 
 
   /*  404 страница */
 
-  Router.prototype.notFound = function(path) {
+  indexHashRouter.prototype.notFound = function(path) {
     this.el = $('section#notFound');
     this.scrollTop();
     this.show();
@@ -349,25 +448,127 @@ Router = (function(_super) {
 
   /* Серверная ошибка */
 
-  Router.prototype.ooops = function() {
+  indexHashRouter.prototype.ooops = function() {
     this.el = $('section#ooops');
     this.scrollTop();
     return this.show();
   };
 
-  Router.prototype.index = function() {
-    this.el = $('section#index');
+  indexHashRouter.prototype.index = function() {
+    this.el = $('section[data-page="index"]');
     this.scrollTop();
     return this.show();
   };
 
-  Router.prototype.page = function(id) {
-    this.el = $('section#page');
+  indexHashRouter.prototype.page = function(id) {
+    this.el = $('section[data-page="page"]');
     this.scrollTop();
     return this.show();
   };
 
-  return Router;
+  return indexHashRouter;
+
+})(Backbone.Router);
+
+indexScrollRouter = (function(_super) {
+  __extends(indexScrollRouter, _super);
+
+  function indexScrollRouter() {
+    return indexScrollRouter.__super__.constructor.apply(this, arguments);
+  }
+
+
+  /* маршруты */
+
+  indexScrollRouter.prototype.routes = {
+    "": "index",
+    "!": "index",
+    "!index": "index",
+    "!page": "page",
+    "!page/": "page",
+    "!page/:id": "page",
+    "!page/:id/": "page",
+    "*path": "notFound"
+  };
+
+
+  /* инициализация */
+
+  indexScrollRouter.prototype.initialize = function() {
+    this.bind("all", function(route, router) {});
+    return setTimeout((function(_this) {
+      return function() {
+        var sections;
+        sections = [];
+        app.views.all.section.each(function() {
+          return sections.push({
+            name: $(this).attr('data-page'),
+            top: $(this).position().top
+          });
+        });
+        sections.reverse();
+        console.log('[App > View::indexScrollRouter > set sections]', sections);
+        return app.onScroll(function(vars) {
+          var find, section;
+          find = _.find(sections, function(el) {
+            return vars.top > el.top - 10;
+          });
+          section = find ? find.name : 'none';
+          return _this.navigate('!' + section);
+        });
+      };
+    })(this), 700);
+  };
+
+
+  /* до перехода */
+
+  indexScrollRouter.prototype.before = function(route) {
+    if (route === "") {
+      this.route = "empty";
+    } else {
+      this.route = route;
+    }
+    if (app.debugBox.state) {
+      app.debugBox.log("route", this.route);
+    }
+    return console.debug('[App > router]', 'route:', this.route);
+  };
+
+
+  /* после перехода */
+
+  indexScrollRouter.prototype.after = function(route) {};
+
+  indexScrollRouter.prototype.show = function() {
+    return app.scroll(this.el, true);
+  };
+
+  indexScrollRouter.prototype.scrollTop = function(speed) {
+    return app.scroll(0, speed);
+  };
+
+
+  /*  404 страница */
+
+  indexScrollRouter.prototype.notFound = function(path) {
+    console.error("[App > router] route " + path + " not found");
+    if (app.debugBox.state) {
+      return app.debugBox.log("route", "not found");
+    }
+  };
+
+  indexScrollRouter.prototype.index = function() {
+    this.el = $('section[data-page="index"]');
+    return this.show();
+  };
+
+  indexScrollRouter.prototype.page = function(id) {
+    this.el = $('section[data-page="page"]');
+    return this.show();
+  };
+
+  return indexScrollRouter;
 
 })(Backbone.Router);
 
@@ -498,12 +699,7 @@ App = (function() {
         /* Контроллеры/Рендеры */
         if (typeof Views !== "undefined" && Views !== null) {
           _this.views = new Views;
-        }
-
-        /* Роутер/Хеш навигация */
-        if ((typeof Router !== "undefined" && Router !== null) && _this.hashNavigate) {
-          _this.router = new Router;
-          Backbone.history.start();
+          _this.views.controller();
         }
 
         /* Настройки соцсетей */
@@ -757,36 +953,16 @@ App = (function() {
   };
 
 
-  /* Hash навигация */
-
-  App.prototype.routePrefix = "!";
-
-  App.prototype.redirect = function(page) {
-    if (page == null) {
-      page = "";
-    }
-    console.debug('[App > redirect]', page);
-    if (window.location.hash === ("#" + this.routePrefix) + page) {
-      this.router.navigate("redirect");
-    }
-    return this.router.navigate(this.routePrefix + page, true);
-  };
-
-
-  /* @API
-  	Пример запроса: app.api {url:'user/details',data:{'q':1}}, (res) =>
-  		if res.error
-  				return app.errors.popup res.error
-  			else
-  				console.log res
+  /* @request
+  	Пример запроса:
+  		app.request
+  			url: 'user/details'
+  			type:'GET'
+  			data: {}
+  			callback: (res) -> callback(res) if callback
    */
 
-
-  /* API pefix, например номер версии серверного api /api/v1/ */
-
-  App.prototype.apiPrefix = "";
-
-  App.prototype.api = function(options) {
+  App.prototype.request = function(options) {
     var ajaxData, callback, data, dataType, host, logs, request, type, url, _ref;
     if (options == null) {
       options = {};
@@ -795,12 +971,13 @@ App = (function() {
       return console.error('[App > api] url not set!');
     }
     host = this.local ? this.remoteHost : this.host;
-    url = host + "/" + this.apiPrefix + options.url;
+    url = host + "/" + options.url;
     type = options.type || "GET";
     dataType = options.dataType || false;
     data = options.data || {};
     callback = options.callback || false;
     logs = (_ref = options.logs) != null ? _ref : true;
+    $.support.cors = true;
     ajaxData = {
       url: url,
       type: type,
@@ -818,7 +995,7 @@ App = (function() {
         if (logs) {
           response = $$.browser.msie ? JSON.stringify(res) : res;
           data = $$.browser.msie ? JSON.stringify(data) : data;
-          console.debug("[App > api] " + url + " | " + type + ":", data, "| success: ", response);
+          console.debug("[App > " + type + "] " + url + " | params:", data, "| success: ", response);
         }
         if (callback) {
           return callback(res);
@@ -831,23 +1008,54 @@ App = (function() {
         if (logs) {
           response = $$.browser.msie ? JSON.stringify(res) : res;
           data = $$.browser.msie ? JSON.stringify(data) : data;
-          console.error("[App > api] " + url + " | " + type + ":", data, "| fail: ", err, res);
-        }
-        if (res.readyState === 4 && res.status === 404) {
-
-          /* запрос в никуда */
-          if (_this.hashNavigate) {
-            return app.redirect("server-404");
-          }
-        } else {
-
-          /* серверная ошибка */
-          if (_this.hashNavigate) {
-            return app.redirect("server-error");
-          }
+          return console.error("[App > " + type + "] " + url + " | params:", data, "| fail: ", response, err);
         }
       };
     })(this));
+  };
+
+
+  /* @api
+  	Пример запроса: app.api.get 'user/details', {}, (res) =>
+  		if res.error
+  				return app.errors.popup res.error
+  			else
+  				console.log res
+   */
+
+  App.prototype.api = {
+    get: function(url, data, callback) {
+      if (data == null) {
+        data = {};
+      }
+      return app.request({
+        url: url,
+        type: 'GET',
+        data: data,
+        dataType: 'json',
+        callback: function(res) {
+          if (callback) {
+            return callback(res);
+          }
+        }
+      });
+    },
+    post: function(url, data, callback) {
+      if (data == null) {
+        data = {};
+      }
+      return app.request({
+        url: url,
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        callback: function(res) {
+          if (callback) {
+            return callback(res);
+          }
+        }
+      });
+    }
   };
 
 
@@ -897,9 +1105,7 @@ App = (function() {
 
   /* Всякие библиотеки для общего пользования */
 
-  App.prototype.libs = function() {
-    return $.support.cors = true;
-  };
+  App.prototype.libs = function() {};
 
 
   /* Социальные настройки */

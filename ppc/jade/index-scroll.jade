@@ -1,0 +1,59 @@
+extends layout/layout
+
+block content
+
+	main.view-index-scroll
+
+		script.
+			app.onLoad(function(){
+				app.views.indexScroll.controller();
+			});
+
+		header.fixed
+			.container
+				.content
+
+					.logo: h5: a(href="index.html") HEADER (fixed)
+
+					nav#menu
+						ul
+							li: a(href="index-render.html") Scroll
+							li: a(href="index-hash.html") Hash
+							li.navigate: a(href="#",data-page="index") index
+							li.navigate: a(href="#",data-page="page") page
+
+		.sections
+
+			section.page-1(data-page="index")
+
+				.container
+					.content
+						h1 section#index
+
+						mixin Text
+
+							p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis tempus nisl. Nulla magna metus, imperdiet gravida facilisis ut, porttitor sed sapien. Pellentesque consectetur erat felis, non lobortis est faucibus non. Donec placerat augue in justo fermentum facilisis. Curabitur fringilla neque ut leo scelerisque facilisis. Vivamus vel justo vitae nibh imperdiet interdum id ac neque. Etiam ac massa pellentesque, dictum justo quis, dignissim est. Phasellus sit amet rutrum odio. In mollis dictum dolor vehicula imperdiet. Vestibulum et odio egestas, cursus dui vel, semper mi.
+							p Sed non egestas quam. Pellentesque ac enim turpis. Maecenas ac libero bibendum, venenatis arcu sed, fringilla purus. Morbi ac purus ultricies, sagittis lacus id, molestie felis. Sed eget mi lectus. Etiam rutrum sollicitudin neque a ornare. Nullam blandit mauris orci, luctus porttitor mi porttitor eu. Donec sed lobortis justo. Ut et varius sem. Fusce porttitor rutrum tellus vel faucibus. Donec gravida sapien sapien, ac eleifend diam consequat ut. Donec sodales erat porttitor porttitor volutpat. Donec rutrum lectus a ligula bibendum facilisis. Sed vehicula viverra semper.
+							p Mauris eu justo sodales purus mollis auctor vitae eget diam. Nulla interdum nisl et tellus dictum molestie. Pellentesque nunc elit, sollicitudin at tincidunt ut, sollicitudin a quam. Vivamus consectetur ac risus eget bibendum. Quisque posuere vitae nisl eu gravida. Etiam eros nunc, euismod eu consequat quis, luctus venenatis dolor. Duis vestibulum iaculis tempus. Suspendisse urna lectus, faucibus non libero vel, vestibulum malesuada ante. Sed ornare, velit nec sodales euismod, nisi orci placerat felis, in volutpat ligula sapien eget metus. Sed malesuada purus tempus ante varius pellentesque. Mauris ut tincidunt purus. Mauris at nulla eu mi sagittis viverra. Cras in tempor quam. Quisque porta venenatis est, eu adipiscing ligula tristique ut. Nam a neque vel mi adipiscing bibendum. Sed vitae dui velit.
+							p Donec nec leo at tellus mattis faucibus. Suspendisse a orci consequat, mattis sem sit amet, convallis enim. Morbi iaculis blandit enim, id pretium nisl molestie sit amet. Mauris convallis diam nec mauris condimentum, ac dignissim nulla elementum. Ut eget nulla quam. Morbi sollicitudin nunc sit amet mi adipiscing, in aliquam est eleifend. Nam rhoncus metus risus, eu tincidunt metus accumsan in. Etiam adipiscing tortor et urna semper, et aliquet elit pulvinar. Phasellus suscipit urna nec malesuada pulvinar. In hac habitasse platea dictumst. Aliquam sed gravida tortor, ac elementum augue. Morbi porta pharetra nibh a vulputate. Morbi non vehicula arcu. Nullam tristique, mauris convallis congue tincidunt, mi justo dapibus ligula, at placerat est ligula eu erat. Quisque mauris magna, vulputate vel lacinia nec, venenatis quis mi. Cras non ultrices mauris.
+
+						+Text
+
+			section.page-2(data-page="page")
+
+				.container
+					.content
+						h1 section#page
+
+						mixin Text
+
+							p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis tempus nisl. Nulla magna metus, imperdiet gravida facilisis ut, porttitor sed sapien. Pellentesque consectetur erat felis, non lobortis est faucibus non. Donec placerat augue in justo fermentum facilisis. Curabitur fringilla neque ut leo scelerisque facilisis. Vivamus vel justo vitae nibh imperdiet interdum id ac neque. Etiam ac massa pellentesque, dictum justo quis, dignissim est. Phasellus sit amet rutrum odio. In mollis dictum dolor vehicula imperdiet. Vestibulum et odio egestas, cursus dui vel, semper mi.
+							p Sed non egestas quam. Pellentesque ac enim turpis. Maecenas ac libero bibendum, venenatis arcu sed, fringilla purus. Morbi ac purus ultricies, sagittis lacus id, molestie felis. Sed eget mi lectus. Etiam rutrum sollicitudin neque a ornare. Nullam blandit mauris orci, luctus porttitor mi porttitor eu. Donec sed lobortis justo. Ut et varius sem. Fusce porttitor rutrum tellus vel faucibus. Donec gravida sapien sapien, ac eleifend diam consequat ut. Donec sodales erat porttitor porttitor volutpat. Donec rutrum lectus a ligula bibendum facilisis. Sed vehicula viverra semper.
+							p Mauris eu justo sodales purus mollis auctor vitae eget diam. Nulla interdum nisl et tellus dictum molestie. Pellentesque nunc elit, sollicitudin at tincidunt ut, sollicitudin a quam. Vivamus consectetur ac risus eget bibendum. Quisque posuere vitae nisl eu gravida. Etiam eros nunc, euismod eu consequat quis, luctus venenatis dolor. Duis vestibulum iaculis tempus. Suspendisse urna lectus, faucibus non libero vel, vestibulum malesuada ante. Sed ornare, velit nec sodales euismod, nisi orci placerat felis, in volutpat ligula sapien eget metus. Sed malesuada purus tempus ante varius pellentesque. Mauris ut tincidunt purus. Mauris at nulla eu mi sagittis viverra. Cras in tempor quam. Quisque porta venenatis est, eu adipiscing ligula tristique ut. Nam a neque vel mi adipiscing bibendum. Sed vitae dui velit.
+							p Donec nec leo at tellus mattis faucibus. Suspendisse a orci consequat, mattis sem sit amet, convallis enim. Morbi iaculis blandit enim, id pretium nisl molestie sit amet. Mauris convallis diam nec mauris condimentum, ac dignissim nulla elementum. Ut eget nulla quam. Morbi sollicitudin nunc sit amet mi adipiscing, in aliquam est eleifend. Nam rhoncus metus risus, eu tincidunt metus accumsan in. Etiam adipiscing tortor et urna semper, et aliquet elit pulvinar. Phasellus suscipit urna nec malesuada pulvinar. In hac habitasse platea dictumst. Aliquam sed gravida tortor, ac elementum augue. Morbi porta pharetra nibh a vulputate. Morbi non vehicula arcu. Nullam tristique, mauris convallis congue tincidunt, mi justo dapibus ligula, at placerat est ligula eu erat. Quisque mauris magna, vulputate vel lacinia nec, venenatis quis mi. Cras non ultrices mauris.
+
+						+Text
+
+		include layout/footer
+
+

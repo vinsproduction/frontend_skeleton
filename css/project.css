@@ -450,6 +450,9 @@ body > main > header > .container > .content nav#menu ul li {
   float: left;
   margin: 0 0 0 50px;
 }
+body > main > header > .container > .content nav#menu ul li.navigate a {
+  border-bottom: 1px dashed #fff;
+}
 body > main > header > .container > .content .logo {
   float: left;
   display: -moz-inline-stack;

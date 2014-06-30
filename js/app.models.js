@@ -7,25 +7,33 @@ var Models, PrototypeModel, UserModel,
 PrototypeModel = (function() {
   function PrototypeModel() {}
 
+  PrototypeModel.prototype.getApiPrefix = function() {
+    return "api/";
+  };
+
   PrototypeModel.prototype.get = function(url, data, callback) {
-    return app.api({
-      url: url,
-      dataType: 'GET',
-      data: data,
-      dataType: 'json',
-      callback: function(res) {
+    if (data == null) {
+      data = {};
+    }
+    return app.api.get(this.getApiPrefix() + url, data, function(res) {
+      if (res.status === "error") {
+        console.error("[App > models] " + url + " | error: ", res.message);
+      }
+      if (callback) {
         return callback(res);
       }
     });
   };
 
   PrototypeModel.prototype.post = function(url, data, callback) {
-    return app.api({
-      url: url,
-      dataType: 'POST',
-      data: data,
-      dataType: 'json',
-      callback: function(res) {
+    if (data == null) {
+      data = {};
+    }
+    return app.api.post(this.getApiPrefix() + url, data, function(res) {
+      if (res.status === "error") {
+        console.error("[App > models] " + url + " | error: ", res.message);
+      }
+      if (callback) {
         return callback(res);
       }
     });
@@ -48,7 +56,7 @@ UserModel = (function(_super) {
    */
 
   UserModel.prototype.getDetails = function(data, callback) {
-    return this.get('api/user/details', data, (function(_this) {
+    return this.get('user/details', data, (function(_this) {
       return function(res) {
         return callback(res);
       };

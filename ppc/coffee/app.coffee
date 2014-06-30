@@ -34,11 +34,11 @@ class App
 
 		_.extend @options, options
 
-		@name 			= @options.name
-		@hashNavigate 	= @options.hashNavigate
+		@name 				= @options.name
+		@hashNavigate = @options.hashNavigate
 		@remoteHost 	= @options.remoteHost
-		@root 			= @options.root
-		@box 				= @options.box
+		@root 				= @options.root
+		@box 					= @options.box
 
 		@boxUri 			= @options.boxUri
 		@debugUri 		= @options.debugUri
@@ -102,11 +102,7 @@ class App
 			### Контроллеры/Рендеры ###
 			if Views?
 				@views 	= new Views
-
-			### Роутер/Хеш навигация ###
-			if Router? and @hashNavigate
-				@router = new Router
-				Backbone.history.start()
+				@views.controller()
 
 			### Настройки соцсетей ###
 			do @social.init
@@ -298,13 +294,13 @@ class App
 			windowWidth 	: $(window).width()
 			windowHeight 	: $(window).height()
 
-			documentWidth 	: $(document).width()
+			documentWidth  : $(document).width()
 			documentHeight : $(document).height()
 
 			bodyWidth 		: parseInt($('body').width())
 			bodyHeight 		: parseInt($('body').height())
 
-			mainWidth		: parseInt($('body > main').width())
+			mainWidth			: parseInt($('body > main').width())
 			mainHeight		: parseInt($('body > main').height())
 
 			headerWidth		: parseInt($('body > main > header').width())
@@ -313,46 +309,32 @@ class App
 			footerWidth		: parseInt($('body > main > footer').width())
 			footerHeight	: parseInt($('body > main > footer').height())
 			
-			sectionsWidth 	: parseInt($('body > main > .sections').width())
+			sectionsWidth : parseInt($('body > main > .sections').width())
 			sectionsHeight : parseInt($('body > main > .sections').height())
 
 
-	### Hash навигация ###
-
-	routePrefix: "!"
-
-	redirect: (page = "") ->
-		console.debug '[App > redirect]', page
-
-		if window.location.hash is "##{@routePrefix}" + page
-			@router.navigate("redirect")
-		
-		@router.navigate(@routePrefix + page,true)
-
-
-	### @API
-	Пример запроса: app.api {url:'user/details',data:{'q':1}}, (res) =>
-		if res.error
-				return app.errors.popup res.error
-			else
-				console.log res
+	### @request
+	Пример запроса:
+		app.request
+			url: 'user/details'
+			type:'GET'
+			data: {}
+			callback: (res) -> callback(res) if callback
 	###
 
-	### API pefix, например номер версии серверного api /api/v1/ ###
-	apiPrefix: ""
-
-	api: (options={}) ->
+	request: (options={}) ->
 
 		return console.error '[App > api] url not set!' if !options.url
 
 		host 		= if @local then @remoteHost else @host
-		url  		= host + "/" + @apiPrefix + options.url
+		url  		= host + "/" + options.url
 		type 		= options.type || "GET"
 		dataType = options.dataType || false
 		data 		= options.data || {}
 		callback = options.callback || false
 		logs 		= options.logs ? true
 
+		$.support.cors = true
 		ajaxData = {url,type,data,crossDomain:true,cache:false}
 		ajaxData.dataType = dataType if dataType
 
@@ -363,7 +345,7 @@ class App
 			if logs
 				response = if $$.browser.msie then JSON.stringify res else res
 				data 		= if $$.browser.msie then JSON.stringify data else data
-				console.debug("[App > api] #{url} | #{type}:", data, "| success: ", response)
+				console.debug("[App > #{type}] #{url} | params:", data, "| success: ", response)
 
 			callback res if callback
 
@@ -372,17 +354,45 @@ class App
 			if logs
 				response = if $$.browser.msie then JSON.stringify res else res
 				data 		= if $$.browser.msie then JSON.stringify data else data
-				console.error("[App > api] #{url} | #{type}:", data, "| fail: ", err, res)
-
-			if res.readyState is 4 and res.status is 404
-				### запрос в никуда ###
-				app.redirect "server-404" if @hashNavigate
-			else
-				### серверная ошибка ###
-				app.redirect "server-error" if @hashNavigate
+				console.error("[App > #{type}] #{url} | params:", data, "| fail: ", response, err)
 
 
 		return
+
+	### @api
+	Пример запроса: app.api.get 'user/details', {}, (res) =>
+		if res.error
+				return app.errors.popup res.error
+			else
+				console.log res
+	###
+
+	api:
+
+		get: (url,data={},callback) ->
+
+			app.request
+				url: url
+				type:'GET'
+				data: data
+				dataType: 'json'
+				callback: (res) ->
+					# if res.status is "error"
+					# 	console.error("[App > api] #{url} | error: ", res.message)
+					callback(res) if callback
+
+		post: (url,data={},callback) ->
+
+			app.request
+				url: url
+				type:'POST'
+				data: data
+				dataType: 'json'
+				callback: (res) ->
+					# if res.status is "error"
+					# 	console.error("[App > api] #{url} | error: ", res.message)
+					callback(res) if callback
+
 
 	### Debug monitor ###
 	debugBox:
@@ -456,9 +466,6 @@ class App
 
 	### Всякие библиотеки для общего пользования ###
 	libs: ->
-
-		$.support.cors = true
-
 
 	### Социальные настройки ###
 	social:

@@ -1,0 +1,32 @@
+extends layout/layout
+
+block content
+
+	main.view-index-render
+
+		script.
+			app.onLoad(function(){
+				app.views.indexRender.controller();
+			});
+
+		include layout/header
+
+		.sections
+
+			section.index
+
+				.container
+					.content
+						h1 section#index
+
+						mixin Text
+
+							.text
+
+								|{{text}}
+
+						+Text
+
+		include layout/footer
+
+

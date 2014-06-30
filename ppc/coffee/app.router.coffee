@@ -1,7 +1,7 @@
 
 ### Router ###
 
-class Router extends Backbone.Router
+class indexHashRouter extends Backbone.Router
 
 	### маршруты ###
 	routes:
@@ -25,27 +25,6 @@ class Router extends Backbone.Router
 
 		@bind "all",  (route,router) ->
 			#if route is 'route'
-
-		# window.pageAnimate = false
-		# app.onScroll (v) ->
-
-		# 	if !window.pageAnimate
-
-		# 		curentPage 	= $('body > main > .sections > section.current')
-		# 		nextPage 	= curentPage.next('section')
-		# 		prevPage 	= curentPage.prev('section')
-
-		# 		if v.action is 'up'
-		# 			#console.log 'scroll up'
-		# 			if prevPage.size()
-		# 				window.pageAnimate = true
-		# 				app.redirect prevPage.attr('data-page')
-		# 		else
-		# 			#console.log 'scroll down'				
-		# 			if nextPage.size()
-		# 				window.pageAnimate = true
-		# 				app.redirect nextPage.attr('data-page')
-
 
 	### до перехода ###
 	before: (route) ->
@@ -74,11 +53,9 @@ class Router extends Backbone.Router
 		@hide()
 		@el.addClass('current').show()
 
-
 	scrollTop: (speed) ->
 		app.scroll(0,speed)
 	
-
 	###  404 страница ###
 	notFound: (path) ->
 
@@ -89,7 +66,6 @@ class Router extends Backbone.Router
 
 		console.error "[App > router] route #{path} not found"
 		app.debugBox.log("route","not found") if app.debugBox.state
-		
 
 	### Серверная ошибка ###
 	ooops: ->
@@ -99,10 +75,9 @@ class Router extends Backbone.Router
 		@scrollTop()
 		@show()
 		
-
 	index: ->
 
-		@el = $('section#index')
+		@el = $('section[data-page="index"]')
 
 		@scrollTop()
 		@show()
@@ -111,10 +86,90 @@ class Router extends Backbone.Router
 
 	page: (id) ->
 
-		@el = $('section#page')
+		@el = $('section[data-page="page"]')
 
 		@scrollTop()
 		@show()
 		
 		#app.views['index'].controller({id})
 
+class indexScrollRouter extends Backbone.Router
+
+	### маршруты ###
+	routes:
+
+		"": "index"
+		"!": "index"
+		"!index": "index"
+
+		"!page": "page"
+		"!page/": "page"
+		"!page/:id": "page"
+		"!page/:id/": "page"
+
+		"*path" : "notFound"
+
+	### инициализация ###
+	initialize: ->
+
+		@bind "all",  (route,router) ->
+			#if route is 'route'
+
+		setTimeout(=>
+
+			sections = []
+
+			app.views.all.section.each ->
+				sections.push(name: $(@).attr('data-page'), top:$(@).position().top)
+	
+			sections.reverse()
+
+			console.log '[App > View::indexScrollRouter > set sections]', sections
+
+			app.onScroll (vars) =>
+				find = _.find sections, (el) -> vars.top > el.top-10
+				section = if find then find.name else 'none'
+				@navigate '!' + section
+
+		,700)
+
+	### до перехода ###
+	before: (route) ->
+
+		if route is ""
+			@route = "empty"
+		else
+			@route = route
+
+		app.debugBox.log("route",@route) if app.debugBox.state
+
+		console.debug '[App > router]', 'route:', @route
+
+	### после перехода ###
+	after: (route) ->
+		#console.debug '[App > router > after]'
+
+	show: ->
+		app.scroll @el, true
+
+	scrollTop: (speed) ->
+		app.scroll(0,speed)
+	
+	###  404 страница ###
+	notFound: (path) ->
+
+		console.error "[App > router] route #{path} not found"
+		app.debugBox.log("route","not found") if app.debugBox.state
+
+		
+	index: ->
+
+		@el = $('section[data-page="index"]')
+
+		@show()
+
+	page: (id) ->
+
+		@el = $('section[data-page="page"]')
+
+		@show()

@@ -4,10 +4,27 @@ class PrototypeModel
 
 	constructor: ->
 
-	get: (url,data,callback)  -> app.api {url, dataType:'GET', data, dataType: 'json', callback: (res) -> callback res}
+	getApiPrefix: ->
 
-	post: (url,data,callback) -> app.api {url, dataType:'POST', data, dataType: 'json', callback: (res) -> callback res}
+		return "api/"
 
+	get: (url,data={},callback)  ->
+
+		app.api.get @getApiPrefix() + url, data, (res) ->
+
+			if res.status is "error"
+				console.error("[App > models] #{url} | error: ", res.message)
+
+			callback(res) if callback
+
+	post: (url,data={},callback) ->
+
+		app.api.post @getApiPrefix() + url, data, (res) ->
+
+				if res.status is "error"
+					console.error("[App > models] #{url} | error: ", res.message)
+
+				callback(res) if callback
 
 class UserModel extends PrototypeModel
 
@@ -16,7 +33,7 @@ class UserModel extends PrototypeModel
 	###
 	getDetails: (data,callback) ->
 
-		@get 'api/user/details', data, (res) => callback res 
+		@get 'user/details', data, (res) => callback res 
 		
 ### ============ Объявляем классы! =========== ###
 

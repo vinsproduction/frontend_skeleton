@@ -32,6 +32,10 @@ module.exports = function(grunt) {
 					"layout/layout.html": "ppc/jade/layout/layout.jade",
 					"layout/footer.html": "ppc/jade/layout/footer.jade",
 
+					"index-render.html": "ppc/jade/index-render.jade",
+					"index-scroll.html": "ppc/jade/index-scroll.jade",
+					"index-hash.html": "ppc/jade/index-hash.jade",
+
 					"fonts.html": "ppc/jade/fonts.jade",
 					"guideline.html": "ppc/jade/guideline.jade",
 				}
@@ -79,7 +83,7 @@ module.exports = function(grunt) {
 					'js/libs/backbone.router.js',
 					'js/libs/popup.js',
 					'js/libs/form.js',
-					'js/libs/carousel.js',
+					'js/libs/jquery.jcarousel.js',
 				],
 				dest: 'js/libs/lib.js'
 			},
@@ -147,7 +151,8 @@ module.exports = function(grunt) {
 					'js/*.js',
 					'js/libs/*.js',
 					'!js/libs/project.js',
-					'!js/libs/project.min.js'
+					'!js/libs/project.min.js',
+					'!js/libs/lib.min.js'
 				],
 				tasks: ['concat:js','concat:libs', 'uglify']
 			}

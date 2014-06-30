@@ -4,7 +4,7 @@ meta(name='viewport' content='width=1265')
 meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
 
 //SEO
-title FRONTEND SCELETON
+title FRONTEND SKELETON
 meta(name='description' content='')
 meta(name='keywords' content='')
 
@@ -75,10 +75,10 @@ script
 			
 			$$.includeJS 'js/libs/popup.js'
 			$$.includeJS 'js/libs/form.js'
-			$$.includeJS 'js/libs/carousel.js'
+			$$.includeJS 'js/libs/jquery.jcarousel.js'
 			$$.includeJS 'js/libs/fileuploader.js'
 
-			$$.includeCSS 'css/app.css'
+			$$.includeCSS '/css/app.css'
 			
 			$$.includeJS 'js/app.models.js'
 			$$.includeJS 'js/app.views.js'
@@ -90,14 +90,9 @@ script.
 
 	window.app = new App({
 		name: "Frontend Skeleton",
-		hashNavigate: false,
 		remoteHost: "",
 		root: "",
 	});
-
-	app.onLoad(function(data){ console.log('=> onLoad', data); });
-	app.onScroll(function(data){ console.log('=> onScroll', data); });
-	app.onResize(function(data){ console.log('=> onResize', data); });
 
 block css
 	//-

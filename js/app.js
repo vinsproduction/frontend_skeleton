@@ -125,12 +125,7 @@ App = (function() {
         /* Контроллеры/Рендеры */
         if (typeof Views !== "undefined" && Views !== null) {
           _this.views = new Views;
-        }
-
-        /* Роутер/Хеш навигация */
-        if ((typeof Router !== "undefined" && Router !== null) && _this.hashNavigate) {
-          _this.router = new Router;
-          Backbone.history.start();
+          _this.views.controller();
         }
 
         /* Настройки соцсетей */
@@ -384,36 +379,16 @@ App = (function() {
   };
 
 
-  /* Hash навигация */
-
-  App.prototype.routePrefix = "!";
-
-  App.prototype.redirect = function(page) {
-    if (page == null) {
-      page = "";
-    }
-    console.debug('[App > redirect]', page);
-    if (window.location.hash === ("#" + this.routePrefix) + page) {
-      this.router.navigate("redirect");
-    }
-    return this.router.navigate(this.routePrefix + page, true);
-  };
-
-
-  /* @API
-  	Пример запроса: app.api {url:'user/details',data:{'q':1}}, (res) =>
-  		if res.error
-  				return app.errors.popup res.error
-  			else
-  				console.log res
+  /* @request
+  	Пример запроса:
+  		app.request
+  			url: 'user/details'
+  			type:'GET'
+  			data: {}
+  			callback: (res) -> callback(res) if callback
    */
 
-
-  /* API pefix, например номер версии серверного api /api/v1/ */
-
-  App.prototype.apiPrefix = "";
-
-  App.prototype.api = function(options) {
+  App.prototype.request = function(options) {
     var ajaxData, callback, data, dataType, host, logs, request, type, url, _ref;
     if (options == null) {
       options = {};
@@ -422,12 +397,13 @@ App = (function() {
       return console.error('[App > api] url not set!');
     }
     host = this.local ? this.remoteHost : this.host;
-    url = host + "/" + this.apiPrefix + options.url;
+    url = host + "/" + options.url;
     type = options.type || "GET";
     dataType = options.dataType || false;
     data = options.data || {};
     callback = options.callback || false;
     logs = (_ref = options.logs) != null ? _ref : true;
+    $.support.cors = true;
     ajaxData = {
       url: url,
       type: type,
@@ -445,7 +421,7 @@ App = (function() {
         if (logs) {
           response = $$.browser.msie ? JSON.stringify(res) : res;
           data = $$.browser.msie ? JSON.stringify(data) : data;
-          console.debug("[App > api] " + url + " | " + type + ":", data, "| success: ", response);
+          console.debug("[App > " + type + "] " + url + " | params:", data, "| success: ", response);
         }
         if (callback) {
           return callback(res);
@@ -458,23 +434,54 @@ App = (function() {
         if (logs) {
           response = $$.browser.msie ? JSON.stringify(res) : res;
           data = $$.browser.msie ? JSON.stringify(data) : data;
-          console.error("[App > api] " + url + " | " + type + ":", data, "| fail: ", err, res);
-        }
-        if (res.readyState === 4 && res.status === 404) {
-
-          /* запрос в никуда */
-          if (_this.hashNavigate) {
-            return app.redirect("server-404");
-          }
-        } else {
-
-          /* серверная ошибка */
-          if (_this.hashNavigate) {
-            return app.redirect("server-error");
-          }
+          return console.error("[App > " + type + "] " + url + " | params:", data, "| fail: ", response, err);
         }
       };
     })(this));
+  };
+
+
+  /* @api
+  	Пример запроса: app.api.get 'user/details', {}, (res) =>
+  		if res.error
+  				return app.errors.popup res.error
+  			else
+  				console.log res
+   */
+
+  App.prototype.api = {
+    get: function(url, data, callback) {
+      if (data == null) {
+        data = {};
+      }
+      return app.request({
+        url: url,
+        type: 'GET',
+        data: data,
+        dataType: 'json',
+        callback: function(res) {
+          if (callback) {
+            return callback(res);
+          }
+        }
+      });
+    },
+    post: function(url, data, callback) {
+      if (data == null) {
+        data = {};
+      }
+      return app.request({
+        url: url,
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        callback: function(res) {
+          if (callback) {
+            return callback(res);
+          }
+        }
+      });
+    }
   };
 
 
@@ -524,9 +531,7 @@ App = (function() {
 
   /* Всякие библиотеки для общего пользования */
 
-  App.prototype.libs = function() {
-    return $.support.cors = true;
-  };
+  App.prototype.libs = function() {};
 
 
   /* Социальные настройки */
