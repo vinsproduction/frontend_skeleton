@@ -31,14 +31,13 @@ App = (function() {
       /* Путь до картинок и прочей статики */
       root: "",
 
-      /* Визуальный дебаггер */
+      /* Визуальный Дебагер */
       box: false
     };
     _.extend(this.options, options);
     this.name = this.options.name;
     this.remoteHost = this.options.remoteHost;
     this.root = this.options.root;
-    this.box = this.options.box;
     this.boxUri = this.options.boxUri;
     this.debugUri = this.options.debugUri;
     this.listeners();
@@ -53,7 +52,7 @@ App = (function() {
     this.host = window.location.protocol + "//" + window.location.host;
 
     /* Визуальный Дебагер */
-    this.boxMode = new RegExp(this.boxUri).test(window.location.search);
+    this.boxMode = new RegExp(this.boxUri).test(window.location.search) || this.options.box;
 
     /* Возвращает параметры визуального дебага, напр. ?box=logs -> вернет logs */
     this.boxParams = (function(_this) {

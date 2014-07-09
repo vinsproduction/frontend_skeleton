@@ -29,7 +29,7 @@ class App
 			### Путь до картинок и прочей статики ###
 			root: ""
 
-			### Визуальный дебаггер ###
+			### Визуальный Дебагер ###
 			box: false
 
 
@@ -38,7 +38,6 @@ class App
 		@name 				= @options.name
 		@remoteHost 	= @options.remoteHost
 		@root 				= @options.root
-		@box 					= @options.box
 
 		@boxUri 			= @options.boxUri
 		@debugUri 		= @options.debugUri
@@ -58,7 +57,7 @@ class App
 		@host = window.location.protocol + "//" + window.location.host
 
 		### Визуальный Дебагер ###
-		@boxMode = new RegExp(@boxUri).test(window.location.search)
+		@boxMode = new RegExp(@boxUri).test(window.location.search) or @options.box
 
 		### Возвращает параметры визуального дебага, напр. ?box=logs -> вернет logs ###
 		@boxParams = do =>

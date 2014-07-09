@@ -5,79 +5,33 @@
 	#debugBox .mediaWidth:after
 		content '@media(min-width: 320px) and (max-width: 480px)'
 
-	$width = 320
-
 	body > main
 		> header
 			height 60px
-			> .container
-				width ($width)px
 		.sections
 			> section
 				.container
-					width ($width)px
 					.content
 						padding 80px 20px
-		> footer
-			> .container
-				width ($width)px
 
 // iPhone (landscape)
 @media (min-device-width: 320px) and (max-device-width: 480px) and (orientation: landscape)
 	#debugBox .mediaWidth:after
 		content '@media(min-width: 320px) and (max-width: 480px)'
 
-	$width = 480
-
-	body > main
-		> header
-			> .container
-				width ($width)px
-		.sections
-			> section
-				.container
-					width ($width)px
-		> footer
-			> .container
-				width ($width)px
 
 // iPad (portrait)
 @media (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait)
 	#debugBox .mediaWidth:after
 		content '@media(min-width: 768px) and (max-width: 1024px)'
 
-	$width = 768
-
-	body > main
-		> header
-			> .container
-				width ($width)px
-		.sections
-			> section
-				.container
-					width ($width)px
-		> footer
-			> .container
-				width ($width)px
 
 // iPad (landscape)
 @media (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape)
 	#debugBox .mediaWidth:after
 		content '@media(min-width: 768px) and (max-width: 1024px)'
 
-	$width = 1024
 
-	body > main
-		> header
-			> .container
-				width ($width)px
-		.sections
-			> section
-				.container
-					width ($width)px
-		> footer
-			> .container
-				width ($width)px
 
 
 

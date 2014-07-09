@@ -674,58 +674,22 @@ section.fonts .container .content .fonts p .uppercase {
   body > main > header {
     height: 60px;
   }
-  body > main > header > .container {
-    width: 320px;
-  }
-  body > main .sections > section .container {
-    width: 320px;
-  }
   body > main .sections > section .container .content {
     padding: 80px 20px;
-  }
-  body > main > footer > .container {
-    width: 320px;
   }
 }
 @media (min-device-width: 320px) and (max-device-width: 480px) and (orientation: landscape) {
   #debugBox .mediaWidth:after {
     content: '@media(min-width: 320px) and (max-width: 480px)';
   }
-  body > main > header > .container {
-    width: 480px;
-  }
-  body > main .sections > section .container {
-    width: 480px;
-  }
-  body > main > footer > .container {
-    width: 480px;
-  }
 }
 @media (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
   #debugBox .mediaWidth:after {
     content: '@media(min-width: 768px) and (max-width: 1024px)';
   }
-  body > main > header > .container {
-    width: 768px;
-  }
-  body > main .sections > section .container {
-    width: 768px;
-  }
-  body > main > footer > .container {
-    width: 768px;
-  }
 }
 @media (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
   #debugBox .mediaWidth:after {
     content: '@media(min-width: 768px) and (max-width: 1024px)';
-  }
-  body > main > header > .container {
-    width: 1024px;
-  }
-  body > main .sections > section .container {
-    width: 1024px;
-  }
-  body > main > footer > .container {
-    width: 1024px;
   }
 }
