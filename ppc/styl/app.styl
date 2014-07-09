@@ -116,8 +116,7 @@ body > main > header
 		top 0
 
 	> .container
-		width  ($mainWidth)px
-		height (40 - 12*2)px
+		max-width  ($mainWidth)px
 		padding 12px 0
 		margin 0 auto
 
@@ -126,7 +125,8 @@ body > main > header
 		> .content
 			padding 0 5px
 			block-inline()
-			width ($mainWidth - 5*2)px
+			width 100%
+			font-size 14px
 
 			.logo
 				a
@@ -144,11 +144,10 @@ body > main > header
 					color #FFF
 
 				ul
-					float left
 					padding 0
 					li
 						float left
-						margin 0 0 0 50px
+						margin 0 10px 0 0
 						&.navigate
 							a
 								border-bottom 1px dashed #FFF
@@ -173,7 +172,7 @@ body > main > footer
 		bottom 0
 
 	> .container
-		width  ($mainWidth)px
+		max-width  ($mainWidth)px
 		height (40 - 12*2)px
 		padding 12px 0
 		margin 0 auto
@@ -204,7 +203,7 @@ body > main > .sections
 
 		> .container
 			relative()
-			width  ($mainWidth)px
+			max-width  ($mainWidth)px
 			height 100%
 			margin 0 auto
 
@@ -216,7 +215,7 @@ body > main > .sections
 
 /* _________ PAGES _________*/
 
-section#index
+section.index
 	.container
 		.content
 			p 
@@ -226,7 +225,7 @@ section#index
 
 /* _________ DEV PAGES _________*/
 
-section#guideline
+section.guideline
 	
 	h1
 		font 36px $mainFont
@@ -245,13 +244,16 @@ section#guideline
 			&.bg
 				color #FFF
 
-section#fonts
+section.fonts
+
 	.container
+		
 		.content
 			padding 50px 20px
+
 			h1
 				margin 30px 0
-				font-size 24px	
+				font-size 24px
 			h2
 				margin 30px 0
 				font-size 47px

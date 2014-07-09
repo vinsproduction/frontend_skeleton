@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=1265">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--SEO-->
     <title>FRONTEND SKELETON</title>
@@ -76,7 +76,28 @@
     </script>
   </head>
   <body>
-    <style>@font-face {
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">HEADER</a></h5>
+            </div>
+            <nav id="menu">
+              <ul>
+                <li><a href="index-render.html">Render</a></li>
+                <li><a href="index-scroll.html">Scroll</a></li>
+                <li><a href="index-hash.html">Hash</a></li>
+                <li><a href="guideline.html">Guideline</a></li>
+                <li><a href="fonts.html">Fonts</a></li>
+                <li><a href="https://github.com/vinsproduction/frontend_skeleton/wiki" target="_blank">Wiki</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+      <div class="sections">
+        <style>@font-face {
   font-family: 'Ubuntu';
   src: url("fonts/ubuntu-r-webfont.eot"), url("fonts/ubuntu-r-webfont.eot?#iefix") format('embedded-opentype'), url("fonts/ubuntu-r-webfont.svg") format('svg'), url("fonts/ubuntu-r-webfont.woff") format('woff'), url("fonts/ubuntu-r-webfont.ttf") format('truetype');
   font-weight: normal;
@@ -95,8 +116,8 @@
   font-style: normal;
 }
 
-    </style>
-    <script>(function() {
+        </style>
+        <script>(function() {
   window.Fonts = (function() {
     Fonts.prototype.fontFamily = 'Arial';
 
@@ -112,7 +133,7 @@
 
     Fonts.prototype.init = function() {
       var fontsEl, i, _i, _ref, _ref1, _results;
-      this.el = $('section#fonts');
+      this.el = $('section.fonts');
       fontsEl = $("<div style='font-family: " + this.fontFamily + ";''><h2>" + this.fontFamily + "</h2></div>");
       this.el.find('.fonts').append(fontsEl);
       _results = [];
@@ -128,8 +149,8 @@
 
 }).call(this);
 
-    </script>
-    <script>(function() {
+        </script>
+        <script>(function() {
   var fonts;
 
   fonts = new Fonts;
@@ -158,14 +179,23 @@
 
 }).call(this);
 
-    </script>
-    <section id="fonts">
-      <div class="container">
-        <div class="content">
-          <h1>FONTS</h1>
-          <div class="fonts"></div>
-        </div>
+        </script>
+        <section class="fonts">
+          <div class="container">
+            <div class="content">
+              <h1>FONTS</h1>
+              <div class="fonts"></div>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+      <footer>
+        <div class="container">
+          <div class="content">
+            <h5>FOOTER (always at the bottom)</h5>
+          </div>
+        </div>
+      </footer>
+    </main>
   </body>
 </html>

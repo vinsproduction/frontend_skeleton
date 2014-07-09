@@ -404,8 +404,7 @@ body > main > header.fixed {
   top: 0;
 }
 body > main > header > .container {
-  width: 1265px;
-  height: 16px;
+  max-width: 1265px;
   padding: 12px 0;
   margin: 0 auto;
   background: #999;
@@ -417,7 +416,8 @@ body > main > header > .container > .content {
   vertical-align: top;
   zoom: 1;
   *display: inline;
-  width: 1255px;
+  width: 100%;
+  font-size: 14px;
 }
 body > main > header > .container > .content .logo a {
   text-decoration: none;
@@ -443,12 +443,11 @@ body > main > header > .container > .content nav#menu a {
   color: #fff;
 }
 body > main > header > .container > .content nav#menu ul {
-  float: left;
   padding: 0;
 }
 body > main > header > .container > .content nav#menu ul li {
   float: left;
-  margin: 0 0 0 50px;
+  margin: 0 10px 0 0;
 }
 body > main > header > .container > .content nav#menu ul li.navigate a {
   border-bottom: 1px dashed #fff;
@@ -475,7 +474,7 @@ body > main > footer.fixed {
   bottom: 0;
 }
 body > main > footer > .container {
-  width: 1265px;
+  max-width: 1265px;
   height: 16px;
   padding: 12px 0;
   margin: 0 auto;
@@ -508,7 +507,7 @@ body > main > .sections > section {
 }
 body > main > .sections > section > .container {
   position: relative;
-  width: 1265px;
+  max-width: 1265px;
   height: 100%;
   margin: 0 auto;
   background: #f2e5d5;
@@ -517,17 +516,17 @@ body > main > .sections > section > .container > .content {
   padding: 50px 20px;
 }
 /* _________ PAGES _________*/
-section#index .container .content p {
+section.index .container .content p {
   margin: 20px 0;
   line-height: 1.4;
 }
 /* _________ DEV PAGES _________*/
-section#guideline h1 {
+section.guideline h1 {
   font-size: 36px;
   line-height: 1;
   font-family: Ubuntu, helvetica, verdana, arial, tahoma;
 }
-section#guideline .row {
+section.guideline .row {
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: top;
@@ -538,7 +537,7 @@ section#guideline .row {
   border-top: 1px solid #555;
   padding: 20px 0;
 }
-section#guideline .colors div {
+section.guideline .colors div {
   float: left;
   display: -moz-inline-stack;
   display: inline-block;
@@ -549,34 +548,34 @@ section#guideline .colors div {
   height: 50px;
   padding: 3px;
 }
-section#guideline .colors div.bg {
+section.guideline .colors div.bg {
   color: #fff;
 }
-section#fonts .container .content {
+section.fonts .container .content {
   padding: 50px 20px;
 }
-section#fonts .container .content h1 {
+section.fonts .container .content h1 {
   margin: 30px 0;
   font-size: 24px;
 }
-section#fonts .container .content h2 {
+section.fonts .container .content h2 {
   margin: 30px 0;
   font-size: 47px;
 }
-section#fonts .container .content .fonts {
+section.fonts .container .content .fonts {
   width: 1225px;
   overflow: hidden;
 }
-section#fonts .container .content .fonts p {
+section.fonts .container .content .fonts p {
   margin: 15px 0;
   background: #fff;
   padding: 0 10px;
   border: 1px solid #808080;
 }
-section#fonts .container .content .fonts p .lowercase {
+section.fonts .container .content .fonts p .lowercase {
   text-transform: lowercase;
 }
-section#fonts .container .content .fonts p .uppercase {
+section.fonts .container .content .fonts p .uppercase {
   text-transform: uppercase;
 }
 /* _________ POPUPS ________*/
@@ -668,28 +667,65 @@ section#fonts .container .content .fonts p .uppercase {
   margin: 0 auto;
 }
 /* _________ MEDIA _________ */
-@media (max-height: 768px) {
-  #debugBox .mediaHeight:after {
-    content: '@media(max-height: 768px)';
+@media (min-device-width: 320px) and (max-device-width: 480px) and (orientation: portrait) {
+  #debugBox .mediaWidth:after {
+    content: '@media(min-width: 320px) and (max-width: 480px)';
+  }
+  body > main > header {
+    height: 60px;
+  }
+  body > main > header > .container {
+    width: 320px;
+  }
+  body > main .sections > section .container {
+    width: 320px;
+  }
+  body > main .sections > section .container .content {
+    padding: 80px 20px;
+  }
+  body > main > footer > .container {
+    width: 320px;
   }
 }
-@media (max-width: 767px) {
+@media (min-device-width: 320px) and (max-device-width: 480px) and (orientation: landscape) {
   #debugBox .mediaWidth:after {
-    content: '@media(max-width: 767px)';
+    content: '@media(min-width: 320px) and (max-width: 480px)';
+  }
+  body > main > header > .container {
+    width: 480px;
+  }
+  body > main .sections > section .container {
+    width: 480px;
+  }
+  body > main > footer > .container {
+    width: 480px;
   }
 }
-@media (min-width: 768px) and (max-width: 991px) {
+@media (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) {
   #debugBox .mediaWidth:after {
-    content: '@media(min-width: 768px) and (max-width: 991px)';
+    content: '@media(min-width: 768px) and (max-width: 1024px)';
+  }
+  body > main > header > .container {
+    width: 768px;
+  }
+  body > main .sections > section .container {
+    width: 768px;
+  }
+  body > main > footer > .container {
+    width: 768px;
   }
 }
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
   #debugBox .mediaWidth:after {
-    content: '@media(min-width: 992px) and (max-width: 1199px)';
+    content: '@media(min-width: 768px) and (max-width: 1024px)';
   }
-}
-@media (min-width: 1200px) {
-  #debugBox .mediaWidth:after {
-    content: '@media(min-width: 1200px)';
+  body > main > header > .container {
+    width: 1024px;
+  }
+  body > main .sections > section .container {
+    width: 1024px;
+  }
+  body > main > footer > .container {
+    width: 1024px;
   }
 }

@@ -36,7 +36,7 @@ class PrototypeView
 		try
 
 			color 	= if options and options.color then options.color else "#000"
-			bg 		= if options and options.bg then options.bg else "none"
+			bg 			= if options and options.bg then options.bg else "none"
 			text 		= if options and options.text then options.text else true
 			width 	= if options and options.width then parseInt(options.width) + "px" else "100%"
 			height 	= if options and options.height then parseInt(options.height) + "px" else "100%"
@@ -111,7 +111,7 @@ class IndexView extends PrototypeView
 
 	controller: (@opt={}) ->
 
-		@el = $("mainn.view-index")
+		@el = $("main.view-index")
 
 		console.log 'Hello! This is index controller'
 

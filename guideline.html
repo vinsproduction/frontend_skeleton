@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=1265">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!--SEO-->
     <title>FRONTEND SKELETON</title>
@@ -76,78 +76,108 @@
     </script>
   </head>
   <body>
-    <section id="guideline">
-      <div class="container">
-        <div class="content">
-          <h1>GUIDELINE</h1>
-          <div class="row">
-            <div class="colors">
-              <div class="bg g-bg-color-graydarker">graydarker</div>
-              <div class="bg g-bg-color-graydark">graydark</div>
-              <div class="bg g-bg-color-gray">gray</div>
-              <div class="bg g-bg-color-graylight">graylight</div>
-              <div class="bg g-bg-color-graylighter">graylighter</div>
+    <main>
+      <header class="fixed">
+        <div class="container">
+          <div class="content">
+            <div class="logo">
+              <h5><a href="index.html">HEADER</a></h5>
             </div>
-            <div class="colors g-clearfix">
-              <div class="g-color-graydarker">graydarker</div>
-              <div class="g-color-graydark">graydark</div>
-              <div class="g-color-gray">gray</div>
-              <div class="g-color-graylight">graylight</div>
-              <div class="g-color-graylighter">graylighter</div>
-            </div>
-          </div>
-          <div class="row">
-            <h1>Заголовок H1</h1>
-            <h2>Заголовок H2</h2>
-            <h3>Заголовок H3</h3>
-            <h3>Заголовок H4</h3>
-            <h5>Заголовок H5</h5>
-            <h6>Заголовок H6</h6>
-          </div>
-          <div class="row">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis tempus nisl. Nulla magna metus, imperdiet gravida facilisis ut, porttitor sed sapien. Pellentesque consectetur erat felis, non lobortis est faucibus non. Donec placerat augue in justo fermentum facilisis. Curabitur fringilla neque ut leo scelerisque facilisis. Vivamus vel justo vitae nibh imperdiet interdum id ac neque. Etiam ac massa pellentesque, dictum justo quis, dignissim est. Phasellus sit amet rutrum odio. In mollis dictum dolor vehicula imperdiet. Vestibulum et odio egestas, cursus dui vel, semper mi.</p>
-          </div>
-          <div class="row">
-            <p><a href="#" class="g-link-1">Ссылка без подчеркиванием</a></p>
-            <p><a href="#" class="g-link-2">Ссылка c подчеркиванием</a></p>
-          </div>
-          <div class="row">
-            <button class="g-btn-1">Кнопка</button>
-          </div>
-          <div class="row"><a href="#" class="g-btn-2"><span>Ссылка кнопка</span></a></div>
-          <div class="row"><a href="#" onclick="popup.custom('unique');return false;" class="g-btn-3"><span>Ссылка кнопка Открыть попап</span></a></div>
-          <div class="row">
-            <label>Input</label><br>
-            <input type="text" name="input" class="g-input-1">
-          </div>
-          <div class="row">
-            <label>Textarea</label><br>
-            <textarea name="text" class="g-textarea-1"></textarea>
-          </div>
-          <div class="row">
-            <label>Checkbox</label><br>
-            <div class="field-group"><span>1</span>
-              <input type="checkbox" name="checkbox-1" value="1"><span>2</span>
-              <input type="checkbox" name="checkbox-2" value="2">
-            </div>
-          </div>
-          <div class="row">
-            <label>Radiobutton</label><br>
-            <div class="field-group"><span>1</span>
-              <input type="radio" name="radiobutton" value="1"><span>2	</span>
-              <input type="radio" name="radiobutton" value="2">
-            </div>
-          </div>
-          <div class="row">
-            <label>Dropdown</label><br>
-            <select name="dropdown" class="g-select-1">
-              <option>- Выбрать -</option>
-              <option value="1">Опция 1</option>
-              <option value="2">Опция 2</option>
-            </select>
+            <nav id="menu">
+              <ul>
+                <li><a href="index-render.html">Render</a></li>
+                <li><a href="index-scroll.html">Scroll</a></li>
+                <li><a href="index-hash.html">Hash</a></li>
+                <li><a href="guideline.html">Guideline</a></li>
+                <li><a href="fonts.html">Fonts</a></li>
+                <li><a href="https://github.com/vinsproduction/frontend_skeleton/wiki" target="_blank">Wiki</a></li>
+              </ul>
+            </nav>
           </div>
         </div>
+      </header>
+      <div class="sections">
+        <section class="guideline">
+          <div class="container">
+            <div class="content">
+              <h1>GUIDELINE</h1>
+              <div class="row">
+                <div class="colors">
+                  <div class="bg g-bg-color-graydarker">graydarker</div>
+                  <div class="bg g-bg-color-graydark">graydark</div>
+                  <div class="bg g-bg-color-gray">gray</div>
+                  <div class="bg g-bg-color-graylight">graylight</div>
+                  <div class="bg g-bg-color-graylighter">graylighter</div>
+                </div>
+                <div class="colors g-clearfix">
+                  <div class="g-color-graydarker">graydarker</div>
+                  <div class="g-color-graydark">graydark</div>
+                  <div class="g-color-gray">gray</div>
+                  <div class="g-color-graylight">graylight</div>
+                  <div class="g-color-graylighter">graylighter</div>
+                </div>
+              </div>
+              <div class="row">
+                <h1>Заголовок H1</h1>
+                <h2>Заголовок H2</h2>
+                <h3>Заголовок H3</h3>
+                <h3>Заголовок H4</h3>
+                <h5>Заголовок H5</h5>
+                <h6>Заголовок H6</h6>
+              </div>
+              <div class="row">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis tempus nisl. Nulla magna metus, imperdiet gravida facilisis ut, porttitor sed sapien. Pellentesque consectetur erat felis, non lobortis est faucibus non. Donec placerat augue in justo fermentum facilisis. Curabitur fringilla neque ut leo scelerisque facilisis. Vivamus vel justo vitae nibh imperdiet interdum id ac neque. Etiam ac massa pellentesque, dictum justo quis, dignissim est. Phasellus sit amet rutrum odio. In mollis dictum dolor vehicula imperdiet. Vestibulum et odio egestas, cursus dui vel, semper mi.</p>
+              </div>
+              <div class="row">
+                <p><a href="#" class="g-link-1">Ссылка без подчеркиванием</a></p>
+                <p><a href="#" class="g-link-2">Ссылка c подчеркиванием</a></p>
+              </div>
+              <div class="row">
+                <button class="g-btn-1">Кнопка</button>
+              </div>
+              <div class="row"><a href="#" class="g-btn-2"><span>Ссылка кнопка</span></a></div>
+              <div class="row"><a href="#" onclick="popup.custom('unique');return false;" class="g-btn-3"><span>Ссылка кнопка Открыть попап</span></a></div>
+              <div class="row">
+                <label>Input</label><br>
+                <input type="text" name="input" class="g-input-1">
+              </div>
+              <div class="row">
+                <label>Textarea</label><br>
+                <textarea name="text" class="g-textarea-1"></textarea>
+              </div>
+              <div class="row">
+                <label>Checkbox</label><br>
+                <div class="field-group"><span>1</span>
+                  <input type="checkbox" name="checkbox-1" value="1"><span>2</span>
+                  <input type="checkbox" name="checkbox-2" value="2">
+                </div>
+              </div>
+              <div class="row">
+                <label>Radiobutton</label><br>
+                <div class="field-group"><span>1</span>
+                  <input type="radio" name="radiobutton" value="1"><span>2	</span>
+                  <input type="radio" name="radiobutton" value="2">
+                </div>
+              </div>
+              <div class="row">
+                <label>Dropdown</label><br>
+                <select name="dropdown" class="g-select-1">
+                  <option>- Выбрать -</option>
+                  <option value="1">Опция 1</option>
+                  <option value="2">Опция 2</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-    </section>
+      <footer>
+        <div class="container">
+          <div class="content">
+            <h5>FOOTER (always at the bottom)</h5>
+          </div>
+        </div>
+      </footer>
+    </main>
   </body>
 </html>

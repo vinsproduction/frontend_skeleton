@@ -145,7 +145,7 @@ IndexView = (function(_super) {
 
   IndexView.prototype.controller = function(opt) {
     this.opt = opt != null ? opt : {};
-    this.el = $("mainn.view-index");
+    this.el = $("main.view-index");
     return console.log('Hello! This is index controller');
   };
 

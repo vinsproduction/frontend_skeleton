@@ -1,4 +1,8 @@
-### Front-end Skeleton / ver. 3.0 / rev. 24.03.2014 / vinsproduction ###
+### 
+	Front-end Skeleton
+	rev. 09.07.2014
+	http://github.com/vinsproduction/frontend_skeleton
+###
 
 class App
 
@@ -16,9 +20,6 @@ class App
 			### Визуальный дебаг префикс в урле ###
 			boxUri: "box"
 
-			### Хеш навигация в проекте ###
-			hashNavigate: false
-
 			### Локальный хост ###
 			localHost: ["","localhost"]
 
@@ -35,7 +36,6 @@ class App
 		_.extend @options, options
 
 		@name 				= @options.name
-		@hashNavigate = @options.hashNavigate
 		@remoteHost 	= @options.remoteHost
 		@root 				= @options.root
 		@box 					= @options.box
@@ -43,10 +43,9 @@ class App
 		@boxUri 			= @options.boxUri
 		@debugUri 		= @options.debugUri
 
-		### Настройка window.console ###
-		#do @console
+		# Настройка window.console
+		# do @console
 
-		### Слушатели ###
 		do @listeners
 
 		### Дебаг режим ###
@@ -97,7 +96,7 @@ class App
 
 			### Модели/Api ###
 			if Models?
-				@models 	= new Models
+				@models = new Models
 
 			### Контроллеры/Рендеры ###
 			if Views?
@@ -310,7 +309,7 @@ class App
 			footerHeight	: parseInt($('body > main > footer').height())
 			
 			sectionsWidth : parseInt($('body > main > .sections').width())
-			sectionsHeight : parseInt($('body > main > .sections').height())
+			sectionsHeight: parseInt($('body > main > .sections').height())
 
 
 	### @request
@@ -326,13 +325,13 @@ class App
 
 		return console.error '[App > api] url not set!' if !options.url
 
-		host 		= if @local then @remoteHost else @host
-		url  		= host + "/" + options.url
-		type 		= options.type || "GET"
-		dataType = options.dataType || false
-		data 		= options.data || {}
-		callback = options.callback || false
-		logs 		= options.logs ? true
+		host 			= if @local then @remoteHost else @host
+		url  			= host + "/" + options.url
+		type 			= options.type || "GET"
+		dataType 	= options.dataType || false
+		data 			= options.data || {}
+		callback 	= options.callback || false
+		logs 			= options.logs ? true
 
 		$.support.cors = true
 		ajaxData = {url,type,data,crossDomain:true,cache:false}

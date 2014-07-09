@@ -1,5 +1,9 @@
 
-/* Front-end Skeleton / ver. 3.0 / rev. 24.03.2014 / vinsproduction */
+/* 
+	Front-end Skeleton
+	rev. 09.07.2014
+	http://github.com/vinsproduction/frontend_skeleton
+ */
 var App,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -18,9 +22,6 @@ App = (function() {
       /* Визуальный дебаг префикс в урле */
       boxUri: "box",
 
-      /* Хеш навигация в проекте */
-      hashNavigate: false,
-
       /* Локальный хост */
       localHost: ["", "localhost"],
 
@@ -35,16 +36,11 @@ App = (function() {
     };
     _.extend(this.options, options);
     this.name = this.options.name;
-    this.hashNavigate = this.options.hashNavigate;
     this.remoteHost = this.options.remoteHost;
     this.root = this.options.root;
     this.box = this.options.box;
     this.boxUri = this.options.boxUri;
     this.debugUri = this.options.debugUri;
-
-    /* Настройка window.console */
-
-    /* Слушатели */
     this.listeners();
 
     /* Дебаг режим */
