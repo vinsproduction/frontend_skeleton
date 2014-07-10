@@ -145,6 +145,16 @@ IndexView = (function(_super) {
 
   IndexView.prototype.controller = function(opt) {
     this.opt = opt != null ? opt : {};
+    app.onScroll(function(data) {
+      return console.log('--> onScroll', data);
+    });
+    app.onResize(function(data) {
+      return console.log('--> onResize', data);
+    });
+    $(window).resize();
+    app.onHash(function(data) {
+      return console.log('--> onHash', data);
+    });
     this.el = $("main.view-index");
     return console.log('Hello! This is index controller');
   };

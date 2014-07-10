@@ -186,8 +186,6 @@ class App
 		lastScrollTop = 0
 		$(window).scroll (e) ->
 
-			return if !app?
-
 			top = self.scroll()
 
 			if top isnt lastScrollTop
@@ -202,8 +200,6 @@ class App
 
 				$(window).trigger("AppOnScroll",[vars])
 
-		@onLoad -> $(window).scroll()
-
 		### Resize ###
 
 		### Listener callback resize
@@ -215,8 +211,6 @@ class App
 
 		$(window).resize =>
 
-			return if !app?
-
 			vars = app.size()
 
 			if app.debugBox.state
@@ -225,7 +219,29 @@ class App
 
 			$(window).trigger("AppOnResize",[vars])
 
-		@onLoad -> $(window).resize()
+
+		### Hash change ###
+
+		### Listener callback Hash
+		app.onHash (v) ->
+		###
+
+		@onHash = (callback) ->
+
+			set = false
+
+			$(window).on 'AppOnHash', (event,v) ->
+				callback(v) if callback
+
+			if !set
+				callback(window.location.hash) if callback
+				set = true
+
+		$(window).on 'hashchange', =>
+
+			$(window).trigger("AppOnHash",[window.location.hash])
+
+		$(window).trigger 'hashchange'
 
 	### Scroll
 

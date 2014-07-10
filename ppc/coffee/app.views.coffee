@@ -102,14 +102,17 @@ class allView
 		@sections = $("body > main > .sections")
 		@section 	= @sections.find('> section')
 
-		#app.onScroll (data) -> console.log '=> onScroll', data
-		#app.onResize (data) -> console.log '=> onResize', data
 
 class IndexView extends PrototypeView
 
 	init: ->
 
 	controller: (@opt={}) ->
+
+		app.onScroll (data) -> console.log '--> onScroll', data
+		app.onResize (data) -> console.log '--> onResize', data
+		$(window).resize() # call event!
+		app.onHash (data) -> console.log '--> onHash', data
 
 		@el = $("main.view-index")
 

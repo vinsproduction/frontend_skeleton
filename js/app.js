@@ -229,9 +229,6 @@ App = (function() {
     lastScrollTop = 0;
     $(window).scroll(function(e) {
       var action, top, vars;
-      if (typeof app === "undefined" || app === null) {
-        return;
-      }
       top = self.scroll();
       if (top !== lastScrollTop) {
         action = top > lastScrollTop ? 'down' : 'up';
@@ -246,9 +243,6 @@ App = (function() {
         };
         return $(window).trigger("AppOnScroll", [vars]);
       }
-    });
-    this.onLoad(function() {
-      return $(window).scroll();
     });
 
     /* Resize */
@@ -266,9 +260,6 @@ App = (function() {
     $(window).resize((function(_this) {
       return function() {
         var vars;
-        if (typeof app === "undefined" || app === null) {
-          return;
-        }
         vars = app.size();
         if (app.debugBox.state) {
           app.debugBox.log("sect", "header: " + vars.headerHeight + "px | sections: " + vars.sectionsHeight + "px | footer: " + vars.footerHeight + "px");
@@ -277,9 +268,33 @@ App = (function() {
         return $(window).trigger("AppOnResize", [vars]);
       };
     })(this));
-    return this.onLoad(function() {
-      return $(window).resize();
-    });
+
+    /* Hash change */
+
+    /* Listener callback Hash
+    		app.onHash (v) ->
+     */
+    this.onHash = function(callback) {
+      var set;
+      set = false;
+      $(window).on('AppOnHash', function(event, v) {
+        if (callback) {
+          return callback(v);
+        }
+      });
+      if (!set) {
+        if (callback) {
+          callback(window.location.hash);
+        }
+        return set = true;
+      }
+    };
+    $(window).on('hashchange', (function(_this) {
+      return function() {
+        return $(window).trigger("AppOnHash", [window.location.hash]);
+      };
+    })(this));
+    return $(window).trigger('hashchange');
   };
 
 
