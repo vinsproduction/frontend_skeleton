@@ -15,121 +15,9 @@
 }
 /* _________ GLOBAL _________
 
-Все глобальные КЛАССЫ описываются здесь
-и начинаются с префикса g
-*/
-.g-clearfix:before,
-.g-clearfix:after {
-  content: " ";
-  display: table;
-}
-.g-clearfix:after {
-  clear: both;
-}
-.g-hide {
-  display: none !important;
-}
-.g-vhide {
-  display: block;
-  visibility: hidden;
-}
-.g-show {
-  display: block;
-}
-.g-vshow {
-  display: block;
-  visibility: visible;
-}
-.g-block-center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-.g-block-inline {
-  display: -moz-inline-stack;
-  display: inline-block;
-  vertical-align: top;
-  zoom: 1;
-  *display: inline;
-}
-.g-block-left {
-  float: left;
-  display: -moz-inline-stack;
-  display: inline-block;
-  vertical-align: top;
-  zoom: 1;
-  *display: inline;
-}
-.g-block-right {
-  float: right;
-  display: -moz-inline-stack;
-  display: inline-block;
-  vertical-align: top;
-  zoom: 1;
-  *display: inline;
-}
-.g-center {
-  text-align: center;
-}
-.g-left {
-  float: left;
-}
-.g-right {
-  float: right;
-}
-.g-row {
-  display: -moz-inline-stack;
-  display: inline-block;
-  vertical-align: top;
-  zoom: 1;
-  *display: inline;
-  position: relative;
-  width: 100%;
-  margin: 10px 0;
-}
-.g-row:before,
-.g-row:after {
-  content: " ";
-  display: table;
-}
-.g-row:after {
-  clear: both;
-}
-/* _______ GUIDELINE _______
-
 Все глобальные СТИЛИ кнопок, форм, ссылок, списков и тд.
 описываются здесь
 */
-.g-bg-color-graydarker {
-  background-color: #222;
-}
-.g-bg-color-graydark {
-  background-color: #333;
-}
-.g-bg-color-gray {
-  background-color: #555;
-}
-.g-bg-color-graylight {
-  background-color: #999;
-}
-.g-bg-color-graylighter {
-  background-color: #ccc;
-}
-.g-color-graydarker {
-  color: #222;
-}
-.g-color-graydark {
-  color: #333;
-}
-.g-color-gray {
-  color: #555;
-}
-.g-color-graylight {
-  color: #999;
-}
-.g-color-graylighter {
-  color: #ccc;
-}
 p {
   font-size: 16px;
   line-height: 1;
@@ -176,203 +64,10 @@ a {
   -o-transition: all 0.2s;
   transition: all 0.2s;
 }
-.g-link-1 {
-  text-decoration: none;
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  -o-transition: all 0.2s;
-  transition: all 0.2s;
-  color: #333;
-}
-.g-link-1:hover {
-  border-bottom: 1px solid #333;
-}
-.g-link-2 {
-  text-decoration: none;
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  -o-transition: all 0.2s;
-  transition: all 0.2s;
-  color: #333;
-  border-bottom: 1px solid #333;
-}
-.g-link-2:hover {
-  border-bottom: 0;
-}
-.g-btn-1 {
-  font-size: 18px;
-  line-height: 1;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
-  width: 200px;
-  height: 50px;
-  display: block;
-  position: relative;
-  cursor: pointer;
-  text-align: center;
-  border: 0;
-  outline: none;
-  text-decoration: none;
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  -o-transition: all 0.2s;
-  transition: all 0.2s;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  text-transform: uppercase;
-  color: #fff;
-  background: #555;
-}
-.g-btn-1:hover {
-  background: #999;
-}
-.g-btn-1 span {
-  position: relative;
-  top: 15px;
-}
-.g-btn-2 {
-  font-size: 18px;
-  line-height: 1;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
-  width: 200px;
-  height: 50px;
-  display: block;
-  position: relative;
-  cursor: pointer;
-  text-align: center;
-  border: 0;
-  outline: none;
-  text-decoration: none;
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  -o-transition: all 0.2s;
-  transition: all 0.2s;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  text-transform: uppercase;
-  color: #fff;
-  background: #333;
-}
-.g-btn-2:hover {
-  background: #999;
-}
-.g-btn-2 span {
-  position: relative;
-  top: 15px;
-}
-.g-btn-3 {
-  font-size: 18px;
-  line-height: 1;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
-  width: 350px;
-  height: 50px;
-  display: block;
-  position: relative;
-  cursor: pointer;
-  text-align: center;
-  border: 0;
-  outline: none;
-  text-decoration: none;
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  -o-transition: all 0.2s;
-  transition: all 0.2s;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  text-transform: uppercase;
-  color: #fff;
-  background: #222;
-}
-.g-btn-3:hover {
-  background: #999;
-}
-.g-btn-3 span {
-  position: relative;
-  top: 15px;
-}
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-}
-.g-input-1 {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 278px;
-  height: 23px;
-  padding: 5px 10px;
-  font-size: 16px;
-  line-height: 1;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
-}
-.g-input-1:focus {
-  border: 1px solid #555;
-}
-.g-input-1.error-field {
-  border: 1px solid #f00;
-}
-.g-textarea-1 {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 278px;
-  height: 78px;
-  padding: 10px 10px;
-  font-size: 16px;
-  line-height: 1;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
-}
-.g-textarea-1:focus {
-  border: 1px solid #555;
-}
-.g-textarea-1.error-field {
-  border: 1px solid #f00;
-}
-.g-select-1 {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  width: 300px;
-  height: 35px;
-  font-size: 16px;
-  line-height: 1;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
-}
-.g-select-1:focus {
-  border: 1px solid #555;
-}
-.g-select-1.error-field {
-  border: 1px solid #f00;
-}
-.g-checkbox-1 {
-  width: 25px;
-  height: 25px;
-}
-.g-radio-1 {
-  width: 25px;
-  height: 25px;
 }
 /*_________ MAIN __________*/
 html {
@@ -516,66 +211,35 @@ body > main > .sections > section > .container > .content {
   padding: 50px 20px;
 }
 /* _________ PAGES _________*/
-section.index .container .content p {
+main.view-index section .container .content p {
   margin: 20px 0;
   line-height: 1.4;
 }
-/* _________ DEV PAGES _________*/
-section.guideline h1 {
-  font-size: 36px;
-  line-height: 1;
-  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
-}
-section.guideline .row {
-  display: -moz-inline-stack;
-  display: inline-block;
-  vertical-align: top;
-  zoom: 1;
-  *display: inline;
-  clear: both;
-  width: 100%;
-  border-top: 1px solid #555;
-  padding: 20px 0;
-}
-section.guideline .colors div {
-  float: left;
-  display: -moz-inline-stack;
-  display: inline-block;
-  vertical-align: top;
-  zoom: 1;
-  *display: inline;
-  width: 100px;
-  height: 50px;
-  padding: 3px;
-}
-section.guideline .colors div.bg {
-  color: #fff;
-}
-section.fonts .container .content {
+main.view-fonts section .container .content {
   padding: 50px 20px;
 }
-section.fonts .container .content h1 {
+main.view-fonts section .container .content h1 {
   margin: 30px 0;
   font-size: 24px;
 }
-section.fonts .container .content h2 {
+main.view-fonts section .container .content h2 {
   margin: 30px 0;
   font-size: 47px;
 }
-section.fonts .container .content .fonts {
+main.view-fonts section .container .content .fonts {
   width: 1225px;
   overflow: hidden;
 }
-section.fonts .container .content .fonts p {
+main.view-fonts section .container .content .fonts p {
   margin: 15px 0;
   background: #fff;
   padding: 0 10px;
   border: 1px solid #808080;
 }
-section.fonts .container .content .fonts p .lowercase {
+main.view-fonts section .container .content .fonts p .lowercase {
   text-transform: lowercase;
 }
-section.fonts .container .content .fonts p .uppercase {
+main.view-fonts section .container .content .fonts p .uppercase {
   text-transform: uppercase;
 }
 /* _________ POPUPS ________*/

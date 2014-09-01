@@ -77,7 +77,7 @@
     </script>
   </head>
   <body>
-    <main>
+    <main class="view-fonts">
       <header class="fixed">
         <div class="container">
           <div class="content">
@@ -89,7 +89,6 @@
                 <li><a href="index-render.html">Render</a></li>
                 <li><a href="index-scroll.html">Scroll</a></li>
                 <li><a href="index-hash.html">Hash</a></li>
-                <li><a href="guideline.html">Guideline</a></li>
                 <li><a href="fonts.html">Fonts</a></li>
                 <li><a href="https://github.com/vinsproduction/frontend_skeleton/wiki" target="_blank">Wiki</a></li>
               </ul>
@@ -134,7 +133,7 @@
 
     Fonts.prototype.init = function() {
       var fontsEl, i, _i, _ref, _ref1, _results;
-      this.el = $('section.fonts');
+      this.el = $('section');
       fontsEl = $("<div style='font-family: " + this.fontFamily + ";''><h2>" + this.fontFamily + "</h2></div>");
       this.el.find('.fonts').append(fontsEl);
       _results = [];
@@ -181,7 +180,7 @@
 }).call(this);
 
         </script>
-        <section class="fonts">
+        <section>
           <div class="container">
             <div class="content">
               <h1>FONTS</h1>

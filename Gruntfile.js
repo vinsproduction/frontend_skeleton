@@ -37,7 +37,6 @@ module.exports = function(grunt) {
 					"index-hash.html": "ppc/jade/index-hash.jade",
 
 					"fonts.html": "ppc/jade/fonts.jade",
-					"guideline.html": "ppc/jade/guideline.jade",
 				}
 			}
 		},

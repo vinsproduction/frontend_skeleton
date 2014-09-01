@@ -27,6 +27,13 @@ $mainWidth = 1265
 // Главный шрифт
 $mainFont = Ubuntu
 
+// Цвета
+$color-graydarker 	= lighten(#000, 13.5%)
+$color-graydark 		= lighten(#000, 20%)
+$color-gray 				= lighten(#000, 33.5%)
+$color-graylight 		= lighten(#000, 60%)
+$color-graylighter 	= lighten(#000, 80%)
+
 /* _________ FONTS _________ */
 
 import-font($root + 'fonts/ubuntu-r-webfont','Ubuntu')
@@ -51,20 +58,38 @@ bg(filename, arguments=false)
 
 /* _________ GLOBAL _________
 
-Все глобальные КЛАССЫ описываются здесь
-и начинаются с префикса g
-*/
-
-@require 'global'
-
-
-/* _______ GUIDELINE _______
-
 Все глобальные СТИЛИ кнопок, форм, ссылок, списков и тд.
 описываются здесь
 */
 
-@require 'guideline'
+p
+	font 16px $mainFont
+
+h1
+	font 36px $mainFont
+h2
+	font 30px $mainFont
+h3
+	font 24px $mainFont
+h4
+	font 18px $mainFont
+h5
+	font 14px $mainFont
+h6
+	font 12px $mainFont
+
+ul
+	list-style-type none
+
+a
+	text-decoration none
+	transition all 0.2s
+
+input:focus, textarea:focus, select:focus
+	outline none
+
+
+
 
 /*_________ MAIN __________*/
 
@@ -215,61 +240,43 @@ body > main > .sections
 
 /* _________ PAGES _________*/
 
-section.index
-	.container
-		.content
-			p 
-				margin 20px 0
-				line-height 1.4
+main.view-index
+
+	section
+		.container
+			.content
+				p 
+					margin 20px 0
+					line-height 1.4
 
 
-/* _________ DEV PAGES _________*/
-
-section.guideline
+main.view-fonts
 	
-	h1
-		font 36px $mainFont
+	section
+		.container
+			
+			.content
+				padding 50px 20px
 
-	.row
-		block-inline()
-		clear both
-		width 100%
-		border-top 1px solid $color-gray
-		padding 20px 0
-
-	.colors
-		div
-			block-left 100 50
-			padding 3px
-			&.bg
-				color #FFF
-
-section.fonts
-
-	.container
-		
-		.content
-			padding 50px 20px
-
-			h1
-				margin 30px 0
-				font-size 24px
-			h2
-				margin 30px 0
-				font-size 47px
-			.fonts
-				width (1265 - 40)px
-				overflow hidden
-				p
-					margin 15px 0
-					background #FFF
-					padding 0 10px
-					border 1px solid gray
-					//white-space nowrap
-					.lowercase
-						text-transform lowercase
-					.uppercase
-						text-transform uppercase
+				h1
+					margin 30px 0
+					font-size 24px
+				h2
+					margin 30px 0
+					font-size 47px
+				.fonts
+					width (1265 - 40)px
+					overflow hidden
+					p
+						margin 15px 0
+						background #FFF
+						padding 0 10px
+						border 1px solid gray
+						//white-space nowrap
+						.lowercase
+							text-transform lowercase
+						.uppercase
+							text-transform uppercase
 
 /* _________ POPUPS ________*/
 

@@ -2,7 +2,7 @@ extends layout/layout
 
 block content
 
-	main
+	main.view-fonts
 		
 		include layout/header
 
@@ -33,7 +33,7 @@ block content
 						minFontSize: 8
 						constructor: -> $ => do @init
 						init: ->
-							@el = $('section.fonts')
+							@el = $('section')
 							fontsEl = $("<div style='font-family: #{@fontFamily};''><h2>#{@fontFamily}</h2></div>")
 							@el.find('.fonts').append fontsEl
 							for i in [@minFontSize..@maxFontSize]
@@ -61,7 +61,7 @@ block content
 					fonts.minFontSize = 10
 					fonts.maxFontSize = 40
 
-			section.fonts
+			section
 
 				.container
 					.content
