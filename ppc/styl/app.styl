@@ -434,6 +434,8 @@ section#page-form
 				vertical-align top
 				block-inline()
 				width 300px
+				span
+					block-inline()
 
 			textarea,input[type='text']
 				&.placeholder
@@ -468,6 +470,75 @@ section#page-form
 			button.reset
 				@extends .g-btn-1
 				block-inline()
+
+
+			.radio
+				block-inline()
+				cursor pointer
+				width: 25px
+				height: 25px
+				background: #FFF
+				border 1px solid #000
+				border-radius 50%
+				&.checked
+					background: #CCC
+					border 1px solid #000 
+
+			.checkbox
+				block-inline()
+				cursor pointer
+				width: 25px
+				height: 25px
+				background: #FFF
+				border 1px solid #000
+				&.checked
+					background: #CCC
+					border 1px solid #000
+
+			.select
+				block-inline()
+				position relative
+				z-index 999
+
+				.selected
+					block(300,35 - 10*2)
+					position relative
+					padding 10px 0
+					border 1px solid #CCC
+					background #FFF
+					text-align center
+					cursor pointer
+					&:after
+						content ''
+						position absolute
+						right 10px
+						top 12px
+						border-style solid
+						border-width 10px 5px 0 5px
+						border-color #000000 transparent transparent transparent
+
+				.options
+					width 100%
+					position absolute
+					background #FFF
+					text-align center
+					border 1px solid #CCC
+					.option
+						padding 10px 0
+						cursor pointer
+
+				&.open
+					.selected
+						&:after
+							right 10px
+							top 12px
+							border-width 0 5px 10px 5px
+							border-color transparent transparent #000000 transparent
+
+					.options
+						border-top 0
+					
+
 
 section#page-fileuploader
 	.container

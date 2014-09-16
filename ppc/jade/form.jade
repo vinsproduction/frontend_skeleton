@@ -2,6 +2,7 @@ extends layout/layout
 
 block append css
 
+
 block append js
 
 	script(type="text/javascript", src="../js/libs/form.js")
@@ -13,6 +14,8 @@ block append js
 			formValidator = new Form({
 
 				logs: true,
+				autoHideErrors: true,
+				errorFadeOut: 3000,
 
 				formName: 'nice form',
 				formEl: '#form',
@@ -93,6 +96,7 @@ block append js
 						}
 					},
 					'checkbox_1' : {
+						style: true,
 						rules: {
 							required:{
 								reason: 'Обязательное поле для заполнения'
@@ -105,18 +109,21 @@ block append js
 						}
 					},
 					'checkbox_2' : {
+						style: true,
+						useErrorTemplate: true,
 						rules: {
 							required:{
 								reason: 'Обязательное поле для заполнения'
 							}
 						},
-						onError: function(fieldName,errors){
-							for(i in errors){
-								$(".error-custom-checkbox_2").append(errors[i] + "<br/>");
-							};
-						}
+						//- onError: function(fieldName,errors){
+						//- 	for(i in errors){
+						//- 		$(".error-custom-checkbox_2").append(errors[i] + "<br/>");
+						//- 	};
+						//- }
 					},
 					'radiobutton' : {
+						style: true,
 						rules: {
 							required:{
 								reason: 'Обязательное поле для заполнения'
@@ -129,17 +136,19 @@ block append js
 						}
 					},
 					'dropdown' : {
+						style: true,
+						useErrorTemplate: true,
 						rules: {
 							required:{
 								not: '- Выбрать -',
 								reason: 'Обязательное поле для заполнения'
 							}
 						},
-						onError: function(fieldName,errors){
-							for(i in errors){
-								$(".error-custom-dropdown").append(errors[i] + "<br/>");
-							};
-						}
+						//- onError: function(fieldName,errors){
+						//- 	for(i in errors){
+						//- 		$(".error-custom-dropdown").append(errors[i] + "<br/>");
+						//- 	};
+						//- }
 					}
 				},
 
@@ -218,14 +227,15 @@ block content
 						.field-group
 							span 3
 							input(type="checkbox", name="checkbox_2", value="2")
-						.error-custom-alert.error-custom-checkbox_2
+
+						//- .error-custom-alert.error-custom-checkbox_2
 
 					.g-row
 						label radio
 
 						.field-group
 							span 1
-							input(type="radio", name="radiobutton", value="1", checked=true)
+							input(type="radio", name="radiobutton", value="1")
 							
 							span 2	
 							input(type="radio", name="radiobutton", value="2")
@@ -238,7 +248,7 @@ block content
 							option(selected=true) - Выбрать -
 							option(value="o1") option1
 							option(value="o2") option2
-						.error-custom-alert.error-custom-dropdown
+						//- .error-custom-alert.error-custom-dropdown
 
 					.g-row
 						button.reset(onclick="formValidator.reset();") Сбросить

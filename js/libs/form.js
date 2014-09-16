@@ -1,3 +1,202 @@
+
+/* Form Validator */
+
+/*
+
+Правила валидации
+required — Обязательное поле
+numeric — Разрешены только цифры
+numericDash — Разрешены только цифры и подчеркивания
+alpha — Разрешены только буквы
+alphaDash — Разрешены только буквы и подчеркивания
+alphaNumeric — Разрешены только буквы и цифры
+max — Максимум символов
+min — Минимум символов
+email — Email
+url — Url
+ip — Ip
+ */
+
+/*
+
+Инициализация формы
+
+formValidator = new Form({
+ 
+ logs: true, // Логировать форму
+ autoHideErrors: false // Автоматическое скрытие ошибок
+ 
+ formName: 'nice form', // Имя формы (опционально, проще дебажить если на странице много форм)
+ formEl: '#form', // Элемент формы (можно передавать элемент DOM)
+ submitEl: '.submit', // Элемент кнопки отправки (можно передавать элемент DOM)
+ 
+ fields:{
+  'firstname' : {
+   useErrorTemplate: true, // Использовать темплейт с ошибками
+   checkErrorsOnFocus: true, // Валидировать поле сразу в фокусе
+   placeholder: 'placeholder firstname', // Плейсхолдер (Не значение!)
+   rules: {
+    required:{ // Правило
+     reason: 'Обязательное поле для заполнения' // Установка причины ошибки (опционально)
+    },
+    min: {
+     count: 2, // Миниальное кол-во символов
+     reason: 'Минимум {count} символа' // Установка причины ошибки (опционально)
+    },
+    max: {
+     count: 10, // Максимальное кол-во символов
+     reason: 'Максимум {count} символов'
+    }
+   }
+  },
+  'password' : {
+   useErrorTemplate: true,
+   hideErrorsOnFocus: true, // Скрывать ошибки в фокусе
+   //focus: true, // Фокусировать на это поле
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    },
+    numeric:{
+     reason: 'Разрешены только цифры'
+    }
+   }
+  },
+  'url' : {
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    },
+    url: {
+     reason: 'Неправильно заполненный url'
+    }
+   },
+   
+   // Ручная работа над ошибками, без использования темплейтов
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-url").append(errors[i]);
+    };
+   }
+  },
+  'email' : {
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    },
+    email: {
+     reason: 'Неправильно заполненный email'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-email").append(errors[i]);
+    };
+   }
+  },
+  'text' : {
+   enterSubmit: true, // Отправка по Enter, если элмент в фокусе
+   hideErrorsOnFocus: true,
+   useErrorTemplate: true,
+   escape: true, // Экранировать ввод символов
+   placeholder: 'placeholder text',
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    }
+   }
+  },
+  'checkbox_1' : {
+  	style: true, // Стилизация элемента
+   	rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-checkbox_1").append(errors[i]);
+    };
+   }
+  },
+  'checkbox_2' : {
+  	style: true, // Стилизация элемента
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-checkbox_2").append(errors[i]);
+    };
+   }
+  },
+  'radiobutton' : {
+  	style: true, // Стилизация элемента
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-radiobutton").append(errors[i]);
+    };
+   }
+  },
+  'dropdown' : {
+  	style: true, // Стилизация элемента
+   rules: {
+    required:{
+     not: '- Выбрать -', // Это значение НЕ валидируется!
+     reason: 'Обязательное поле для заполнения'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-dropdown").append(errors[i]);
+    };
+   }
+  }
+ },
+ 
+ // Событие отправки формы
+ onSubmit: function(data){
+  $(".error-custom-alert").empty();
+ },
+ 
+ // Событие неудачной отправки формы
+ onFail: function(errors){},
+ 
+ // Событие сброса формы
+ onReset: function(){
+  $(".error-custom-alert").empty();
+ },
+ 
+ // Событие загрузки формы
+ onLoad: function(){},
+ 
+ // Событие инициализации формы. Полезно когда необходимо навешать на форму еще событий.
+ // До и после отправки, происходит сброс формы и переинициализация, в также новый bind элементов
+ onInit: function(){},
+ 
+ // Событие успешной отправки формы
+ onSuccess: function(data){
+  $(".error-custom-alert").empty();
+ }
+})
+ 
+// Добавление нового правила
+formValidator.addRule({
+ field: 'firstname', // Имя поля
+ rule: 'custom rule', // Название правила
+ reason: 'Введите слово "хорошо"', // Описание причины ошибки
+ condition: function(val){ // Условие исполнения - должно возвращать или true или false
+  return val == 'хорошо';
+ }
+});
+ */
 var Form;
 
 Form = (function() {
@@ -9,6 +208,8 @@ Form = (function() {
 
   Form.prototype.submitEl = false;
 
+  Form.prototype.autoHideErrors = false;
+
   Form.prototype.errorAlertClass = "error-alert";
 
   Form.prototype.errorAlertExtClass = "error";
@@ -17,9 +218,11 @@ Form = (function() {
 
   Form.prototype.placeholderClass = "placeholder";
 
-  Form.prototype.errorHideMethod = "visibility";
+  Form.prototype.errorHideMethod = "display";
 
-  Form.prototype.errorFade = 300;
+  Form.prototype.errorFadeIn = 300;
+
+  Form.prototype.errorFadeOut = 800;
 
   Form.prototype.fields = {};
 
@@ -73,22 +276,23 @@ Form = (function() {
   }
 
   Form.prototype.init = function() {
-    var el, errorAlert, name, self, _ref, _ref1, _ref2, _ref3, _ref4;
+    var el, errorAlert, name, self, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
     self = this;
     this.form.unbind();
     this.submitBtn.unbind();
     for (name in this.fields) {
-      el = this.form.find("[name='" + name + "']");
+      el = this.form.find("[name='" + name + "']").eq(0);
       el.unbind();
       if ((_ref = el.attr('type')) === 'checkbox' || _ref === 'radio') {
         this.fields[name].originVal = el.filter(":checked").val() || false;
       } else {
         this.fields[name].originVal = el.val();
       }
-      this.fields[name].useErrorTemplate = (_ref1 = this.fields[name].useErrorTemplate) != null ? _ref1 : false;
-      this.fields[name].hideErrorsOnFocus = (_ref2 = this.fields[name].hideErrorsOnFocus) != null ? _ref2 : false;
-      this.fields[name].checkErrorsOnFocus = (_ref3 = this.fields[name].checkErrorsOnFocus) != null ? _ref3 : false;
-      this.fields[name].focus = (_ref4 = this.fields[name].focus) != null ? _ref4 : false;
+      this.fields[name].style = (_ref1 = this.fields[name].style) != null ? _ref1 : false;
+      this.fields[name].useErrorTemplate = (_ref2 = this.fields[name].useErrorTemplate) != null ? _ref2 : false;
+      this.fields[name].hideErrorsOnFocus = (_ref3 = this.fields[name].hideErrorsOnFocus) != null ? _ref3 : false;
+      this.fields[name].checkErrorsOnFocus = (_ref4 = this.fields[name].checkErrorsOnFocus) != null ? _ref4 : false;
+      this.fields[name].focus = (_ref5 = this.fields[name].focus) != null ? _ref5 : false;
       if (!this.fields[name].onError) {
         this.fields[name].onError = function(fieldName, errors) {};
       }
@@ -112,8 +316,8 @@ Form = (function() {
         errorAlert = $("." + this.errorAlertExtClass + "-" + name);
         if (!errorAlert.size()) {
           errorAlert = $(this.errorTemplate);
-          el.after(errorAlert);
           errorAlert.addClass("" + this.errorAlertExtClass + "-" + name);
+          el.after(errorAlert);
         }
         errorAlert.unbind();
         if (this.errorHideMethod === "visibility") {
@@ -130,7 +334,7 @@ Form = (function() {
         }
         if (this.fields[name].checkErrorsOnFocus) {
           el.keyup(function() {
-            var rule, ruleName, val, valid, _ref5;
+            var rule, ruleName, val, valid, _ref6;
             self.errors[name] = [];
             self.data[name] = [];
             el = $(this);
@@ -138,9 +342,9 @@ Form = (function() {
             val = self.getVal(name);
             self.setData(name, val);
             self.removeErrorAlert(name);
-            _ref5 = self.fields[name].rules;
-            for (ruleName in _ref5) {
-              rule = _ref5[ruleName];
+            _ref6 = self.fields[name].rules;
+            for (ruleName in _ref6) {
+              rule = _ref6[ruleName];
               valid = self.validate[ruleName](val, rule);
               if (!valid.state) {
                 self.setError(name, valid.reason);
@@ -153,6 +357,20 @@ Form = (function() {
             }
           });
         }
+      }
+      if (this.fields[name].style && el.is("select")) {
+        this.createSelect(el);
+        el.change((function(_this) {
+          return function() {
+            return _this.createSelect(el);
+          };
+        })(this));
+      }
+      if (this.fields[name].style && (el.attr('type') === 'radio')) {
+        self.createRadio(name);
+      }
+      if (this.fields[name].style && (el.attr('type') === 'checkbox')) {
+        self.createCheckbox(name);
       }
       if (this.fields[name].focus) {
         el.focus();
@@ -170,8 +388,133 @@ Form = (function() {
     return this.onInit();
   };
 
+  Form.prototype.createCheckbox = function(name) {
+    var $checkbox, el, self, value;
+    el = this.form.find("[name='" + name + "']");
+    el.hide();
+    name = el.attr('name');
+    value = el.attr('value');
+    self = this;
+    if (this.form.find(".checkbox[data-name=" + name + "][data-value=" + value + "]").size()) {
+      this.form.find(".checkbox[data-name=" + name + "][data-value=" + value + "]").remove();
+    }
+    el.click(function() {
+      if (!$(this).is(':checked')) {
+        return self.form.find(".checkbox[data-name=" + name + "]").removeClass('checked');
+      } else {
+        return self.form.find(".checkbox[data-name=" + name + "]").addClass('checked');
+      }
+    });
+    $checkbox = $("<div class='checkbox' data-name='" + name + "' data-value='" + value + "'></div>");
+    if (el.attr('checked')) {
+      $checkbox.addClass('checked');
+    }
+    el.after($checkbox);
+    return $checkbox.click(function() {
+      if ($(this).hasClass('checked')) {
+        $(this).removeClass('checked');
+        return self.setVal(name, false);
+      } else {
+        $(this).addClass('checked');
+        return self.setVal(name, value);
+      }
+    });
+  };
+
+  Form.prototype.createRadio = function(name) {
+    var $radioEl, self;
+    $radioEl = this.form.find("[name='" + name + "']");
+    self = this;
+    return $radioEl.each(function() {
+      var $radio, el, value;
+      el = $(this);
+      el.hide();
+      name = el.attr('name');
+      value = el.attr('value');
+      if (self.form.find(".radio[data-name=" + name + "][data-value=" + value + "]").size()) {
+        self.form.find(".radio[data-name=" + name + "][data-value=" + value + "]").remove();
+      }
+      el.click(function() {
+        self.form.find(".radio[data-name=" + name + "]").removeClass('checked');
+        return self.form.find(".radio[data-name=" + name + "][data-value=" + value + "]").addClass('checked');
+      });
+      $radio = $("<div class='radio' data-name='" + name + "' data-value='" + value + "'></div>");
+      if (el.attr('checked')) {
+        $radio.addClass('checked');
+      }
+      el.after($radio);
+      return $radio.click(function() {
+        self.form.find(".radio[data-name=" + name + "]").removeClass('checked');
+        $(this).addClass('checked');
+        return self.setVal(name, value);
+      });
+    });
+  };
+
+  Form.prototype.createSelect = function(el) {
+    var $options, $select, $selected, name, selectClose, selectedText, self;
+    el.hide();
+    name = el.attr('name');
+    self = this;
+    if (this.form.find(".select[data-name='" + name + "']").size()) {
+      this.form.find(".select[data-name='" + name + "']").remove();
+    }
+    $select = $("<div class='select' data-name='" + name + "'></div>");
+    $options = $("<div class='options' style='display:none;'></div>");
+    selectedText = el.find('option[selected]').size() ? el.find('option:selected').text() : el.find('option:first-child').text();
+    $selected = $("<div class='selected default'>" + selectedText + "</div>");
+    $select.append($selected);
+    $select.append($options);
+    el.after($select);
+    selectClose = false;
+    $select.mouseover(function() {
+      return selectClose = false;
+    });
+    $select.mouseout(function() {
+      return selectClose = true;
+    });
+    $(document).click(function() {
+      if (selectClose) {
+        $select.removeClass('open');
+        return $options.hide();
+      }
+    });
+    $selected.click(function() {
+      if ($select.hasClass('open')) {
+        $select.removeClass('open');
+        return $options.hide();
+      } else {
+        $select.addClass('open');
+        return $options.show();
+      }
+    });
+    return el.find('option').each(function() {
+      var $option;
+      if ($(this).attr('value')) {
+        $option = $("<div class='option' data-value='" + ($(this).attr('value')) + "'>" + ($(this).text()) + "</div>");
+      } else {
+        $option = $("<div class='option'>" + ($(this).text()) + "</div>");
+      }
+      $option.click((function(_this) {
+        return function() {
+          if ($(_this).attr('value')) {
+            self.setVal(name, $(_this).attr('value'));
+            $selected.removeClass('default');
+          } else {
+            self.setVal(name, self.fields[name].originVal);
+            $selected.addClass('default');
+          }
+          $select.find('.selected').html($(_this).text());
+          $select.removeClass('open');
+          return $options.hide();
+        };
+      })(this));
+      return $options.append($option);
+    });
+  };
+
   Form.prototype.setVal = function(name, val) {
-    var el, errorAlert, _ref;
+    var el, _ref;
     el = this.form.find("[name='" + name + "']");
     if ((_ref = el.attr('type')) === 'checkbox' || _ref === 'radio') {
       el.prop("checked", false);
@@ -187,9 +530,7 @@ Form = (function() {
       }
     }
     if (this.fields[name].useErrorTemplate) {
-      errorAlert = this.form.find("." + this.errorAlertExtClass + "-" + name);
-      errorAlert.empty();
-      return el.removeClass(this.errorInputClass);
+      return this.removeErrorAlert(name);
     }
   };
 
@@ -254,6 +595,20 @@ Form = (function() {
         this.fields[name].onError(name, this.errors[name]);
       }
     }
+    if (this.autoHideErrors) {
+      setTimeout((function(_this) {
+        return function() {
+          var _ref1, _results;
+          _ref1 = _this.fields;
+          _results = [];
+          for (name in _ref1) {
+            field = _ref1[name];
+            _results.push(_this.removeErrorAlert(name));
+          }
+          return _results;
+        };
+      })(this), 1000);
+    }
     this.log("onFail", "errors", this.errors);
     return this.onFail(this.errors);
   };
@@ -302,6 +657,9 @@ Form = (function() {
     if (this.fields[name].useErrorTemplate) {
       el = this.form.find("[name='" + name + "']");
       el.addClass(this.errorInputClass);
+      if (el.is('select') && this.fields[name].style) {
+        this.form.find(".select[data-name='" + name + "']").addClass(this.errorInputClass);
+      }
       errorAlert = this.form.find("." + this.errorAlertExtClass + "-" + name);
       errorAlert.stop().empty();
       for (i in this.errors[name]) {
@@ -310,8 +668,8 @@ Form = (function() {
       if (this.errorHideMethod === "visibility") {
         errorAlert.css('visibility', 'visible');
       }
-      if (this.errorFade) {
-        return errorAlert.hide().fadeIn(this.errorFade);
+      if (this.errorFadeIn) {
+        return errorAlert.hide().fadeIn(this.errorFadeIn);
       }
     }
   };
@@ -321,11 +679,21 @@ Form = (function() {
     if (this.fields[name].useErrorTemplate) {
       el = this.form.find("[name='" + name + "']");
       el.removeClass(this.errorInputClass);
+      if (el.is('select') && this.fields[name].style) {
+        this.form.find(".select[data-name='" + name + "']").removeClass(this.errorInputClass);
+      }
       errorAlert = this.form.find("." + this.errorAlertExtClass + "-" + name);
-      errorAlert.empty();
       if (this.errorHideMethod === "visibility") {
-        return errorAlert.css('visibility', 'hidden').show();
+        errorAlert.css('visibility', 'hidden').show();
+        return errorAlert.empty();
+      } else if (this.errorFadeOut) {
+        return errorAlert.stop().css({
+          'opacity': '1'
+        }).fadeOut(this.errorFadeOut, function() {
+          return errorAlert.empty();
+        });
       } else {
+        errorAlert.empty();
         return errorAlert.hide();
       }
     }

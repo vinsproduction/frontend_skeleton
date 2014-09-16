@@ -1,3 +1,206 @@
+### Form Validator ###
+
+###
+
+Правила валидации
+required — Обязательное поле
+numeric — Разрешены только цифры
+numericDash — Разрешены только цифры и подчеркивания
+alpha — Разрешены только буквы
+alphaDash — Разрешены только буквы и подчеркивания
+alphaNumeric — Разрешены только буквы и цифры
+max — Максимум символов
+min — Минимум символов
+email — Email
+url — Url
+ip — Ip
+
+###
+
+
+###
+
+Инициализация формы
+
+formValidator = new Form({
+ 
+ logs: true, // Логировать форму
+ autoHideErrors: false // Автоматическое скрытие ошибок
+ 
+ formName: 'nice form', // Имя формы (опционально, проще дебажить если на странице много форм)
+ formEl: '#form', // Элемент формы (можно передавать элемент DOM)
+ submitEl: '.submit', // Элемент кнопки отправки (можно передавать элемент DOM)
+ 
+ fields:{
+  'firstname' : {
+   useErrorTemplate: true, // Использовать темплейт с ошибками
+   checkErrorsOnFocus: true, // Валидировать поле сразу в фокусе
+   placeholder: 'placeholder firstname', // Плейсхолдер (Не значение!)
+   rules: {
+    required:{ // Правило
+     reason: 'Обязательное поле для заполнения' // Установка причины ошибки (опционально)
+    },
+    min: {
+     count: 2, // Миниальное кол-во символов
+     reason: 'Минимум {count} символа' // Установка причины ошибки (опционально)
+    },
+    max: {
+     count: 10, // Максимальное кол-во символов
+     reason: 'Максимум {count} символов'
+    }
+   }
+  },
+  'password' : {
+   useErrorTemplate: true,
+   hideErrorsOnFocus: true, // Скрывать ошибки в фокусе
+   //focus: true, // Фокусировать на это поле
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    },
+    numeric:{
+     reason: 'Разрешены только цифры'
+    }
+   }
+  },
+  'url' : {
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    },
+    url: {
+     reason: 'Неправильно заполненный url'
+    }
+   },
+   
+   // Ручная работа над ошибками, без использования темплейтов
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-url").append(errors[i]);
+    };
+   }
+  },
+  'email' : {
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    },
+    email: {
+     reason: 'Неправильно заполненный email'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-email").append(errors[i]);
+    };
+   }
+  },
+  'text' : {
+   enterSubmit: true, // Отправка по Enter, если элмент в фокусе
+   hideErrorsOnFocus: true,
+   useErrorTemplate: true,
+   escape: true, // Экранировать ввод символов
+   placeholder: 'placeholder text',
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    }
+   }
+  },
+  'checkbox_1' : {
+  	style: true, // Стилизация элемента
+   	rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-checkbox_1").append(errors[i]);
+    };
+   }
+  },
+  'checkbox_2' : {
+  	style: true, // Стилизация элемента
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-checkbox_2").append(errors[i]);
+    };
+   }
+  },
+  'radiobutton' : {
+  	style: true, // Стилизация элемента
+   rules: {
+    required:{
+     reason: 'Обязательное поле для заполнения'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-radiobutton").append(errors[i]);
+    };
+   }
+  },
+  'dropdown' : {
+  	style: true, // Стилизация элемента
+   rules: {
+    required:{
+     not: '- Выбрать -', // Это значение НЕ валидируется!
+     reason: 'Обязательное поле для заполнения'
+    }
+   },
+   onError: function(fieldName,errors){
+    for(i in errors){
+     $(".error-custom-dropdown").append(errors[i]);
+    };
+   }
+  }
+ },
+ 
+ // Событие отправки формы
+ onSubmit: function(data){
+  $(".error-custom-alert").empty();
+ },
+ 
+ // Событие неудачной отправки формы
+ onFail: function(errors){},
+ 
+ // Событие сброса формы
+ onReset: function(){
+  $(".error-custom-alert").empty();
+ },
+ 
+ // Событие загрузки формы
+ onLoad: function(){},
+ 
+ // Событие инициализации формы. Полезно когда необходимо навешать на форму еще событий.
+ // До и после отправки, происходит сброс формы и переинициализация, в также новый bind элементов
+ onInit: function(){},
+ 
+ // Событие успешной отправки формы
+ onSuccess: function(data){
+  $(".error-custom-alert").empty();
+ }
+})
+ 
+// Добавление нового правила
+formValidator.addRule({
+ field: 'firstname', // Имя поля
+ rule: 'custom rule', // Название правила
+ reason: 'Введите слово "хорошо"', // Описание причины ошибки
+ condition: function(val){ // Условие исполнения - должно возвращать или true или false
+  return val == 'хорошо';
+ }
+});
+
+###
+
+
 class Form
 
 	logs: false
@@ -6,14 +209,17 @@ class Form
 	formEl: false
 	submitEl: false
 
+	autoHideErrors: false
+
 	errorAlertClass: "error-alert"
 	errorAlertExtClass: "error"
 	errorInputClass: "error-field"
 	placeholderClass: "placeholder"
 
-	errorHideMethod: "visibility" # "display"
+	errorHideMethod: "display" # "visibility"
 
-	errorFade: 300
+	errorFadeIn: 300
+	errorFadeOut: 800
 
 	fields: {}
 	data: {}
@@ -65,7 +271,7 @@ class Form
 
 		for name of @fields
 
-			el  = @form.find("[name='#{name}']")
+			el  = @form.find("[name='#{name}']").eq(0)
 
 			el.unbind()
 
@@ -74,6 +280,7 @@ class Form
 			else
 				@fields[name].originVal = el.val()
 
+			@fields[name].style = @fields[name].style ? false
 			@fields[name].useErrorTemplate = @fields[name].useErrorTemplate ? false
 			@fields[name].hideErrorsOnFocus = @fields[name].hideErrorsOnFocus ? false
 			@fields[name].checkErrorsOnFocus = @fields[name].checkErrorsOnFocus ? false
@@ -96,10 +303,11 @@ class Form
 				errorAlert = $(".#{@errorAlertExtClass}-#{name}")
 
 				if !errorAlert.size()
-					errorAlert = $(@errorTemplate)
-					el.after errorAlert
-					errorAlert.addClass("#{@errorAlertExtClass}-#{name}")
 
+					errorAlert = $(@errorTemplate)
+					errorAlert.addClass("#{@errorAlertExtClass}-#{name}")
+					el.after errorAlert
+					
 				errorAlert.unbind()
 
 				if @errorHideMethod is "visibility"
@@ -141,6 +349,17 @@ class Form
 							self.addErrorAlert(name)
 							self.fields[name].onError(name,self.errors[name])
 
+		
+			if @fields[name].style and el.is("select")
+
+				@createSelect(el)
+				el.change => @createSelect(el)
+
+			if @fields[name].style and (el.attr('type') is 'radio')
+				self.createRadio(name)
+
+			if @fields[name].style and (el.attr('type') is 'checkbox')
+				self.createCheckbox(name)
 
 			el.focus() if @fields[name].focus
 
@@ -152,6 +371,135 @@ class Form
 
 
 		do @onInit
+
+	createCheckbox: (name) ->
+
+		el = @form.find("[name='#{name}']")
+
+		el.hide()
+
+		name 	= el.attr('name')
+		value = el.attr('value')
+
+		self = @
+
+		@form.find(".checkbox[data-name=#{name}][data-value=#{value}]").remove() if @form.find(".checkbox[data-name=#{name}][data-value=#{value}]").size()
+
+		el.click ->
+			if !$(@).is(':checked')
+				self.form.find(".checkbox[data-name=#{name}]").removeClass 'checked'
+			else
+				self.form.find(".checkbox[data-name=#{name}]").addClass 'checked'
+
+		$checkbox = $("<div class='checkbox' data-name='#{name}' data-value='#{value}'></div>")
+
+		$checkbox.addClass 'checked' if el.attr('checked')
+
+		el.after $checkbox
+
+		$checkbox.click ->
+			if $(@).hasClass('checked')
+				$(@).removeClass 'checked'
+				self.setVal(name, false)
+			else
+				$(@).addClass 'checked'
+				self.setVal(name, value)
+
+	createRadio: (name) ->
+
+		$radioEl = @form.find("[name='#{name}']")
+
+		self = @
+
+		$radioEl.each ->
+
+			el = $(this)
+
+			el.hide()
+
+			name 	= el.attr('name')
+			value = el.attr('value')
+
+			self.form.find(".radio[data-name=#{name}][data-value=#{value}]").remove() if self.form.find(".radio[data-name=#{name}][data-value=#{value}]").size()
+
+			el.click ->
+				self.form.find(".radio[data-name=#{name}]").removeClass 'checked'
+				self.form.find(".radio[data-name=#{name}][data-value=#{value}]").addClass 'checked'
+
+			$radio 	= $("<div class='radio' data-name='#{name}' data-value='#{value}'></div>")
+
+			$radio.addClass 'checked' if el.attr('checked')
+
+			el.after $radio
+
+			$radio.click ->
+				self.form.find(".radio[data-name=#{name}]").removeClass 'checked'
+				$(@).addClass 'checked'
+				self.setVal(name, value)
+
+	createSelect: (el) ->
+
+		el.hide()
+
+		name 	= el.attr('name')
+
+		self = @
+
+		@form.find(".select[data-name='#{name}']").remove() if @form.find(".select[data-name='#{name}']").size()
+
+		$select 	= $("<div class='select' data-name='#{name}'></div>")
+		$options 		= $("<div class='options' style='display:none;'></div>")
+		selectedText 	= if el.find('option[selected]').size()
+				el.find('option:selected').text()
+			else
+				el.find('option:first-child').text()
+
+		$selected = $("<div class='selected default'>#{selectedText}</div>")
+		$select.append $selected
+		$select.append $options
+
+		el.after $select
+
+		selectClose = false
+
+		$select.mouseover -> selectClose = false
+		$select.mouseout  -> selectClose = true
+
+		$(document).click ->
+			if selectClose
+				$select.removeClass('open')
+				$options.hide()
+
+		$selected.click ->
+			if $select.hasClass('open')
+				$select.removeClass('open')
+				$options.hide()
+			else
+				$select.addClass('open')
+				$options.show()
+
+		el.find('option').each ->
+
+			if $(@).attr('value')
+				$option = $("<div class='option' data-value='#{$(@).attr('value')}'>#{$(@).text()}</div>")
+			else
+				$option = $("<div class='option'>#{$(@).text()}</div>")
+
+			$option.click =>
+	
+				if $(@).attr('value')
+					self.setVal(name, $(@).attr('value'))
+					$selected.removeClass 'default'
+				else
+					self.setVal(name,self.fields[name].originVal)
+					$selected.addClass 'default'
+
+				$select.find('.selected').html($(@).text())
+
+				$select.removeClass('open')
+				$options.hide()
+
+			$options.append $option
 
 	setVal: (name,val) ->
 
@@ -171,9 +519,11 @@ class Form
 				el.removeClass(@placeholderClass)
 
 		if @fields[name].useErrorTemplate
-			errorAlert = @form.find(".#{@errorAlertExtClass}-#{name}")
-			errorAlert.empty()
-			el.removeClass(@errorInputClass)
+			# errorAlert = @form.find(".#{@errorAlertExtClass}-#{name}")
+			# errorAlert.empty()
+			# el.removeClass(@errorInputClass)
+
+			@removeErrorAlert(name)
 
 	getVal: (name) ->
 
@@ -234,7 +584,14 @@ class Form
 			if @errors[name]
 				@log "onError", name, @errors[name]
 				@addErrorAlert(name)
+				
 				@fields[name].onError(name,@errors[name])
+
+		if @autoHideErrors	
+			setTimeout(=>
+				for name,field of @fields
+					@removeErrorAlert(name)
+			,1000)
 
 		@log "onFail","errors", @errors
 		@onFail(@errors)
@@ -281,6 +638,9 @@ class Form
 			el  = @form.find("[name='#{name}']")
 			el.addClass(@errorInputClass)
 
+			if el.is('select') and @fields[name].style
+				@form.find(".select[data-name='#{name}']").addClass(@errorInputClass)
+
 			errorAlert = @form.find(".#{@errorAlertExtClass}-#{name}")
 			errorAlert.stop().empty()
 
@@ -290,8 +650,8 @@ class Form
 			if @errorHideMethod is "visibility"
 				errorAlert.css('visibility','visible')
 
-			if @errorFade	
-				errorAlert.hide().fadeIn @errorFade
+			if @errorFadeIn
+				errorAlert.hide().fadeIn @errorFadeIn
 
 	removeErrorAlert: (name) ->
 
@@ -300,12 +660,18 @@ class Form
 			el  = @form.find("[name='#{name}']")
 			el.removeClass(@errorInputClass)
 
+			if el.is('select') and @fields[name].style
+				@form.find(".select[data-name='#{name}']").removeClass(@errorInputClass)
+
 			errorAlert = @form.find(".#{@errorAlertExtClass}-#{name}")
-			errorAlert.empty()
 
 			if @errorHideMethod is "visibility"
 				errorAlert.css('visibility','hidden').show()
+				errorAlert.empty()
+			else if @errorFadeOut
+				errorAlert.stop().css('opacity':'1').fadeOut @errorFadeOut, -> errorAlert.empty()
 			else
+				errorAlert.empty()
 				errorAlert.hide()
 	
 	placeholder: (el,val) ->

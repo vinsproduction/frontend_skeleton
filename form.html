@@ -79,6 +79,8 @@
        formValidator = new Form({
        
         logs: true,
+        autoHideErrors: true,
+        errorFadeOut: 3000,
         
         formName: 'nice form',
         formEl: '#form',
@@ -159,6 +161,7 @@
           }
          },
          'checkbox_1' : {
+          style: true,
           rules: {
            required:{
             reason: 'Обязательное поле для заполнения'
@@ -171,18 +174,21 @@
           }
          },
          'checkbox_2' : {
+          style: true,
+          useErrorTemplate: true,
           rules: {
            required:{
             reason: 'Обязательное поле для заполнения'
            }
           },
-          onError: function(fieldName,errors){
-           for(i in errors){
-            $(".error-custom-checkbox_2").append(errors[i] + "<br/>");
-           };
-          }
+          //- onError: function(fieldName,errors){
+          //- 	for(i in errors){
+          //- 		$(".error-custom-checkbox_2").append(errors[i] + "<br/>");
+          //- 	};
+          //- }
          },
          'radiobutton' : {
+          style: true,
           rules: {
            required:{
             reason: 'Обязательное поле для заполнения'
@@ -195,17 +201,19 @@
           }
          },
          'dropdown' : {
+          style: true,
+          useErrorTemplate: true,
           rules: {
            required:{
             not: '- Выбрать -',
             reason: 'Обязательное поле для заполнения'
            }
           },
-          onError: function(fieldName,errors){
-           for(i in errors){
-            $(".error-custom-dropdown").append(errors[i] + "<br/>");
-           };
-          }
+          //- onError: function(fieldName,errors){
+          //- 	for(i in errors){
+          //- 		$(".error-custom-dropdown").append(errors[i] + "<br/>");
+          //- 	};
+          //- }
          }
         },
         
@@ -323,12 +331,11 @@
                   <div class="field-group"><span>3</span>
                     <input type="checkbox" name="checkbox_2" value="2">
                   </div>
-                  <div class="error-custom-alert error-custom-checkbox_2"></div>
                 </div>
                 <div class="g-row">
                   <label>radio</label>
                   <div class="field-group"><span>1</span>
-                    <input type="radio" name="radiobutton" value="1" checked><span>2	</span>
+                    <input type="radio" name="radiobutton" value="1"><span>2	</span>
                     <input type="radio" name="radiobutton" value="2">
                   </div>
                   <div class="error-custom-alert error-custom-radiobutton"></div>
@@ -340,7 +347,6 @@
                     <option value="o1">option1</option>
                     <option value="o2">option2</option>
                   </select>
-                  <div class="error-custom-alert error-custom-dropdown"></div>
                 </div>
                 <div class="g-row">
                   <button onclick="formValidator.reset();" class="reset">Сбросить</button>

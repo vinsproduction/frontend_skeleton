@@ -771,6 +771,13 @@ section#page-form .container .content .field-group {
   *display: inline;
   width: 300px;
 }
+section#page-form .container .content .field-group span {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
 section#page-form .container .content textarea.placeholder,
 section#page-form .container .content input[type='text'].placeholder {
   color: #ccc;
@@ -820,6 +827,92 @@ section#page-form .container .content button.reset {
   vertical-align: top;
   zoom: 1;
   *display: inline;
+}
+section#page-form .container .content .radio {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  background: #fff;
+  border: 1px solid #000;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+}
+section#page-form .container .content .radio.checked {
+  background: #ccc;
+  border: 1px solid #000;
+}
+section#page-form .container .content .checkbox {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  background: #fff;
+  border: 1px solid #000;
+}
+section#page-form .container .content .checkbox.checked {
+  background: #ccc;
+  border: 1px solid #000;
+}
+section#page-form .container .content .select {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  position: relative;
+  z-index: 999;
+}
+section#page-form .container .content .select .selected {
+  display: block;
+  width: 300px;
+  height: 15px;
+  position: relative;
+  padding: 10px 0;
+  border: 1px solid #ccc;
+  background: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+section#page-form .container .content .select .selected:after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  border-style: solid;
+  border-width: 10px 5px 0 5px;
+  border-color: #000 transparent transparent transparent;
+}
+section#page-form .container .content .select .options {
+  width: 100%;
+  position: absolute;
+  background: #fff;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+section#page-form .container .content .select .options .option {
+  padding: 10px 0;
+  cursor: pointer;
+}
+section#page-form .container .content .select.open .selected:after {
+  right: 10px;
+  top: 12px;
+  border-width: 0 5px 10px 5px;
+  border-color: transparent transparent #000 transparent;
+}
+section#page-form .container .content .select.open .options {
+  border-top: 0;
 }
 section#page-fileuploader .container .content .row-actions {
   height: 150px;
