@@ -309,7 +309,7 @@ $$; // SHORT NAMESPACE
 
 	$$.unlinkObj = function(obj) {
 		var json = JSON.stringify(obj);
-		obj = $.parseJSON(json);
+		obj = JSON.parse(json);
 		return obj;
 	};
 
