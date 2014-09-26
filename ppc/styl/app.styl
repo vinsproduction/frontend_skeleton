@@ -499,6 +499,11 @@ section#page-form
 				block-inline()
 				position relative
 				z-index 999
+				user-select: none
+				-o-user-select: none
+				-moz-user-select: none
+				-khtml-user-select: none
+				-webkit-user-select: none
 
 				.selected
 					block(300,35 - 10*2)
@@ -508,6 +513,7 @@ section#page-form
 					background #FFF
 					text-align center
 					cursor pointer
+
 					&:after
 						content ''
 						position absolute

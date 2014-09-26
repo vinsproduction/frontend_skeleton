@@ -481,9 +481,9 @@ class Form
 		el.find('option').each ->
 
 			if $(@).attr('value')
-				$option = $("<div class='option' data-value='#{$(@).attr('value')}'>#{$(@).text()}</div>")
+				$option = $("<div class='option' data-value='#{$(@).attr('value')}'><span>#{$(@).text()}</span></div>")
 			else
-				$option = $("<div class='option'>#{$(@).text()}</div>")
+				$option = $("<div class='option'><span>#{$(@).text()}</span></div>")
 
 			$option.click =>
 	
@@ -792,10 +792,15 @@ class Form
 
 			formName = @formName || @formEl
 			
-			newArgs = ["[Form]","'#{formName}'"]
-			for argument in arguments
-				newArgs.push argument
-			console.log.apply(console,newArgs)
+			try
+				newArgs = ["[Form]","'#{formName}'"]
+				for argument in arguments
+					newArgs.push argument
+				console.log.apply(console,newArgs)
+			catch e
+				console.log "[Form]","#{formName}", arguments
+			
+			
 			
 			
 			

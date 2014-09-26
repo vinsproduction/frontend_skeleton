@@ -491,9 +491,9 @@ Form = (function() {
     return el.find('option').each(function() {
       var $option;
       if ($(this).attr('value')) {
-        $option = $("<div class='option' data-value='" + ($(this).attr('value')) + "'>" + ($(this).text()) + "</div>");
+        $option = $("<div class='option' data-value='" + ($(this).attr('value')) + "'><span>" + ($(this).text()) + "</span></div>");
       } else {
-        $option = $("<div class='option'>" + ($(this).text()) + "</div>");
+        $option = $("<div class='option'><span>" + ($(this).text()) + "</span></div>");
       }
       $option.click((function(_this) {
         return function() {
@@ -835,15 +835,20 @@ Form = (function() {
   /* HELPERS */
 
   Form.prototype.log = function() {
-    var argument, formName, newArgs, _i, _len;
+    var argument, e, formName, newArgs, _i, _len;
     if (console && this.logs) {
       formName = this.formName || this.formEl;
-      newArgs = ["[Form]", "'" + formName + "'"];
-      for (_i = 0, _len = arguments.length; _i < _len; _i++) {
-        argument = arguments[_i];
-        newArgs.push(argument);
+      try {
+        newArgs = ["[Form]", "'" + formName + "'"];
+        for (_i = 0, _len = arguments.length; _i < _len; _i++) {
+          argument = arguments[_i];
+          newArgs.push(argument);
+        }
+        return console.log.apply(console, newArgs);
+      } catch (_error) {
+        e = _error;
+        return console.log("[Form]", "" + formName, arguments);
       }
-      return console.log.apply(console, newArgs);
     }
   };
 

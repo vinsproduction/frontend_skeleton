@@ -873,6 +873,15 @@ section#page-form .container .content .select {
   *display: inline;
   position: relative;
   z-index: 999;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -o-user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
 }
 section#page-form .container .content .select .selected {
   display: block;
