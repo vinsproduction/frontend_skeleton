@@ -48,10 +48,15 @@ class indexHashRouter extends Backbone.Router
 
 		$('body > main > .sections > section').removeClass('current').hide()
 
-	show: ->
+	show: (pageName,pageKey="") ->
 
-		@hide()
-		@el.addClass('current').show()
+		el = $("section[data-page='#{pageName}']")
+
+		@hide() 
+		el.addClass('current').show()
+		$('body')
+			.attr('data-page',pageName)
+			.attr('data-key',pageKey)
 
 	scrollTop: (speed) ->
 		app.scroll(0,speed)
@@ -59,10 +64,10 @@ class indexHashRouter extends Backbone.Router
 	###  404 страница ###
 	notFound: (path) ->
 
-		@el = $('section#notFound')
+		pageName = 'not-found'
 
 		@scrollTop()
-		@show()
+		@show(pageName)
 
 		console.error "[App > router] route #{path} not found"
 		app.debugBox.log("route","not found") if app.debugBox.state
@@ -70,28 +75,28 @@ class indexHashRouter extends Backbone.Router
 	### Серверная ошибка ###
 	ooops: ->
 
-		@el = $('section#ooops')
+		pageName = 'ooops'
 
 		@scrollTop()
-		@show()
+		@show(pageName)
 		
 	index: ->
 
-		@el = $('section[data-page="index"]')
+		pageName = "index"
 
 		@scrollTop()
-		@show()
-		
-		#app.views['index'].controller()
+		@show(pageName)
 
+		#app.views[pageName].controller()
+		
 	page: (id) ->
 
-		@el = $('section[data-page="page"]')
+		pageName = "page"
 
 		@scrollTop()
-		@show()
-		
-		#app.views['index'].controller({id})
+		@show(pageName)
+
+		#app.views['page'].controller({id})
 
 class indexScrollRouter extends Backbone.Router
 
@@ -120,16 +125,19 @@ class indexScrollRouter extends Backbone.Router
 			sections = []
 
 			app.views.all.section.each ->
-				sections.push(name: $(@).attr('data-page'), top:$(@).position().top)
+				# 60 - отступ всех секций
+				sections.push(name: $(@).attr('data-page'), top: $(@).offset().top - 60)
 	
 			sections.reverse()
 
-			console.log '[App > View::indexScrollRouter > set sections]', sections
+			console.log '[App > indexScrollRouter > set sections]', sections
 
 			app.onScroll (vars) =>
 				find = _.find sections, (el) -> vars.top > el.top-10
-				section = if find then find.name else 'none'
-				@navigate '!' + section
+				section = if find then find.name else false
+				if section
+					@navigate '!' + section
+					@show(section,false)
 
 		,700)
 
@@ -149,8 +157,21 @@ class indexScrollRouter extends Backbone.Router
 	after: (route) ->
 		#console.debug '[App > router > after]'
 
-	show: ->
-		app.scroll @el, true
+	hide: ->
+
+		$('body > main > .sections > section').removeClass('current')
+
+	show: (pageName,scroll=true) ->
+
+		el = $("section[data-page='#{pageName}']")
+
+		@hide() 
+		el.addClass('current')
+
+		$('body').attr('data-page',pageName)
+
+		# 60 - отступ всех секций
+		app.scroll(el.offset().top - 60, true) if scroll
 
 	scrollTop: (speed) ->
 		app.scroll(0,speed)
@@ -164,12 +185,12 @@ class indexScrollRouter extends Backbone.Router
 		
 	index: ->
 
-		@el = $('section[data-page="index"]')
+		pageName = "index"
 
-		@show()
+		@show(pageName)
 
 	page: (id) ->
 
-		@el = $('section[data-page="page"]')
+		pageName = "page"
 
-		@show()
+		@show(pageName)

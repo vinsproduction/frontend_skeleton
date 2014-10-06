@@ -59,9 +59,15 @@ indexHashRouter = (function(_super) {
     return $('body > main > .sections > section').removeClass('current').hide();
   };
 
-  indexHashRouter.prototype.show = function() {
+  indexHashRouter.prototype.show = function(pageName, pageKey) {
+    var el;
+    if (pageKey == null) {
+      pageKey = "";
+    }
+    el = $("section[data-page='" + pageName + "']");
     this.hide();
-    return this.el.addClass('current').show();
+    el.addClass('current').show();
+    return $('body').attr('data-page', pageName).attr('data-key', pageKey);
   };
 
   indexHashRouter.prototype.scrollTop = function(speed) {
@@ -72,9 +78,10 @@ indexHashRouter = (function(_super) {
   /*  404 страница */
 
   indexHashRouter.prototype.notFound = function(path) {
-    this.el = $('section#notFound');
+    var pageName;
+    pageName = 'not-found';
     this.scrollTop();
-    this.show();
+    this.show(pageName);
     console.error("[App > router] route " + path + " not found");
     if (app.debugBox.state) {
       return app.debugBox.log("route", "not found");
@@ -85,21 +92,24 @@ indexHashRouter = (function(_super) {
   /* Серверная ошибка */
 
   indexHashRouter.prototype.ooops = function() {
-    this.el = $('section#ooops');
+    var pageName;
+    pageName = 'ooops';
     this.scrollTop();
-    return this.show();
+    return this.show(pageName);
   };
 
   indexHashRouter.prototype.index = function() {
-    this.el = $('section[data-page="index"]');
+    var pageName;
+    pageName = "index";
     this.scrollTop();
-    return this.show();
+    return this.show(pageName);
   };
 
   indexHashRouter.prototype.page = function(id) {
-    this.el = $('section[data-page="page"]');
+    var pageName;
+    pageName = "page";
     this.scrollTop();
-    return this.show();
+    return this.show(pageName);
   };
 
   return indexHashRouter;
@@ -139,18 +149,21 @@ indexScrollRouter = (function(_super) {
         app.views.all.section.each(function() {
           return sections.push({
             name: $(this).attr('data-page'),
-            top: $(this).position().top
+            top: $(this).offset().top - 60
           });
         });
         sections.reverse();
-        console.log('[App > View::indexScrollRouter > set sections]', sections);
+        console.log('[App > indexScrollRouter > set sections]', sections);
         return app.onScroll(function(vars) {
           var find, section;
           find = _.find(sections, function(el) {
             return vars.top > el.top - 10;
           });
-          section = find ? find.name : 'none';
-          return _this.navigate('!' + section);
+          section = find ? find.name : false;
+          if (section) {
+            _this.navigate('!' + section);
+            return _this.show(section, false);
+          }
         });
       };
     })(this), 700);
@@ -176,8 +189,22 @@ indexScrollRouter = (function(_super) {
 
   indexScrollRouter.prototype.after = function(route) {};
 
-  indexScrollRouter.prototype.show = function() {
-    return app.scroll(this.el, true);
+  indexScrollRouter.prototype.hide = function() {
+    return $('body > main > .sections > section').removeClass('current');
+  };
+
+  indexScrollRouter.prototype.show = function(pageName, scroll) {
+    var el;
+    if (scroll == null) {
+      scroll = true;
+    }
+    el = $("section[data-page='" + pageName + "']");
+    this.hide();
+    el.addClass('current');
+    $('body').attr('data-page', pageName);
+    if (scroll) {
+      return app.scroll(el.offset().top - 60, true);
+    }
   };
 
   indexScrollRouter.prototype.scrollTop = function(speed) {
@@ -195,13 +222,15 @@ indexScrollRouter = (function(_super) {
   };
 
   indexScrollRouter.prototype.index = function() {
-    this.el = $('section[data-page="index"]');
-    return this.show();
+    var pageName;
+    pageName = "index";
+    return this.show(pageName);
   };
 
   indexScrollRouter.prototype.page = function(id) {
-    this.el = $('section[data-page="page"]');
-    return this.show();
+    var pageName;
+    pageName = "page";
+    return this.show(pageName);
   };
 
   return indexScrollRouter;

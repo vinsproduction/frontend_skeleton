@@ -69,6 +69,12 @@ clearfix()
 
 size(w = false,h = false)
 	if w
+		width w
+	if h
+		height h
+
+sizepx(w = false,h = false)
+	if w
 		width (w)px
 	if h
 		height (h)px
@@ -90,7 +96,7 @@ hide(visibility=false)
 
 block(w = false,h = false)
 	display block
-	size(w,h)
+	sizepx(w,h)
 
 block-center(w = false,h = false)
 	block(w,h)
@@ -103,15 +109,15 @@ block-inline(w = false,h = false)
 	vertical-align top
 	zoom 1
 	*display inline
-	size(w,h)
+	sizepx(w,h)
 
 box-left(w = false,h = false)
 	float left
-	size(w,h)
+	sizepx(w,h)
 
 box-right(w = false,h = false)
 	float right
-	size(w,h)
+	sizepx(w,h)
 
 block-left(w = false,h = false)
 	float left

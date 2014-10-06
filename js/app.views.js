@@ -12,11 +12,9 @@ PrototypeView = (function() {
     this.init();
   }
 
-  PrototypeView.prototype.generateRenders = function(template) {
-    if (template == null) {
-      template = this.template;
-    }
-    _.each(template, (function(_this) {
+  PrototypeView.prototype.setRenders = function(template) {
+    this.template = template;
+    return _.each(this.template, (function(_this) {
       return function(val, key) {
         if (!_this.templateSourse) {
           _this.templateSourse = {};
@@ -42,31 +40,24 @@ PrototypeView = (function() {
         };
       };
     })(this));
-    return this.renderAll = (function(_this) {
-      return function(options) {
-        return _.each(template, function(val, key) {
-          return _this.render[key]();
-        });
-      };
-    })(this);
   };
 
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
     var bg, color, error, height, text, top, width;
     try {
-      color = options && options.color ? options.color : "#000";
+      color = options && options.color ? options.color : "inherit";
       bg = options && options.bg ? options.bg : "none";
-      text = options && options.text ? options.text : true;
+      text = options && (options.text != null) ? options.text : "загрузка ...";
       width = options && options.width ? parseInt(options.width) + "px" : "100%";
       height = options && options.height ? parseInt(options.height) + "px" : "100%";
-      top = options && options.top ? parseInt(options.top) + "px" : (parseInt(height) / 2 - 10) + "px";
+      top = options && options.top ? parseInt(options.top) + "px" : 0;
       if (this.render_debug) {
         console.log("[preRender " + templateName + "] loadtext:", text);
       }
-      if (text) {
-        return $el.html("<div style=\"width: " + width + "; height: " + height + "; background: " + bg + "; position:relative; clear:both;\">\n	<div style=\"top:" + top + "; text-align: center; position: relative; clear:both; color: " + color + ";\">\n		" + text + "\n	</div>\n</div>");
+      if (text != null) {
+        return $el.html("<div class=\"render-preloader\" style=\"width: " + width + "; height: " + height + "; background: " + bg + "; position:relative; clear:both;\">\n	<div style=\"top:" + top + "; text-align: center; position: relative; clear:both; color: " + color + ";\">\n		" + text + "\n	</div>\n</div>");
       } else {
-        return $el.html("<div id=\"preload\" style=\"width: " + width + "; height: " + height + "; background: " + bg + ";\">\n	<div class=\"inner\" style=\"top:" + top + ";\">\n		<div class=\"clock\"></div>\n		<div class=\"loader\"></div>\n	</div>\n</div>");
+        return $el.html("<div class=\"render-preloader\" style=\"width: " + width + "; height: " + height + "; background: " + bg + ";\">\n	<div class=\"inner\" style=\"top:" + top + ";\">\n		<div class=\"clock\"></div>\n		<div class=\"loader\"></div>\n	</div>\n</div>");
       }
     } catch (_error) {
       error = _error;
@@ -145,6 +136,7 @@ IndexView = (function(_super) {
 
   IndexView.prototype.controller = function(opt) {
     this.opt = opt != null ? opt : {};
+    this.el = $("main.view-index");
     app.onScroll(function(data) {
       return console.log('--> onScroll', data);
     });
@@ -155,7 +147,6 @@ IndexView = (function(_super) {
     app.onHash(function(data) {
       return console.log('--> onHash', data);
     });
-    this.el = $("main.view-index");
     return console.log('Hello! This is index controller');
   };
 
@@ -175,20 +166,21 @@ IndexRenderView = (function(_super) {
   IndexRenderView.prototype.controller = function(opt) {
     this.opt = opt != null ? opt : {};
     this.el = $("main.view-index-render");
-    this.template = {
+    this.setRenders({
       'text': this.el.find('.text')
-    };
-    this.generateRenders();
+    });
     this.vars = {};
     this.preRender['text']({
       text: 'Load...'
     });
     return app.models.user.getDetails({}, (function(_this) {
       return function(res) {
+        var data;
         if (res.error) {
           return app.errors.popup(res.error);
         } else {
-          return _this.renderResponse(res);
+          data = _.clone(res);
+          return _this.renderResponse(data);
         }
       };
     })(this));

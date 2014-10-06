@@ -10,9 +10,9 @@ class PrototypeView
 
 		do @init
 
-	generateRenders: (template =  @template) ->
+	setRenders: (@template) ->
 
-		_.each template, (val,key) =>
+		_.each @template, (val,key) =>
 
 			# Generate Sourse for templates
 			if !@templateSourse then @templateSourse = {}
@@ -26,28 +26,23 @@ class PrototypeView
 			if !@preRender then @preRender = {}
 			@preRender[key] = (options={}) => @doPreRender key, @template[key],options
 
-		@renderAll = (options) =>
-
-			_.each template, (val,key) =>
-				do @render[key]
-
 	doPreRender: (templateName, $el, options) ->
 
 		try
 
-			color 	= if options and options.color then options.color else "#000"
+			color 	= if options and options.color then options.color else "inherit"
 			bg 			= if options and options.bg then options.bg else "none"
-			text 		= if options and options.text then options.text else true
+			text 		= if options and options.text? then options.text else "загрузка ..."
 			width 	= if options and options.width then parseInt(options.width) + "px" else "100%"
 			height 	= if options and options.height then parseInt(options.height) + "px" else "100%"
-			top  		= if options and options.top then parseInt(options.top) + "px" else (parseInt(height)/2 - 10) + "px" # 10 - погрешность от размера шрифта
+			top  		= if options and options.top then parseInt(options.top) + "px" else 0
 
 			if @render_debug then console.log "[preRender #{templateName}] loadtext:",text
 
-			if text
+			if text?
 
 				$el.html """
-					<div style="width: #{width}; height: #{height}; background: #{bg}; position:relative; clear:both;">
+					<div class="render-preloader" style="width: #{width}; height: #{height}; background: #{bg}; position:relative; clear:both;">
 						<div style="top:#{top}; text-align: center; position: relative; clear:both; color: #{color};">
 							#{text}
 						</div>
@@ -57,7 +52,7 @@ class PrototypeView
 			else # Картинка - прелоадер !
 
 				$el.html """
-					<div id="preload" style="width: #{width}; height: #{height}; background: #{bg};">
+					<div class="render-preloader" style="width: #{width}; height: #{height}; background: #{bg};">
 						<div class="inner" style="top:#{top};">
 							<div class="clock"></div>
 							<div class="loader"></div>
@@ -109,12 +104,12 @@ class IndexView extends PrototypeView
 
 	controller: (@opt={}) ->
 
+		@el = $("main.view-index")
+
 		app.onScroll (data) -> console.log '--> onScroll', data
 		app.onResize (data) -> console.log '--> onResize', data
 		$(window).resize() # call event!
 		app.onHash (data) -> console.log '--> onHash', data
-
-		@el = $("main.view-index")
 
 		console.log 'Hello! This is index controller'
 
@@ -126,10 +121,8 @@ class IndexRenderView extends PrototypeView
 
 		@el = $("main.view-index-render")
 
-		@template = 
+		@setRenders
 			'text' : @el.find('.text')
-
-		do @generateRenders
 
 		@vars = {} #reset vars
 		@preRender['text'](text: 'Load...')
@@ -138,7 +131,8 @@ class IndexRenderView extends PrototypeView
 			if res.error
 				return app.errors.popup(res.error)
 			else
-				@renderResponse(res)
+				data = _.clone res
+				@renderResponse(data)
 		
 	renderResponse: (data) ->
 

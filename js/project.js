@@ -93,11 +93,9 @@ PrototypeView = (function() {
     this.init();
   }
 
-  PrototypeView.prototype.generateRenders = function(template) {
-    if (template == null) {
-      template = this.template;
-    }
-    _.each(template, (function(_this) {
+  PrototypeView.prototype.setRenders = function(template) {
+    this.template = template;
+    return _.each(this.template, (function(_this) {
       return function(val, key) {
         if (!_this.templateSourse) {
           _this.templateSourse = {};
@@ -123,31 +121,24 @@ PrototypeView = (function() {
         };
       };
     })(this));
-    return this.renderAll = (function(_this) {
-      return function(options) {
-        return _.each(template, function(val, key) {
-          return _this.render[key]();
-        });
-      };
-    })(this);
   };
 
   PrototypeView.prototype.doPreRender = function(templateName, $el, options) {
     var bg, color, error, height, text, top, width;
     try {
-      color = options && options.color ? options.color : "#000";
+      color = options && options.color ? options.color : "inherit";
       bg = options && options.bg ? options.bg : "none";
-      text = options && options.text ? options.text : true;
+      text = options && (options.text != null) ? options.text : "загрузка ...";
       width = options && options.width ? parseInt(options.width) + "px" : "100%";
       height = options && options.height ? parseInt(options.height) + "px" : "100%";
-      top = options && options.top ? parseInt(options.top) + "px" : (parseInt(height) / 2 - 10) + "px";
+      top = options && options.top ? parseInt(options.top) + "px" : 0;
       if (this.render_debug) {
         console.log("[preRender " + templateName + "] loadtext:", text);
       }
-      if (text) {
-        return $el.html("<div style=\"width: " + width + "; height: " + height + "; background: " + bg + "; position:relative; clear:both;\">\n	<div style=\"top:" + top + "; text-align: center; position: relative; clear:both; color: " + color + ";\">\n		" + text + "\n	</div>\n</div>");
+      if (text != null) {
+        return $el.html("<div class=\"render-preloader\" style=\"width: " + width + "; height: " + height + "; background: " + bg + "; position:relative; clear:both;\">\n	<div style=\"top:" + top + "; text-align: center; position: relative; clear:both; color: " + color + ";\">\n		" + text + "\n	</div>\n</div>");
       } else {
-        return $el.html("<div id=\"preload\" style=\"width: " + width + "; height: " + height + "; background: " + bg + ";\">\n	<div class=\"inner\" style=\"top:" + top + ";\">\n		<div class=\"clock\"></div>\n		<div class=\"loader\"></div>\n	</div>\n</div>");
+        return $el.html("<div class=\"render-preloader\" style=\"width: " + width + "; height: " + height + "; background: " + bg + ";\">\n	<div class=\"inner\" style=\"top:" + top + ";\">\n		<div class=\"clock\"></div>\n		<div class=\"loader\"></div>\n	</div>\n</div>");
       }
     } catch (_error) {
       error = _error;
@@ -226,6 +217,7 @@ IndexView = (function(_super) {
 
   IndexView.prototype.controller = function(opt) {
     this.opt = opt != null ? opt : {};
+    this.el = $("main.view-index");
     app.onScroll(function(data) {
       return console.log('--> onScroll', data);
     });
@@ -236,7 +228,6 @@ IndexView = (function(_super) {
     app.onHash(function(data) {
       return console.log('--> onHash', data);
     });
-    this.el = $("main.view-index");
     return console.log('Hello! This is index controller');
   };
 
@@ -256,20 +247,21 @@ IndexRenderView = (function(_super) {
   IndexRenderView.prototype.controller = function(opt) {
     this.opt = opt != null ? opt : {};
     this.el = $("main.view-index-render");
-    this.template = {
+    this.setRenders({
       'text': this.el.find('.text')
-    };
-    this.generateRenders();
+    });
     this.vars = {};
     this.preRender['text']({
       text: 'Load...'
     });
     return app.models.user.getDetails({}, (function(_this) {
       return function(res) {
+        var data;
         if (res.error) {
           return app.errors.popup(res.error);
         } else {
-          return _this.renderResponse(res);
+          data = _.clone(res);
+          return _this.renderResponse(data);
         }
       };
     })(this));
@@ -433,9 +425,15 @@ indexHashRouter = (function(_super) {
     return $('body > main > .sections > section').removeClass('current').hide();
   };
 
-  indexHashRouter.prototype.show = function() {
+  indexHashRouter.prototype.show = function(pageName, pageKey) {
+    var el;
+    if (pageKey == null) {
+      pageKey = "";
+    }
+    el = $("section[data-page='" + pageName + "']");
     this.hide();
-    return this.el.addClass('current').show();
+    el.addClass('current').show();
+    return $('body').attr('data-page', pageName).attr('data-key', pageKey);
   };
 
   indexHashRouter.prototype.scrollTop = function(speed) {
@@ -446,9 +444,10 @@ indexHashRouter = (function(_super) {
   /*  404 страница */
 
   indexHashRouter.prototype.notFound = function(path) {
-    this.el = $('section#notFound');
+    var pageName;
+    pageName = 'not-found';
     this.scrollTop();
-    this.show();
+    this.show(pageName);
     console.error("[App > router] route " + path + " not found");
     if (app.debugBox.state) {
       return app.debugBox.log("route", "not found");
@@ -459,21 +458,24 @@ indexHashRouter = (function(_super) {
   /* Серверная ошибка */
 
   indexHashRouter.prototype.ooops = function() {
-    this.el = $('section#ooops');
+    var pageName;
+    pageName = 'ooops';
     this.scrollTop();
-    return this.show();
+    return this.show(pageName);
   };
 
   indexHashRouter.prototype.index = function() {
-    this.el = $('section[data-page="index"]');
+    var pageName;
+    pageName = "index";
     this.scrollTop();
-    return this.show();
+    return this.show(pageName);
   };
 
   indexHashRouter.prototype.page = function(id) {
-    this.el = $('section[data-page="page"]');
+    var pageName;
+    pageName = "page";
     this.scrollTop();
-    return this.show();
+    return this.show(pageName);
   };
 
   return indexHashRouter;
@@ -513,18 +515,21 @@ indexScrollRouter = (function(_super) {
         app.views.all.section.each(function() {
           return sections.push({
             name: $(this).attr('data-page'),
-            top: $(this).position().top
+            top: $(this).offset().top - 60
           });
         });
         sections.reverse();
-        console.log('[App > View::indexScrollRouter > set sections]', sections);
+        console.log('[App > indexScrollRouter > set sections]', sections);
         return app.onScroll(function(vars) {
           var find, section;
           find = _.find(sections, function(el) {
             return vars.top > el.top - 10;
           });
-          section = find ? find.name : 'none';
-          return _this.navigate('!' + section);
+          section = find ? find.name : false;
+          if (section) {
+            _this.navigate('!' + section);
+            return _this.show(section, false);
+          }
         });
       };
     })(this), 700);
@@ -550,8 +555,22 @@ indexScrollRouter = (function(_super) {
 
   indexScrollRouter.prototype.after = function(route) {};
 
-  indexScrollRouter.prototype.show = function() {
-    return app.scroll(this.el, true);
+  indexScrollRouter.prototype.hide = function() {
+    return $('body > main > .sections > section').removeClass('current');
+  };
+
+  indexScrollRouter.prototype.show = function(pageName, scroll) {
+    var el;
+    if (scroll == null) {
+      scroll = true;
+    }
+    el = $("section[data-page='" + pageName + "']");
+    this.hide();
+    el.addClass('current');
+    $('body').attr('data-page', pageName);
+    if (scroll) {
+      return app.scroll(el.offset().top - 60, true);
+    }
   };
 
   indexScrollRouter.prototype.scrollTop = function(speed) {
@@ -569,13 +588,15 @@ indexScrollRouter = (function(_super) {
   };
 
   indexScrollRouter.prototype.index = function() {
-    this.el = $('section[data-page="index"]');
-    return this.show();
+    var pageName;
+    pageName = "index";
+    return this.show(pageName);
   };
 
   indexScrollRouter.prototype.page = function(id) {
-    this.el = $('section[data-page="page"]');
-    return this.show();
+    var pageName;
+    pageName = "page";
+    return this.show(pageName);
   };
 
   return indexScrollRouter;
@@ -585,7 +606,6 @@ indexScrollRouter = (function(_super) {
 
 /* 
 	Front-end Skeleton
-	rev. 09.07.2014
 	http://github.com/vinsproduction/frontend_skeleton
  */
 var App,
@@ -624,7 +644,6 @@ App = (function() {
     this.root = this.options.root;
     this.boxUri = this.options.boxUri;
     this.debugUri = this.options.debugUri;
-    this.listeners();
 
     /* Дебаг режим */
     this.debugMode = /debug/.test(window.location.search);
@@ -683,6 +702,9 @@ App = (function() {
     /* Настройки библиотек */
     this.libs();
 
+    /* Listeners */
+    this.listeners();
+
     /* основная инизиализация */
     this.init();
   }
@@ -707,81 +729,18 @@ App = (function() {
           _this.views.controller();
         }
 
+        /* Роутер */
+        if (typeof Router !== "undefined" && Router !== null) {
+          _this.router = new Router;
+          Backbone.history.start();
+        }
+
         /* Настройки соцсетей */
         _this.social.init();
         window.console.info("[App > onLoad]", _this.name, "Options >", _this.options, " Debug >", (_this.debugMode ? _this.debugParams : false), " Box >", (_this.boxMode ? _this.boxParams : false), " Browser > " + $$.browser.name + " ver. " + $$.browser.version);
         return $(window).trigger("AppOnLoad");
       };
     })(this));
-  };
-
-  App.prototype.console = function() {
-    var log, self;
-    self = this;
-    window.originalConsole = console;
-    window.console = {
-      log: function() {},
-      debug: function() {},
-      warn: function() {},
-      info: function() {},
-      error: function() {}
-    };
-    log = function() {
-      var args, argument, e, type, _i, _len;
-      type = arguments[0];
-      args = _.rest(arguments);
-      log = "";
-      for (_i = 0, _len = args.length; _i < _len; _i++) {
-        argument = args[_i];
-        log += _.isObject(argument) ? $$.jlog(argument) : argument;
-        log += " ";
-      }
-      log = _.escape(log);
-      try {
-        switch (type) {
-          case 'log':
-            this.log.apply(this, args);
-            break;
-          case 'debug':
-            this.debug.apply(this, args);
-            break;
-          case 'warn':
-            this.warn.apply(this, args);
-            break;
-          case 'info':
-            this.info.apply(this, args);
-            break;
-          case 'error':
-            this.error.apply(this, args);
-        }
-      } catch (_error) {
-        e = _error;
-        switch (type) {
-          case 'log':
-            this.log(log);
-            break;
-          case 'debug':
-            this.debug(log);
-            break;
-          case 'warn':
-            this.warn(log);
-            break;
-          case 'info':
-            this.info(log);
-            break;
-          case 'error':
-            this.error(log);
-        }
-      }
-      if ((__indexOf.call(self.debug, 'box') >= 0 || self.box) && self.debugBox.state && self.debugBox.logs) {
-        self.debugBox.log('log', log);
-      }
-    };
-    window.console.log = _.bind(log, window.originalConsole, 'log');
-    window.console.debug = _.bind(log, window.originalConsole, 'debug');
-    window.console.warn = _.bind(log, window.originalConsole, 'warn');
-    window.console.info = _.bind(log, window.originalConsole, 'info');
-    return window.console.error = _.bind(log, window.originalConsole, 'error');
   };
 
   App.prototype.listeners = function() {
@@ -812,16 +771,18 @@ App = (function() {
     };
     lastScrollTop = 0;
     $(window).scroll(function(e) {
-      var action, top, vars;
+      var action, isBottom, top, vars;
       top = self.scroll();
       if (top !== lastScrollTop) {
+        isBottom = top + $(window).height() >= $(document).height();
         action = top > lastScrollTop ? 'down' : 'up';
         lastScrollTop = top;
         if (app.debugBox.state) {
-          app.debugBox.log("scroll", "" + action + " | top: " + top + "px");
+          app.debugBox.log("scroll", "" + action + " | top: " + top + "px | isBottom " + isBottom);
         }
         vars = {
           top: top,
+          isBottom: isBottom,
           action: action,
           e: e
         };
@@ -852,6 +813,9 @@ App = (function() {
         return $(window).trigger("AppOnResize", [vars]);
       };
     })(this));
+    this.onLoad(function() {
+      return $(window).resize();
+    });
 
     /* Hash change */
 
@@ -973,28 +937,24 @@ App = (function() {
   };
 
 
-  /* @request
-  	Пример запроса:
-  		app.request
-  			url: 'user/details'
-  			type:'GET'
-  			data: {}
-  			callback: (res) -> callback(res) if callback
-   */
+  /* AJAX */
 
   App.prototype.request = function(options) {
-    var ajaxData, callback, data, dataType, host, logs, request, type, url, _ref;
+    var ajaxData, api, callback, contentType, data, dataType, headers, logs, request, self, type, url, _ref;
     if (options == null) {
       options = {};
     }
     if (!options.url) {
       return console.error('[App > api] url not set!');
     }
-    host = this.local ? this.remoteHost : this.host;
-    url = host + "/" + options.url;
+    self = this;
+    api = options.api || false;
+    url = options.url;
     type = options.type || "GET";
     dataType = options.dataType || false;
+    contentType = options.contentType || false;
     data = options.data || {};
+    headers = options.headers || {};
     callback = options.callback || false;
     logs = (_ref = options.logs) != null ? _ref : true;
     $.support.cors = true;
@@ -1002,36 +962,88 @@ App = (function() {
       url: url,
       type: type,
       data: data,
+      headers: headers,
       crossDomain: true,
       cache: false
     };
     if (dataType) {
       ajaxData.dataType = dataType;
     }
+    if (contentType) {
+      ajaxData.contentType = contentType;
+    }
     request = $.ajax(ajaxData);
-    request.done((function(_this) {
-      return function(res) {
-        var response;
-        if (logs) {
-          response = $$.browser.msie ? JSON.stringify(res) : res;
-          data = $$.browser.msie ? JSON.stringify(data) : data;
-          console.debug("[App > " + type + "] " + url + " | params:", data, "| success: ", response);
-        }
+    request.done(function(res) {
+      var response;
+      if (logs && !api) {
+        response = $$.browser.msie ? JSON.stringify(res) : res;
+        data = $$.browser.msie ? JSON.stringify(data) : data;
+        console.debug("[" + type + "] " + url + " | params:", data, "| success: ", response);
+      }
+      if (callback) {
+        return callback(res, 'success', false, options);
+      }
+    });
+    request.fail(function(res, err) {
+      var response;
+      if (logs && !api) {
+        response = $$.browser.msie ? JSON.stringify(res) : res;
+        data = $$.browser.msie ? JSON.stringify(data) : data;
+        console.error("[" + type + "] " + url + " | params:", data, "| fail: ", response, err);
+      }
+      if (callback) {
+        return callback(res, 'fail', response, options);
+      }
+    });
+  };
+
+  App.prototype.get = function(url, data, callback) {
+    if (data == null) {
+      data = {};
+    }
+    return this.request({
+      url: url,
+      type: 'GET',
+      data: data,
+      callback: function(res) {
         if (callback) {
           return callback(res);
         }
-      };
-    })(this));
-    request.fail((function(_this) {
-      return function(res, err) {
-        var response;
-        if (logs) {
-          response = $$.browser.msie ? JSON.stringify(res) : res;
-          data = $$.browser.msie ? JSON.stringify(data) : data;
-          return console.error("[App > " + type + "] " + url + " | params:", data, "| fail: ", response, err);
+      }
+    });
+  };
+
+  App.prototype.post = function(url, data, callback) {
+    if (data == null) {
+      data = {};
+    }
+    return this.request({
+      url: url,
+      type: 'POST',
+      data: data,
+      callback: function(res) {
+        if (callback) {
+          return callback(res);
         }
-      };
-    })(this));
+      }
+    });
+  };
+
+  App.prototype.getJSON = function(url, data, callback) {
+    if (data == null) {
+      data = {};
+    }
+    return this.request({
+      url: url,
+      type: 'GET',
+      data: data,
+      dataType: 'json',
+      callback: function(res) {
+        if (callback) {
+          return callback(res);
+        }
+      }
+    });
   };
 
 
@@ -1044,20 +1056,29 @@ App = (function() {
    */
 
   App.prototype.api = {
+    setUrl: function(url) {
+      var host;
+      host = app.local ? app.remoteHost : app.host;
+      return host + '/' + url;
+    },
     get: function(url, data, callback) {
       if (data == null) {
         data = {};
       }
       return app.request({
-        url: url,
+        api: true,
+        url: this.setUrl(url),
         type: 'GET',
         data: data,
         dataType: 'json',
-        callback: function(res) {
-          if (callback) {
-            return callback(res);
-          }
-        }
+        headers: {
+          'X-CSRFToken': $.cookie('csrftoken')
+        },
+        callback: (function(_this) {
+          return function(res, state, error, options) {
+            return _this.done(options, state, res, error, callback);
+          };
+        })(this)
       });
     },
     post: function(url, data, callback) {
@@ -1065,16 +1086,43 @@ App = (function() {
         data = {};
       }
       return app.request({
-        url: url,
+        api: true,
+        url: this.setUrl(url),
         type: 'POST',
         data: data,
         dataType: 'json',
-        callback: function(res) {
-          if (callback) {
-            return callback(res);
-          }
-        }
+        headers: {
+          'X-CSRFToken': $.cookie('csrftoken')
+        },
+        callback: (function(_this) {
+          return function(res, state, error, options) {
+            return _this.done(options, state, res, error, callback);
+          };
+        })(this)
       });
+    },
+    done: function(options, state, res, error, callback) {
+      var _ref;
+      if (!_.isObject(res)) {
+        console.error('[API] response is not object!');
+        return;
+      }
+      if (state === 'fail') {
+        if (((_ref = res.status) === 400 || _ref === 404) && !_.isEmpty(res.responseJSON)) {
+          console.debug("[" + options.type + "] API " + options.url + " | params:", options.data, "| error: ", res.responseJSON);
+          if (callback) {
+            return callback(res.responseJSON);
+          }
+        } else {
+          console.error("[" + options.type + "] API " + options.url + " | params:", options.data, "| fail", error);
+          return app.router.navigate('!ooops', true);
+        }
+      } else {
+        console.debug("[" + options.type + "] API " + options.url + " | params:", options.data, "| success: ", res);
+        if (callback) {
+          return callback(res);
+        }
+      }
     }
   };
 
@@ -1131,16 +1179,58 @@ App = (function() {
   /* Социальные настройки */
 
   App.prototype.social = {
-    vkontakteApiId: '',
-    facebookApiId: '283793001782971',
-    odnoklassnikiApiId: '',
     init: function() {
-      return this.url = app.local ? app.remoteHost : app.host;
+      this.vkontakteApiId = app.local || /dev.site.ru/.test(app.host) ? '4555300' : '4574053';
+      this.facebookApiId = app.local || /dev.site.ru/.test(app.host) ? '1487802001472904' : '687085858046891';
+      return this.odnoklassnikiApiId = '';
+    },
+    auth: {
+      vk: function(callback) {
+        if (typeof VK === "undefined" || VK === null) {
+          return console.warn('[App > auth > vk] VK is not defined');
+        }
+        return VK.Auth.login(function(r) {
+          if (r.session) {
+            console.debug('[VKONTAKTE > auth]', r.session.user);
+            return callback(r.session.user);
+          } else {
+            return console.error('[VKONTAKTE > auth]', r);
+          }
+        });
+      },
+      fb: function(callback) {
+        var getUser;
+        if (typeof FB === "undefined" || FB === null) {
+          return console.warn('[App > auth > fb] FB is not defined');
+        }
+        getUser = function(authResponse) {
+          return FB.api('/me', function(r) {
+            _.extend(r, authResponse);
+            console.debug('[FACEBOOK > auth]', r);
+            return callback(r);
+          });
+        };
+        return FB.getLoginStatus(function(r) {
+          if (r.status === 'connected') {
+            return getUser(r.authResponse);
+          } else {
+            return FB.login(function(r) {
+              if (r.authResponse) {
+                return getUser(r.authResponse);
+              } else {
+                return console.error('[FACEBOOK > auth]', r);
+              }
+            }, {
+              scope: 'user_likes'
+            });
+          }
+        });
+      }
     },
 
     /* Пост на стенку в соц. сети */
     wallPost: {
-      vkontakte: function(options) {
+      vk: function(options) {
         if (options == null) {
           options = {};
         }
@@ -1180,7 +1270,7 @@ App = (function() {
           }
         });
       },
-      facebook: function(options) {
+      fb: function(options) {
         if (options == null) {
           options = {};
         }
@@ -1212,7 +1302,7 @@ App = (function() {
           }
         });
       },
-      odnoklassniki: function(options) {
+      ok: function(options) {
         var url;
         if (options == null) {
           options = {};
@@ -1242,72 +1332,131 @@ App = (function() {
         if (options == null) {
           options = {};
         }
-        options.url = options.url || app.social.url;
+        if (!options.url) {
+          if (app.local) {
+            options.url = app.remoteHost + window.location.pathname + window.location.hash;
+          } else {
+            options.url = window.location.href;
+          }
+        }
         url = "http://vkontakte.ru/share.php?";
-        url += "url=" + encodeURIComponent(options.url);
-        url += "&title=" + encodeURIComponent(options.title);
-        url += "&description=" + encodeURIComponent(options.description);
-        url += "&image=" + encodeURIComponent(options.image);
+        if (options.url) {
+          url += "url=" + encodeURIComponent(options.url);
+        }
+        if (options.title) {
+          url += "&title=" + encodeURIComponent(options.title.substr(0, 100));
+        }
+        if (options.description) {
+          url += "&description=" + encodeURIComponent(options.description.substr(0, 100) + '...');
+        }
+        if (options.image) {
+          url += "&image=" + encodeURIComponent(options.image);
+        }
         url += "&noparse=true";
         return this.popup(url);
       },
-      vkCount: function(url, callback) {
-        var VK;
-        url = url || app.social.url;
-        if (!VK) {
-          VK = {
-            Share: {}
-          };
+      vkCount: function(options) {
+        if (options == null) {
+          options = {};
         }
-        VK.Share.count = function(index, count) {
-          if (callback) {
-            return callback(count);
+        if (!options.url) {
+          if (app.local) {
+            options.url = app.remoteHost + window.location.pathname + window.location.hash;
+          } else {
+            options.url = window.location.href;
+          }
+        }
+        if (!window.VK.share) {
+          window.VK.Share = {};
+        }
+        window.VK.Share.count = function(index, count) {
+          console.debug('[VK Share count]', count);
+          if (options.callback) {
+            return options.callback(count);
           }
         };
-        return $.getJSON('http://vkontakte.ru/share.php?act=count&index=1&url=' + url + '&format=json&callback=?');
+        return $.getJSON('http://vkontakte.ru/share.php?act=count&index=1&url=' + escape(options.url) + '&format=json&callback=?');
       },
       ok: function(options) {
         var url;
         if (options == null) {
           options = {};
         }
-        options.url = options.url || app.social.url;
+        if (!options.url) {
+          if (app.local) {
+            options.url = app.remoteHost + window.location.pathname + window.location.hash;
+          } else {
+            options.url = window.location.href;
+          }
+        }
         url = "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1";
-        url += "&st.comments=" + encodeURIComponent(options.description);
-        url += "&st._surl=" + encodeURIComponent(options.url);
+        if (options.url) {
+          url += "&st._surl=" + encodeURIComponent(options.url);
+        }
+        if (options.title) {
+          url += "&title=" + encodeURIComponent(options.title);
+        }
+        if (options.description) {
+          url += "&st.comments=" + encodeURIComponent(options.description);
+        }
         return this.popup(url);
       },
-      okCount: function(url, callback) {
-        var ODKL;
-        url = url || app.social.url;
-        if (!ODKL) {
-          ODKL = {};
-        }
-        ODKL.updateCountOC = function(a, count, b, c) {
-          if (callback) {
-            return callback(count);
-          }
-        };
-        return $.getJSON('http://www.odnoklassniki.ru/dk?st.cmd=extOneClickLike&uid=odklocs0&callback=?&ref=' + url);
-      },
-      fb: function(options) {
-        var url;
+      okCount: function(options) {
         if (options == null) {
           options = {};
         }
-        options.url = options.url || app.social.url;
-        url = "http://www.facebook.com/sharer.php?s=100";
-        url += "&p[title]=" + encodeURIComponent(options.title);
-        url += "&p[summary]=" + encodeURIComponent(options.description);
-        url += "&p[url]=" + encodeURIComponent(options.url);
-        url += "&p[images][0]=" + encodeURIComponent(options.image);
-        return this.popup(url);
+        if (!options.url) {
+          if (app.local) {
+            options.url = app.remoteHost + window.location.pathname + window.location.hash;
+          } else {
+            options.url = window.location.href;
+          }
+        }
+        if (!window.ODKL) {
+          window.ODKL = {};
+        }
+        window.ODKL.updateCountOC = function(a, count, b, c) {
+          console.debug('[OK Share count]', count);
+          if (options.callback) {
+            return options.callback(count);
+          }
+        };
+        return $.getJSON('http://www.odnoklassniki.ru/dk?st.cmd=extOneClickLike&uid=odklocs0&callback=?&ref=' + escape(options.url));
       },
-      fbCount: function(url, callback) {
-        url = url || app.social.url;
-        return $.getJSON('http://api.facebook.com/restserver.php?method=links.getStats&callback=?&urls=' + escape(url) + '&format=json', function(data) {
-          if (callback) {
-            return callback(data[0].share_count);
+      fb: function(options) {
+        if (options == null) {
+          options = {};
+        }
+        if (!options.url) {
+          if (app.local) {
+            options.url = app.remoteHost + window.location.pathname + window.location.hash;
+          } else {
+            options.url = window.location.href;
+          }
+        }
+        return FB.ui({
+          method: 'feed',
+          link: options.url,
+          name: options.title ? options.title.substr(0, 100) : void 0,
+          caption: options.description ? options.description.substr(0, 100) + '...' : void 0,
+          picture: options.image ? options.image : void 0
+        }, function(res) {});
+      },
+      fbCount: function(options) {
+        if (options == null) {
+          options = {};
+        }
+        if (!options.url) {
+          if (app.local) {
+            options.url = app.remoteHost + window.location.pathname + window.location.hash;
+          } else {
+            options.url = window.location.href;
+          }
+        }
+        return $.getJSON('http://api.facebook.com/restserver.php?method=links.getStats&callback=?&urls=' + escape(options.url) + '&format=json', function(data) {
+          console.debug('[FB Share count]', data[0].share_count);
+          if (options.callback) {
+            return options.callback(data[0].share_count);
           }
         });
       },
@@ -1316,18 +1465,40 @@ App = (function() {
         if (options == null) {
           options = {};
         }
-        options.url = options.url || app.social.url;
+        if (!options.url) {
+          if (app.local) {
+            options.url = app.remoteHost + window.location.pathname + window.location.hash;
+          } else {
+            options.url = window.location.href;
+          }
+        }
         url = "http://twitter.com/share?";
-        url += "text=" + encodeURIComponent(options.title);
-        url += "&url=" + encodeURIComponent(options.url);
-        url += "&counturl=" + encodeURIComponent(options.url);
+        if (options.title) {
+          url += "text=" + encodeURIComponent(options.title);
+        }
+        if (options.url) {
+          url += "&url=" + encodeURIComponent(options.url);
+        }
+        if (options.url) {
+          url += "&counturl=" + encodeURIComponent(options.url);
+        }
         return this.popup(url);
       },
-      twCount: function(url, callback) {
-        url = url || app.social.url;
-        return $.getJSON('http://urls.api.twitter.com/1/urls/count.json?url=' + url + '&callback=?', function(data) {
-          if (callback) {
-            return callback(data.count);
+      twCount: function(options) {
+        if (options == null) {
+          options = {};
+        }
+        if (!options.url) {
+          if (app.local) {
+            options.url = app.remoteHost + window.location.pathname + window.location.hash;
+          } else {
+            options.url = window.location.href;
+          }
+        }
+        return $.getJSON('http://urls.api.twitter.com/1/urls/count.json?url=' + escape(options.url) + '&callback=?', function(data) {
+          console.debug('[TW Share count]', data.count);
+          if (options.callback) {
+            return options.callback(data.count);
           }
         });
       },

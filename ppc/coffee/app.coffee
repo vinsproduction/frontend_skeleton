@@ -1,6 +1,5 @@
 ### 
 	Front-end Skeleton
-	rev. 09.07.2014
 	http://github.com/vinsproduction/frontend_skeleton
 ###
 
@@ -32,7 +31,6 @@ class App
 			### Визуальный Дебагер ###
 			box: false
 
-
 		_.extend @options, options
 
 		@name 				= @options.name
@@ -41,11 +39,6 @@ class App
 
 		@boxUri 			= @options.boxUri
 		@debugUri 		= @options.debugUri
-
-		# Настройка window.console
-		# do @console
-
-		do @listeners
 
 		### Дебаг режим ###
 		@debugMode = /debug/.test(window.location.search)
@@ -83,6 +76,9 @@ class App
 		### Настройки библиотек ###
 		do @libs
 
+		### Listeners ###
+		do @listeners
+
 		### основная инизиализация ###
 		do @init
 
@@ -102,65 +98,17 @@ class App
 				@views 	= new Views
 				@views.controller()
 
+			### Роутер ###
+			if Router?
+				@router = new Router
+				Backbone.history.start()
+
 			### Настройки соцсетей ###
 			do @social.init
 
 			window.console.info "[App > onLoad]", @name, "Options >", @options, " Debug >", (if  @debugMode then @debugParams else false), " Box >", (if  @boxMode then  @boxParams else false), " Browser > #{$$.browser.name} ver. #{$$.browser.version}"
 
 			$(window).trigger("AppOnLoad")
-
-
-	console: ->
-
-		self = @
-
-		window.originalConsole = console
-		window.console =
-			log: ->
-			debug: ->
-			warn: ->
-			info: ->
-			error: ->
-
-
-		log = ->
-
-			type = arguments[0]
-			args = _.rest(arguments)
-
-			log = ""
-			for argument in args
-
-				log += if _.isObject(argument) then $$.jlog(argument) else argument
-				log += " "
-			
-			log = _.escape log
-
-			try
-				switch type
-					when 'log' 		then this.log.apply(this,args)
-					when 'debug' 	then this.debug.apply(this,args)
-					when 'warn' 	then this.warn.apply(this,args)
-					when 'info' 	then this.info.apply(this,args)
-					when 'error'	then this.error.apply(this,args)
-	
-			catch e
-				switch type
-					when 'log' 		then this.log(log)
-					when 'debug' 	then this.debug(log)
-					when 'warn' 	then this.warn(log)
-					when 'info' 	then this.info(log)
-					when 'error' 	then this.error(log)
-
-			self.debugBox.log('log', log) if ('box' in self.debug or self.box) and self.debugBox.state and self.debugBox.logs
-
-			return
-
-		window.console.log 	= _.bind log, window.originalConsole,'log'
-		window.console.debug = _.bind log, window.originalConsole,'debug'
-		window.console.warn 	= _.bind log, window.originalConsole,'warn'
-		window.console.info 	= _.bind log, window.originalConsole,'info'
-		window.console.error = _.bind log, window.originalConsole,'error'
 
 
 	listeners: ->
@@ -190,13 +138,14 @@ class App
 
 			if top isnt lastScrollTop
 
+				isBottom = top + $(window).height() >= $(document).height()
 				action = if top > lastScrollTop then 'down' else 'up'
 				lastScrollTop = top
 
 				if app.debugBox.state
-					app.debugBox.log "scroll", "#{action} | top: #{top}px"
+					app.debugBox.log "scroll", "#{action} | top: #{top}px | isBottom #{isBottom}"
 
-				vars = {top,action,e}
+				vars = {top,isBottom,action,e}
 
 				$(window).trigger("AppOnScroll",[vars])
 
@@ -219,6 +168,7 @@ class App
 
 			$(window).trigger("AppOnResize",[vars])
 
+		@onLoad -> $(window).resize()
 
 		### Hash change ###
 
@@ -326,52 +276,78 @@ class App
 			sectionsWidth : parseInt($('body > main > .sections').width())
 			sectionsHeight: parseInt($('body > main > .sections').height())
 
-
-	### @request
-	Пример запроса:
-		app.request
-			url: 'user/details'
-			type:'GET'
-			data: {}
-			callback: (res) -> callback(res) if callback
-	###
+	### AJAX ###
 
 	request: (options={}) ->
 
 		return console.error '[App > api] url not set!' if !options.url
 
-		host 			= if @local then @remoteHost else @host
-		url  			= host + "/" + options.url
+		self = @
+
+		api 			= options.api || false
+		url  			= options.url
 		type 			= options.type || "GET"
 		dataType 	= options.dataType || false
+		contentType = options.contentType || false
 		data 			= options.data || {}
+		headers 	= options.headers || {}
 		callback 	= options.callback || false
 		logs 			= options.logs ? true
 
 		$.support.cors = true
-		ajaxData = {url,type,data,crossDomain:true,cache:false}
+
+		ajaxData = {url,type,data,headers,crossDomain:true,cache:false}
 		ajaxData.dataType = dataType if dataType
+		ajaxData.contentType = contentType if contentType
 
 		request = $.ajax(ajaxData)
 
-		request.done (res) =>
+		request.done (res) ->
 
-			if logs
+			if logs and !api
 				response = if $$.browser.msie then JSON.stringify res else res
 				data 		= if $$.browser.msie then JSON.stringify data else data
-				console.debug("[App > #{type}] #{url} | params:", data, "| success: ", response)
+				console.debug("[#{type}] #{url} | params:", data, "| success: ", response)
 
-			callback res if callback
+			callback(res,'success',false,options) if callback
 
-		request.fail (res,err) =>
+		request.fail (res,err) ->
 
-			if logs
+			if logs and !api
 				response = if $$.browser.msie then JSON.stringify res else res
 				data 		= if $$.browser.msie then JSON.stringify data else data
-				console.error("[App > #{type}] #{url} | params:", data, "| fail: ", response, err)
+				console.error("[#{type}] #{url} | params:", data, "| fail: ", response, err)
+
+			callback(res,'fail',response,options) if callback
 
 
 		return
+
+	get: (url,data={},callback) ->
+
+		@request
+			url:  url
+			type:'GET'
+			data: data
+			callback: (res) -> callback(res) if callback
+
+	post: (url,data={},callback) ->
+
+		@request
+			url:  url
+			type:'POST'
+			data: data
+			callback: (res) -> callback(res) if callback
+
+	getJSON: (url,data={},callback) ->
+
+		@request
+			url: url
+			type:'GET'
+			data: data
+			dataType: 'json'
+			callback: (res) -> callback(res) if callback
+
 
 	### @api
 	Пример запроса: app.api.get 'user/details', {}, (res) =>
@@ -383,29 +359,53 @@ class App
 
 	api:
 
+
+		setUrl: (url) ->
+			host = if app.local then app.remoteHost else app.host
+			return host + '/' + url
+
 		get: (url,data={},callback) ->
 
 			app.request
-				url: url
+				api: true
+				url: @setUrl(url)
 				type:'GET'
 				data: data
 				dataType: 'json'
-				callback: (res) ->
-					# if res.status is "error"
-					# 	console.error("[App > api] #{url} | error: ", res.message)
-					callback(res) if callback
+				headers: {'X-CSRFToken': $.cookie('csrftoken')}
+				callback: (res,state,error,options) => @done(options,state,res,error,callback)
 
 		post: (url,data={},callback) ->
 
 			app.request
-				url: url
+				api: true 
+				url:  @setUrl(url)
 				type:'POST'
 				data: data
 				dataType: 'json'
-				callback: (res) ->
-					# if res.status is "error"
-					# 	console.error("[App > api] #{url} | error: ", res.message)
-					callback(res) if callback
+				headers: {'X-CSRFToken': $.cookie('csrftoken')}
+				callback: (res,state,error,options) => @done(options,state,res,error,callback)
+
+		done: (options,state,res,error,callback) ->
+
+			if !_.isObject res
+				console.error '[API] response is not object!'
+				return
+
+			if state is 'fail'
+
+				if (res.status in [400,404]) and !_.isEmpty(res.responseJSON)
+					console.debug("[#{options.type}] API #{options.url} | params:", options.data, "| error: ", res.responseJSON)
+					callback(res.responseJSON) if callback
+
+				else
+					console.error("[#{options.type}] API #{options.url} | params:", options.data, "| fail", error)
+					app.router.navigate '!ooops', true
+
+			else
+
+				console.debug("[#{options.type}] API #{options.url} | params:", options.data, "| success: ", res)
+				callback(res) if callback
 
 
 	### Debug monitor ###
@@ -484,14 +484,11 @@ class App
 	### Социальные настройки ###
 	social:
 
-		vkontakteApiId		: ''
-		facebookApiId		: '283793001782971'
-		odnoklassnikiApiId: ''
-
-
 		init: ->
 
-			@url = if app.local then app.remoteHost else app.host
+			@vkontakteApiId			= if app.local or /dev.site.ru/.test(app.host) then '4555300' else '4574053'
+			@facebookApiId			= if app.local or /dev.site.ru/.test(app.host) then '1487802001472904' else '687085858046891'
+			@odnoklassnikiApiId = ''
 
 			# if VK?
 			# 	VK.init
@@ -505,10 +502,88 @@ class App
 			# 		xfbml: true
 			# 		oauth: true
 
+		auth: 
+
+			vk: (callback) ->
+
+				if !VK? then return console.warn '[App > auth > vk] VK is not defined'
+
+				# if app.local
+
+				# 	user =
+				# 		domain: ""
+				# 		sex: 2
+				# 		first_name: "Ailoved"
+				# 		href: "https://vk.com/id169209728"
+				# 		id: "169209728"
+				# 		last_name: "Ailove"
+				# 		nickname: ""
+
+				# 	console.debug '[VKONTAKTE::LOCAL > auth]', user
+				# 	return callback user
+				
+
+				VK.Auth.login (r) ->
+
+					if r.session
+						console.debug '[VKONTAKTE > auth]', r.session.user
+						callback r.session.user
+					else
+						console.error '[VKONTAKTE > auth]', r
+
+			fb: (callback) ->
+
+				if !FB? then return console.warn '[App > auth > fb] FB is not defined'
+
+				# if app.local
+
+				# 	user =
+				# 		first_name: "Vins"
+				# 		gender: "male"
+				# 		id: "762527367142381"
+				# 		last_name: "Polyakov"
+				# 		link: "https://www.facebook.com/app_scoped_user_id/762527367142381/"
+				# 		locale: "ru_RU"
+				# 		name: "Vins Polyakov"
+				# 		timezone: 4
+				# 		updated_time: "2014-07-22T08:46:05+0000"
+				# 		verified: true
+
+				# 	console.debug '[FACEBOOK::LOCAL > auth]', user
+				# 	return callback user
+
+
+				getUser = (authResponse) ->
+
+					FB.api '/me', (r) ->
+
+						_.extend r, authResponse
+
+						console.debug '[FACEBOOK > auth]', r
+						callback r
+
+				FB.getLoginStatus (r) ->
+
+					if r.status is 'connected'
+						getUser(r.authResponse)
+
+					else
+
+						FB.login((r) ->
+
+							if r.authResponse
+								getUser(r.authResponse)
+							else
+								console.error '[FACEBOOK > auth]', r
+
+						,{scope: 'user_likes'})
+
+
+
 		### Пост на стенку в соц. сети ###
 		wallPost:
 
-			vkontakte: (options={}) ->
+			vk: (options={}) ->
 
 
 				if !VK? then return console.warn '[App > social > wallPost] VK is not defined'
@@ -545,7 +620,7 @@ class App
 
 					if options.allways then options.allways()
 
-			facebook: (options={}) ->
+			fb: (options={}) ->
 
 				if !FB? then return console.warn '[FB > social > wallPost] FB is not defined'
 
@@ -568,7 +643,7 @@ class App
 
 					if options.allways then options.allways()
 
-			odnoklassniki: (options={}) ->
+			ok: (options={}) ->
 				url = options.url || app.social.url
 
 				window.open "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=" + encodeURIComponent(url) + "&st.comments=" + encodeURIComponent(options.comments), "", "toolbar=0,status=0,width=626,height=436"
@@ -590,81 +665,121 @@ class App
 
 			vk: (options={}) ->
 
-				options.url = options.url || app.social.url
+				if !options.url
+					if app.local
+						options.url = app.remoteHost + window.location.pathname + window.location.hash
+					else
+						options.url = window.location.href
 
 				url = "http://vkontakte.ru/share.php?"
-				url += "url=" + encodeURIComponent(options.url)
-				url += "&title=" + encodeURIComponent(options.title)
-				url += "&description=" + encodeURIComponent(options.description)
-				url += "&image=" + encodeURIComponent(options.image)
+				url += "url=" + encodeURIComponent(options.url) if options.url
+				url += "&title=" + encodeURIComponent(options.title.substr(0,100)) if options.title
+				url += "&description=" + encodeURIComponent(options.description.substr(0,100) + '...') if options.description
+				url += "&image=" + encodeURIComponent(options.image) if options.image
 				url += "&noparse=true"
 
 				@popup url
 
-			vkCount: (url,callback) ->
+			vkCount: (options={}) ->
 
-				url = url || app.social.url
+				if !options.url
+					if app.local
+						options.url = app.remoteHost + window.location.pathname + window.location.hash
+					else
+						options.url = window.location.href
 
-				VK = {Share: {}} if !VK
-				VK.Share.count = (index, count) -> callback(count) if callback
+				window.VK.Share = {} if !window.VK.share
+				window.VK.Share.count = (index, count) ->
+					console.debug '[VK Share count]', count
+					options.callback(count) if options.callback
 
-				$.getJSON 'http://vkontakte.ru/share.php?act=count&index=1&url=' + url + '&format=json&callback=?'
+				$.getJSON 'http://vkontakte.ru/share.php?act=count&index=1&url=' + escape(options.url) + '&format=json&callback=?'
 
 			ok: (options={}) ->
 
-				options.url = options.url || app.social.url
+				if !options.url
+					if app.local
+						options.url = app.remoteHost + window.location.pathname + window.location.hash
+					else
+						options.url = window.location.href
 
 				url = "http://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1"
-				url += "&st.comments=" + encodeURIComponent(options.description)
-				url += "&st._surl=" + encodeURIComponent(options.url)
+				url += "&st._surl=" + encodeURIComponent(options.url) if options.url
+				url += "&title=" + encodeURIComponent(options.title) if options.title
+				url += "&st.comments=" + encodeURIComponent(options.description) if options.description
+				
 
 				@popup url
 
-			okCount: (url,callback) ->
+			okCount: (options={}) ->
 
-				url = url || app.social.url
+				if !options.url
+					if app.local
+						options.url = app.remoteHost + window.location.pathname + window.location.hash
+					else
+						options.url = window.location.href
 
-				ODKL = {} if !ODKL
-				ODKL.updateCountOC = (a, count, b, c) -> callback(count) if callback
+				window.ODKL = {} if !window.ODKL
+				window.ODKL.updateCountOC = (a, count, b, c) ->
+					console.debug '[OK Share count]', count
+					options.callback(count) if options.callback
 
-				$.getJSON 'http://www.odnoklassniki.ru/dk?st.cmd=extOneClickLike&uid=odklocs0&callback=?&ref='+url
+				$.getJSON 'http://www.odnoklassniki.ru/dk?st.cmd=extOneClickLike&uid=odklocs0&callback=?&ref=' + escape(options.url)
 
 			fb: (options={}) ->
 
-				options.url = options.url || app.social.url
+				if !options.url
+					if app.local
+						options.url = app.remoteHost + window.location.pathname + window.location.hash
+					else
+						options.url = window.location.href
 
-				url = "http://www.facebook.com/sharer.php?s=100"
-				url += "&p[title]=" + encodeURIComponent(options.title)
-				url += "&p[summary]=" + encodeURIComponent(options.description)
-				url += "&p[url]=" + encodeURIComponent(options.url)
-				url += "&p[images][0]=" + encodeURIComponent(options.image)
+				FB.ui
+					method: 'feed',
+					link: options.url
+					name: options.title.substr(0,100) if options.title
+					caption: options.description.substr(0,100) + '...' if options.description
+					picture: options.image if options.image
+				, (res) ->
 
-				@popup url
+			fbCount: (options={}) ->
 
-			fbCount: (url,callback) ->
+				if !options.url
+					if app.local
+						options.url = app.remoteHost + window.location.pathname + window.location.hash
+					else
+						options.url = window.location.href
 
-				url = url || app.social.url
-
-				$.getJSON 'http://api.facebook.com/restserver.php?method=links.getStats&callback=?&urls=' + escape(url) + '&format=json', (data) ->
-					callback(data[0].share_count) if callback
+				$.getJSON 'http://api.facebook.com/restserver.php?method=links.getStats&callback=?&urls=' + escape(options.url) + '&format=json', (data) ->
+					console.debug '[FB Share count]', data[0].share_count
+					options.callback(data[0].share_count) if options.callback
 
 			tw: (options={}) ->
 
-				options.url = options.url || app.social.url
+				if !options.url
+					if app.local
+						options.url = app.remoteHost + window.location.pathname + window.location.hash
+					else
+						options.url = window.location.href
 
 				url = "http://twitter.com/share?"
-				url += "text=" + encodeURIComponent(options.title)
-				url += "&url=" + encodeURIComponent(options.url)
-				url += "&counturl=" + encodeURIComponent(options.url)
+				url += "text=" + encodeURIComponent(options.title) if options.title
+				url += "&url=" + encodeURIComponent(options.url) if options.url
+				url += "&counturl=" + encodeURIComponent(options.url) if options.url
 
 				@popup url
 
-			twCount: (url,callback) ->
+			twCount: (options={}) ->
 
-				url = url || app.social.url
+				if !options.url
+					if app.local
+						options.url = app.remoteHost + window.location.pathname + window.location.hash
+					else
+						options.url = window.location.href
 
-				$.getJSON 'http://urls.api.twitter.com/1/urls/count.json?url=' + url + '&callback=?', (data) ->
-					callback(data.count) if callback
+				$.getJSON 'http://urls.api.twitter.com/1/urls/count.json?url=' + escape(options.url) + '&callback=?', (data) ->
+					console.debug '[TW Share count]', data.count
+					options.callback(data.count) if options.callback
 
 			mailru: (options={}) ->
 
@@ -680,6 +795,8 @@ class App
 
 			popup: (url) ->
 				window.open url, "", "toolbar=0,status=0,width=626,height=436"
+
+
 
 	# Примеры вызова ошибок из вьюх, с русификатором
 	# app.errors.get res.error

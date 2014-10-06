@@ -83,8 +83,11 @@ a
 	text-decoration none
 	transition all 0.2s
 
-input:focus, textarea:focus, select:focus
+input:focus, textarea:focus, select:focus, button:focus
 	outline none
+
+input:-webkit-autofill
+	-webkit-box-shadow: 0 0 0px 50px #ededed inset
 
 
 
@@ -134,24 +137,18 @@ body > main > header
 
 	background $color-gray
 
-	&.fixed
-		position fixed
-		top 0
-
 	> .container
+		height 100%
 		max-width  ($mainWidth)px
-		padding 12px 0
 		margin 0 auto
-
 		background $color-graylight
 
 		> .content
-			padding 0 5px
 			block-inline()
 			width 100%
-			font-size 14px
 
 			.logo
+				margin 13px 0 0 10px
 				a
 					text-decoration none
 					color #000
@@ -159,6 +156,7 @@ body > main > header
 			nav#menu
 				block-right()
 				text-transform uppercase
+				margin 10px 10px 0 0
 				
 				a 
 					text-decoration none
@@ -167,10 +165,16 @@ body > main > header
 					color #FFF
 
 				ul
-					padding 0
+					block-inline()
 					li
 						float left
-						margin 0 10px 0 0
+						margin 0 0 6px 0
+
+						&.separator
+							border-left solid 1px #d3d3d3
+							size 1px 13px
+							margin 0 5px
+
 						&.navigate
 							a
 								border-bottom 1px dashed #FFF
@@ -190,21 +194,15 @@ body > main > footer
 
 	background $color-graydark
 
-	&.fixed
-		position fixed
-		bottom 0
-
 	> .container
+		height 100%
 		max-width  ($mainWidth)px
-		height (40 - 12*2)px
-		padding 12px 0
 		margin 0 auto
-
 		background $color-gray
 
 		> .content
-			padding 0 5px
 			block-inline()
+			margin 14px
 
 
 /*_________ SECTIONS _________*/
@@ -233,19 +231,86 @@ body > main > .sections
 			background #F2E5D5
 
 			> .content
-				padding 50px 20px
+				// padding 50px 20px
 
+
+/*___ PAGE CONTROLLER CLASS __*/
+
+header-fixed()
+
+	> main > header
+		position fixed
+		top 0
+
+footer-none()
+
+	> main >.sections
+		padding-bottom 0
+
+	> main > footer 
+		display none
+
+scroll-none()
+	overflow-y hidden
+
+bg-fixed()
+
+	background-attachment fixed
+	-webkit-background-size cover
+	-moz-background-size cover
+	-o-background-size cover
+	background-size cover
+
+	background-position center top
+	background-repeat no-repeat
+
+body
+	
+	header-fixed()
+	
+	&[data-page="not-found"]	
+		// footer-none()
+
+	&[data-page="ooops"]	
+		// footer-none()
 
 /* _________ PAGES _________*/
 
+
+section[data-page="not-found"],section[data-page="ooops"]
+
+	h1
+		margin 20px 0 20px 0
+		font 45px $mainFont
+		font-weight bold
+		color #FFF
+
 main.view-index
 
-	section
-		.container
-			.content
-				p 
-					margin 20px 0
-					line-height 1.4
+	.sections
+		
+		padding-top 60px
+
+		section
+			.container
+				padding 0 20px
+				width ($mainWidth - 20*2)px
+				.content
+					p 
+						margin 20px 0
+						line-height 1.4
+
+main.view-index-scroll
+
+	@extends main.view-index
+
+main.view-index-hash
+
+	@extends main.view-index
+
+main.view-index-render
+
+	@extends main.view-index
 
 
 main.view-fonts

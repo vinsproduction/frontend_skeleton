@@ -66,8 +66,12 @@ a {
 }
 input:focus,
 textarea:focus,
-select:focus {
+select:focus,
+button:focus {
   outline: none;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 50px #ededed inset;
 }
 /*_________ MAIN __________*/
 html {
@@ -94,25 +98,22 @@ body > main > header {
   height: 40px;
   background: #555;
 }
-body > main > header.fixed {
-  position: fixed;
-  top: 0;
-}
 body > main > header > .container {
+  height: 100%;
   max-width: 1265px;
-  padding: 12px 0;
   margin: 0 auto;
   background: #999;
 }
 body > main > header > .container > .content {
-  padding: 0 5px;
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: top;
   zoom: 1;
   *display: inline;
   width: 100%;
-  font-size: 14px;
+}
+body > main > header > .container > .content .logo {
+  margin: 13px 0 0 10px;
 }
 body > main > header > .container > .content .logo a {
   text-decoration: none;
@@ -126,6 +127,7 @@ body > main > header > .container > .content nav#menu {
   zoom: 1;
   *display: inline;
   text-transform: uppercase;
+  margin: 10px 10px 0 0;
 }
 body > main > header > .container > .content nav#menu a {
   text-decoration: none;
@@ -138,11 +140,21 @@ body > main > header > .container > .content nav#menu a {
   color: #fff;
 }
 body > main > header > .container > .content nav#menu ul {
-  padding: 0;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
 }
 body > main > header > .container > .content nav#menu ul li {
   float: left;
-  margin: 0 10px 0 0;
+  margin: 0 0 6px 0;
+}
+body > main > header > .container > .content nav#menu ul li.separator {
+  border-left: solid 1px #d3d3d3;
+  width: 1px;
+  height: 13px;
+  margin: 0 5px;
 }
 body > main > header > .container > .content nav#menu ul li.navigate a {
   border-bottom: 1px dashed #fff;
@@ -164,24 +176,19 @@ body > main > footer {
   height: 40px;
   background: #333;
 }
-body > main > footer.fixed {
-  position: fixed;
-  bottom: 0;
-}
 body > main > footer > .container {
+  height: 100%;
   max-width: 1265px;
-  height: 16px;
-  padding: 12px 0;
   margin: 0 auto;
   background: #555;
 }
 body > main > footer > .container > .content {
-  padding: 0 5px;
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: top;
   zoom: 1;
   *display: inline;
+  margin: 14px;
 }
 /*_________ SECTIONS _________*/
 body > main > .sections {
@@ -207,11 +214,38 @@ body > main > .sections > section > .container {
   margin: 0 auto;
   background: #f2e5d5;
 }
-body > main > .sections > section > .container > .content {
-  padding: 50px 20px;
+/*___ PAGE CONTROLLER CLASS __*/
+body > main > header {
+  position: fixed;
+  top: 0;
 }
 /* _________ PAGES _________*/
-main.view-index section .container .content p {
+section[data-page="not-found"] h1,
+section[data-page="ooops"] h1 {
+  margin: 20px 0 20px 0;
+  font-size: 45px;
+  line-height: 1;
+  font-family: Ubuntu, helvetica, verdana, arial, tahoma;
+  font-weight: bold;
+  color: #fff;
+}
+main.view-index .sections,
+main.view-index-scroll .sections,
+main.view-index-hash .sections,
+main.view-index-render .sections {
+  padding-top: 60px;
+}
+main.view-index .sections section .container,
+main.view-index-scroll .sections section .container,
+main.view-index-hash .sections section .container,
+main.view-index-render .sections section .container {
+  padding: 0 20px;
+  width: 1225px;
+}
+main.view-index .sections section .container .content p,
+main.view-index-scroll .sections section .container .content p,
+main.view-index-hash .sections section .container .content p,
+main.view-index-render .sections section .container .content p {
   margin: 20px 0;
   line-height: 1.4;
 }

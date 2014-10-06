@@ -9,7 +9,7 @@ block content
 				app.views.indexHash.controller();
 			});
 
-		header.fixed
+		header
 			.container
 				.content
 
@@ -18,8 +18,11 @@ block content
 					nav#menu
 						ul
 							li: a(href="index-scroll.html") Scroll
+							li.separator
 							li: a(href="index-render.html") Render
+							li.separator
 							li.navigate: a(href="#",data-page="index") index
+							li.separator
 							li.navigate: a(href="#",data-page="page/1") page
 
 		.sections
