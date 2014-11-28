@@ -1019,3 +1019,393 @@
         }
     });
 }(jQuery, window));
+
+(function($) {
+    'use strict';
+
+    $.jcarousel.fn.scrollIntoView = function(target, animate, callback) {
+        var parsed = $.jCarousel.parseTarget(target),
+            first  = this.index(this._fullyvisible.first()),
+            last   = this.index(this._fullyvisible.last()),
+            index;
+
+        if (parsed.relative) {
+            index = parsed.target < 0 ? Math.max(0, first + parsed.target) : last + parsed.target;
+        } else {
+            index = typeof parsed.target !== 'object' ? parsed.target : this.index(parsed.target);
+        }
+
+        if (index < first) {
+            return this.scroll(index, animate, callback);
+        }
+
+        if (index >= first && index <= last) {
+            if ($.isFunction(callback)) {
+                callback.call(this, false);
+            }
+
+            return this;
+        }
+
+        var items = this.items(),
+            clip = this.clipping(),
+            lrb  = this.vertical ? 'bottom' : (this.rtl ? 'left'  : 'right'),
+            wh   = 0,
+            curr;
+
+        while (true) {
+            curr = items.eq(index);
+
+            if (curr.length === 0) {
+                break;
+            }
+
+            wh += this.dimension(curr);
+
+            if (wh >= clip) {
+                var margin = parseFloat(curr.css('margin-' + lrb)) || 0;
+                if ((wh - margin) !== clip) {
+                    index++;
+                }
+                break;
+            }
+
+            if (index <= 0) {
+                break;
+            }
+
+            index--;
+        }
+
+        return this.scroll(index, animate, callback);
+    };
+}(jQuery));
+
+(function($) {
+    'use strict';
+
+    $.jCarousel.plugin('jcarouselControl', {
+        _options: {
+            target: '+=1',
+            event:  'click',
+            method: 'scroll'
+        },
+        _active: null,
+        _init: function() {
+            this.onDestroy = $.proxy(function() {
+                this._destroy();
+                this.carousel()
+                    .one('jcarousel:createend', $.proxy(this._create, this));
+            }, this);
+            this.onReload = $.proxy(this._reload, this);
+            this.onEvent = $.proxy(function(e) {
+                e.preventDefault();
+
+                var method = this.options('method');
+
+                if ($.isFunction(method)) {
+                    method.call(this);
+                } else {
+                    this.carousel()
+                        .jcarousel(this.options('method'), this.options('target'));
+                }
+            }, this);
+        },
+        _create: function() {
+            this.carousel()
+                .one('jcarousel:destroy', this.onDestroy)
+                .on('jcarousel:reloadend jcarousel:scrollend', this.onReload);
+
+            this._element
+                .on(this.options('event') + '.jcarouselcontrol', this.onEvent);
+
+            this._reload();
+        },
+        _destroy: function() {
+            this._element
+                .off('.jcarouselcontrol', this.onEvent);
+
+            this.carousel()
+                .off('jcarousel:destroy', this.onDestroy)
+                .off('jcarousel:reloadend jcarousel:scrollend', this.onReload);
+        },
+        _reload: function() {
+            var parsed   = $.jCarousel.parseTarget(this.options('target')),
+                carousel = this.carousel(),
+                active;
+
+            if (parsed.relative) {
+                active = carousel
+                    .jcarousel(parsed.target > 0 ? 'hasNext' : 'hasPrev');
+            } else {
+                var target = typeof parsed.target !== 'object' ?
+                                carousel.jcarousel('items').eq(parsed.target) :
+                                parsed.target;
+
+                active = carousel.jcarousel('target').index(target) >= 0;
+            }
+
+            if (this._active !== active) {
+                this._trigger(active ? 'active' : 'inactive');
+                this._active = active;
+            }
+
+            return this;
+        }
+    });
+}(jQuery));
+
+(function($) {
+    'use strict';
+
+    $.jCarousel.plugin('jcarouselPagination', {
+        _options: {
+            perPage: null,
+            item: function(page) {
+                return '<a href="#' + page + '">' + page + '</a>';
+            },
+            event:  'click',
+            method: 'scroll'
+        },
+        _carouselItems: null,
+        _pages: {},
+        _items: {},
+        _currentPage: null,
+        _init: function() {
+            this.onDestroy = $.proxy(function() {
+                this._destroy();
+                this.carousel()
+                    .one('jcarousel:createend', $.proxy(this._create, this));
+            }, this);
+            this.onReload = $.proxy(this._reload, this);
+            this.onScroll = $.proxy(this._update, this);
+        },
+        _create: function() {
+            this.carousel()
+                .one('jcarousel:destroy', this.onDestroy)
+                .on('jcarousel:reloadend', this.onReload)
+                .on('jcarousel:scrollend', this.onScroll);
+
+            this._reload();
+        },
+        _destroy: function() {
+            this._clear();
+
+            this.carousel()
+                .off('jcarousel:destroy', this.onDestroy)
+                .off('jcarousel:reloadend', this.onReload)
+                .off('jcarousel:scrollend', this.onScroll);
+
+            this._carouselItems = null;
+        },
+        _reload: function() {
+            var perPage = this.options('perPage');
+
+            this._pages = {};
+            this._items = {};
+
+            // Calculate pages
+            if ($.isFunction(perPage)) {
+                perPage = perPage.call(this);
+            }
+
+            if (perPage == null) {
+                this._pages = this._calculatePages();
+            } else {
+                var pp    = parseInt(perPage, 10) || 0,
+                    items = this._getCarouselItems(),
+                    page  = 1,
+                    i     = 0,
+                    curr;
+
+                while (true) {
+                    curr = items.eq(i++);
+
+                    if (curr.length === 0) {
+                        break;
+                    }
+
+                    if (!this._pages[page]) {
+                        this._pages[page] = curr;
+                    } else {
+                        this._pages[page] = this._pages[page].add(curr);
+                    }
+
+                    if (i % pp === 0) {
+                        page++;
+                    }
+                }
+            }
+
+            this._clear();
+
+            var self     = this,
+                carousel = this.carousel().data('jcarousel'),
+                element  = this._element,
+                item     = this.options('item'),
+                numCarouselItems = this._getCarouselItems().length;
+
+            $.each(this._pages, function(page, carouselItems) {
+                var currItem = self._items[page] = $(item.call(self, page, carouselItems));
+
+                currItem.on(self.options('event') + '.jcarouselpagination', $.proxy(function() {
+                    var target = carouselItems.eq(0);
+
+                    // If circular wrapping enabled, ensure correct scrolling direction
+                    if (carousel.circular) {
+                        var currentIndex = carousel.index(carousel.target()),
+                            newIndex     = carousel.index(target);
+
+                        if (parseFloat(page) > parseFloat(self._currentPage)) {
+                            if (newIndex < currentIndex) {
+                                target = '+=' + (numCarouselItems - currentIndex + newIndex);
+                            }
+                        } else {
+                            if (newIndex > currentIndex) {
+                                target = '-=' + (currentIndex + (numCarouselItems - newIndex));
+                            }
+                        }
+                    }
+
+                    carousel[this.options('method')](target);
+                }, self));
+
+                element.append(currItem);
+            });
+
+            this._update();
+        },
+        _update: function() {
+            var target = this.carousel().jcarousel('target'),
+                currentPage;
+
+            $.each(this._pages, function(page, carouselItems) {
+                carouselItems.each(function() {
+                    if (target.is(this)) {
+                        currentPage = page;
+                        return false;
+                    }
+                });
+
+                if (currentPage) {
+                    return false;
+                }
+            });
+
+            if (this._currentPage !== currentPage) {
+                this._trigger('inactive', this._items[this._currentPage]);
+                this._trigger('active', this._items[currentPage]);
+            }
+
+            this._currentPage = currentPage;
+        },
+        items: function() {
+            return this._items;
+        },
+        reloadCarouselItems: function() {
+            this._carouselItems = null;
+            return this;
+        },
+        _clear: function() {
+            this._element.empty();
+            this._currentPage = null;
+        },
+        _calculatePages: function() {
+            var carousel = this.carousel().data('jcarousel'),
+                items    = this._getCarouselItems(),
+                clip     = carousel.clipping(),
+                wh       = 0,
+                idx      = 0,
+                page     = 1,
+                pages    = {},
+                curr;
+
+            while (true) {
+                curr = items.eq(idx++);
+
+                if (curr.length === 0) {
+                    break;
+                }
+
+                if (!pages[page]) {
+                    pages[page] = curr;
+                } else {
+                    pages[page] = pages[page].add(curr);
+                }
+
+                wh += carousel.dimension(curr);
+
+                if (wh >= clip) {
+                    page++;
+                    wh = 0;
+                }
+            }
+
+            return pages;
+        },
+        _getCarouselItems: function() {
+            if (!this._carouselItems) {
+                this._carouselItems = this.carousel().jcarousel('items');
+            }
+
+            return this._carouselItems;
+        }
+    });
+}(jQuery));
+
+(function($) {
+    'use strict';
+
+    $.jCarousel.plugin('jcarouselAutoscroll', {
+        _options: {
+            target:    '+=1',
+            interval:  3000,
+            autostart: true
+        },
+        _timer: null,
+        _init: function () {
+            this.onDestroy = $.proxy(function() {
+                this._destroy();
+                this.carousel()
+                    .one('jcarousel:createend', $.proxy(this._create, this));
+            }, this);
+
+            this.onAnimateEnd = $.proxy(this.start, this);
+        },
+        _create: function() {
+            this.carousel()
+                .one('jcarousel:destroy', this.onDestroy);
+
+            if (this.options('autostart')) {
+                this.start();
+            }
+        },
+        _destroy: function() {
+            this.stop();
+            this.carousel()
+                .off('jcarousel:destroy', this.onDestroy);
+        },
+        start: function() {
+            this.stop();
+
+            this.carousel()
+                .one('jcarousel:animateend', this.onAnimateEnd);
+
+            this._timer = setTimeout($.proxy(function() {
+                this.carousel().jcarousel('scroll', this.options('target'));
+            }, this), this.options('interval'));
+
+            return this;
+        },
+        stop: function() {
+            if (this._timer) {
+                this._timer = clearTimeout(this._timer);
+            }
+
+            this.carousel()
+                .off('jcarousel:animateend', this.onAnimateEnd);
+
+            return this;
+        }
+    });
+}(jQuery));
