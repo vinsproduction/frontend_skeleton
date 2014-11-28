@@ -448,6 +448,10 @@ h2 span {
   font-size: 21px;
   text-transform: lowercase;
 }
+h2 span a {
+  color: #fff;
+  text-decoration: none;
+}
 p {
   margin: 10px 0;
 }
@@ -668,7 +672,7 @@ section#page-helpers-images .container .content .frame.frame-horizontal {
 }
 section#page-helpers-images .container .content .frame.frame-vertical {
   display: block;
-  width: 100px;
+  width: 150px;
   height: 200px;
 }
 section#page-helpers-images .container .content .frame.frame-square {

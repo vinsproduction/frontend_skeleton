@@ -1,0 +1,77 @@
+extends layout/layout
+
+block append css
+	link(rel="stylesheet", type="text/css", href="css/jcarousel.css")
+
+block append js
+	script(type="text/javascript", src="js/libs/jquery.jcarousel.js")
+	script(type="text/javascript", src="js/jcarousel.js")
+
+block content
+
+	section#page-jcarousel
+
+		.container
+			.content
+
+				h1: span jCarousel
+				h2: span <a href="http://sorgalla.com/jcarousel/">http://sorgalla.com/jcarousel</a>
+
+
+				.selects
+					.select.active: p 1
+					.select: p 2
+					.select: p 3
+					.select: p 4
+				
+
+				.jcarousel
+					mixin Item(img)
+						.item
+							.img
+								img(src="/img/carousel/#{img}.jpg", onload="$$.imageCenter(this, true)")
+	
+					.list
+
+						+Item(1)
+						+Item(2)
+						+Item(3)
+						+Item(4)
+
+				
+				h2: span JS
+				pre.example(class="prettyprint lang-js linenums").
+					$(function() {
+
+						var select = $('.select');
+
+						var carousel = $('.jcarousel').jcarousel({
+
+								wrap: 'both',
+								animation: {
+									duration: 600,
+									easing: 'linear'
+								}
+						})
+
+						.jcarouselAutoscroll({
+								interval: 3000,
+								target: '+=1',
+								autostart: false
+						})
+
+						.on('jcarousel:targetin', '.item', function() {
+								var targetIndex;
+								targetIndex = $(this).index();
+								select.removeClass('active');
+								select.eq(targetIndex).addClass('active');
+						})
+
+						.data('jcarousel');
+
+						select.click(function() {
+								var targetIndex = $(this).index();
+								carousel.scroll(targetIndex);
+						});
+
+					});

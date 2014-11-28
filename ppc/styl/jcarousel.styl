@@ -1,0 +1,62 @@
+@require 'mixins'
+
+section#page-jcarousel
+	
+	$w = 1265
+	$h = 378
+	
+	.content
+		position relative
+		padding 50px 0
+		$w = $w - 20*2
+		width ($w)px
+		margin 0 auto
+
+		.jcarousel
+			block $w - 280, $h
+			position relative
+			overflow hidden
+			.list
+				width 20000em
+				position relative
+				.item
+					position relative
+					block-left()
+		
+		.selects
+			position absolute
+			block 280 $h
+			background #004f95
+			right 0
+			z-index 1
+
+			.select
+				block-inline 280
+				color #FFF
+				transition background 0.8s 
+				cursor pointer
+				p 
+					padding 12px 10px 12px 30px
+					line-height 1.6
+
+				&:hover, &.active
+					background #0f6db7
+					position relative
+					
+				&.active
+					&:before
+						content ''
+						position absolute
+						top 50%
+						left -7.5px
+						margin-top -7.5px
+						border-style: solid
+						border-width: 7.5px 8px 7.5px 0
+						border-color: transparent #0f6db7 transparent transparent
+
+		.img
+			position relative
+			block $w - 280, $h
+			overflow hidden
+			img
+				block $w - 280, $h

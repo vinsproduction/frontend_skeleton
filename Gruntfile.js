@@ -15,6 +15,7 @@ module.exports = function(grunt) {
 					"css/map.css": "ppc/styl/map.styl",
 					"css/gallery.css": "ppc/styl/gallery.styl",
 					"css/carousel.css": "ppc/styl/carousel.styl",
+					"css/jcarousel.css": "ppc/styl/jcarousel.styl",
 
 					// PROD
 
@@ -50,6 +51,7 @@ module.exports = function(grunt) {
 					"map.html": "ppc/jade/map.jade",
 					"gallery.html": "ppc/jade/gallery.jade",
 					"carousel.html": "ppc/jade/carousel.jade",
+					"jcarousel.html": "ppc/jade/jcarousel.jade",
 					"form.html": "ppc/jade/form.jade",
 					"fileuploader.html": "ppc/jade/fileuploader.jade",
 					"helpers-images.html": "ppc/jade/helpers-images.jade",
@@ -75,6 +77,7 @@ module.exports = function(grunt) {
 	       		"js/map.js": "ppc/coffee/map.coffee",
 	       		"js/gallery.js": "ppc/coffee/gallery.coffee",
 	       		"js/video.js": "ppc/coffee/video.coffee",
+	       		"js/jcarousel.js": "ppc/coffee/jcarousel.coffee",
 
 		    		"js/libs/popup.js": "ppc/coffee/popup.coffee",
 	       		"js/libs/form.js": "ppc/coffee/form.coffee",

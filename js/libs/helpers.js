@@ -209,6 +209,17 @@ $$; // SHORT NAMESPACE
 				   	left: 0,
 						top: h/2 - $el.height()/2
 					});
+
+				  // Если после преобразований картинка окажется меньше по высоте чем фрейм
+				  if ($el.height() < h){
+				  	$el.height(h);
+					   $el.width( image.width*$el.height()/image.height );
+					   $el.css({
+					   	top: 0,
+							left: w/2 - $el.width()/2
+						});
+				  }
+
 				// Если фрейм квадратный
 				}else if (w == h) {
 					 // Если картинка горизонтальная
@@ -236,14 +247,28 @@ $$; // SHORT NAMESPACE
 					      top: h/2 - $el.height()/2.5
 					   });
 				  	}
+				
 				// Если фрейм вертикальный
 				}else{
+
 					$el.height(h);
 					$el.width( image.width*$el.height()/image.height );
 					$el.css({
-			     		left: w/2 - $el.width()/2,
-			     		top: 0
-			    	});
+			     	left: w/2 - $el.width()/2,
+			     	top: 0
+			    });
+
+					// Если после преобразований картинка окажется меньше по ширине чем фрейм
+				  if ($el.width() < w){
+				  	$el.width(w);
+						$el.height( image.height*$el.width()/image.width );
+					   $el.css({
+					   	left: 0,
+							top: h/2 - $el.height()/2
+						});
+				  }
+
+
 				}
 				return
 			}

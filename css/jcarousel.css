@@ -1,0 +1,81 @@
+section#page-jcarousel .content {
+  position: relative;
+  padding: 50px 0;
+  width: 1225px;
+  margin: 0 auto;
+}
+section#page-jcarousel .content .jcarousel {
+  display: block;
+  width: 945px;
+  height: 378px;
+  position: relative;
+  overflow: hidden;
+}
+section#page-jcarousel .content .jcarousel .list {
+  width: 20000em;
+  position: relative;
+}
+section#page-jcarousel .content .jcarousel .list .item {
+  position: relative;
+  float: left;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+}
+section#page-jcarousel .content .selects {
+  position: absolute;
+  display: block;
+  width: 280px;
+  height: 378px;
+  background: #004f95;
+  right: 0;
+  z-index: 1;
+}
+section#page-jcarousel .content .selects .select {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: top;
+  zoom: 1;
+  *display: inline;
+  width: 280px;
+  color: #fff;
+  -webkit-transition: background 0.8s;
+  -moz-transition: background 0.8s;
+  -ms-transition: background 0.8s;
+  -o-transition: background 0.8s;
+  transition: background 0.8s;
+  cursor: pointer;
+}
+section#page-jcarousel .content .selects .select p {
+  padding: 12px 10px 12px 30px;
+  line-height: 1.6;
+}
+section#page-jcarousel .content .selects .select:hover,
+section#page-jcarousel .content .selects .select.active {
+  background: #0f6db7;
+  position: relative;
+}
+section#page-jcarousel .content .selects .select.active:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -7.5px;
+  margin-top: -7.5px;
+  border-style: solid;
+  border-width: 7.5px 8px 7.5px 0;
+  border-color: transparent #0f6db7 transparent transparent;
+}
+section#page-jcarousel .content .img {
+  position: relative;
+  display: block;
+  width: 945px;
+  height: 378px;
+  overflow: hidden;
+}
+section#page-jcarousel .content .img img {
+  display: block;
+  width: 945px;
+  height: 378px;
+}
