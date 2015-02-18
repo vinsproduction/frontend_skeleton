@@ -164,7 +164,10 @@ block append js
 
 				onLoad: function(){},
 
-				onInit: function(){},
+				onInit: function(){
+
+					formValidator.setVal('dropdown','o1');
+				},
 
 				onSuccess: function(data){
 					$(".error-custom-alert").empty();
@@ -181,6 +184,59 @@ block append js
 				}
 			});
 
+
+			// Добавление поля
+
+			var fieldId = 1; // Уникальное имя поля
+
+			window.addField = function(){
+
+				fieldId++;
+
+				var fieldName = 'firstname-' + fieldId;
+
+				var field = ''
+				+ '<div class="g-row new-field" data-name="'+ fieldName +'">'
+				+ '<label>'+ fieldName +'</label>'
+				+ '<input type="text" name="'+ fieldName +'">'
+				+ '<div class="error-custom-alert error-custom-'+ fieldName +'"></div>'
+				+ '</div>';
+
+				$('#form .new-fields').append($(field));
+
+				formValidator.addField({
+					name: fieldName,
+					options: {
+						rules: {
+							required:{
+								reason: 'Обязательное поле для заполнения'
+							}
+						},
+						onError: function(fieldName,errors){
+							for(i in errors){
+								$(".error-custom-" + fieldName).append(errors[i] + "<br/>");
+							};
+						}
+					}
+				});
+
+			}
+
+			window.removeField = function(){
+
+				fieldId--;
+
+				row = $('#form .new-fields .new-field:last-child');
+
+				fieldName = row.attr('data-name');
+
+				row.remove();
+
+				formValidator.removeField(fieldName);
+			};
+
+
+
 		});
 
 block content
@@ -196,7 +252,7 @@ block content
 					.g-row
 						label firstname
 						input(type='text', name='firstname')
-		
+
 					.g-row
 						label password
 						input(type='text', name='password')
@@ -230,6 +286,8 @@ block content
 
 						//- .error-custom-alert.error-custom-checkbox_2
 
+
+
 					.g-row
 						label radio
 
@@ -245,12 +303,17 @@ block content
 					.g-row
 						label dropdown
 						select(name="dropdown")
-							option(selected=true) - Выбрать -
+							option - Выбрать -
 							option(value="o1") option1
 							option(value="o2") option2
 						//- .error-custom-alert.error-custom-dropdown
 
+
+					.g-row.new-fields
+
 					.g-row
+						button.reset(onclick="removeField();") Убрать поле
+						button.reset(onclick="addField();") Добавить поле
 						button.reset(onclick="formValidator.reset();") Сбросить
 						input.submit(type="submit",value="Отправить")
 

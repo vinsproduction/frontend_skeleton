@@ -10,6 +10,7 @@ numericDash — Разрешены только цифры и подчеркив
 alpha — Разрешены только буквы
 alphaDash — Разрешены только буквы и подчеркивания
 alphaNumeric — Разрешены только буквы и цифры
+cyrillic — Разрешены только кириллические буквы
 max — Максимум символов
 min — Минимум символов
 email — Email
@@ -196,6 +197,23 @@ formValidator.addRule({
   return val == 'хорошо';
  }
 });
+
+// Добавление нового поля
+formValidator.addField({
+	name: 'name', // Имя поля
+	options: {
+		rules: {
+			required:{
+				reason: 'Обязательное поле для заполнения'
+			}
+		},
+		onError: function(fieldName,errors){
+			for(i in errors){
+				$(".error-custom-name").append(errors[i] + "<br/>");
+			};
+		}
+	}
+});
  */
 var Form;
 
@@ -260,8 +278,8 @@ Form = (function() {
         if (!_this.submitEl) {
           return _this.log('Warning! submitEl not set');
         }
-        _this.form = $$.isObject(_this.formEl) ? _this.formEl : $(_this.formEl);
-        _this.submitBtn = $$.isObject(_this.submitEl) ? _this.submitEl : _this.form.find(_this.submitEl);
+        _this.form = _this.isObject(_this.formEl) ? _this.formEl : $(_this.formEl);
+        _this.submitBtn = _this.isObject(_this.submitEl) ? _this.submitEl : _this.form.find(_this.submitEl);
         if (!_this.form.size()) {
           return _this.log('Warning! formEl not found in DOM');
         }
@@ -359,12 +377,9 @@ Form = (function() {
         }
       }
       if (this.fields[name].style && el.is("select")) {
-        this.createSelect(el);
-        el.change((function(_this) {
-          return function() {
-            return _this.createSelect(el);
-          };
-        })(this));
+        el.change(function() {
+          return self.createSelect($(this));
+        }).change();
       }
       if (this.fields[name].style && (el.attr('type') === 'radio')) {
         self.createRadio(name);
@@ -452,7 +467,7 @@ Form = (function() {
   };
 
   Form.prototype.createSelect = function(el) {
-    var $options, $select, $selected, name, selectClose, selectedText, self;
+    var $options, $select, $selected, def, name, selectClose, selectedText, self;
     el.hide();
     name = el.attr('name');
     self = this;
@@ -461,8 +476,17 @@ Form = (function() {
     }
     $select = $("<div class='select' data-name='" + name + "'></div>");
     $options = $("<div class='options' style='display:none;'></div>");
-    selectedText = el.find('option[selected]').size() ? el.find('option:selected').text() : el.find('option:first-child').text();
-    $selected = $("<div class='selected default'>" + selectedText + "</div>");
+    if (el.find('option[selected]').size()) {
+      selectedText = el.find('option:selected').text();
+      def = false;
+    } else {
+      selectedText = el.find('option:first-child').text();
+      def = true;
+    }
+    $selected = $("<div class='selected'>" + selectedText + "</div>");
+    if (def) {
+      $selected.addClass('default');
+    }
     $select.append($selected);
     $select.append($options);
     el.after($select);
@@ -497,6 +521,8 @@ Form = (function() {
       }
       $option.click((function(_this) {
         return function() {
+          $option.attr('selected', null);
+          $(_this).attr('selected', true);
           if ($(_this).attr('value')) {
             self.setVal(name, $(_this).attr('value'));
             $selected.removeClass('default');
@@ -520,7 +546,7 @@ Form = (function() {
       el.prop("checked", false);
       el.filter("[value='" + val + "']").prop("checked", true);
     } else {
-      el.val($$.trim(val));
+      el.val(this.trim(val));
     }
     if (this.fields[name].placeholder && (el.is("input[type='text']") || el.is('textarea'))) {
       if (val === "" || val === this.fields[name].placeholder) {
@@ -625,7 +651,7 @@ Form = (function() {
     for (name in this.fields) {
       this.setVal(name, this.fields[name].originVal);
     }
-    this.log("onReset");
+    this.log("onReset fields:", this.fields);
     this.onReset();
     this.init();
     return false;
@@ -716,6 +742,27 @@ Form = (function() {
     return el.blur();
   };
 
+  Form.prototype.addField = function(field) {
+    this.fields[field.name] = field.options;
+    return setTimeout((function(_this) {
+      return function() {
+        return _this.reset();
+      };
+    })(this), 500);
+  };
+
+  Form.prototype.removeField = function(field) {
+    if (!this.fields[field]) {
+      return this.log("field '" + field + "' not exist");
+    }
+    delete this.fields[field];
+    return setTimeout((function(_this) {
+      return function() {
+        return _this.reset();
+      };
+    })(this), 500);
+  };
+
 
   /* VALIDATION FUNCTIONS */
 
@@ -765,6 +812,14 @@ Form = (function() {
       valid = {
         state: /^[a-z0-9]+$/i.test(val),
         reason: rule.reason || 'Не буквы и не цифры'
+      };
+      return valid;
+    },
+    cyrillic: function(val, rule) {
+      var valid;
+      valid = {
+        state: !/[a-zA-Z-]/.test(val),
+        reason: rule.reason || 'Допустима только кириллица'
       };
       return valid;
     },

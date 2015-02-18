@@ -9,6 +9,7 @@ numericDash — Разрешены только цифры и подчеркив
 alpha — Разрешены только буквы
 alphaDash — Разрешены только буквы и подчеркивания
 alphaNumeric — Разрешены только буквы и цифры
+cyrillic — Разрешены только кириллические буквы
 max — Максимум символов
 min — Минимум символов
 email — Email
@@ -198,6 +199,23 @@ formValidator.addRule({
  }
 });
 
+// Добавление нового поля
+formValidator.addField({
+	name: 'name', // Имя поля
+	options: {
+		rules: {
+			required:{
+				reason: 'Обязательное поле для заполнения'
+			}
+		},
+		onError: function(fieldName,errors){
+			for(i in errors){
+				$(".error-custom-name").append(errors[i] + "<br/>");
+			};
+		}
+	}
+});
+
 ###
 
 
@@ -250,8 +268,8 @@ class Form
 			if !@formEl then return @log 'Warning! formEl not set'
 			if !@submitEl then return @log 'Warning! submitEl not set'
 
-			@form 		= if $$.isObject(@formEl) then @formEl else $(@formEl)
-			@submitBtn 	= if $$.isObject(@submitEl) then @submitEl else @form.find(@submitEl)
+			@form 		= if @isObject(@formEl) then @formEl else $(@formEl)
+			@submitBtn 	= if @isObject(@submitEl) then @submitEl else @form.find(@submitEl)
 
 			if !@form.size() then return @log 'Warning! formEl not found in DOM'
 			if !@submitBtn.size() then return @log 'Warning! submitEl not found in DOM'
@@ -352,8 +370,7 @@ class Form
 		
 			if @fields[name].style and el.is("select")
 
-				@createSelect(el)
-				el.change => @createSelect(el)
+				el.change(-> self.createSelect($(@))).change()
 
 			if @fields[name].style and (el.attr('type') is 'radio')
 				self.createRadio(name)
@@ -449,12 +466,16 @@ class Form
 
 		$select 	= $("<div class='select' data-name='#{name}'></div>")
 		$options 		= $("<div class='options' style='display:none;'></div>")
-		selectedText 	= if el.find('option[selected]').size()
-				el.find('option:selected').text()
-			else
-				el.find('option:first-child').text()
 
-		$selected = $("<div class='selected default'>#{selectedText}</div>")
+		if el.find('option[selected]').size()
+			selectedText = el.find('option:selected').text()
+			def = false
+		else
+			selectedText = el.find('option:first-child').text()
+			def = true
+
+		$selected = $("<div class='selected'>#{selectedText}</div>")
+		$selected.addClass('default') if def
 		$select.append $selected
 		$select.append $options
 
@@ -486,6 +507,9 @@ class Form
 				$option = $("<div class='option'><span>#{$(@).text()}</span></div>")
 
 			$option.click =>
+
+				$option.attr('selected',null)
+				$(@).attr('selected', true)
 	
 				if $(@).attr('value')
 					self.setVal(name, $(@).attr('value'))
@@ -501,6 +525,8 @@ class Form
 
 			$options.append $option
 
+
+
 	setVal: (name,val) ->
 
 		el  = @form.find("[name='#{name}']")
@@ -510,7 +536,7 @@ class Form
 			el.prop("checked", false)
 			el.filter("[value='#{val}']").prop("checked", true)
 		else
-			el.val($$.trim(val))
+			el.val(@trim(val))
 
 		if @fields[name].placeholder and (el.is("input[type='text']") or el.is('textarea'))
 			if val in ["",@fields[name].placeholder]
@@ -609,10 +635,12 @@ class Form
 
 			@setVal(name,@fields[name].originVal)
 
-		@log "onReset"
+		@log "onReset fields:", @fields
+
 		do @onReset
 
 		do @init
+
 
 		return false
 
@@ -682,6 +710,25 @@ class Form
 			if el.val() is "" then el.val(val).addClass(@placeholderClass)
 		el.blur()
 
+	addField: (field) ->
+
+		@fields[field.name] = field.options
+
+		setTimeout(=>
+			do @reset
+		,500)
+
+	removeField: (field) ->
+
+		return @log "field '#{field}' not exist" if !@fields[field]
+
+		delete @fields[field]
+
+		setTimeout(=>
+			do @reset
+		,500)
+
+
 	### VALIDATION FUNCTIONS ###
 
 	validate:
@@ -725,6 +772,13 @@ class Form
 			valid = 
 				state: /^[a-z0-9]+$/i.test(val)
 				reason: rule.reason  || 'Не буквы и не цифры'
+
+			return valid
+
+		cyrillic: (val, rule) ->
+			valid =
+				state: !/[a-zA-Z-]/.test(val)
+				reason: rule.reason || 'Допустима только кириллица'
 
 			return valid
 

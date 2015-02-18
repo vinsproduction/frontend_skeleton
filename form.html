@@ -229,7 +229,10 @@
         
         onLoad: function(){},
         
-        onInit: function(){},
+        onInit: function(){
+        
+         formValidator.setVal('dropdown','o1');
+        },
         
         onSuccess: function(data){
          $(".error-custom-alert").empty();
@@ -244,6 +247,59 @@
          return val == 'хорошо';
         }
        });
+       
+       
+       // Добавление поля
+       
+       var fieldId = 1; // Уникальное имя поля
+       
+       window.addField = function(){
+       
+        fieldId++;
+        
+        var fieldName = 'firstname-' + fieldId;
+        
+        var field = ''
+        + '<div class="g-row new-field" data-name="'+ fieldName +'">'
+        + '<label>'+ fieldName +'</label>'
+        + '<input type="text" name="'+ fieldName +'">'
+        + '<div class="error-custom-alert error-custom-'+ fieldName +'"></div>'
+        + '</div>';
+        
+        $('#form .new-fields').append($(field));
+        
+        formValidator.addField({
+         name: fieldName,
+         options: {
+          rules: {
+           required:{
+            reason: 'Обязательное поле для заполнения'
+           }
+          },
+          onError: function(fieldName,errors){
+           for(i in errors){
+            $(".error-custom-" + fieldName).append(errors[i] + "<br/>");
+           };
+          }
+         }
+        });
+        
+       }
+       
+       window.removeField = function(){
+       
+        fieldId--;
+        
+        row = $('#form .new-fields .new-field:last-child');
+        
+        fieldName = row.attr('data-name');
+        
+        row.remove();
+        
+        formValidator.removeField(fieldName);
+       };
+       
+       
        
       });
       
@@ -343,12 +399,15 @@
                 <div class="g-row">
                   <label>dropdown</label>
                   <select name="dropdown">
-                    <option selected>- Выбрать -</option>
+                    <option>- Выбрать -</option>
                     <option value="o1">option1</option>
                     <option value="o2">option2</option>
                   </select>
                 </div>
+                <div class="g-row new-fields"></div>
                 <div class="g-row">
+                  <button onclick="removeField();" class="reset">Убрать поле</button>
+                  <button onclick="addField();" class="reset">Добавить поле</button>
                   <button onclick="formValidator.reset();" class="reset">Сбросить</button>
                   <input type="submit" value="Отправить" class="submit">
                 </div>

@@ -773,7 +773,7 @@ section#page-form .container .content .field-group {
   vertical-align: top;
   zoom: 1;
   *display: inline;
-  width: 300px;
+  width: 400px;
 }
 section#page-form .container .content .field-group span {
   display: -moz-inline-stack;
@@ -897,6 +897,9 @@ section#page-form .container .content .select .selected {
   background: #fff;
   text-align: center;
   cursor: pointer;
+}
+section#page-form .container .content .select .selected.default {
+  color: #ccc;
 }
 section#page-form .container .content .select .selected:after {
   content: '';
